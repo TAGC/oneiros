@@ -1,0 +1,724 @@
+{
+ "name": "Glossary",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Term",
+    "Area",
+    "Definition",
+    "See tab"
+   ],
+   "rows": [
+    [
+     "Ablaze",
+     "Memory",
+     "The state while a memory burns, shown as an orb coloured by its emotions, its rim showing the time left. Lasts a short span of world-time set by the memory's Hold, jumping at each tier line. Spells using its emotions take on its sensory details, and it shows effects it would have at a higher tier (a flicker, its waking boon, its eidolon), possibly multiplied; which tier and the multiplier are open (one idea: the multiplier from vividness). Ends when the time runs out, when you have spent the memory's material of each of its emotions, or when burning another memory replaces it. Then anything above mood capacity bursts out as an outburst.",
+     "Sources"
+    ],
+    [
+     "Adverb",
+     "Magic",
+     "The emotion that shapes how a spell acts, written after the separator: Joy widely, Courage steadily, Hope far, Love wholly, Grief slowly, Fear fleetingly, Despair suddenly, Hate deeply.",
+     "Adverbs"
+    ],
+    [
+     "Ambient emotion",
+     "World",
+     "Feeling no will holds: force freed when any form dissolves (Forgetting, Unmaking, a fading memory, uprooting, a conjuration ending, something lucidity dissolves), keeping its emotion and hanging where it happened (a hall thick with Despair). Inside the Temenos it stays in the Temenos. Distinct from a place's mood, which its will holds. It is manifest (see held, manifest), so opposites cancel in it into lucidity, which can dissolve more and release more: cascades are possible (to explore). A Hope spell cast through Despair-thick air loses some of itself before it lands. Drawing it into a mood is a possible advanced skill (open).",
+     ""
+    ],
+    [
+     "Anchored place",
+     "World",
+     "A place you can fast-travel to from your Temenos, through its door in the hallway. Planting a memory is one way to anchor a place; others are open (crafting lists anchors).",
+     "Temenos"
+    ],
+    [
+     "Apeiron",
+     "Economy",
+     "The formless stuff of dreams, carried by Oceanus. Provided by subscription, it pays for LLM generation and buys novelty, never power. Shown only in kyathoi; never convertible. You let it run to a Reverie through a euripus.",
+     "Apeiron units"
+    ],
+    [
+     "Apeiron pool",
+     "Temenos",
+     "The pool at the Temenos centre that holds your apeiron, beneath an opening in the roof. Free players see it dry.",
+     "Temenos"
+    ],
+    [
+     "Aspect",
+     "World",
+     "One way a thing can vary: a door's lock, a fire's height, a room's light. Each aspect responds to a driver: in the world, the thing's mood; in the Temenos, your qualities of the will. It responds continuously, latched or staggered (stepping at thresholds), or from several drivers at once. A latch can release at a different line from the one that trips it, and some latches are one-way; where those lines sit is tuning. Opposites in a mood never net out, though an aspect can read two against each other. On each aspect the strongest claimant sets the main form; weaker ones take its sub-aspects or colour the manner. After Blumberg's degrees of freedom.",
+     "Kinds"
+    ],
+    [
+     "Attention",
+     "Lucidity",
+     "A will's awareness of a disturbance in its own world, a leaky integrator: it adds up what draws it and always leaks away. The largest case is the Dreamer's awareness of you in the Dreamlands, which leaks away over a sleep cycle. Blatant magic, burning and lucidity draw it as flares. A belief draws it only when its rule visibly bends the dream, by how far it defies the dream, times how overtly, times its strength; holding a belief, even knowing the world is a dream, is not overt in itself. A belief whose rule is always overt draws it steadily, so any baseline is just where that steady draw balances the leak. A person whose mind you enter plays the Dreamer's role in their inner world: acts that don't fit their mind draw their Attention. Levels: Noticed, Stirring, Roused, Fixed upon.",
+     "Attention"
+    ],
+    [
+     "Backstory",
+     "Character",
+     "Your generated starting memories, precious and finite. The third step of character creation, after origin and temperament.",
+     "Origins"
+    ],
+    [
+     "Beacon",
+     "Memory",
+     "A memory planted while lost in the deep. Hold out while it draws Attention and it pulls you back up.",
+     ""
+    ],
+    [
+     "Bead",
+     "Memory",
+     "A glass-like container that holds a memory while it is in the Dreamlands; an empty bead is dun. Every memory travels in a bead, obols included. A memory enters a bead through recounting and leaves it through reliving. The bead holds the memory's form, so it can project it in conjuration (see resonance). Personal beads are goods priced in obols.",
+     "Currency"
+    ],
+    [
+     "Belief",
+     "Beliefs",
+     "Something you hold true about yourself or the world. All knowledge is beliefs, from a city's capital to a rumour. Its strength is its own material and its Conviction, and its colour can shift as it soaks up feeling. Most are light and do almost nothing; strong ones change the rules, never your form. Its form deepens with its stage (see belief stages).",
+     "Beliefs"
+    ],
+    [
+     "Belief capacity",
+     "Beliefs",
+     "The most material a belief can soak up through dwelling, set by its grounds.",
+     "Beliefs"
+    ],
+    [
+     "Belief stages",
+     "Beliefs",
+     "The tiers a belief climbs as its Conviction grows, matching the rootedness ladder: Hearsay (Loose: a loose leaf on a shelf; no side effect), Tenet (Fixture: binds and becomes active; a bookcase built into the room), Creed (Room: a room of its own) and Dogma (Megaron: its rule and side effect become permanent; a great hall around a sealed shrine). Notion is a state, not a stage: pages on a reading-room desk while you dwell on it, with a side effect only. \"Hearsay\" is a working name.",
+     "Beliefs"
+    ],
+    [
+     "Burning",
+     "Memory",
+     "Destroying a bead to release its stored force (its material) straight into your mood, at the cost of the mood capacity it gave, leaving you Ablaze. A Loose memory can be burnt at once; a Fixture must be dismantled as it is lit (see igniting); Rooms and Megara cannot be burnt. Conjures nothing. Draws heavy Attention. Burnt material still within mood capacity when the burn ends stays in mood, and can later be soaked up by dwelling.",
+     "Sources"
+    ],
+    [
+     "Calm",
+     "Emotion",
+     "The will circling at rest. Soft white. In a mood, the unpinched part of the circle: force not pinched towards any emotion.",
+     "Emotions"
+    ],
+    [
+     "Capacity",
+     "Character",
+     "The most something can hold. Always qualified: mood capacity, belief capacity or vessel capacity.",
+     "Rootedness"
+    ],
+    [
+     "Chain, chain cap",
+     "Magic",
+     "The run of emotions built on the wheel; repeats are intensity. The cap is shared between verbs and adverbs. Its size is an open question.",
+     "Adverbs"
+    ],
+    [
+     "Coherence",
+     "Character",
+     "Health: how well a will keeps its own motion instead of breaking into simpler ones. Everything has it, by the same rule: its maximum is the material of every memory and belief it holds, each times a factor for its tier (Loose ×0.5, Fixture ×1, Room ×2, Megaron ×3), plus its renown. Its maximum also caps the will's total force. Your Temenos shows yours: as they root into rooms, the house grows.",
+     ""
+    ],
+    [
+     "Coherence status",
+     "Character",
+     "Words that show your Coherence at a glance: Anchored, Drifting, Fraying, Unravelling.",
+     ""
+    ],
+    [
+     "Composition",
+     "Magic",
+     "The mix of emotions in a spell, memory or thing.",
+     ""
+    ],
+    [
+     "Conservation of force",
+     "World",
+     "A named law: force is never created, and is lost only when opposed manifest feeling annihilates into lucidity (see held, manifest). When a form that holds force dissolves, its force is freed as ambient emotion: it keeps its emotion but loses the form that held it.",
+     ""
+    ],
+    [
+     "Conjuration",
+     "Magic",
+     "What you make by feeding a bead emotions from your mood, in the Dreamlands only: a manifestation made by Memory magic through resonance. What you feed sets its Coherence; too much risks cracking the bead. It is manifest (see held, manifest). It takes on the memory's sensory details.",
+     "Sources"
+    ],
+    [
+     "Conviction",
+     "Beliefs",
+     "How rooted a belief is: the rootedness half of its strength, which sets its tier (see belief stages). Rises from dwelling on it, seeing it seem to work and the company of believers; doubt lowers it. Cannot be traded. Also feeds Hold: memories hold better when you are convinced they happened.",
+     "Beliefs"
+    ],
+    [
+     "Core, persona",
+     "Body",
+     "The two equipment layers: core affects you, persona is how others see you.",
+     ""
+    ],
+    [
+     "Cracking and collapse",
+     "Temenos",
+     "What happens when a memory's Hold or a belief's Conviction falls below its tier's line: the room cracks (a warning that mends if it recovers), then, too long or too far below, collapses. A collapsed room keeps its mood capacity, counts ×0.5 towards Coherence, loses its boons, still takes plot, carries scar maluses and buries its contents (destroying them is possible). Restore it or uproot it.",
+     "Rootedness"
+    ],
+    [
+     "Deduction",
+     "Library",
+     "A finding made by placing beliefs side by side; it becomes a new belief.",
+     ""
+    ],
+    [
+     "Deep",
+     "World",
+     "The middle phase of the sleep cycle, about 35%: still and heavy; the deep layers come closer.",
+     "Sleep cycle"
+    ],
+    [
+     "Dreamer, the",
+     "World",
+     "A titanic, god-like being whose dream is the Dreamlands, and the only god-figure. Turns offered journal entries into Reveries; asks questions but never interprets.",
+     ""
+    ],
+    [
+     "Dreamlands, the",
+     "World",
+     "The Dreamer's dream: the one shared world all players inhabit, each in their own copy.",
+     ""
+    ],
+    [
+     "Dreamstorm",
+     "World",
+     "A rare, violent event in the Vivid that reshapes whole places.",
+     "Sleep cycle"
+    ],
+    [
+     "Dun",
+     "Memory",
+     "An empty bead: its memory relived, lost in transfer, or never put in.",
+     ""
+    ],
+    [
+     "Dwelling",
+     "Beliefs",
+     "Turning a belief over in your mind. Like a sponge, it draws feeling from your mood into the belief: only the emotions it has an affinity for (set by its grounds and your qualities), up to its belief capacity. Raises its Conviction. You choose what to dwell on only in your Temenos during rest, a limited number of beliefs at once, and dwelling runs over long spans (days or longer).",
+     "Beliefs"
+    ],
+    [
+     "Echo",
+     "Character",
+     "What you return as at zero Coherence: weaker, but keeping your library and what you knew. Exactly what survives is open.",
+     ""
+    ],
+    [
+     "Eidolon (pl. eidola)",
+     "Body",
+     "The brief form of a memory's latent mutation, shown while you are Ablaze with it. Only memories above a vividness threshold (open) raise one. It shows its drawback in full and follows the flicker rules for stability and gear.",
+     "Rootedness"
+    ],
+    [
+     "Emotion",
+     "Magic",
+     "One of eight motions of the will (see will in motion), in four opposed pairs. Pleasant emotions move outward, unpleasant ones inward.",
+     "Emotions"
+    ],
+    [
+     "Euripus (pl. euripi)",
+     "Temenos",
+     "A short water channel cut into the floor, running from the apeiron pool to a gateway. Its bronze sluice lets apeiron run dry, as a trickle or running, to grow a Reverie while you're away.",
+     "Temenos"
+    ],
+    [
+     "Extraction",
+     "Memory",
+     "Taking a memory or belief out of someone's mind: the dark side of Memory magic. The opposite of inception.",
+     ""
+    ],
+    [
+     "Flicker",
+     "Body",
+     "A brief change of form under a strong mood while a memory sits at Room, scaled by stability. Not a mutation. Gear reshapes, slips off or binds it, by its own stability and grain; gear of opposed grain resists and damps it, and nothing cancels.",
+     "Rootedness"
+    ],
+    [
+     "Force (Kraft)",
+     "World",
+     "Mainländer's term for the amount of a will's motion: the area of its mood's circle. Emotions are its motions and Calm is force circling at rest. Conserved: never created, and lost only when opposed manifest motions annihilate (see held, manifest), which is how the world runs down. A will's total is capped by its maximum Coherence and regained mainly by eating. The world's force is the sum of all wills' force, diminishing over aeons.",
+     ""
+    ],
+    [
+     "Forgetting",
+     "Memory",
+     "The dark: a constant erosion of memory that surges during the Vivid. Whatever falls out of memory light may be lost or subtly altered.",
+     "Rootedness"
+    ],
+    [
+     "Gateway",
+     "Temenos",
+     "A free-standing marble gateway at the Temenos centre leading to one of your Reveries, fed apeiron by a euripus.",
+     "Temenos"
+    ],
+    [
+     "Gleaning",
+     "Memory",
+     "Taking a memory out of a place: the opposite of planting. Taking one from a person is extraction.",
+     ""
+    ],
+    [
+     "Going under",
+     "Character",
+     "An unlockable alternative to becoming an Echo: dropping into a deeper layer of the dream for a second chance.",
+     ""
+    ],
+    [
+     "Grain",
+     "Magic",
+     "A thing's resting emotion: the resting shape its mood relaxes back to. Casting with the grain lasts; against it, the thing's mood drifts back towards its grain.",
+     "Kinds"
+    ],
+    [
+     "Grounds",
+     "Beliefs",
+     "What a belief rests on: memories (of the people and places it is about, and of paying a cost to act on it) and other beliefs one step removed. Only what is in your Temenos counts. Attached when the belief forms and by dwelling. They set its weight, which emotions it soaks up and how much; losing one lightens every belief resting on it, with a warning first.",
+     "Beliefs"
+    ],
+    [
+     "Guise",
+     "Memory",
+     "The likeness of someone a target remembers, worn inside their inner world, with your mood matched to how they feel about that person. Any guise can go anywhere, but it fits some places better than others; switching guise is suspicious, so it is done in the dark. How faithful it is depends on preparation: what you know of that person, and memories of them, including ones taken by extraction from others. Guises also work in the Dreamlands, in two kinds: an illusion, a conjuration from a bead holding a memory of the person, which anyone can make but lucidity breaks, and which drains your mood in the memory's own emotions for as long as you wear it; or a change of your own form, governed by stability, which is harder to break and comes easiest to the Nightmare-born. Persona gear can support either. Not the persona equipment layer itself (see core, persona).",
+     ""
+    ],
+    [
+     "Held, manifest",
+     "Magic",
+     "Where feeling is. Held: inside a will, in a mood, memory or belief, whatever the body; opposites coexist there and never annihilate. Manifest: out in the shared world as stuff, such as a spell in flight, a conjuration, Grief armour or ambient emotion; opposites that meet there annihilate into lucidity (Love and Hate spells cancelling; a Joy spell burning part of Grief armour away into sparks). Force becomes manifest the moment it leaves a mood: a chain is only a plan until cast, and its opposites cancel at the cast. A spell that lands on a will joins its mood, even alongside its opposite, and its force is the target's to spend freely. If the target has no capacity for that emotion, all of it is excess. Casting opposites at one target means keeping them apart until they land (sequential casts, twin casting or a buffer; open). Open: what is left of a spell after striking something manifest, and how a held undertone and opposed creatures fit.",
+     ""
+    ],
+    [
+     "Hold",
+     "Memory",
+     "How rooted a memory is in a will: the rootedness half of its strength, which sets its tier (see memory tiers). The higher it is, the more slowly a held memory fades and the less likely it is to crack. Rises during long rests (weighted towards recent memories), with recurrence and with Conviction; worn by Forgetting. A memory recounted into a bead has no Hold and comes back Loose. Falling below its tier's line cracks the room, then collapses it (see cracking and collapse).",
+     "Rootedness"
+    ],
+    [
+     "Hypnagogia",
+     "Rest",
+     "The first explorable phase of a long rest, as your character falls asleep: you explore your Temenos before the fast-forward through sleep.",
+     "Sleep cycle"
+    ],
+    [
+     "Hypnopompia",
+     "Rest",
+     "The last explorable phase of a long rest, as your character wakes: you explore your Temenos to see what changed overnight, before waking fully.",
+     "Sleep cycle"
+    ],
+    [
+     "Igniting",
+     "Memory",
+     "Starting to burn a memory (see burning). A Loose memory ignites at once. A Fixture is mentally dismantled in the same act: done carefully it takes time and keeps its Hold, so it burns long; rushed, it risks a botch that leaves a scar.",
+     "Rootedness"
+    ],
+    [
+     "Illusion",
+     "Magic",
+     "A flimsy conjuration from a faint memory. Fades by the next sleep cycle and is broken by lucidity.",
+     "Sources"
+    ],
+    [
+     "Inception",
+     "Memory",
+     "Putting a memory or belief into someone's mind. The opposite of extraction.",
+     ""
+    ],
+    [
+     "Inner voices",
+     "Character",
+     "Emotions speaking in the event log. What a voice wants comes from the quality feeding it; at its greatest depth a quality can speak under its own name.",
+     ""
+    ],
+    [
+     "Inner world",
+     "World",
+     "A will's private world, where what it holds lives: its mood, memories and beliefs. Your Temenos stands in yours. Its counterpart is the Dreamlands, the shared world. In lore, idios kosmos.",
+     "Temenos"
+    ],
+    [
+     "Insight",
+     "Library",
+     "A realisation you sometimes wake with after rest.",
+     ""
+    ],
+    [
+     "Inspect",
+     "Magic",
+     "Examining a scene to see what each thing feels, its kind, grain and undertone, and which reactions you know. Also studies a memory where it sits, including in someone else's inner world, without taking it. What it reveals deepens with the time you spend, what you already know (your beliefs and memories about what you inspect) and, for a memory, its vividness. Some beliefs and memories also make you better at inspecting certain kinds of thing in general.",
+     ""
+    ],
+    [
+     "Intensity",
+     "Magic",
+     "How strong an emotion is, from 1 to 5 (for Joy: Joy, Great Joy, Elation, Ecstasy, Rapture). Set by the repeats in a chain, or by what a thing holds; used for spells, memories, places and creatures, not your mood. A spell's intensity is that of its chain, and high intensity needs deep qualities feeding that emotion. The top intensities cost more than a developed character's mood capacity, so they can only be paid for while Ablaze.",
+     "Intensity effects"
+    ],
+    [
+     "Keepsake",
+     "Items",
+     "A sentimental heirloom that acts like a relic once you know its story. Purely physical: never enters the Temenos, has no Hold or Conviction, freely traded.",
+     ""
+    ],
+    [
+     "Kind",
+     "Magic",
+     "A category of thing with its own reactions: fire, water, air and weather, growth, solid, threshold, light, creature.",
+     "Kinds"
+    ],
+    [
+     "Koinos kosmos, idios kosmos, Metaxy",
+     "Lore",
+     "Greek, used only in lore: the shared world (the Dreamlands), a will's private world (its inner world) and the between where two inner worlds meet (the meeting ground).",
+     ""
+    ],
+    [
+     "Kyathos (pl. kyathoi)",
+     "Economy",
+     "The game's unit for all liquids, and the only unit apeiron is shown in. Larger units: kotyle, chous, amphora; a pithos is a large top-up jar.",
+     "Apeiron units"
+    ],
+    [
+     "Library",
+     "Temenos",
+     "The annular gallery on the Temenos centre's upper floor, ringing the opening above the apeiron pool, with doors onto the four wings' upper floors. The colourless counterpart of the wings: colourless beliefs and memories, a desk for colourless Notions, and your threads.",
+     "Temenos"
+    ],
+    [
+     "Long rest, short rest",
+     "Rest",
+     "Long rests are limited, as in D&D: your character sleeps through a full sleep cycle. You explore your Temenos in hypnagogia, watch it change in a fast-forward through sleep, see what changed in hypnopompia, then wake. Only long rests change the Temenos, and its phases mirror the world's: in the Light the house is calm and the sleeper near waking; in the Deep recent memories consolidate (their Hold rises, weighted towards the most recent) and the house's depths come closer (tentative); in the Vivid weak memories are lost, the house reshuffles and the sleeper's dreams manifest as hostile creatures. Short rests, visiting your Temenos when out of immediate danger, are unlimited but restore less, and nothing in the Temenos roots or reorganises during them.",
+     ""
+    ],
+    [
+     "Lucid",
+     "Character",
+     "You: someone who knows the world is a dream. Your character is the only Lucid in your copy of the world.",
+     ""
+    ],
+    [
+     "Lucidity",
+     "Lucidity",
+     "What opposites annihilate into. Counters the dream itself: dissolves forms in proportion to how weakly they are held (Coherence, stability, being Remembered), illusions first, and barely grazes the strongly held, you included. What it dissolves releases its force as ambient emotion, so cascades are possible. Reveals rings. Draws Attention. Brilliant white.",
+     ""
+    ],
+    [
+     "Manifestation",
+     "World",
+     "Anything held in a will's inner world becoming expressed in the Dreamlands, where it is manifest (see held, manifest).",
+     ""
+    ],
+    [
+     "Marvel",
+     "World",
+     "A place or thing near which Calm can become Wonder.",
+     ""
+    ],
+    [
+     "Material",
+     "Magic",
+     "Force in a particular motion (an emotion or Calm), in the units spells use. Every memory and belief is a form storing amounts of material per emotion; colourless ones hold Calm. Sets mood capacity and, with the tier, Coherence.",
+     "Rootedness"
+    ],
+    [
+     "Meeting ground",
+     "World",
+     "The small space where two inner worlds meet, holding your Temenos and another's side by side, so you can enter theirs for extraction or inception, or to help them. Reached during their long rest, either by their permission or by opening their mind with Raw or Memory magic. A permitted guest draws Attention only by going beyond what they were invited to do. It collapses when their Attention reaches Fixed upon, throwing you out. In lore, Metaxy.",
+     ""
+    ],
+    [
+     "Megaron (pl. megara)",
+     "Temenos",
+     "The top tier of the rootedness ladder: a load-bearing great hall taking several rooms' worth of plot. A memory Megaron (a Touchstone) roots through to the exterior and may surface; a belief Megaron is a Dogma. You can have several.",
+     "Rootedness"
+    ],
+    [
+     "Memory",
+     "Memory",
+     "A generated item: a snapshot of an experience, with an emotional composition that never changes. Its strength is its vividness and Hold; it can fade or root deeper. Sources: backstory, trading, living and finding.",
+     "Sources"
+    ],
+    [
+     "Memory light",
+     "Memory",
+     "Light every memory constantly sheds in its emotions' colour: its material running down in proportion to its composition, so vividness falls and nothing restores it. Brightness is the rate of loss, so fresh, Loose memories blaze and rooted ones glow softly. Leaked light becomes trace ambient emotion. Wherever it falls, things stay Remembered and resist shifting, and other memories fade more slowly (by brightness, with diminishing returns and a hard floor). Opposing light meeting in the Dreamlands sparks into lucidity; Calm light, such as obol light, shelters with no sparks. Held memories light only your Temenos; only beads light the Dreamlands.",
+     ""
+    ],
+    [
+     "Memory tiers",
+     "Memory",
+     "The tiers a memory climbs as its Hold grows, matching the rootedness ladder: Impression (Loose), Recollection (Fixture), Refrain (Room) and Touchstone (Megaron).",
+     "Rootedness"
+    ],
+    [
+     "Memory-born, Nightmare-born",
+     "Character",
+     "The two origins. Memory-born is the default (medium stability); Nightmare-born is the unstable, mutant origin (low stability).",
+     "Origins"
+    ],
+    [
+     "Mood",
+     "Magic",
+     "The current feeling of any will (see will in motion), pictured as a pinched circle. Its area is the will's total force. Each emotion pinches it in its own direction on the wheel, only so far (for you, as far as your mood capacity); the unpinched rest is Calm. Opposites can pinch at once, so they coexist and never net out (see held, manifest). A stimulus or motive changes the shape but not the area; a Raw spell that lands adds its force, growing the area and pinching it its way. The shape relaxes back towards the will's grain, and Wonder returns it to a pure circle. Casting spends area from the lobe of the emotion spent, so the pinch and the total both shrink; a will regains force mainly by eating. The ring shows the shape. Yours is built by meaningful events and places. Raw and Memory magic spend your mood; you can only spend what you hold.",
+     "Sources"
+    ],
+    [
+     "Mood capacity",
+     "Character",
+     "How far your mood can pinch towards one emotion: that emotion's material summed over every memory and belief you hold (a belief counts only its own), whatever the tier. At the cap, nothing makes you feel more; only burning can push you over it, and the excess bursts out as an outburst when you stop being Ablaze. Separate from spell intensity, which qualities cap.",
+     "Rootedness"
+    ],
+    [
+     "Motive",
+     "Magic",
+     "A change in the shape of a will's mood through what it knows, after Schopenhauer: its beliefs and memories shape how a stimulus or event reshapes it, and its qualities of the will decide which reaction arises (being attacked makes you angry). No force moves. The only kind of motive.",
+     ""
+    ],
+    [
+     "Mutation",
+     "Character",
+     "A lasting change to your form: a new action, sense or body change, with a drawback shown as clearly as its benefit. Never a bare stat. Comes only from a memory that surfaces at Megaron; shown in full at Room. Its effect is fixed. Its brief form while Ablaze is an eidolon.",
+     "Rootedness"
+    ],
+    [
+     "Obol",
+     "Economy",
+     "A small bead holding a city's Calm founding memory: everyday currency. Gives off faint, steady white light. Not inherently durable: obols last by clustering, their light slowing each other's fading. Absorbing one shores up your Coherence.",
+     "Currency"
+    ],
+    [
+     "Oceanus",
+     "World",
+     "The world-river that carries apeiron.",
+     ""
+    ],
+    [
+     "Outburst",
+     "Magic",
+     "Material above your mood capacity when you stop being Ablaze (including when burning another memory replaces the burn), escaping through the body as an uncontrolled pulse: no adverb, no aim, flavoured by the memory's sensory details, and it flares Attention.",
+     ""
+    ],
+    [
+     "Planting",
+     "Memory",
+     "Giving a memory to a place: the place takes the bead in and holds the memory, so its Coherence rises. Shifts its composition, makes it an anchored place, starts rumours or leaves messages. Always costs you the memory. The opposite is gleaning.",
+     ""
+    ],
+    [
+     "Quality of the will",
+     "Character",
+     "One of Mainländer's opposed traits (envy and good will, cruelty and mercifulness, and so on). Each has a depth that deepens with use or fades, leaving remnants. The depth of the qualities feeding an emotion sets its floor plot in the Temenos and how high an intensity you can cast it at; qualities also decide which emotions come naturally and style your house.",
+     "Qualities"
+    ],
+    [
+     "Raw, Memory, Unmaking",
+     "Magic",
+     "The three sources of magic. Raw moves (shifts the mood of existing things, which act it out; paid with your mood). Memory makes (conjures from a bead in the Dreamlands; paid with your mood; too much power stresses the bead and risks cracking it). Unmaking unmakes: dissolves form, freeing its feeling into the place as ambient emotion (paid with your own Coherence; provisional).",
+     "Sources"
+    ],
+    [
+     "Recounting",
+     "Memory",
+     "Pouring a Loose memory from your mind into an empty bead, anywhere in the Dreamlands but never in the Temenos. You still know about it but no longer feel it. Flows at a fixed rate, so time scales with vividness, and the glass changes the rate. Works like a D&D concentration spell: interruption loses the whole memory as ambient emotion; stopping by choice is safe. The opposite of reliving.",
+     ""
+    ],
+    [
+     "Reliving",
+     "Memory",
+     "Drawing a memory from a bead back into your mind, anywhere in the Dreamlands but never in the Temenos. Pinches your mood towards its emotions, leaves the bead dun, and the memory arrives Loose. Same flow and interruption rules as recounting.",
+     ""
+    ],
+    [
+     "Remembered",
+     "World",
+     "The state of things within memory light: stable and resistant to shifting.",
+     ""
+    ],
+    [
+     "Renown",
+     "Character",
+     "How well the world remembers someone or something: the material of the memories and beliefs others hold about it, times a multiplier (open). Adds to the maximum Coherence of anyone or anything: you, a person, a city, a place.",
+     ""
+    ],
+    [
+     "Resonance",
+     "Memory",
+     "How a bead projects its memory in conjuration: emotional material fed into the bead, in the memory's own ratio, resonates with the material inside and projects the memory. Nothing in the bead is used up or restored; the bead holds the form. Only the memory's own ratio works.",
+     "Sources"
+    ],
+    [
+     "Reverie",
+     "Dreams",
+     "A place made from a dream journal entry offered to the Dreamer. The entry is its unchangeable core; it grows as you explore and can be private, shared or public.",
+     "Dream seeds"
+    ],
+    [
+     "Ring",
+     "Magic",
+     "The circle beneath every character and thing that shows the shape of its mood: lobes pinched towards each emotion in that emotion's colour, the unpinched rest in Calm's soft white, its size the will's total force.",
+     ""
+    ],
+    [
+     "Rootedness ladder",
+     "Memory",
+     "The four tiers of how rooted a memory or belief is (its Hold or Conviction), which decide its form in the Temenos: Loose, Fixture, Room, Megaron. Each has its own names (see memory tiers and belief stages). You rise smoothly and fall hard (see cracking and collapse).",
+     "Rootedness"
+    ],
+    [
+     "Rumour",
+     "World",
+     "Something that happened, warped by each teller's emotion. Each version you hear becomes a belief at Hearsay. Can become a quest (a thread), and becomes real in the Vivid if enough people believe a version.",
+     "Rumours"
+    ],
+    [
+     "Scar",
+     "Temenos",
+     "The ruin left when something rooted (Fixture or above) is destroyed or uprooted: the destroyed form of what was there, its colour drained to dun. A Megaron always scars, even when cleanly uprooted, and a memory Megaron also marks the body; below that only a botched uprooting or a rushed igniting scars, and it can spread to neighbouring rooms. Costs its plot, mood capacity and share of Coherence, with maluses: dark (neighbours lose Hold to Forgetting; from Fixture), a waking cost and an ache (from Room), and a gap, a lingering weakness where the effect was (Megaron). Heals through fresh, scarred and healed: Unmaking clears it, time and help close it, rebuilding fills it. Healing can set badly, reopen or spread. Who uproots and heals in the world is open.",
+     "Rootedness"
+    ],
+    [
+     "Seam",
+     "World",
+     "Less Remembered land between shards, where Forgetting has the upper hand; shifts fluidly and is dangerous to cross. Neighbouring shards' opposed ambient emotion meets along it and annihilates, so seams shimmer with lucidity, which dissolves the weakly held and frees more; with Forgetting, this is how the world's force wears down over aeons. Weakly held things unravel there, while anything strongly held (high maximum Coherence, high stability) passes with little harm.",
+     ""
+    ],
+    [
+     "Shard",
+     "World",
+     "Any fragment of the Dreamer's original will; all things are shards. Used alone, it means the large regional parts: the most strongly Remembered and stable land, with seams between them.",
+     ""
+    ],
+    [
+     "Sleep cycle",
+     "World",
+     "The world's day and night: Light (calm), Deep (still and heavy), Vivid (shifting and dangerous). About 30 to 45 minutes of play.",
+     "Sleep cycle"
+    ],
+    [
+     "Spinning top",
+     "Temenos",
+     "Your first belief, this is a dream, which makes you Lucid. Held at Dogma (a Megaron) from the start, and nothing can change its Conviction. Among its effects it raises the stability of your form, so lucidity and Forgetting wear on you less. Holding it is not overt in itself (see Attention).",
+     "Temenos"
+    ],
+    [
+     "Stability",
+     "Body",
+     "How much an entity's form shifts with its feelings: very low for beasts and Nightmares, high for anchored places and old beings.",
+     "Origins"
+    ],
+    [
+     "Stillness",
+     "Emotion",
+     "The will feeling motionless, after Mainländer's aesthetic contemplation: its force is intact and still moving, but its motion is no longer felt from inside. A state, not a loss. Rare, reached through Wonder.",
+     "Emotions"
+    ],
+    [
+     "Stimulus",
+     "Magic",
+     "A change in the shape of a will's mood caused by something it meets (a wolf's snarl, a grieving town), after Schopenhauer: no force moves, so neither will's total changes, and it can pinch no further than capacity allows. Contrast a Raw spell, which carries force and adds it to its target.",
+     ""
+    ],
+    [
+     "Strength",
+     "Memory",
+     "The overall power of a memory or belief: how much (its material) and how rooted (Hold or Conviction). Rootedness sets the tier, and so the kind and permanence of its effect; material sets mood capacity and, times the tier factor, its share of maximum Coherence. Never shown in the interface.",
+     "Rootedness"
+    ],
+    [
+     "Surfacing",
+     "Memory",
+     "A memory's step from Room to Megaron, when its roots break through to the exterior and it becomes a mutation in its natural form. Memories only. Needs a trigger, usually something traumatic, after warnings: hinted as it roots, shown in full at Room. Prevent it by not reliving, planting, selling or unmaking the memory; undo it by uprooting, which always scars.",
+     "Rootedness"
+    ],
+    [
+     "Temenos",
+     "Temenos",
+     "Your inner house, a classical marble house, with any grounds around it such as the garden, standing in your inner world: the exterior is your body, the interior your mind. Its size is your Coherence.",
+     "Temenos"
+    ],
+    [
+     "Temperament",
+     "Character",
+     "Mainländer's skin of the will: melancholic, sanguine, choleric or phlegmatic. Shapes which qualities come easily.",
+     "Temperaments"
+    ],
+    [
+     "Thread",
+     "Library",
+     "A quest hanging off a rumour or other belief, kept in the library. Not a belief itself.",
+     "Rumours"
+    ],
+    [
+     "Undertone",
+     "Magic",
+     "A feeling held beneath a thing's main feeling (its grain). Cancelling it releases lucidity.",
+     ""
+    ],
+    [
+     "Uprooting",
+     "Temenos",
+     "Dislodging a rooted memory or belief: surgery on the psyche, by a practitioner or roughly by yourself through Unmaking. Always possible, never easy, and costly for a while. Uprooting a Megaron always leaves a scar; below that, only a botched job does.",
+     "Rootedness"
+    ],
+    [
+     "Vessel",
+     "Items",
+     "Any container for a liquid, such as a potion or apeiron. A bound vessel, filled from the apeiron pool, sets by its vessel capacity how much apeiron you can spend in the world.",
+     "Apeiron units"
+    ],
+    [
+     "Vessel capacity",
+     "Items",
+     "How many kyathoi a vessel holds.",
+     "Apeiron units"
+    ],
+    [
+     "Vividness",
+     "Memory",
+     "A memory's total material: its detail and feeling, from novelty and feeling together. Falls constantly as the memory sheds memory light; nothing restores it. Sets its detail and duration when conjured, and with its tier, its share of your maximum Coherence.",
+     "Rootedness"
+    ],
+    [
+     "Waking boon",
+     "Rest",
+     "A benefit granted each rest by a tended room.",
+     ""
+    ],
+    [
+     "Waking summary",
+     "Rest",
+     "The report at the end of a rest: what was restored, remembered, still needs time, and happened while you slept.",
+     ""
+    ],
+    [
+     "Weight",
+     "Beliefs",
+     "The size of a belief's effect: the material of its grounds plus its own. Never stored. Only its own material counts towards mood capacity and Coherence, so nothing is counted twice. A city's capital, held at Dogma, weighs almost nothing; \"my mother will always forgive me\", resting on vivid Love memories, weighs a great deal.",
+     "Beliefs"
+    ],
+    [
+     "Will in motion",
+     "Philosophy",
+     "After Mainländer: everything in the Dreamlands is a will in motion, and feelings are how that motion is felt from inside.",
+     ""
+    ],
+    [
+     "Wonder, wonder memory",
+     "Lucidity",
+     "Being Calm near a marvel brings on Stillness: your ring stills, and when it passes your mood resumes as a pure circle of Calm. Also clears Attention flares. Sometimes leaves a wonder memory, the rarest kind of memory and the medium for Stillness magic.",
+     ""
+    ]
+   ]
+  }
+ ]
+}

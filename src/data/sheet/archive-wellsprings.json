@@ -1,0 +1,65 @@
+{
+ "name": "Archive_ wellsprings",
+ "blocks": [
+  {
+   "type": "notes",
+   "items": [
+    "Each essence rises from a wellspring and flows through the Dreamlands as a river. Compounds form where rivers meet. Where opposites meet, raw lucidity erupts. What each essence is like lives on the Essences tab."
+   ]
+  },
+  {
+   "type": "table",
+   "header": [
+    "Essence",
+    "Wellspring",
+    "Common name",
+    "In Greek myth",
+    "Where it lies"
+   ],
+   "rows": [
+    [
+     "Memory",
+     "The Pool of Mnemosyne",
+     "the Remembering Pool",
+     "The spring of Memory, which Orphic gold tablets told the dead to drink from instead of Lethe",
+     "Deep below"
+    ],
+    [
+     "Sleep",
+     "Lethe",
+     "the river of forgetting",
+     "Underworld river whose water makes the dead forget their lives",
+     "Deep below"
+    ],
+    [
+     "Desire",
+     "Phlegethon",
+     "the burning river",
+     "Underworld river of fire",
+     "Deep below"
+    ],
+    [
+     "Sorrow",
+     "Cocytus",
+     "the river of wailing",
+     "Underworld river of lamentation",
+     "Deep below"
+    ],
+    [
+     "Fear",
+     "Erebus",
+     "the Dark Beneath",
+     "Primordial darkness born of Chaos; with Night, the parent of Aether and Day",
+     "The very bottom"
+    ],
+    [
+     "Wonder",
+     "Aether",
+     "the Bright Air",
+     "The bright upper air where the gods breathe; child of Erebus and Night",
+     "High above"
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,36 @@
+{
+ "name": "Sleep cycle",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Phase",
+    "Share",
+    "What happens"
+   ],
+   "rows": [
+    [
+     "Light",
+     "0.4",
+     "Calm; travel and trade"
+    ],
+    [
+     "Deep",
+     "0.35",
+     "Still and heavy; the deep layers come closer"
+    ],
+    [
+     "Vivid",
+     "0.25",
+     "Shortest and most dangerous; the world shifts, Nightmares come out, dreamstorms can strike"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "A full cycle lasts about 30 to 45 minutes of play."
+   ]
+  }
+ ]
+}

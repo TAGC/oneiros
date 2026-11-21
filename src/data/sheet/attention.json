@@ -1,0 +1,41 @@
+{
+ "name": "Attention",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Level",
+    "What happens",
+    "Rewards"
+   ],
+   "rows": [
+    [
+     "Noticed",
+     "Projections pause and stare; nearby rings turn towards you",
+     "None yet"
+    ],
+    [
+     "Stirring",
+     "Creatures and places turn hostile; rumours about you spread",
+     "More vivid memories"
+    ],
+    [
+     "Roused",
+     "The Dreamer shapes events around you (freshly written with apeiron, from hand-made pools without)",
+     "Rare finds"
+    ],
+    [
+     "Fixed upon",
+     "The dream bends hard around you; deep things come looking",
+     "Legend"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Raised by lucidity and blatant magic, like glimmer in Caves of Qud. A leaky integrator: flares add to it, and it always leaks away over a sleep cycle. Beliefs draw it only when their rules visibly bend the dream; one whose rule is always overt draws it steadily, so any baseline is where that draw balances the leak. Wonder clears flares, once per marvel per cycle."
+   ]
+  }
+ ]
+}

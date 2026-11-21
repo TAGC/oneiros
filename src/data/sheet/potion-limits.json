@@ -1,0 +1,30 @@
+{
+ "name": "Potion limits",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Limit",
+    "How it works"
+   ],
+   "rows": [
+    [
+     "Saturation",
+     "Each drink adds to your saturation, which feeds the addiction and perception-filter system, and can push memories of that emotion towards surfacing."
+    ],
+    [
+     "Power budget",
+     "Potions use the same power budget, with \"instant\" counted as an expensive delivery."
+    ],
+    [
+     "Carrying",
+     "You can only carry so many bottles."
+    ],
+    [
+     "No generic healing",
+     "Recovery comes from resting in the Temenos and from food, so potions stay strange rather than becoming health bars in a bottle."
+    ]
+   ]
+  }
+ ]
+}

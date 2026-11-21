@@ -1,0 +1,38 @@
+{
+ "name": "Sources",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Source",
+    "Does",
+    "Composition from",
+    "Paid with",
+    "Notes"
+   ],
+   "rows": [
+    [
+     "Raw",
+     "Moves: changes how existing things feel",
+     "The chain you build",
+     "Your mood",
+     "Cheap near your mood, dear far from it; casting pulls your mood towards the spell"
+    ],
+    [
+     "Memory",
+     "Makes: conjures what you remember; raises Coherence, heals, repairs",
+     "The emotions you feed it",
+     "Your mood; each use wears the bead's Hold",
+     "A memory is a bead: it gives the shape, and what you feed decides how the conjuration feels and behaves. Vividness sets detail and duration; faint memories give illusions. Resonance: feeding its own feeling is cheaper and truer, feeding against it twists the result and wears faster; healing and repair need a match. Burning: destroys the bead, releasing its material straight into your mood at the cost of the mood capacity it gave, leaving you Ablaze; heavy Attention. Memories can't be forged"
+    ],
+    [
+     "Unmaking",
+     "Unmakes: dissolves form, freeing feeling as ambient emotion; lowers Coherence, makes things forget, undoes conjurations and weakly held things",
+     "The feelings to remove",
+     "Your own Coherence (blood magic)",
+     "Draws no Attention directly, though the feeling it frees can cancel into lucidity and flare it. Calls on Forgetting, the dark that erodes what is unlit. Provisional"
+    ]
+   ]
+  }
+ ]
+}

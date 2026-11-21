@@ -1,0 +1,46 @@
+{
+ "name": "Apeiron units",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Unit",
+    "Meaning",
+    "In kyathoi"
+   ],
+   "rows": [
+    [
+     "Kyathos",
+     "A ladle",
+     "1"
+    ],
+    [
+     "Kotyle",
+     "A cup",
+     "6"
+    ],
+    [
+     "Chous",
+     "A pitcher",
+     "72"
+    ],
+    [
+     "Amphora",
+     "A storage jar",
+     "864"
+    ],
+    [
+     "Pithos",
+     "A great storage jar, for large top-ups",
+     "To be decided"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "The pool holds a month's subscription. Bought top-ups stand sealed beside it, drawn to scale: at least an amphora."
+   ]
+  }
+ ]
+}

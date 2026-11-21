@@ -1,0 +1,46 @@
+{
+ "name": "Potion kinds",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Kind",
+    "How it works",
+    "Example",
+    "Ties into"
+   ],
+   "rows": [
+    [
+     "Bottled moments",
+     "Bottle a memory, a scream, a sunset or a conversation. Drinking it replays the moment's feeling.",
+     "A bottled panic attack is a Fear potion",
+     "Memories"
+    ],
+    [
+     "Legendary waters",
+     "Water from places of overwhelming feeling, such as a river that has grieved for ages.",
+     "A draught from the grieving river weighs you down with sorrow",
+     "Grain, places"
+    ],
+    [
+     "Throwable",
+     "Smash it and the liquid's feeling passes into whatever it splashes.",
+     "Fear makes a door flinch open; Love makes a fire surge",
+     "Animism, kinds"
+    ],
+    [
+     "Unknown until drunk",
+     "Unlabelled bottles taste of something. Learn what they are by drinking them or through Wonder.",
+     "A bottle that tastes of rain",
+     "Qud-style identification"
+    ],
+    [
+     "Mixing",
+     "Mixed potions combine their feelings; opposites annihilate in a dangerous lucidity spike.",
+     "Hope poured into Despair flares",
+     "Lucidity"
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,196 @@
+{
+ "name": "Qualities",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Pair",
+    "Quality",
+    "Feeds",
+    "Deepened in play by"
+   ],
+   "rows": [
+    [
+     "1",
+     "Envy",
+     "Hate",
+     "Coveting, gleaning or sabotaging what others have"
+    ],
+    [
+     "1",
+     "Good will",
+     "Love",
+     "Being glad for others; helping those who outdo you"
+    ],
+    [
+     "2",
+     "Greed",
+     "Hope",
+     "Taking loot, gleaning memories, hoarding"
+    ],
+    [
+     "2",
+     "Generosity",
+     "Joy",
+     "Giving things and memories away"
+    ],
+    [
+     "3",
+     "Cruelty",
+     "Hate",
+     "Tormenting the defeated, killing the helpless"
+    ],
+    [
+     "3",
+     "Mercy",
+     "Grief",
+     "Sparing the defeated, easing suffering"
+    ],
+    [
+     "4",
+     "Falseness",
+     "Fear",
+     "Lying, breaking promises, betrayal (needs deep NPC interaction)"
+    ],
+    [
+     "4",
+     "Fidelity",
+     "Love",
+     "Keeping your word, standing by companions"
+    ],
+    [
+     "5",
+     "Pride",
+     "Joy",
+     "Boasting, belittling lesser NPCs, refusing help"
+    ],
+    [
+     "5",
+     "Humility",
+     "Calm",
+     "Accepting help, deferring, giving credit"
+    ],
+    [
+     "6",
+     "Defiance",
+     "Courage",
+     "Pressing on after failure"
+    ],
+    [
+     "6",
+     "Despondency",
+     "Despair",
+     "Abandoning quests, giving in"
+    ],
+    [
+     "7",
+     "Imperiousness",
+     "Love",
+     "Commanding NPCs, ruling factions, dominating with magic"
+    ],
+    [
+     "7",
+     "Meekness",
+     "Grief",
+     "Yielding, following others"
+    ],
+    [
+     "8",
+     "Baseness",
+     "Despair",
+     "Petty, mean acts"
+    ],
+    [
+     "8",
+     "Nobility",
+     "Hope",
+     "Grand-hearted acts; seeking honour and legend"
+    ],
+    [
+     "9",
+     "Inflexibility",
+     "Grief",
+     "Resisting surfacing memories, resisting mood pull, holding positions"
+    ],
+    [
+     "9",
+     "Malleability",
+     "Hope",
+     "Accepting surfacing, going with a place's mood"
+    ],
+    [
+     "10",
+     "Cowardice",
+     "Fear",
+     "Fleeing danger"
+    ],
+    [
+     "10",
+     "Audacity",
+     "Courage",
+     "Facing danger"
+    ],
+    [
+     "11",
+     "Injustice",
+     "Hate",
+     "Unfair judgements and punishments"
+    ],
+    [
+     "11",
+     "Justice",
+     "Courage",
+     "Fair judgements"
+    ],
+    [
+     "12",
+     "Obduracy",
+     "Despair",
+     "Keeping secrets, closing your Temenos to others"
+    ],
+    [
+     "12",
+     "Candour",
+     "Hope",
+     "Revealing truths, letting others into your Temenos"
+    ],
+    [
+     "13",
+     "Shamelessness",
+     "Joy",
+     "Brazen behaviour"
+    ],
+    [
+     "13",
+     "Shame",
+     "Fear",
+     "Bashfulness, hiding, self-reproach"
+    ],
+    [
+     "14",
+     "Sensuality",
+     "Love",
+     "Indulging in food, drink, pleasure and pleasant places"
+    ],
+    [
+     "14",
+     "Temperance",
+     "Calm",
+     "Restraint"
+    ],
+    [
+     "15",
+     "Vanity",
+     "Joy",
+     "Cultivating your persona and fame"
+    ],
+    [
+     "15",
+     "Holiness",
+     "Stillness",
+     "Renouncing, letting memories go, seeking Stillness"
+    ]
+   ]
+  }
+ ]
+}

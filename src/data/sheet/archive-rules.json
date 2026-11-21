@@ -1,0 +1,38 @@
+{
+ "name": "Archive_ rules",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Case",
+    "Result"
+   ],
+   "rows": [
+    [
+     "Third element is opposite a parent",
+     "The opposed pair cancels and the compound collapses to the remaining element, with a small lucidity burst"
+    ],
+    [
+     "Third element is opposite neither parent",
+     "Forms a stable three-element compound (triad)"
+    ],
+    [
+     "How many stable triads",
+     "8 (one element from each opposed pair: 2 x 2 x 2)"
+    ],
+    [
+     "Four or more elements",
+     "Always includes an opposed pair, so it forces a cancellation: the forbidden tier, unstable and very noticeable to the Dreamer"
+    ],
+    [
+     "Compound + compound sharing an element",
+     "Merge into a triad, e.g. Trauma + Nostalgia = Possession"
+    ],
+    [
+     "Compound + compound with opposed elements",
+     "Collapse"
+    ]
+   ]
+  }
+ ]
+}

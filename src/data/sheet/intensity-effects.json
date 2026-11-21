@@ -1,0 +1,58 @@
+{
+ "name": "Intensity effects",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Intensity",
+    "Material (relative)",
+    "Roughly like D&D",
+    "Examples",
+    "What it takes"
+   ],
+   "rows": [
+    [
+     "1",
+     "1",
+     "Levels 1 to 2",
+     "Frighten a door open, douse a torch",
+     "Any character"
+    ],
+    [
+     "2",
+     "3",
+     "Levels 3 to 4",
+     "Flood a room, turn a pack of wolves",
+     "Moderately deep qualities feeding that emotion"
+    ],
+    [
+     "3",
+     "9",
+     "Levels 5 to 6",
+     "Bring down a building, grow a forest bridge",
+     "Deep qualities feeding that emotion"
+    ],
+    [
+     "4",
+     "27",
+     "Levels 7 to 8",
+     "Change a region's weather, unmake a powerful Nightmare",
+     "Very deep qualities feeding that emotion"
+    ],
+    [
+     "5",
+     "81",
+     "Level 9",
+     "Reshape a place's grain permanently, stop time locally",
+     "A life lived in that emotion"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Icons show intent, not quantities: the real cost depends on the target's size and stability, its grain, the adverbs and how far the spell is from your mood. The preview shows the price."
+   ]
+  }
+ ]
+}

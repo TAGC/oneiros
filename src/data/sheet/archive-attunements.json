@@ -1,0 +1,101 @@
+{
+ "name": "Archive_ attunements",
+ "blocks": [
+  {
+   "type": "notes",
+   "items": [
+    "Essences as attributes"
+   ]
+  },
+  {
+   "type": "table",
+   "header": [
+    "Essence",
+    "Covers",
+    "Roughly like",
+    "Example checks",
+    "Opposes"
+   ],
+   "rows": [
+    [
+     "Memory",
+     "Knowledge, recall, learning",
+     "Intelligence",
+     "Recalling a name, reading old writing",
+     "Sleep"
+    ],
+    [
+     "Wonder",
+     "Perception, insight, creativity",
+     "Wisdom",
+     "Spotting a hidden door, seeing through illusions",
+     "Fear"
+    ],
+    [
+     "Desire",
+     "Drive, charm, persuasion",
+     "Charisma",
+     "Persuading a merchant, inspiring a companion",
+     "Sorrow"
+    ],
+    [
+     "Sorrow",
+     "Endurance, empathy, patience",
+     "Constitution",
+     "Enduring pain or cold, comforting someone",
+     "Desire"
+    ],
+    [
+     "Fear",
+     "Reflexes, awareness, intimidation",
+     "Dexterity",
+     "Dodging, sensing an ambush, scaring someone off",
+     "Wonder"
+    ],
+    [
+     "Sleep",
+     "Calm, stealth, resisting influence",
+     "Composure",
+     "Sneaking past, resisting a compulsion",
+     "Memory"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Derived values"
+   ]
+  },
+  {
+   "type": "table",
+   "header": [
+    "Value",
+    "What it measures",
+    "Comes from"
+   ],
+   "rows": [
+    [
+     "Coherence",
+     "The gap between your Memory (the structure that holds you together) and your Sleep (the water rising against it). When they meet you go under, and collapsing again makes you an Echo",
+     "Damage, wounds and fatigue raise Sleep. Rare effects (severe head injuries, forgetting magic) remove memories. Resting in your Temenos lowers Sleep and turns recent experiences into memories"
+    ],
+    [
+     "Body parts",
+     "Injuries to specific parts (legs, hands, eyes, throat) that limit what you can do",
+     "Fights and hazards; serious injuries also cost Coherence. Repaired in your Temenos or with Memory magic, or replaced with grafts"
+    ],
+    [
+     "Capacity",
+     "How much essence you can hold at once",
+     "Progression and savant tracks"
+    ],
+    [
+     "Time ratio",
+     "How fast you act relative to the world",
+     "Fear/Wonder (world speed), Desire/Sorrow (your speed), the fragment and active effects"
+    ]
+   ]
+  }
+ ]
+}

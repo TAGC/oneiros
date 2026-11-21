@@ -1,0 +1,31 @@
+{
+ "name": "Origins",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Origin",
+    "Stability",
+    "Notes"
+   ],
+   "rows": [
+    [
+     "Memory-born",
+     "Medium",
+     "The default. Temperament shows only subtly, in posture, voice and the resting rhythm of your ring."
+    ],
+    [
+     "Nightmare-born",
+     "Low",
+     "The unstable, mutant origin. Starts with a mutated room. Temperament and mood visibly reshape the body."
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Character creation: origin, then temperament, then backstory."
+   ]
+  }
+ ]
+}

@@ -1,0 +1,124 @@
+{
+ "name": "Kinds",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Kind",
+    "Includes",
+    "Joy",
+    "Grief",
+    "Courage",
+    "Fear",
+    "Hope",
+    "Despair",
+    "Love",
+    "Hate"
+   ],
+   "rows": [
+    [
+     "Fire",
+     "Flames, torches, hearths, lava",
+     "Crackles, throws sparks, leaps between fuel",
+     "Smoulders low and smoky",
+     "Burns steady and bright, resists dousing",
+     "Flickers and shrinks from wind and from you",
+     "Rises tall, sends embers far",
+     "Sinks and dies",
+     "Surges outward to everything near",
+     "Collapses inward, burning black at one point"
+    ],
+    [
+     "Water",
+     "Rivers, pools, rain, potions",
+     "Springs up, bubbles, splashes",
+     "Grows heavy and slow, pools, soaks in",
+     "Flows as a steady pushing current",
+     "Ripples and recedes",
+     "Rises as mist, lifts its level",
+     "Drains away, sinks into the ground",
+     "Surges over its banks, floods",
+     "Draws into a crushing whirlpool"
+    ],
+    [
+     "Air and weather",
+     "Wind, fog, sky, smoke",
+     "Gusts playfully, bright showers",
+     "Rain, heavy slow clouds",
+     "Steady wind",
+     "Still, oppressive fog and draughts",
+     "Clears; dawn breaks",
+     "Overcast; the air goes dead and dark",
+     "Warms and swells into heat",
+     "Gathers into a storm or vortex"
+    ],
+    [
+     "Growth",
+     "Plants, vines, trees, fungi",
+     "Blossoms, fruits, multiplies",
+     "Droops, grows slowly, weeps sap",
+     "Grows strong and upright, holds against wind",
+     "Curls closed, grows stunted",
+     "Lifts and reaches towards something",
+     "Wilts, drops, goes dormant",
+     "Spreads and twines around what is near",
+     "Grows thorns, constricts, chokes its neighbours"
+    ],
+    [
+     "Solid",
+     "Stone, metal, walls, objects",
+     "Rings and shimmers; chips burst outward",
+     "Grows heavy, sags, sinks",
+     "Hardens and braces",
+     "Trembles, rattles, shifts away",
+     "Lightens, lifts a little",
+     "Crumbles, collapses",
+     "Softens and bonds with what touches it",
+     "Compresses, cracks inward, crushes"
+    ],
+    [
+     "Threshold",
+     "Doors, gates, locks, bridges, paths",
+     "Swings open freely, invites",
+     "Sticks, heavy and slow to move",
+     "Holds fast against force",
+     "Flinches open, or slams shut",
+     "Opens onto somewhere further",
+     "Gives way, falls from its hinges",
+     "Opens to you and your allies, welcomes",
+     "Locks, seals, bars the way"
+    ],
+    [
+     "Light",
+     "Lamps, sunlight, glow, colour",
+     "Sparkles, dazzles",
+     "Dims to a blue haze",
+     "Shines steady, holds back the dark",
+     "Flickers, casts trembling shadows",
+     "Brightens, rises, reveals far things",
+     "Fades; dark falls",
+     "Warms and floods the area",
+     "Narrows to a searing point"
+    ],
+    [
+     "Creature",
+     "Beasts, people, Nightmares",
+     "Elated, quick, playful; may scatter",
+     "Slowed, drained, mourning",
+     "Emboldened, presses forward, steadfast",
+     "Flinches, flees, misses",
+     "Lifted; heals, keeps going",
+     "Gives up, stops acting",
+     "Devoted to you; on enemies, dominated and possessive",
+     "Enraged, lunges, fixes on one target"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Default reactions at tier 1. Every emotion in a composition pushes at once: the strongest gives the primary action, the others act on free degrees of freedom or colour how it is done. Individual things can override a cell with their own reaction."
+   ]
+  }
+ ]
+}

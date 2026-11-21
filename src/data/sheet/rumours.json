@@ -1,0 +1,50 @@
+{
+ "name": "Rumours",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Teller's emotion",
+    "Warps a rumour by"
+   ],
+   "rows": [
+    [
+     "Fear",
+     "Exaggerating the danger"
+    ],
+    [
+     "Love",
+     "Adding treasure and allies"
+    ],
+    [
+     "Hate",
+     "Assigning blame"
+    ],
+    [
+     "Despair",
+     "Predicting doom"
+    ],
+    [
+     "Hope",
+     "Promising rescue"
+    ],
+    [
+     "Joy",
+     "Adding marvels and celebration"
+    ],
+    [
+     "Courage",
+     "Making heroes of those involved"
+    ],
+    [
+     "Grief",
+     "Dwelling on what was lost"
+    ],
+    [
+     "Memory",
+     "Keeping it accurate"
+    ]
+   ]
+  }
+ ]
+}

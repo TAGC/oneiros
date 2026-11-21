@@ -1,0 +1,62 @@
+{
+ "name": "Temenos",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Room",
+    "What it holds or does"
+   ],
+   "rows": [
+    [
+     "Centre",
+     "White: the atrium. The apeiron pool lies beneath an opening in the roof that lets in light, never rain, ringed by gateways to your Reveries, each fed by a euripus (a short floor channel with a bronze sluice: dry, a trickle or running); sealed top-up vessels beside it. The spinning top, your first belief (this is a dream), which makes you Lucid (open: whether it stays here or moves to the library). Calm and Stillness qualities strongest here"
+    ],
+    [
+     "Hallway",
+     "Doors to anchored places, for fast travel"
+    ],
+    [
+     "Wings",
+     "Four, opening off a colonnaded peristyle, one per emotion pair, in colour-wheel order: Courage/Fear (N), Joy/Grief (E), Hope/Despair (S), Love/Hate (W). Upper floor = outward emotion, cellar = inward. Crossing stairs where Hope meets Hate and Despair meets Love. Memories and beliefs sit by their strongest colour; split between neighbours = on the boundary or stairs. Beliefs can shift colour and move between visits; memories keep the colour they were felt in. Each wing has shelves and its own reading room, whose desk holds that wing's Notions"
+    ],
+    [
+     "Library",
+     "On the centre's upper floor: an annular gallery ringing the opening above the apeiron pool, with doors onto the four wings' upper floors (cellars are reached only from below, past the pool). The colourless counterpart of the wings: colourless beliefs and colourless memories (white-flamed oil lamps), with a desk for colourless Notions. Threads, deductions and waking insights; the lexicon of known reactions"
+    ],
+    [
+     "Garden (optional)",
+     "Grows ingredients between rests; a flower marks each memory you have burned"
+    ],
+    [
+     "Guest rooms",
+     "For companions you have helped"
+    ],
+    [
+     "Mirror",
+     "Shows your persona; inside, you appear as your core self"
+    ],
+    [
+     "Exterior and interior",
+     "The exterior is your body; the interior is your mind"
+    ],
+    [
+     "Floor size",
+     "Qualities set each floor's plot (floor space). Rooms and Megara take up plot; loose items and fixtures sit inside them or on the floor's shelves. Every floor always has space for at least one room. Unbuilt plot shows as foundations or courtyard; overflow crowds the stairs. Open: what happens when a plot shrinks below what is built"
+    ],
+    [
+     "Qualities as styling",
+     "Qualities style the whole house (see Quality styles). Per aspect: count from the claiming qualities, look from the room, behaviour from the quality. Influence spreads continuously from the quality's home floor as it deepens; features unlock at quality-specific depths or deeds. Faded deep qualities leave remnants"
+    ],
+    [
+     "Forms",
+     "Memories: oil lamps whose flames burn in their emotion's colour (glowing beads in the outer world); brightness shows vividness, a fading memory gutters, a lost one goes out. Beliefs: a loose leaf on a shelf (Hearsay), pages on a desk while dwelt on (Notion), a codex in a built-in bookcase (Tenet), a room (Creed), a great hall around a sealed shrine holding a codex bound in bronze boards (Dogma); covers dyed by emotion, marbled when mixed. Rooms have no voices"
+    ],
+    [
+     "Scars",
+     "Fresh (the room's ruin: burnt, torn out or collapsed, its colour drained to dun), scarred (scar tissue: mismatched tiles, a door to nowhere), healed (sound again, with a visible trace such as lead clamps). The plot is unusable until healed"
+    ]
+   ]
+  }
+ ]
+}

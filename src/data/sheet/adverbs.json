@@ -1,0 +1,83 @@
+{
+ "name": "Adverbs",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Adverb",
+    "From",
+    "Manner",
+    "Effect on the verb's cost",
+    "Example"
+   ],
+   "rows": [
+    [
+     "Widely",
+     "Joy",
+     "Scatters to several targets",
+     "Raises",
+     "Despair, widely: every torch in the camp gutters"
+    ],
+    [
+     "Steadily",
+     "Courage",
+     "Sustains over several turns",
+     "Raises",
+     "Fear, steadily: the door flinches open and stays open"
+    ],
+    [
+     "Far",
+     "Hope",
+     "Long range; arrives a moment later",
+     "Raises",
+     "Love, far: the surge leaps to a distant hay cart"
+    ],
+    [
+     "Wholly",
+     "Love",
+     "Spreads to everything around the target",
+     "Raises",
+     "Hope, wholly: every vine along the edge reaches across"
+    ],
+    [
+     "Slowly",
+     "Grief",
+     "Gentle start, heavy lingering aftermath",
+     "Trades",
+     "Sleep: Hate, slowly: the wolf's hate drains unnoticed"
+    ],
+    [
+     "Fleetingly",
+     "Fear",
+     "Brief; the caster slips away",
+     "Lowers",
+     "Despair, fleetingly: the torch gutters and you slip into the dark"
+    ],
+    [
+     "Suddenly",
+     "Despair",
+     "All at once, then over",
+     "Lowers",
+     "Fear, suddenly: the door flinches open, then slams and jams"
+    ],
+    [
+     "Deeply",
+     "Hate",
+     "Narrows to one target, harder",
+     "Trades",
+     "Joy, deeply: cancels grief in one door, not the shrine around it"
+    ]
+   ]
+  },
+  {
+   "type": "notes",
+   "items": [
+    "Rules",
+    "Any emotion can be an adverb, including the verb's own; a verb's opposite as adverb cancels into a lucidity dispel.",
+    "Adverbs chain after the separator (Hate Hate · Far Steadily). The chain cap is shared between verb and adverbs.",
+    "Repeating an adverb intensifies it (far, very far, farthest). Opposite adverbs cancel into lucidity. Clashing manners play out in order.",
+    "An adverb costs a little of its own emotion, always a minor part of the composition."
+   ]
+  }
+ ]
+}

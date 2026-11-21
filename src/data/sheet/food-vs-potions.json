@@ -1,0 +1,35 @@
+{
+ "name": "Food vs potions",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Property",
+    "Food",
+    "Potions"
+   ],
+   "rows": [
+    [
+     "Speed",
+     "Slow, lasts a sleep cycle",
+     "Instant, short"
+    ],
+    [
+     "Shape",
+     "Basic effect + trigger/effect",
+     "One strong surge"
+    ],
+    [
+     "Source",
+     "Dreamed ingredients, cooking",
+     "Liquids charged with a feeling, brewed with care at rest"
+    ],
+    [
+     "Risk",
+     "Mild",
+     "Overdose, addiction, saturation"
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,95 @@
+{
+ "name": "Rootedness",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Tier",
+    "Memory",
+    "Belief",
+    "In the Temenos",
+    "Effect",
+    "Destroyed (scar)"
+   ],
+   "rows": [
+    [
+     "Loose",
+     "Impression",
+     "Hearsay",
+     "An object on a shelf: an oil lamp or a loose leaf",
+     "Small, while placed (memory); none (belief)",
+     "No scar"
+    ],
+    [
+     "Fixture",
+     "Recollection",
+     "Tenet",
+     "Built into a room: a hearth, a built-in bookcase",
+     "Steadier; a belief binds and its rule becomes active",
+     "Torn out: marks on the wall"
+    ],
+    [
+     "Room",
+     "Refrain",
+     "Creed",
+     "A room of its own: takes plot and holds loose items and fixtures",
+     "Strong and lasting, plus a waking boon; a memory's mutation is shown in full and may cause flickers",
+     "Burnt out: a ruined room"
+    ],
+    [
+     "Megaron",
+     "Touchstone",
+     "Dogma",
+     "A load-bearing great hall taking several rooms' plot; a memory's roots reach the exterior",
+     "Strongest: a memory may surface as a mutation; a belief's rule becomes permanent",
+     "Collapse: the neighbours sag. Always scars, even when uprooted cleanly; a memory Megaron also marks the body"
+    ]
+   ]
+  },
+  {
+   "type": "table",
+   "header": [
+    "Rule",
+    "Detail"
+   ],
+   "rows": [
+    [
+     "Strength",
+     "Material (how much emotion it holds) and rootedness (Hold for memories, Conviction for beliefs). Rootedness sets the tier, and so the kind and permanence of its effect"
+    ],
+    [
+     "Mood capacity",
+     "Each emotion's mood capacity is that emotion's material summed over every memory and belief you hold (a belief counts only its own material), whatever the tier. It caps how much of that emotion your mood can hold"
+    ],
+    [
+     "Max Coherence",
+     "Material times a tier factor, summed over everything you hold: Loose x0.5, Fixture x1, Room x2, Megaron x3, collapsed x0.5 (factors to tune). Colourless items are Calm material"
+    ],
+    [
+     "Rising and falling",
+     "Rise smoothly, fall hard. Hold that slips below its tier's line cracks the room, a warning that mends if Hold recovers. Too long or too far below, it collapses: it keeps its mood capacity, drops to x0.5 Coherence, loses its boons, still takes plot, carries scar maluses and buries its contents (destroying them is possible). Restore it by raising Hold, or uproot it"
+    ],
+    [
+     "Surfacing",
+     "Memories only. A mutation is hinted as the memory roots and shown in full at Room; the last step to Megaron needs a trigger, usually something traumatic. A warned player can steer clear by not reliving, planting, selling or unmaking it. Its roots break through to the exterior, so your body changes"
+    ],
+    [
+     "Flickers",
+     "At Room, a strong memory can briefly change your form under a strong mood, scaled by stability. Not a mutation. Gear reshapes (low stability), slips off (medium) or binds the change at a cost (high); matching grain welcomes it, opposed grain cancels some into lucidity"
+    ],
+    [
+     "Scars",
+     "Destroying or uprooting anything at Fixture or above leaves a scar: the destroyed form of what was there. A Megaron always scars; below that, only a botched uprooting or a rushed igniting scars. See Scar in the Glossary"
+    ],
+    [
+     "Faint but rooted",
+     "Repeated experiences merge into one memory with little material but high Hold: little mood capacity, but it holds you together if deeply rooted"
+    ],
+    [
+     "Burning",
+     "Loose memories ignite at once. A Fixture is dismantled as it is lit: carefully, it takes time and keeps its Hold; rushed, it risks a scar. Rooms and Megara cannot be burnt. How long you stay Ablaze scales with Hold alone, jumping at each tier line. See Burning, Igniting and Ablaze in the Glossary"
+    ]
+   ]
+  }
+ ]
+}

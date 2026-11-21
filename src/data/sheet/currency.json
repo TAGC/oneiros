@@ -1,0 +1,45 @@
+{
+ "name": "Currency",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Form",
+    "What it is",
+    "Value comes from",
+    "Role",
+    "Notes"
+   ],
+   "rows": [
+    [
+     "Obol",
+     "A small bead holding a city's founding memory, felt Calm",
+     "Absorbing one shores up your Coherence; everything wants to live",
+     "Currency: everyday trade, taxes, wages",
+     "Minted by a Calm, unchanging founding rite; citizens give the memory up at the temple and never remember the rite. Faint (no feeling), so useless for conjuring and worth the same to everyone. Hold from the city's Conviction; wears slowly under Forgetting. Supply limited by population and rite frequency; careless rites lose Conviction, so coins wear faster"
+    ],
+    [
+     "Bead",
+     "A personal memory",
+     "Shape, how well its feeling suits the buyer's mood, Hold left, burn value",
+     "Valuable goods, priced in obols",
+     "Selling one means you can no longer conjure it. Wonder memories are most prized. Can't be forged; worn beads may be passed off as fresh, and Inspect shows their condition"
+    ],
+    [
+     "Stable materials",
+     "Gold, onyx and other kinds whose grain barely shifts",
+     "Usefulness for building, warding and Forgetting-resistant gear",
+     "Goods, priced in obols",
+     "Not money: one measure of value only"
+    ],
+    [
+     "Rule",
+     "Vividness comes from novelty and feeling together: an experience without feeling fades, and so does a feeling you have had many times",
+     "",
+     "",
+     ""
+    ]
+   ]
+  }
+ ]
+}

@@ -1,0 +1,40 @@
+{
+ "name": "Temperaments",
+ "blocks": [
+  {
+   "type": "table",
+   "header": [
+    "Temperament",
+    "Mood Meter quadrant (our mapping)",
+    "Qualities it leans towards (provisional)",
+    "In low-stability bodies"
+   ],
+   "rows": [
+    [
+     "Sanguine",
+     "Pleasant, high energy",
+     "Generosity, shamelessness, malleability, vanity",
+     "Bright, buoyant, a little too vivid"
+    ],
+    [
+     "Choleric",
+     "Unpleasant, high energy",
+     "Defiance, imperiousness, pride, injustice",
+     "Flushed, jagged, restless, flickering at the edges"
+    ],
+    [
+     "Melancholic",
+     "Unpleasant, low energy",
+     "Inflexibility, mercy, despondency, shame",
+     "Drooping, heavy, dimmed, as if seen through rain"
+    ],
+    [
+     "Phlegmatic",
+     "Calm, low energy",
+     "Meekness, humility, temperance, obduracy",
+     "Soft, slow, rounded, blurred"
+    ]
+   ]
+  }
+ ]
+}
