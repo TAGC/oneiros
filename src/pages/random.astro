@@ -1,0 +1,26 @@
+---
+import Wiki from '../layouts/Wiki.astro';
+import { url } from '../lib/site';
+---
+
+<Wiki title="Random page">
+  <h1>Random page</h1>
+  <p class="random-msg">Finding a page…</p>
+  <noscript><p>Random page needs JavaScript. Try the <a href={url('/glossary/')}>Glossary index</a>.</p></noscript>
+</Wiki>
+
+<script>
+  const base = document.body.dataset.base ?? '/';
+  fetch(`${base}previews.json`)
+    .then((r) => r.json() as Promise<Record<string, unknown>>)
+    .then((pages) => {
+      const slugs = Object.keys(pages);
+      if (!slugs.length) throw new Error('No pages');
+      const slug = slugs[Math.floor(Math.random() * slugs.length)];
+      location.replace(`${base}wiki/${slug}/`);
+    })
+    .catch(() => {
+      const msg = document.querySelector('.random-msg');
+      if (msg) msg.textContent = 'No page could be picked. Try the Glossary index instead.';
+    });
+</script>

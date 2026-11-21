@@ -1,0 +1,12 @@
+---
+import { ICON_AREAS } from '../lib/areas';
+import PixelIcon from './PixelIcon.astro';
+
+interface Props {
+  name: string;
+}
+
+const { name } = Astro.props;
+---
+
+<span class="frame">{ICON_AREAS.includes(name) && <PixelIcon name={name} />}</span>

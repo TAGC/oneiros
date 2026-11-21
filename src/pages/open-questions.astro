@@ -1,0 +1,39 @@
+---
+import Wiki from '../layouts/Wiki.astro';
+import { renderMarkdown } from '../lib/markdown';
+import { getPages } from '../lib/pages';
+import { wikiUrl } from '../lib/site';
+import { CALLOUTS } from '../lib/wiki';
+
+const pages = (await getPages()).filter((p) => p.callouts.length);
+const count = pages.reduce((n, p) => n + p.callouts.length, 0);
+---
+
+<Wiki title="Open questions" description="Every open question and conflict across the wiki.">
+  <h1>Open questions</h1>
+  <p class="sub">
+    Every open question and every conflict between the vision and the sheet, page by page:
+    {` ${count} in all.`}
+  </p>
+  {pages.length === 0 && <p>No open questions yet.</p>}
+  {
+    pages.map((p) => (
+      <section>
+        <h2>
+          <a href={wikiUrl(p.slug)} data-t={p.slug}>
+            {p.title}
+          </a>
+        </h2>
+        {p.callouts.map((c) => (
+          <div class={`note note-${c.kind}`}>
+            <p class="note-h">
+              <strong>{CALLOUTS[c.kind].heading}</strong> ·{' '}
+              <a href={wikiUrl(p.slug, c.id)}>on the page</a>
+            </p>
+            <Fragment set:html={renderMarkdown(c.markdown, p.slug)} />
+          </div>
+        ))}
+      </section>
+    ))
+  }
+</Wiki>

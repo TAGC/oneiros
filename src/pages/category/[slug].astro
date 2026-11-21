@@ -1,0 +1,48 @@
+---
+import IconFrame from '../../components/IconFrame.astro';
+import Wiki from '../../layouts/Wiki.astro';
+import { ICON_AREAS } from '../../lib/areas';
+import { getCategories, type Page } from '../../lib/pages';
+import { slugify, wikiUrl } from '../../lib/site';
+
+export async function getStaticPaths() {
+  const categories = await getCategories();
+  return [...categories].map(([name, pages]) => ({
+    params: { slug: slugify(name) },
+    props: { name, pages },
+  }));
+}
+
+interface Props {
+  name: string;
+  pages: Page[];
+}
+
+const { name, pages } = Astro.props;
+---
+
+<Wiki title={`Category: ${name}`} description={`Pages in the ${name} category.`}>
+  <div class="cat-head">
+    {ICON_AREAS.includes(name) && <IconFrame name={name} />}
+    <h1>Category: {name}</h1>
+  </div>
+  <p class="sub">
+    {pages.length === 1 ? '1 page' : `${pages.length} pages`} in this category.
+  </p>
+  {
+    pages.length ? (
+      <ul class="page-list">
+        {pages.map((p) => (
+          <li>
+            <a href={wikiUrl(p.slug)} data-t={p.slug}>
+              {p.title}
+            </a>
+            <span class="s">: {p.entry.data.summary}</span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No pages in this category yet.</p>
+    )
+  }
+</Wiki>

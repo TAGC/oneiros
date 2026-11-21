@@ -1,0 +1,28 @@
+---
+import icons from '../data/icons.json';
+
+interface Props {
+  name: string;
+}
+
+const grid = (icons as Record<string, (string | null)[][]>)[Astro.props.name];
+const runs: { x: number; y: number; w: number; fill: string }[] = [];
+grid?.forEach((row, y) => {
+  row.forEach((fill, x) => {
+    if (!fill) return;
+    const last = runs.at(-1);
+    if (last && last.y === y && last.fill === fill && last.x + last.w === x) last.w += 1;
+    else runs.push({ x, y, w: 1, fill });
+  });
+});
+---
+
+{
+  grid && (
+    <svg viewBox="0 0 24 24" shape-rendering="crispEdges" aria-hidden="true">
+      {runs.map((r) => (
+        <rect x={r.x} y={r.y} width={r.w} height="1" fill={r.fill} />
+      ))}
+    </svg>
+  )
+}
