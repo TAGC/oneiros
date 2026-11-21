@@ -1,0 +1,13 @@
+# Legacy claude.ai exports, kept local until migrated into the wiki
+reference/
+
+# Astro
+node_modules/
+dist/
+.astro/
+
+# OS
+.DS_Store
+
+# Private: project brief for Claude (kept local)
+CLAUDE.md
