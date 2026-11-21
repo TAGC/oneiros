@@ -1,0 +1,46 @@
+---
+import { cellText, getTab, isNumeric } from '../lib/sheet';
+
+interface Props {
+  tab: string;
+  block?: number;
+}
+
+const { tab: slug, block: n = 0 } = Astro.props;
+const block = getTab(slug).blocks[n];
+if (!block) throw new Error(`Sheet tab "${slug}" has no block ${n}`);
+---
+
+{
+  block.type === 'table' ? (
+    <div class="wt-wrap">
+      <table class="wt">
+        <thead>
+          <tr>
+            {block.header.map((h) => (
+              <th scope="col">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {block.rows.map((row) => (
+            <tr>
+              {block.header.map((_, i) => {
+                const text = cellText(row[i]);
+                return <td class={isNumeric(text) ? 'n' : undefined}>{text}</td>;
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  ) : (
+    <div class="note">
+      <ul>
+        {block.items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    </div>
+  )
+}

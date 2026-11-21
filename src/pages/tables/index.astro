@@ -1,0 +1,33 @@
+---
+import Wiki from '../../layouts/Wiki.astro';
+import { url } from '../../lib/site';
+import { isArchive, shortTitle, TABS } from '../../lib/sheet';
+
+const current = TABS.filter((t) => !isArchive(t));
+const archive = TABS.filter(isArchive);
+---
+
+<Wiki title="Sheet tables" description="Every tab of the reference sheet.">
+  <h1>Sheet tables</h1>
+  <p class="sub">Every tab of the reference sheet, as tables.</p>
+  <ul class="page-list">
+    {
+      current.map((t) => (
+        <li>
+          <a href={url(`/tables/${t.slug}/`)}>{shortTitle(t)}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <h2>Archive</h2>
+  <p>Superseded ideas, kept for reference.</p>
+  <ul class="page-list">
+    {
+      archive.map((t) => (
+        <li>
+          <a href={url(`/tables/${t.slug}/`)}>{shortTitle(t)}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Wiki>
