@@ -1,0 +1,33 @@
+---
+import Wiki from '../layouts/Wiki.astro';
+import { url } from '../lib/site';
+---
+
+<Wiki title="Page not written yet">
+  <h1 class="nf-title">Page not written yet</h1>
+  <p class="sub">From the Oneiros Wiki</p>
+  <p class="nf-msg">There is no page at this address yet.</p>
+  <p>
+    Red links point to pages that have not been written. Try the <a href={url('/glossary/')}
+      >Glossary index</a
+    >, the <a href={url('/open-questions/')}>open questions</a> or the <a href={url('/')}
+      >Main page</a
+    >.
+  </p>
+</Wiki>
+
+<script>
+  const base = document.body.dataset.base ?? '/';
+  const match = location.pathname.match(new RegExp(`^${base}wiki/([^/]+)/?$`));
+  if (match) {
+    const words = decodeURIComponent(match[1]).replace(/-/g, ' ');
+    const name = words.charAt(0).toUpperCase() + words.slice(1);
+    const title = document.querySelector('.nf-title');
+    const msg = document.querySelector('.nf-msg');
+    if (title) title.textContent = name;
+    if (msg) {
+      msg.textContent = `The page "${name}" has not been written yet. Its link shows red wherever it appears.`;
+    }
+    document.title = `${name} – Oneiros Wiki`;
+  }
+</script>

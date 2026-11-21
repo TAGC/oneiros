@@ -1,0 +1,79 @@
+---
+import { render } from 'astro:content';
+import Infobox from '../../components/Infobox.astro';
+import Navbox from '../../components/Navbox.astro';
+import SheetTable from '../../components/SheetTable.astro';
+import Wiki from '../../layouts/Wiki.astro';
+import { formatDate, getPages, lastEdited, type Page } from '../../lib/pages';
+import { categoryUrl, historyUrl, sourceUrl, wikiUrl } from '../../lib/site';
+import { backlinks } from '../../lib/wiki';
+
+export async function getStaticPaths() {
+  const pages = await getPages();
+  return pages.map((page) => ({ params: { slug: page.slug }, props: { page } }));
+}
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const { entry } = page;
+const { Content } = await render(entry);
+const linksHere = backlinks(page.slug);
+const edited = lastEdited(page.file);
+const tabs = [
+  { label: 'Article', current: true },
+  { label: 'Source', href: sourceUrl(page.file) },
+  { label: 'History', href: historyUrl(page.file), right: true },
+];
+---
+
+<Wiki title={page.title} description={entry.data.summary} tabs={tabs} article>
+  <div data-pagefind-body>
+    <h1>{page.title}</h1>
+    <p class="sub" data-pagefind-ignore>
+      From the Oneiros Wiki · <a href={categoryUrl(entry.data.area)}>{entry.data.area}</a>
+    </p>
+    {
+      entry.data.infobox && (
+        <Infobox
+          title={page.title}
+          area={entry.data.area}
+          figure={entry.data.infobox.figure}
+          caption={entry.data.infobox.caption}
+          rows={entry.data.infobox.rows}
+        />
+      )
+    }
+    <Content components={{ SheetTable }} />
+  </div>
+  <h2 id="links">What links here</h2>
+  {
+    linksHere.length ? (
+      <ul class="links">
+        {linksHere.map((s) => (
+          <li>
+            <a href={wikiUrl(s.slug)} data-t={s.slug}>
+              {s.title}
+            </a>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>No pages link here yet.</p>
+    )
+  }
+  {entry.data.navbox && <Navbox id={entry.data.navbox} current={page.slug} />}
+  <div class="cats">
+    Categories: {
+      page.categories.map((c, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={categoryUrl(c)}>{c}</a>
+        </>
+      ))
+    }
+  </div>
+  {edited && <p slot="footer">This page was last edited on {formatDate(edited)}.</p>}
+</Wiki>

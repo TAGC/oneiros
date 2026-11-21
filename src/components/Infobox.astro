@@ -1,0 +1,46 @@
+---
+import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import { renderInline } from '../lib/markdown';
+import { categoryUrl } from '../lib/site';
+
+interface Props {
+  title: string;
+  area: string;
+  figure?: string;
+  caption?: string;
+  rows: { label: string; value: string }[];
+}
+
+const { title, area, figure, caption, rows } = Astro.props;
+const figures = import.meta.glob<{ default: AstroComponentFactory }>('./figures/*.astro', {
+  eager: true,
+});
+const Figure = figure ? figures[`./figures/${figure}.astro`]?.default : undefined;
+if (figure && !Figure) throw new Error(`Infobox figure "${figure}" not found in src/components/figures/`);
+---
+
+<aside class="infobox" aria-label={`${title} summary`}>
+  <div class="t" data-pagefind-ignore>{title}</div>
+  {
+    Figure && (
+      <figure>
+        <Figure />
+        {caption && <figcaption>{caption}</figcaption>}
+      </figure>
+    )
+  }
+  <table>
+    <tr data-pagefind-ignore>
+      <th scope="row">Area</th>
+      <td><a href={categoryUrl(area)}>{area}</a></td>
+    </tr>
+    {
+      rows.map((row) => (
+        <tr>
+          <th scope="row">{row.label}</th>
+          <td set:html={renderInline(row.value)} />
+        </tr>
+      ))
+    }
+  </table>
+</aside>

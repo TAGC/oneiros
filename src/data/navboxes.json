@@ -1,0 +1,19 @@
+{
+  "character": {
+    "title": "Character",
+    "groups": [
+      {
+        "label": "Health",
+        "links": ["Coherence", "Coherence status", "Echo", "Going under", "Renown"]
+      },
+      {
+        "label": "Making you",
+        "links": ["Temperament", "Origins", "Backstory", "Qualities of the will"]
+      },
+      {
+        "label": "Capacity",
+        "links": ["Mood capacity", "Belief capacity", "Vessel capacity"]
+      }
+    ]
+  }
+}
