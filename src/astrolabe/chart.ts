@@ -5,7 +5,7 @@
 import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
 import { AREAS } from '../lib/areas';
 import { type Area, isDuplicate, type Question, type QuestionGraph } from '../lib/questions';
-import type { Constellations, Energy, Size } from '../lib/questions/constellations';
+import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
 export type StarStatus = 'frontier' | 'blocked' | 'decided' | 'ruled-out' | 'undermined';
@@ -38,6 +38,8 @@ export interface Star {
   undermines: number[];
   /** The open constellation holding this question, by milestone number. */
   constellation?: number;
+  /** For a settled question, the finished constellation it was settled in. */
+  finishedIn?: number;
 }
 
 /** An open constellation, as the map draws it. */
@@ -85,6 +87,8 @@ export interface StarChart {
   counts: StarCounts;
   /** Open constellations, by milestone number; empty without constellation data. */
   constellations: ChartConstellation[];
+  /** Finished constellations with settled questions on the map, by milestone number. */
+  finished: ChartConstellation[];
   /** Open questions on the map that no open constellation holds, by number. */
   ungrouped: number[];
 }
@@ -160,7 +164,7 @@ export function chartQuestions(
     };
   });
 
-  const groups: ChartConstellation[] = (constellations?.open() ?? []).map((c) => {
+  const toGroup = (c: Constellation): ChartConstellation => {
     const name = inLocale(c.name, locale)!;
     const group: ChartConstellation = {
       number: c.number,
@@ -179,12 +183,24 @@ export function chartQuestions(
     if (c.size) group.size = c.size;
     if (c.energy) group.energy = c.energy;
     return group;
-  });
+  };
+  const groups = (constellations?.open() ?? []).map(toGroup);
   for (const group of groups) {
     for (const n of group.stars) {
       const star = stars.find((s) => s.number === n)!;
       star.constellation = group.number;
     }
+  }
+  // A settled question keeps its finished constellation; a reopened one there is ungrouped.
+  const finished = (constellations?.finished() ?? [])
+    .map(toGroup)
+    .map((group) => ({
+      ...group,
+      stars: group.stars.filter((n) => byNumber.get(n)!.status !== 'open'),
+    }))
+    .filter((group) => group.stars.length);
+  for (const group of finished) {
+    for (const n of group.stars) stars.find((s) => s.number === n)!.finishedIn = group.number;
   }
   const ungrouped = (constellations?.ungrouped() ?? [])
     .map((q) => q.number)
@@ -200,7 +216,7 @@ export function chartQuestions(
     counts[s.status]++;
     if (s.question.status === 'open') counts.open++;
   }
-  return { locale, stars, threads, areas, counts, constellations: groups, ungrouped };
+  return { locale, stars, threads, areas, counts, constellations: groups, finished, ungrouped };
 }
 
 /**

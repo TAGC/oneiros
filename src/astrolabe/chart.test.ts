@@ -1,6 +1,10 @@
 import { describe, expect, test } from 'bun:test';
 import { type Question, questionGraph } from '../lib/questions';
-import type { Constellation, Constellations } from '../lib/questions/constellations';
+import {
+  type Constellation,
+  type Constellations,
+  isFinished,
+} from '../lib/questions/constellations';
 import { chartQuestions, quietSettled } from './chart';
 
 type Fixture = Partial<Question> & { status?: Question['status'] };
@@ -132,13 +136,13 @@ describe('threads', () => {
 
 describe('constellations', () => {
   function sky(questions: Question[], constellations: Constellation[], locale: 'en' | 'zh' = 'en') {
-    const open = constellations.filter((c) => c.state === 'open');
+    const open = constellations.filter((c) => !isFinished(c));
     const grouped = new Set(open.flatMap((c) => c.questions.map((q) => q.number)));
     const fake: Constellations = {
       all: () => constellations,
       open: () => open,
       of: (n) => constellations.find((c) => c.questions.some((q) => q.number === n)),
-      finished: () => [],
+      finished: () => constellations.filter(isFinished),
       toClose: () => [],
       ungrouped: () => questions.filter((q) => q.state === 'open' && !grouped.has(q.number)),
     };
@@ -210,6 +214,30 @@ describe('constellations', () => {
     expect(c.ungrouped).toEqual([2]);
     expect(c.stars.find((s) => s.number === 1)!.constellation).toBe(7);
     expect(c.stars.find((s) => s.number === 2)!.constellation).toBeUndefined();
+  });
+
+  test('keeps settled questions with their finished constellation, and a reopened one ungrouped', () => {
+    const qs = [
+      question(1, { status: 'decided' }),
+      question(2, { status: 'ruled-out' }),
+      question(3),
+      question(4, { status: 'decided' }),
+      question(5),
+    ];
+    const c = sky(qs, [
+      constellation(7, [qs[0], qs[1]], { size: 'small', energy: 'low' }),
+      constellation(8, [qs[2], qs[3]], { state: 'closed' }),
+      constellation(9, [qs[4]]),
+    ]);
+    expect(c.constellations.map((k) => k.number)).toEqual([9]);
+    expect(c.finished.map((k) => [k.number, k.stars])).toEqual([
+      [7, [1, 2]],
+      [8, [4]],
+    ]);
+    const of = (n: number) => c.stars.find((s) => s.number === n)!;
+    expect([of(1).finishedIn, of(4).finishedIn, of(3).finishedIn]).toEqual([7, 8, undefined]);
+    expect(of(3).constellation).toBeUndefined();
+    expect(c.ungrouped).toEqual([3]);
   });
 
   test('has no constellations and no warnings without constellation data', () => {
