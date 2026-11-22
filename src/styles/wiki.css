@@ -1,18 +1,48 @@
-/* Ported from the approved mockup (the Coherence page).
+/* Ported from the approved mockup (the Coherence page), then polished (Direction A).
    VOICE: a game wiki you could lose an evening in; calm, dense, quietly dreamlike.
-   IDEA: an encyclopaedia page kept in the Temenos library: marble page, ink, memory-coloured links. */
+   IDEA: an encyclopaedia page kept in the Temenos library: marble page, ink, memory-coloured links.
+   SIGNATURE: a faint hairline of the eight emotion colours under the night-sky header. */
 :root {
   color-scheme: light dark;
-  --bg: light-dark(#eef0f4, #0f1020);
-  --page: light-dark(#fbfbfd, #17182c);
-  --ink: light-dark(#1b1c2e, #e4e4f0);
-  --mute: light-dark(#5c5e74, #9fa1bb);
-  --line: light-dark(#d5d8e2, #2c2e4a);
-  --soft: light-dark(#f1f2f8, #1e2038);
-  --link: light-dark(#4b45b8, #a9a4ff);
-  --red: light-dark(#c0392b, #ff7b6e);
-  --gold: #e8962e;
-  --head: #2a2c5a;
+  --bg: light-dark(#e9e8f0, #0a0b16);
+  --page: light-dark(#fdfdfe, #15162c);
+  --ink: light-dark(#1d1c30, #e6e5f2);
+  --mute: light-dark(#625f78, #a09eba);
+  --line: light-dark(#dfdde8, #272844);
+  --soft: light-dark(#f4f3f9, #1a1b33);
+  --link: light-dark(#463db0, #aea7ff);
+  --red: light-dark(#b8352a, #ff8578);
+  --open: light-dark(#a8640f, #f0b062);
+  --rule-fade: linear-gradient(90deg, var(--line) 60%, transparent);
+  --radius: 6px;
+  /* Night sky: the header, title bands and the infobox figure. */
+  --head: #1f2048;
+  --head-2: #2b2b5e;
+  --night: radial-gradient(ellipse at 50% 35%, #2c2d60, #151631 75%);
+  --stars:
+    radial-gradient(circle, #ffffff66 0.7px, transparent 1.3px) 11px 7px / 97px 31px,
+    radial-gradient(circle, #ffffff38 0.7px, transparent 1.3px) 53px 19px / 151px 41px,
+    radial-gradient(circle, #d8d2ff30 0.9px, transparent 1.5px) 31px 4px / 67px 53px;
+  /* The eight emotions. */
+  --joy: #e8962e;
+  --grief: #3a78c9;
+  --courage: #d94040;
+  --fear: #5cc4d6;
+  --hope: #c9d44a;
+  --despair: #7a4fb0;
+  --love: #d2508c;
+  --hate: #3a8f5c;
+  --spectrum: linear-gradient(
+    90deg,
+    var(--joy),
+    var(--hope) 14%,
+    var(--hate) 28%,
+    var(--fear) 43%,
+    var(--grief) 57%,
+    var(--despair) 71%,
+    var(--love) 86%,
+    var(--courage)
+  );
 }
 :root[data-theme='light'] {
   color-scheme: light;
@@ -29,14 +59,18 @@ body {
   background: var(--bg);
   color: var(--ink);
   font:
-    16px/1.6 'Source Sans 3',
+    16px/1.65 'Source Sans 3',
     system-ui,
     sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   overflow-x: clip;
 }
 a {
   color: var(--link);
   text-decoration: none;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
 }
 a:hover {
   text-decoration: underline;
@@ -54,6 +88,9 @@ a.en::after {
     sans-serif;
   vertical-align: super;
   color: var(--mute);
+}
+::selection {
+  background: color-mix(in srgb, var(--link) 22%, transparent);
 }
 a:focus-visible,
 button:focus-visible,
@@ -74,14 +111,23 @@ select:focus-visible {
   padding: 6px 12px;
 }
 
-/* Header */
+/* Header: a night sky with the emotion hairline beneath. */
 header.top {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px max(3vw, 16px);
-  background: var(--head);
+  padding: 9px max(3vw, 16px);
+  background: var(--stars), linear-gradient(180deg, var(--head-2), var(--head));
   color: #eef;
+}
+header.top::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--spectrum);
+  opacity: 0.7;
 }
 .logo {
   display: flex;
@@ -89,8 +135,9 @@ header.top {
   gap: 10px;
   color: #fff;
   font:
-    600 22px 'Crimson Pro',
+    600 23px 'Crimson Pro',
     serif;
+  letter-spacing: 0.005em;
 }
 .logo:hover {
   text-decoration: none;
@@ -105,7 +152,8 @@ header.top {
   padding: 0 10px;
   border: 0;
   border-radius: 20px;
-  background: #ffffff1f;
+  background: #ffffff14;
+  box-shadow: inset 0 0 0 1px #ffffff1c;
   color: #fff;
   font:
     600 14px 'Source Sans 3',
@@ -114,7 +162,7 @@ header.top {
   cursor: pointer;
 }
 .hbtn:hover {
-  background: #ffffff33;
+  background: #ffffff26;
 }
 .hbtn svg {
   display: block;
@@ -137,7 +185,7 @@ header.top {
   cursor: not-allowed;
 }
 .lang-btn[aria-disabled='true']:hover {
-  background: #ffffff1f;
+  background: #ffffff14;
 }
 .search {
   position: relative;
@@ -154,14 +202,20 @@ header.top {
     16px 'Source Sans 3',
     system-ui,
     sans-serif;
-  background: #ffffff1f;
+  background: #ffffff14;
+  box-shadow: inset 0 0 0 1px #ffffff1c;
   color: #fff;
+}
+.search input:focus {
+  background: #ffffff22;
+  outline: none;
+  box-shadow: inset 0 0 0 1px #ffffff55;
 }
 .search input::-webkit-search-cancel-button {
   filter: grayscale(1) brightness(3);
 }
 .search input::placeholder {
-  color: #c9cbe6;
+  color: #b8badc;
 }
 .results {
   position: absolute;
@@ -177,7 +231,8 @@ header.top {
   background: var(--page);
   color: var(--ink);
   border: 1px solid var(--line);
-  box-shadow: 0 8px 24px #0003;
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px -8px #0a0a2a55;
   font-size: 14px;
 }
 .results[hidden] {
@@ -223,20 +278,19 @@ header.top {
 .shell {
   display: grid;
   grid-template-columns: 200px minmax(0, 1fr);
-  max-width: 1240px;
+  max-width: 1260px;
   margin: 0 auto;
 }
 nav.side {
-  padding: 24px 16px;
+  padding: 28px 18px 24px 20px;
   font-size: 15px;
 }
 nav.side h2 {
   font:
-    600 13px 'Source Sans 3',
-    system-ui,
-    sans-serif;
+    italic 400 16px/1.2 'Crimson Pro',
+    serif;
   color: var(--mute);
-  margin: 20px 0 6px;
+  margin: 26px 0 6px;
   padding: 0;
   border: 0;
 }
@@ -246,93 +300,125 @@ nav.side ul {
   padding: 0;
 }
 nav.side li {
-  padding: 3px 0;
+  padding: 2px 0;
+}
+nav.side a {
+  color: var(--ink);
+  opacity: 0.88;
+}
+nav.side a:hover {
+  color: var(--link);
+  opacity: 1;
+  text-decoration: none;
 }
 main {
   background: var(--page);
-  border-inline: 1px solid var(--line);
+  box-shadow:
+    0 0 0 1px var(--line),
+    0 18px 50px -30px light-dark(#2a2a6040, #00000080);
   min-height: 100vh;
 }
 .tabs {
   display: flex;
-  gap: 2px;
-  padding: 0 24px;
+  gap: 4px;
+  padding: 0 28px;
   border-bottom: 1px solid var(--line);
   flex-wrap: wrap;
 }
 .tabs a,
 .tabs span {
-  padding: 10px 14px;
-  font-size: 15px;
+  padding: 12px 10px 10px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
   color: var(--mute);
   border-bottom: 2px solid transparent;
 }
+.tabs a:hover {
+  color: var(--ink);
+  text-decoration: none;
+}
 .tabs [aria-current] {
   color: var(--ink);
+  font-weight: 600;
   border-color: var(--link);
 }
 .tabs .right {
   margin-inline-start: auto;
 }
 
-/* Article */
+/* Article: serif headings over rules that fade out to the right. */
 article {
-  padding: 20px clamp(16px, 3vw, 36px) 40px;
+  padding: 28px clamp(16px, 3.4vw, 44px) 48px;
 }
 h1 {
   font:
-    400 clamp(32px, 4vw, 40px)/1.05 'Crimson Pro',
+    400 clamp(34px, 4.4vw, 46px)/1.05 'Crimson Pro',
     serif;
-  margin: 8px 0 4px;
+  letter-spacing: -0.01em;
+  margin: 4px 0 2px;
   text-wrap: balance;
 }
 .sub {
   color: var(--mute);
-  font-size: 14px;
-  margin: 0 0 18px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--line);
+  font:
+    italic 400 16px/1.4 'Crimson Pro',
+    serif;
+  margin: 6px 0 24px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid;
+  border-image: var(--rule-fade) 1;
 }
 h2 {
   font:
-    400 28px/1.15 'Crimson Pro',
+    400 29px/1.15 'Crimson Pro',
     serif;
-  margin: 30px 0 8px;
-  padding-bottom: 4px;
-  border-bottom: 1px solid var(--line);
+  margin: 40px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid;
+  border-image: var(--rule-fade) 1;
 }
 h3 {
   font:
     600 17px 'Source Sans 3',
     system-ui,
     sans-serif;
-  margin: 20px 0 4px;
+  margin: 26px 0 6px;
+}
+p {
+  margin: 0 0 14px;
 }
 p,
 li {
   max-width: 70ch;
 }
+
+/* Infobox: title band, a night window for the figure, quiet rows. */
 .infobox {
   float: right;
-  width: 300px;
-  margin: 0 0 20px 24px;
+  width: 296px;
+  margin: 4px 0 24px 32px;
   border: 1px solid var(--line);
-  background: var(--soft);
-  font-size: 15px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--page);
+  font-size: 14.5px;
+  line-height: 1.5;
+  box-shadow: 0 10px 30px -22px light-dark(#2a2a6066, #000000aa);
 }
 .infobox .t {
-  background: var(--head);
+  background: linear-gradient(180deg, var(--head-2), var(--head));
   color: #fff;
   text-align: center;
   font:
-    600 20px 'Crimson Pro',
+    600 21px 'Crimson Pro',
     serif;
-  padding: 8px;
+  letter-spacing: 0.01em;
+  padding: 9px 12px 8px;
 }
 .infobox figure {
   margin: 0;
-  padding: 12px;
-  border-bottom: 1px solid var(--line);
+  padding: 20px 18px 14px;
+  background: var(--stars), var(--night);
 }
 .infobox svg {
   display: block;
@@ -341,9 +427,10 @@ li {
 }
 .infobox figcaption {
   font-size: 13px;
-  color: var(--mute);
+  line-height: 1.45;
+  color: #c2c1de;
   text-align: center;
-  margin-top: 6px;
+  margin-top: 12px;
 }
 .infobox table {
   width: 100%;
@@ -351,41 +438,58 @@ li {
 }
 .infobox th,
 .infobox td {
-  padding: 7px 10px;
+  padding: 8px 14px;
   vertical-align: top;
   text-align: start;
   border-top: 1px solid var(--line);
 }
 .infobox th {
-  width: 38%;
+  width: 36%;
   font-weight: 600;
+  font-size: 13.5px;
+  color: var(--mute);
+}
+.infobox tr:nth-child(even) > * {
+  background: var(--soft);
 }
 .infobox figure + table tr:first-child > * {
   border-top: 0;
 }
+
+/* Contents: a quiet card, numbers muted. */
 .toc {
   display: inline-block;
   border: 1px solid var(--line);
+  border-radius: var(--radius);
   background: var(--soft);
-  padding: 10px 18px 10px 14px;
-  margin: 6px 0 10px;
+  padding: 12px 24px 14px 18px;
+  margin: 10px 0 14px;
   font-size: 15px;
+  line-height: 1.55;
 }
 .toc button {
   font:
-    600 15px 'Source Sans 3',
-    system-ui,
-    sans-serif;
+    600 17px 'Crimson Pro',
+    serif;
+  letter-spacing: 0.01em;
   background: none;
   border: 0;
   color: var(--ink);
   padding: 0;
   cursor: pointer;
-  min-height: 32px;
+  min-height: 28px;
 }
 .toc ol {
-  margin: 6px 0 0;
-  padding-inline-start: 22px;
+  margin: 4px 0 0;
+  padding-inline-start: 24px;
+}
+.toc li {
+  padding: 1px 0;
+}
+.toc li::marker {
+  color: var(--mute);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.9em;
 }
 .toc li p {
   margin: 0;
@@ -393,58 +497,119 @@ li {
 .toc[data-closed] ol {
   display: none;
 }
+
+/* Tables: horizontal rules only, a firmer head. */
 .wt-wrap {
   max-width: 100%;
   overflow-x: auto;
+  margin: 16px 0 18px;
 }
 table.wt {
   border-collapse: collapse;
-  margin: 10px 0;
+  margin: 0;
   font-size: 15px;
+  line-height: 1.45;
 }
 .wt th,
 .wt td {
-  border: 1px solid var(--line);
-  padding: 6px 12px;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 18px 8px 0;
   text-align: start;
   vertical-align: top;
+}
+.wt :is(th, td):first-child {
+  padding-inline-start: 12px;
+}
+.wt :is(th, td):last-child {
+  padding-inline-end: 12px;
 }
 .wt th {
   background: var(--soft);
   font-weight: 600;
+}
+.wt thead th {
+  background: none;
+  font-size: 13.5px;
+  color: var(--mute);
+  border-bottom: 1.5px solid color-mix(in srgb, var(--ink) 55%, transparent);
+}
+.wt tbody tr:nth-child(even) {
+  background: var(--soft);
+}
+.wt tbody tr:hover {
+  background: color-mix(in srgb, var(--link) 7%, var(--page));
 }
 .wt td.n,
 .wt th.n {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
+
+/* Status words: from whole (gold) to breaking (violet), echoing the figure. */
 .status {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
+  margin: 10px 0 18px;
   list-style: none;
   padding: 0;
 }
 .status li {
+  --c: var(--joy);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   border: 1px solid var(--line);
-  border-radius: 4px;
-  padding: 4px 12px;
-  background: var(--soft);
+  border-radius: 999px;
+  padding: 3px 14px 3px 11px;
+  background: var(--page);
+  font-size: 15px;
 }
+.status li::before {
+  content: '';
+  box-sizing: border-box;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 2px solid var(--c);
+  background: var(--c);
+}
+.status li:nth-child(2)::before {
+  background: none;
+}
+.status li:nth-child(3)::before {
+  --c: light-dark(var(--despair), #9b72d6);
+  background: none;
+  border-style: dotted;
+}
+.status li:nth-child(4)::before {
+  --c: light-dark(var(--despair), #9b72d6);
+}
+
+/* Formula: set in the serif, like a line in a ledger. */
 .formula {
+  font:
+    italic 400 19px/1.4 'Crimson Pro',
+    serif;
+  padding: 12px 18px;
+  margin: 16px 0;
   background: var(--soft);
   border-left: 3px solid var(--link);
-  padding: 10px 14px;
-  font-size: 15px;
-  max-width: 70ch;
+  border-radius: 0 var(--radius) var(--radius) 0;
+  width: fit-content;
+  max-width: 100%;
 }
+
+/* Callouts: Open in the gold of Joy, Conflict in the red of Courage. */
 .note {
-  border: 1px solid var(--line);
-  border-left: 3px solid var(--gold);
-  background: var(--soft);
-  padding: 10px 14px;
+  --c: var(--joy);
+  border-left: 3px solid var(--c);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  background: color-mix(in srgb, var(--c) 8%, var(--page));
+  padding: 10px 16px 11px;
   max-width: 70ch;
   font-size: 15px;
+  line-height: 1.55;
   margin: 12px 0;
 }
 .note > :first-child {
@@ -458,17 +623,32 @@ table.wt {
   padding-inline-start: 18px;
 }
 .note-h {
-  margin: 0 0 2px;
-  font-size: 13px;
-  color: var(--mute);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 0 0 3px;
+  font:
+    italic 600 16px/1.3 'Crimson Pro',
+    serif;
+  letter-spacing: 0.005em;
+  color: var(--open);
+}
+.note-h::before {
+  content: '';
+  flex: none;
+  width: 7px;
+  height: 7px;
+  transform: rotate(45deg);
+  background: currentColor;
 }
 .note-h strong {
   font-weight: 600;
 }
 .note-conflict {
-  border-left-color: var(--red);
+  --c: var(--courage);
+}
+.note-conflict .note-h {
+  color: var(--red);
 }
 .data-note {
   color: var(--mute);
@@ -483,48 +663,74 @@ table.wt {
   font-size: 12px;
   font-weight: 600;
 }
+
+/* Navbox: a serif title band over labelled rows of links. */
 .navbox {
   clear: both;
-  margin-top: 36px;
+  margin-top: 44px;
   border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
   font-size: 14px;
+  line-height: 1.55;
 }
 .navbox .t {
-  background: var(--head);
+  background: linear-gradient(180deg, var(--head-2), var(--head));
   color: #fff;
   text-align: center;
-  font-weight: 600;
-  padding: 5px;
+  font:
+    600 18px/1.2 'Crimson Pro',
+    serif;
+  letter-spacing: 0.01em;
+  padding: 8px 12px 7px;
 }
 .navbox .row {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr);
+  grid-template-columns: 124px minmax(0, 1fr);
   border-top: 1px solid var(--line);
 }
 .navbox b {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  text-align: end;
   background: var(--soft);
-  padding: 6px 10px;
+  font-weight: 600;
+  color: var(--mute);
+  padding: 7px 12px;
 }
 .navbox span {
-  padding: 6px 10px;
+  padding: 7px 14px;
+}
+.navbox span strong {
+  color: var(--ink);
 }
 .cats {
   clear: both;
-  margin-top: 16px;
+  margin-top: 14px;
   border: 1px solid var(--line);
+  border-radius: var(--radius);
   background: var(--soft);
-  padding: 8px 12px;
+  padding: 9px 14px;
+  color: var(--mute);
   font-size: 14px;
 }
 .links {
   font-size: 15px;
-  columns: 2 220px;
+  line-height: 1.7;
+  columns: 3 180px;
+  column-gap: 28px;
+  padding-inline-start: 18px;
+}
+.links li::marker {
+  color: var(--mute);
 }
 .lede {
-  font-size: 17px;
+  font-size: 17.5px;
+  line-height: 1.6;
 }
 footer.foot {
-  padding: 16px 24px;
+  padding: 20px clamp(16px, 3.4vw, 44px) 28px;
   color: var(--mute);
   font-size: 13px;
   border-top: 1px solid var(--line);
@@ -539,7 +745,8 @@ footer.foot p {
   max-width: 320px;
   background: var(--page);
   border: 1px solid var(--line);
-  box-shadow: 0 8px 24px #0003;
+  border-radius: var(--radius);
+  box-shadow: 0 12px 32px -8px #0a0a2a55;
   padding: 10px 12px;
   font-size: 14px;
   display: none;
@@ -619,7 +826,7 @@ footer.foot p {
 .cat-head {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
 }
 .cat-head .frame {
   width: 72px;
@@ -714,8 +921,8 @@ nav.side .area-link .frame {
 .tiles {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-  gap: 20px;
-  margin: 12px 0 8px;
+  gap: 22px 18px;
+  margin: 18px 0 12px;
   padding: 0;
   list-style: none;
 }
@@ -745,32 +952,38 @@ nav.side .area-link .frame {
 }
 .tile .lab {
   font:
-    600 20px 'Crimson Pro',
+    600 21px/1.15 'Crimson Pro',
     serif;
-  margin-top: 10px;
+  margin-top: 12px;
   color: var(--link);
 }
 .tile .desc {
+  margin-top: 2px;
   color: var(--mute);
   font-size: 13px;
 }
 .cards {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 12px;
+  gap: 14px;
   padding: 0;
   list-style: none;
 }
 .cards li {
   border: 1px solid var(--line);
-  background: var(--soft);
-  padding: 10px 14px;
+  border-radius: var(--radius);
+  background: var(--page);
+  padding: 12px 16px 14px;
+  color: var(--mute);
+  font-size: 15px;
+  line-height: 1.5;
 }
 .cards b {
   display: block;
   font:
-    600 18px 'Crimson Pro',
+    600 20px 'Crimson Pro',
     serif;
+  margin-bottom: 3px;
 }
 
 /* Chinese pages. Latin text keeps the Latin fonts; CJK falls through to Noto, loaded on zh
@@ -790,7 +1003,7 @@ body:lang(zh) {
 :lang(zh) :is(p, li, dd, td, th) {
   text-wrap: pretty;
 }
-:lang(zh) :is(.search input, .hbtn, .toc button, .filter button, nav.side h2, h3) {
+:lang(zh) :is(.search input, .hbtn, .toc button, .filter button, h3) {
   font-family: var(--sans);
 }
 :lang(zh) article :is(h1, h2) {
@@ -804,17 +1017,32 @@ body:lang(zh) {
 :lang(zh) article h2 {
   line-height: 1.35;
 }
-:lang(zh) :is(.logo, .infobox .t, .tile .lab, .cards b, .results b, #pop b) {
+:lang(zh) :is(.logo, .infobox .t, .navbox .t, .tile .lab, .cards b, .results b, #pop b) {
   font-family: var(--serif);
 }
 :lang(zh) .infobox .t {
   font-weight: 700;
   font-size: 19px;
 }
+:lang(zh) .navbox .t {
+  font-size: 16px;
+}
+/* The italic serif labels become plain sans in Chinese. */
+:lang(zh) nav.side h2 {
+  font: 600 13px/1.4 var(--sans);
+}
+:lang(zh) .sub {
+  font: 14px/1.75 var(--sans);
+}
 :lang(zh) .note-h {
-  font-size: 14px;
-  text-transform: none;
+  font: 600 14px/1.5 var(--sans);
   letter-spacing: 0;
+}
+:lang(zh) .toc button {
+  font-size: 15px;
+}
+:lang(zh) .formula {
+  font: 16px/1.75 var(--serif);
 }
 /* No italics in Chinese: emphasis takes dots under the characters instead. */
 :lang(zh) :is(em, i) {
@@ -830,9 +1058,7 @@ body:lang(zh) {
 :lang(zh) .navbox b {
   font-weight: 700;
 }
-:lang(zh) .sub,
 :lang(zh) .infobox,
-:lang(zh) .formula,
 :lang(zh) .note {
   line-height: 1.75;
 }
@@ -867,29 +1093,61 @@ body:lang(zh) {
     display: inline-flex;
   }
   main {
-    border: 0;
+    box-shadow: none;
   }
 }
 @media (max-width: 600px) {
   header.top {
     gap: 8px;
   }
+  article {
+    padding-top: 20px;
+  }
+  .cat-head {
+    gap: 14px;
+  }
+  h1 {
+    font-size: 36px;
+  }
+  h2 {
+    font-size: 26px;
+    margin-top: 34px;
+  }
   .infobox {
     float: none;
     width: auto;
-    margin: 0 0 18px;
+    margin: 0 0 22px;
   }
   .logo span,
   .hbtn .lbl {
     display: none;
   }
   .tabs {
-    padding: 0 8px;
+    padding: 0 10px;
   }
   .tabs .right {
     margin: 0;
   }
   .tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  /* Each navbox label becomes a small heading over its links, like the sidebar's group labels. */
+  .navbox .row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .navbox b {
+    justify-content: start;
+    text-align: start;
+    background: none;
+    padding: 8px 12px 0;
+    font:
+      italic 400 15px/1.3 'Crimson Pro',
+      serif;
+  }
+  :lang(zh) .navbox b {
+    font: 600 13px/1.4 var(--sans);
+  }
+  .navbox span {
+    padding: 2px 12px 9px;
   }
 }
