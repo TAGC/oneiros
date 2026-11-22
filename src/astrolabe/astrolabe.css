@@ -583,10 +583,58 @@
 .astrolabe {
   --al-const: light-dark(#3a3660, #d9d5ff);
 }
-.astrolabe[data-constellations='off'] :is(.al-constellations, .al-warn),
-.astrolabe[data-constellations='off'] .al-scale,
-.astrolabe[data-constellations='off'] .al-fit {
+/* Clustered by area (the default, and without JavaScript), the map shows no constellation
+   marks and the time and energy filter hides; clustered by constellation, the tiers swap too. */
+.astrolabe:not([data-cluster='constellations']) :is(.al-warn, .al-scale, .al-fit),
+.astrolabe:not([data-cluster='constellations']) .al-tiers[data-by='constellations'],
+.astrolabe[data-cluster='constellations'] .al-tiers[data-by='areas'] {
   display: none;
+}
+/* What belongs to one clustering fades out as the stars set off, and in as they arrive. */
+.al-constellations,
+.al-cluster-names {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s,
+    visibility 0s 0.3s;
+}
+.astrolabe[data-cluster='constellations'] :is(.al-constellations, .al-cluster-names) {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.5s 0.9s,
+    visibility 0s 0.9s;
+}
+.al-area-names,
+.al-nebulae {
+  transition: opacity 0.5s 0.9s;
+}
+.astrolabe[data-cluster='constellations'] :is(.al-area-names, .al-nebulae) {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.astrolabe.al-instant :is(.al-constellations, .al-cluster-names, .al-area-names, .al-nebulae) {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .astrolabe :is(.al-constellations, .al-cluster-names, .al-area-names, .al-nebulae) {
+    transition: none;
+  }
+}
+.al-cluster-names text {
+  font: italic 600 17px var(--serif, 'Crimson Pro', serif);
+  letter-spacing: 0.04em;
+  fill: var(--mute);
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+:lang(zh) .al-cluster-names text {
+  font-style: normal;
+  font-size: 15px;
+  letter-spacing: 0.2em;
 }
 .al-cline {
   stroke: var(--al-const);
@@ -627,13 +675,13 @@
 .al-card {
   transition: opacity 0.25s;
 }
-.astrolabe[data-constellations='on'] .al-unfit {
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-unfit {
   opacity: 0.15;
 }
-.astrolabe[data-constellations='on'] .al-star.al-unfit {
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-star.al-unfit {
   opacity: 0.3;
 }
-.astrolabe[data-constellations='on'] .al-card.al-unfit {
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-card.al-unfit {
   opacity: 0.45;
 }
 .al-warn-sign {
@@ -656,7 +704,7 @@
 .al-cfilter[hidden] {
   display: none;
 }
-.al-ctoggle,
+.al-cluster button,
 .al-scale button {
   border: 1px solid var(--line);
   background: transparent;
@@ -665,14 +713,27 @@
   font-size: 14px;
   cursor: pointer;
 }
-.al-ctoggle {
+.al-cluster {
+  display: inline-flex;
+  align-items: center;
+}
+.al-cluster[hidden] {
+  display: none;
+}
+.al-cluster button {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 12px;
-  border-radius: var(--radius);
+  padding: 3px 10px;
+  margin-inline-start: -1px;
 }
-.al-ctoggle[aria-pressed='true'],
+.al-cluster button:nth-child(2) {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.al-cluster button:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.al-cluster button[aria-pressed='true'],
 .al-scale button[aria-pressed='true'] {
   background: color-mix(in srgb, var(--al-const) 16%, transparent);
   color: var(--ink);

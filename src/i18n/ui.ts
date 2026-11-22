@@ -171,7 +171,7 @@ Five pillars hold it together:
     name: 'Astrolabe',
     description:
       'Every question on the wiki as a star: what is ready to ask, what waits, and what is settled.',
-    sub: 'Every question on the wiki as a star, clustered by area.',
+    sub: 'Every question on the wiki as a star, clustered by area or by constellation.',
     seeMap: 'See every question as a star map in the Astrolabe.',
     stats: (c: Record<string, number>) =>
       `${c.open} open: ${c.frontier} on the frontier, ${c.blocked} blocked. ${c.decided} decided, ${c['ruled-out']} ruled out, ${c.undermined} undermined.`,
@@ -243,6 +243,9 @@ Five pillars hold it together:
     undermines: 'Undermines',
     onPage: 'See it on its wiki page',
     constellations: 'Constellations',
+    clusterBy: 'Cluster by',
+    clusters: { areas: 'Areas', constellations: 'Constellations' } as Record<string, string>,
+    noConstellation: 'In no constellation',
     constellationsSub:
       'Groups of open questions, each sized to settle in one session. Keep lit the ones that fit the time and energy you have.',
     time: 'Time',
@@ -476,7 +479,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   astrolabe: {
     name: '星盘',
     description: '维基上的每个问题都是一颗星：哪些可以先问，哪些在等待，哪些已经定下。',
-    sub: '维基上的每个问题都是一颗星，按领域聚集。',
+    sub: '维基上的每个问题都是一颗星，按领域或星座聚集。',
     seeMap: '在星盘中把所有问题看作一幅星图。',
     stats: (c) =>
       `${c.open} 个待定：${c.frontier} 个前沿，${c.blocked} 个受阻。${c.decided} 个已定，${c['ruled-out']} 个不采纳，${c.undermined} 个前提动摇。`,
@@ -547,6 +550,9 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     undermines: '它动摇的',
     onPage: '在维基页面上查看',
     constellations: '星座',
+    clusterBy: '聚集方式',
+    clusters: { areas: '领域', constellations: '星座' },
+    noConstellation: '不在任何星座中',
     constellationsSub:
       '一组组待定问题，每组的大小都适合一次定夺。只点亮符合你现有时间和精力的星座。',
     time: '时间',

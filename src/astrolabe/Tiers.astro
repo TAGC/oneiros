@@ -1,10 +1,13 @@
 ---
-/** The tiers view: columns by how far a question is from being ready, rows by area. */
+/**
+ * The tiers view: columns by how far a question is from being ready, rows by area or by
+ * constellation. The page draws one of each; the choice of clustering shows one.
+ */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import type { StarChart } from './chart';
 import Glyph from './Glyph.astro';
 import type { TiersLayout } from './tiers';
-import { areaKey, areaTint } from './tints';
+import { areaTint } from './tints';
 
 interface Props {
   chart: StarChart;
@@ -17,15 +20,26 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
-const counts = new Map(
-  chart.areas.map((g) => [
-    areaKey(g.area),
-    {
-      open: g.stars.filter((n) => byNumber.get(n)!.question.status === 'open').length,
-      all: g.stars.length,
-    },
-  ]),
-);
+const rowStars = (row: TiersLayout['rows'][number]) =>
+  layout.stars.filter((s) => {
+    const star = byNumber.get(s.number)!;
+    return layout.by === 'areas'
+      ? star.question.area === row.area
+      : star.constellation === row.constellation;
+  });
+const countOf = (row: TiersLayout['rows'][number]) => {
+  const stars = rowStars(row);
+  return {
+    open: stars.filter((s) => byNumber.get(s.number)!.question.status === 'open').length,
+    all: stars.length,
+  };
+};
+const rowTint = (row: TiersLayout['rows'][number]) =>
+  layout.by === 'areas'
+    ? areaTint(row.area)
+    : row.constellation === undefined
+      ? 'var(--mute)'
+      : 'var(--al-const)';
 const LINE = 18;
 const ungrouped = new Set(chart.ungrouped);
 ---
@@ -37,6 +51,7 @@ const ungrouped = new Set(chart.ungrouped);
   height={layout.height}
   role="group"
   aria-label={a.views.tiers}
+  data-by={layout.by}
   data-frontier-x={layout.columns.find((c) => c.tier === 1)!.x}
 >
   <g class="al-columns" aria-hidden="true">
@@ -63,7 +78,10 @@ const ungrouped = new Set(chart.ungrouped);
   <g class="al-rows" aria-hidden="true">
     {
       layout.rows.map((row) => {
-        const count = counts.get(areaKey(row.area))!;
+        const count = countOf(row);
+        const lines = row.name?.lines ?? [
+          layout.by === 'areas' ? areaName(row.area) : a.noConstellation,
+        ];
         return (
           <>
             <line class="al-row-line" x1="0" x2={layout.width} y1={row.y} y2={row.y} />
@@ -73,12 +91,19 @@ const ungrouped = new Set(chart.ungrouped);
               y={row.y + 12}
               width="3"
               height={Math.max(12, row.height - 24)}
-              style={`--tint:${areaTint(row.area)}`}
+              style={`--tint:${rowTint(row)}`}
             />
-            <text class="al-row-name" x="14" y={row.y + 26}>
-              {areaName(row.area)}
+            <text
+              class="al-row-name"
+              lang={row.name ? HTML_LANG[row.name.lang] : undefined}
+            >
+              {lines.map((line, i) => (
+                <tspan x="14" y={row.y + 26 + i * LINE}>
+                  {line}
+                </tspan>
+              ))}
             </text>
-            <text class="al-row-count" x="14" y={row.y + 44}>
+            <text class="al-row-count" x="14" y={row.y + 26 + lines.length * LINE}>
               {a.areaOpen(count.open, count.all)}
             </text>
           </>

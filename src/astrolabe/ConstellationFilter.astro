@@ -1,7 +1,8 @@
 ---
 /**
- * The constellations switch and the time and energy filter. A constellation fits when its
- * size and energy are the ones chosen; one without a size or energy fits only "Any".
+ * The choice of clustering (by area or by constellation) and the time and energy filter.
+ * A constellation fits when its size and energy are the ones chosen; one without a size or
+ * energy fits only "Any".
  */
 import { type Locale, useTranslations } from '../i18n/ui';
 import { ENERGIES, SIZES } from '../lib/questions/constellations';
@@ -22,16 +23,28 @@ const scales = [
 ---
 
 <div class="al-cfilter" hidden data-total={chart.constellations.length}>
-  <button type="button" class="al-ctoggle" aria-pressed="true">
-    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
-      <path d="M2 12l4-7 4 4 4-7" fill="none" stroke="currentColor" stroke-width="1.4" />
-      <circle cx="2" cy="12" r="1.6" fill="currentColor" />
-      <circle cx="6" cy="5" r="1.6" fill="currentColor" />
-      <circle cx="10" cy="9" r="1.6" fill="currentColor" />
-      <circle cx="14" cy="2" r="1.6" fill="currentColor" />
-    </svg>
-    {a.constellations}
-  </button>
+  <div class="al-cluster" role="group" aria-label={a.clusterBy}>
+    <span class="al-scale-name">{a.clusterBy}</span>
+    <button type="button" data-cluster="areas" aria-pressed="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="4.5" cy="5" r="3.2" fill="currentColor" opacity="0.35" />
+        <circle cx="11" cy="10.5" r="3.6" fill="currentColor" opacity="0.35" />
+        <circle cx="4.5" cy="5" r="1.2" fill="currentColor" />
+        <circle cx="11" cy="10.5" r="1.2" fill="currentColor" />
+      </svg>
+      {a.clusters.areas}
+    </button>
+    <button type="button" data-cluster="constellations" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 12l4-7 4 4 4-7" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <circle cx="2" cy="12" r="1.6" fill="currentColor" />
+        <circle cx="6" cy="5" r="1.6" fill="currentColor" />
+        <circle cx="10" cy="9" r="1.6" fill="currentColor" />
+        <circle cx="14" cy="2" r="1.6" fill="currentColor" />
+      </svg>
+      {a.clusters.constellations}
+    </button>
+  </div>
   {
     chart.constellations.length > 0 &&
       scales.map((scale) => (

@@ -1,27 +1,46 @@
 ---
-/** The night sky view: the build-time layout drawn as one static SVG. */
+/**
+ * The night sky view: the build-time layout drawn as one static SVG, clustered by area. The
+ * layout clustered by constellation rides along as data, for the client to fly the stars to.
+ */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
 import type { StarChart } from './chart';
 import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
+import type { SkyMotionData } from './motion';
 import type { SkyLayout } from './sky';
 import { areaKey, areaTint } from './tints';
 
 interface Props {
   chart: StarChart;
   layout: SkyLayout;
+  /** The same sky clustered by constellation, when there are constellations. */
+  byConstellation?: SkyLayout | undefined;
   locale: Locale;
 }
 
-const { chart, layout, locale } = Astro.props;
+const { chart, layout, byConstellation, locale } = Astro.props;
 const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
 const ungrouped = new Set(chart.ungrouped);
-const placedAt = new Map(layout.stars.map((s) => [s.number, s]));
 const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
+/* Constellation lines, rings and names show only when clustered by constellation. */
+const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
+const motion = (l: SkyLayout) =>
+  Object.fromEntries(
+    l.stars.map((s) => [
+      s.number,
+      [s.x, s.y, s.r, s.label.x, Number((s.label.y + s.label.size - 1).toFixed(1)), s.label.anchor],
+    ]),
+  );
+const motionData: SkyMotionData | undefined = byConstellation && {
+  lineHeight: layout.stars[0]?.label.lineHeight ?? 15,
+  areas: motion(layout),
+  constellations: motion(byConstellation),
+};
 ---
 
 <svg
@@ -58,43 +77,76 @@ const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
           class={`al-thread al-thread-${thread.kind}`}
           data-from={thread.from}
           data-to={thread.to}
+          data-kind={thread.kind}
           d={thread.d}
           marker-end={`url(#al-arrow-${thread.kind})`}
         />
       ))
     }
   </g>
-  <g class="al-constellations" aria-hidden="true">
-    {
-      layout.constellations.map((placed) => {
-        const c = groupOf.get(placed.number)!;
-        return (
-          <g
-            class="al-cgroup"
-            data-c={c.number}
-            data-size={c.size}
-            data-energy={c.energy}
-          >
-            {placed.segments.map(([from, to]) => {
-              const p = placedAt.get(from)!;
-              const q = placedAt.get(to)!;
-              return <line class="al-cline" x1={p.x} y1={p.y} x2={q.x} y2={q.y} />;
-            })}
-            {c.stars.map((n) => {
-              const p = placedAt.get(n)!;
-              return <circle class="al-cring" cx={p.x} cy={p.y} r={p.r + 6} />;
-            })}
-            <text class="al-cname" x={placed.label.x} y={placed.label.y + 15} text-anchor="middle" lang={HTML_LANG[c.nameLang]}>
-              {c.name}
-            </text>
-            <text class="al-cmeta" x={placed.label.x} y={placed.label.y + 31} text-anchor="middle">
-              {constellationFacts(c, t)}
-            </text>
-          </g>
-        );
-      })
-    }
-  </g>
+  {
+    byConstellation && (
+      <g class="al-cluster-names" aria-hidden="true">
+        {byConstellation.clusters.map(
+          (cluster) =>
+            cluster.label && (
+              <text x={cluster.label.x} y={cluster.label.y} text-anchor="middle">
+                {a.noConstellation}
+              </text>
+            ),
+        )}
+      </g>
+    )
+  }
+  {
+    byConstellation && (
+      <g class="al-constellations" aria-hidden="true">
+        {byConstellation.constellations.map((placed) => {
+          const c = groupOf.get(placed.number)!;
+          return (
+            <g class="al-cgroup" data-c={c.number} data-size={c.size} data-energy={c.energy}>
+              {placed.segments.map(([from, to]) => {
+                const p = linedAt.get(from)!;
+                const q = linedAt.get(to)!;
+                return (
+                  <line
+                    class="al-cline"
+                    data-a={from}
+                    data-b={to}
+                    x1={p.x}
+                    y1={p.y}
+                    x2={q.x}
+                    y2={q.y}
+                  />
+                );
+              })}
+              {c.stars.map((n) => {
+                const p = linedAt.get(n)!;
+                return <circle class="al-cring" data-n={n} cx={p.x} cy={p.y} r={p.r + 6} />;
+              })}
+              <text
+                class="al-cname"
+                x={placed.label.x}
+                y={placed.label.y + 15}
+                text-anchor="middle"
+                lang={HTML_LANG[c.nameLang]}
+              >
+                {c.name}
+              </text>
+              <text
+                class="al-cmeta"
+                x={placed.label.x}
+                y={placed.label.y + 31}
+                text-anchor="middle"
+              >
+                {constellationFacts(c, t)}
+              </text>
+            </g>
+          );
+        })}
+      </g>
+    )
+  }
   <g class="al-stars">
     {
       layout.stars.map((placed) => {
@@ -146,3 +198,13 @@ const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
     }
   </g>
 </svg>
+{
+  motionData && (
+    <script
+      is:inline
+      type="application/json"
+      class="al-sky-motion"
+      set:html={JSON.stringify(motionData)}
+    />
+  )
+}

@@ -18,9 +18,9 @@
 .astrolabe:not([data-view='brass']) :is(.al-view-brass, .al-hint[data-for='brass'], .al-dialkey) {
   display: none;
 }
-/* The dial shows every constellation, so the constellations switch has nothing to do here,
+/* The dial shows every constellation, so the choice of clustering has nothing to do here,
    and the time and energy filter always shows. */
-.astrolabe[data-view='brass'] .al-ctoggle {
+.astrolabe[data-view='brass'] .al-cluster {
   display: none;
 }
 .astrolabe.astrolabe[data-view='brass'] .al-scale {

@@ -21,7 +21,7 @@ import Legend from './Legend.astro';
 import Panels from './Panels.astro';
 import SharedDefs from './SharedDefs.astro';
 import Sky from './Sky.astro';
-import { layoutSky } from './sky';
+import { layoutSkies } from './sky';
 import Tiers from './Tiers.astro';
 import { layoutTiers } from './tiers';
 
@@ -36,17 +36,15 @@ const a = t.astrolabe;
 const all = getQuestions();
 const questions = all.all();
 const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
-const sky = chart.stars.length ? layoutSky(chart) : undefined;
+const skies = chart.stars.length ? layoutSkies(chart) : undefined;
+const sky = skies?.areas;
 const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
+const tiersByConstellation = skies?.constellations && layoutTiers(chart, 'constellations');
 const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
 ---
 
 <Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">
-  <div
-    class="astrolabe"
-    data-view="sky"
-    data-constellations={chart.constellations.length ? 'on' : 'off'}
-  >
+  <div class="astrolabe" data-view="sky" data-cluster="areas">
     <h1>{a.name}</h1>
     <p class="sub">{a.sub}</p>
     {
@@ -83,7 +81,12 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
           <div class="al-frame">
             <SharedDefs />
             <div class="al-view al-view-sky">
-              <Sky chart={chart} layout={sky} locale={locale} />
+              <Sky
+                chart={chart}
+                layout={sky}
+                byConstellation={skies?.constellations}
+                locale={locale}
+              />
               <div class="al-zoom" hidden>
                 <button type="button" data-zoom="in" aria-label={a.zoomIn} title={a.zoomIn}>
                   <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
@@ -110,6 +113,9 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
             </div>
             <div class="al-view al-view-tiers">
               <Tiers chart={chart} layout={tiers} locale={locale} />
+              {tiersByConstellation && (
+                <Tiers chart={chart} layout={tiersByConstellation} locale={locale} />
+              )}
             </div>
             {dial && (
               <div class="al-view al-view-brass">
