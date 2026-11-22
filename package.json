@@ -14,6 +14,7 @@
     "astro": "astro",
     "lint": "oxlint",
     "format": "oxfmt",
+    "icons": "bun scripts/icons.ts",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",
     "verify": "bun run build && bun run lint && bun run format:check && bun run check"
@@ -43,6 +44,7 @@
     "oxfmt": "^0.79.0",
     "oxlint": "^1.94.0",
     "pagefind": "^1.6.0",
+    "sharp": "0.35.5",
     "typescript": "^6"
   }
 }
