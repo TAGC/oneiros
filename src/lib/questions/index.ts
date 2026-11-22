@@ -242,6 +242,11 @@ export function writeQuestionCache(dir: string, issues: PulledIssue[]): void {
   }
 }
 
+/** One pulled issue as a question model, read as the cache would hold it. */
+export function questionFrom(issue: PulledIssue): Question {
+  return toQuestion(cacheFile(issue));
+}
+
 /** An issue reference in a property row: `#12` or an issue link. */
 export const ISSUE_REF = /(?:#|\/issues\/)(\d+)/g;
 
