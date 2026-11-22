@@ -1135,6 +1135,15 @@ body:lang(zh) {
   .tiles {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
+  /* The results span the header, not the narrow search box. */
+  .search {
+    position: static;
+  }
+  .results {
+    top: 100%;
+    inset-inline: 16px;
+    width: auto;
+  }
   /* Each navbox label becomes a small heading over its links, like the sidebar's group labels. */
   .navbox .row {
     grid-template-columns: minmax(0, 1fr);
