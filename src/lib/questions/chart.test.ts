@@ -264,6 +264,16 @@ describe('plan errors', () => {
     ]);
   });
 
+  test('a name split at an unquoted comma', () => {
+    const split = {
+      ...planned(),
+      name: { en: 'Crack', 'dun and the Dark malus': null, zh: '开裂' },
+    } as unknown as PlannedConstellation;
+    expect(errors([issue(142), issue(145)], [], [split])).toEqual([
+      '"Crack": unknown name key "dun and the Dark malus"; quote text that holds a comma',
+    ]);
+  });
+
   test('a number that is not an open constellation', () => {
     const milestones = [
       milestone(3, { state: 'closed' }),

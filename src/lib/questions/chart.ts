@@ -194,6 +194,13 @@ function constellationErrors(
   if (en.startsWith(CONSTELLATION_MARK.trim())) {
     report(`write the ${LANGUAGE[DEFAULT_LOCALE]} name without the ✦ mark`);
   }
+  for (const field of ['name', 'reasoning'] as const) {
+    for (const key of Object.keys(c[field] ?? {})) {
+      if (!(LOCALES as readonly string[]).includes(key)) {
+        report(`unknown ${field} key "${key}"; quote text that holds a comma`);
+      }
+    }
+  }
   for (const locale of LOCALES) {
     if (!c.name?.[locale]?.trim()) report(`no ${LANGUAGE[locale]} name`);
   }

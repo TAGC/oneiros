@@ -24,7 +24,9 @@ Start from the current chart: `bun run constellations plan > <scratchpad>/conste
 ```yaml
 constellations:
   - number: 3
-    name: { en: Fading memories, zh: 褪色的记忆 }
+    name:
+      en: Fading memories
+      zh: 褪色的记忆
     size: small
     energy: low
     reasoning:
