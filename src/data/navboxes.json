@@ -1,9 +1,11 @@
 {
   "beliefs": {
     "title": "Beliefs",
+    "titleZh": "信念",
     "groups": [
       {
         "label": "Belief",
+        "labelZh": "信念",
         "links": [
           "Belief",
           "Belief stages",
@@ -12,6 +14,7 @@
       },
       {
         "label": "Soaking up feeling",
+        "labelZh": "吸纳情感",
         "links": [
           "Dwelling",
           "Belief capacity",
@@ -21,6 +24,7 @@
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Rootedness ladder",
           "Strength",
@@ -33,9 +37,11 @@
   },
   "body": {
     "title": "Body",
+    "titleZh": "身体与形态",
     "groups": [
       {
         "label": "Form",
+        "labelZh": "形态",
         "links": [
           "Body and form",
           "Stability",
@@ -45,12 +51,14 @@
       },
       {
         "label": "Equipment",
+        "labelZh": "装备",
         "links": [
           "Core and persona"
         ]
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Mutation",
           "Origin"
@@ -60,6 +68,7 @@
   },
   "character": {
     "title": "Character",
+    "titleZh": "角色",
     "groups": [
       {
         "label": "Who you are",
@@ -104,9 +113,11 @@
   },
   "dreams": {
     "title": "Dreams",
+    "titleZh": "你的梦",
     "groups": [
       {
         "label": "Journal",
+        "labelZh": "日记",
         "links": [
           "Dream journal",
           "Reverie"
@@ -114,6 +125,7 @@
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Gateway",
           "Euripus",
@@ -125,9 +137,11 @@
   },
   "economy": {
     "title": "Economy",
+    "titleZh": "经济",
     "groups": [
       {
         "label": "Money and goods",
+        "labelZh": "货币与货物",
         "links": [
           "Economy",
           "Obol"
@@ -135,6 +149,7 @@
       },
       {
         "label": "Apeiron",
+        "labelZh": "无定",
         "links": [
           "Apeiron",
           "Kyathos"
@@ -142,6 +157,7 @@
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Bead",
           "Vessel",
@@ -153,9 +169,11 @@
   },
   "emotion": {
     "title": "Emotion",
+    "titleZh": "情感",
     "groups": [
       {
         "label": "States",
+        "labelZh": "状态",
         "links": [
           "Calm",
           "Stillness"
@@ -163,6 +181,7 @@
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Emotion",
           "Wonder",
@@ -173,9 +192,11 @@
   },
   "items": {
     "title": "Items",
+    "titleZh": "物品",
     "groups": [
       {
         "label": "Containers",
+        "labelZh": "容器",
         "links": [
           "Vessel",
           "Vessel capacity"
@@ -183,12 +204,14 @@
       },
       {
         "label": "Objects",
+        "labelZh": "物件",
         "links": [
           "Keepsake"
         ]
       },
       {
         "label": "Making",
+        "labelZh": "制作",
         "links": [
           "Crafting",
           "Potions"
@@ -198,9 +221,11 @@
   },
   "library": {
     "title": "Library",
+    "titleZh": "藏书室",
     "groups": [
       {
         "label": "In the library",
+        "labelZh": "藏书室中",
         "links": [
           "Deduction",
           "Insight",
@@ -209,6 +234,7 @@
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Library",
           "Belief",
@@ -219,15 +245,18 @@
   },
   "lore": {
     "title": "Lore",
+    "titleZh": "典故",
     "groups": [
       {
         "label": "Names",
+        "labelZh": "名称",
         "links": [
           "Greek names"
         ]
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "The Dreamlands",
           "Inner world",
@@ -239,9 +268,11 @@
   },
   "lucidity": {
     "title": "Lucidity",
+    "titleZh": "清明",
     "groups": [
       {
         "label": "Lucidity",
+        "labelZh": "清明",
         "links": [
           "Lucidity",
           "Attention"
@@ -249,12 +280,14 @@
       },
       {
         "label": "Wonder",
+        "labelZh": "惊奇",
         "links": [
           "Wonder"
         ]
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Held and manifest",
           "Marvel",
@@ -265,9 +298,11 @@
   },
   "magic": {
     "title": "Magic",
+    "titleZh": "魔法",
     "groups": [
       {
         "label": "Overview",
+        "labelZh": "概览",
         "links": [
           "Magic",
           "Casting"
@@ -275,6 +310,7 @@
       },
       {
         "label": "Sources",
+        "labelZh": "三种来源",
         "links": [
           "Raw magic",
           "Memory magic",
@@ -283,6 +319,7 @@
       },
       {
         "label": "Building a spell",
+        "labelZh": "组成法术",
         "links": [
           "Emotion",
           "Composition",
@@ -293,6 +330,7 @@
       },
       {
         "label": "Targets",
+        "labelZh": "目标",
         "links": [
           "Kind",
           "Grain",
@@ -302,6 +340,7 @@
       },
       {
         "label": "Mood",
+        "labelZh": "心境",
         "links": [
           "Mood",
           "Ring",
@@ -312,6 +351,7 @@
       },
       {
         "label": "Feeling in the world",
+        "labelZh": "世间的情感",
         "links": [
           "Held and manifest",
           "Conjuration",
@@ -321,6 +361,7 @@
       },
       {
         "label": "History",
+        "labelZh": "沿革",
         "links": [
           "Archived ideas"
         ]
@@ -329,9 +370,11 @@
   },
   "memory": {
     "title": "Memory",
+    "titleZh": "记忆",
     "groups": [
       {
         "label": "Memories",
+        "labelZh": "记忆",
         "links": [
           "Memory",
           "Vividness",
@@ -342,6 +385,7 @@
       },
       {
         "label": "Beads and light",
+        "labelZh": "珠子与光",
         "links": [
           "Bead",
           "Dun",
@@ -352,6 +396,7 @@
       },
       {
         "label": "Using memories",
+        "labelZh": "运用记忆",
         "links": [
           "Resonance",
           "Burning",
@@ -361,6 +406,7 @@
       },
       {
         "label": "Rooting",
+        "labelZh": "扎根",
         "links": [
           "Rootedness ladder",
           "Memory tiers",
@@ -369,6 +415,7 @@
       },
       {
         "label": "Giving and taking",
+        "labelZh": "给予与夺取",
         "links": [
           "Planting",
           "Beacon",
@@ -383,15 +430,18 @@
   },
   "philosophy": {
     "title": "Philosophy",
+    "titleZh": "哲学",
     "groups": [
       {
         "label": "Ideas",
+        "labelZh": "思想",
         "links": [
           "Will in motion"
         ]
       },
       {
         "label": "See also",
+        "labelZh": "另见",
         "links": [
           "Force",
           "Stimulus",
@@ -405,9 +455,11 @@
   },
   "rest": {
     "title": "Rest",
+    "titleZh": "休息",
     "groups": [
       {
         "label": "Rest",
+        "labelZh": "休息",
         "links": [
           "Rest",
           "Hypnagogia",
@@ -416,6 +468,7 @@
       },
       {
         "label": "On waking",
+        "labelZh": "醒来时",
         "links": [
           "Waking boon",
           "Waking summary"
@@ -425,9 +478,11 @@
   },
   "temenos": {
     "title": "Temenos",
+    "titleZh": "圣域",
     "groups": [
       {
         "label": "The house",
+        "labelZh": "宅邸",
         "links": [
           "Temenos",
           "Library",
@@ -436,6 +491,7 @@
       },
       {
         "label": "The centre",
+        "labelZh": "中央大厅",
         "links": [
           "Apeiron pool",
           "Gateway",
@@ -445,6 +501,7 @@
       },
       {
         "label": "Rooms",
+        "labelZh": "房间",
         "links": [
           "Megaron",
           "Cracking and collapse",
@@ -456,9 +513,11 @@
   },
   "world": {
     "title": "World",
+    "titleZh": "世界",
     "groups": [
       {
         "label": "Overview",
+        "labelZh": "概览",
         "links": [
           "Oneiros",
           "The Dreamlands",
@@ -468,6 +527,7 @@
       },
       {
         "label": "Places",
+        "labelZh": "地点",
         "links": [
           "Shard",
           "Seam",
@@ -479,6 +539,7 @@
       },
       {
         "label": "Time",
+        "labelZh": "时间",
         "links": [
           "Sleep cycle",
           "Deep",
@@ -487,6 +548,7 @@
       },
       {
         "label": "Force and memory",
+        "labelZh": "力与记忆",
         "links": [
           "Force",
           "Conservation of force",
@@ -498,6 +560,7 @@
       },
       {
         "label": "People and lore",
+        "labelZh": "人与典故",
         "links": [
           "Rumour",
           "Oceanus"
@@ -505,6 +568,7 @@
       },
       {
         "label": "About the game",
+        "labelZh": "关于游戏",
         "links": [
           "Art direction",
           "Generation",
