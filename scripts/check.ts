@@ -10,7 +10,7 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
-import type { Locale } from '../src/i18n/ui';
+import { LOCALES } from '../src/i18n/ui';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
 import type { MarkedPage, Problem } from '../src/lib/questions/problems';
 import type { CalloutKind } from '../src/lib/wiki';
@@ -159,7 +159,7 @@ function sourcesLinkingTo(url: string): string[] {
       if (!list.includes(where)) list.push(where);
       linkIndex!.set(key, list);
     };
-    for (const locale of ['en', 'zh'] as Locale[]) {
+    for (const locale of LOCALES) {
       for (const file of files(WIKI_DIRS[locale], isPage)) {
         const slug = file.replace(/^.*\/|\.mdx?$/g, '');
         read(file)
@@ -315,7 +315,7 @@ function blockquotes(raw: string): Pick<MarkedPage, 'markers' | 'callouts'> {
 
 /** Every page in both locales with its markers, for the question checks. */
 function markedPages(): MarkedPage[] {
-  return (['en', 'zh'] as const).flatMap((locale) =>
+  return LOCALES.flatMap((locale) =>
     files(WIKI_DIRS[locale], isPage).map((file) => {
       const raw = read(file);
       return {
@@ -338,7 +338,7 @@ function markedPages(): MarkedPage[] {
 function checkStatus(): Problem[] {
   const problems: Problem[] = [];
   const english = new Map<string, unknown>();
-  for (const locale of ['en', 'zh'] as const) {
+  for (const locale of LOCALES) {
     for (const file of files(WIKI_DIRS[locale], isPage)) {
       const raw = read(file);
       const { status } = frontmatter(raw).data;
