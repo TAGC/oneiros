@@ -2,6 +2,7 @@
 title: 接缝
 kind: term
 area: World
+status: Tenet
 summary: 碎片之间被铭记较少的土地，遗忘在那里占据上风，清明在那里闪烁。
 infobox:
   rows:

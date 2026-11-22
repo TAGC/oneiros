@@ -2,6 +2,7 @@
 title: Deep
 kind: term
 area: World
+status: Tenet
 summary: The middle phase of the sleep cycle, still and heavy, when the deep layers come closer.
 aliases:
   - the Deep

@@ -2,6 +2,7 @@
 title: 他人的心灵
 kind: system
 area: Memory
+status: Notion
 summary: 进入另一个角色的圣域，帮助对方处理一段令其困扰的记忆，或者神不知鬼不觉地拿走、留下记忆与信念。
 infobox:
   rows:

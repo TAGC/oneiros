@@ -2,6 +2,7 @@
 title: 清醒者
 kind: term
 area: Character
+status: Notion
 summary: 你，一个知道世界是一场梦的人，也是你那份世界中唯一的清醒者。
 infobox:
   rows:

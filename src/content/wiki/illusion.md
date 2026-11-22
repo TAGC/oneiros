@@ -2,6 +2,7 @@
 title: Illusion
 kind: term
 area: Magic
+status: Tenet
 summary: A flimsy conjuration from a faint memory, fading by the next sleep cycle and broken by lucidity.
 aliases:
   - Illusions

@@ -2,6 +2,7 @@
 title: Dream journal
 kind: system
 area: Dreams
+status: Notion
 summary: Where you record your real dreams, which you can offer to the Dreamer to become Reveries in the world.
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 身世
 kind: term
 area: Character
+status: Notion
 summary: 系统生成的起始记忆，珍贵而有限，在角色创建的第三步选定。
 infobox:
   rows:

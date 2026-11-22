@@ -2,6 +2,7 @@
 title: Echo
 kind: term
 area: Character
+status: Notion
 summary: What you return as at zero Coherence, weaker but keeping your library and what you knew.
 aliases:
   - Echoes

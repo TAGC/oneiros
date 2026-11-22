@@ -2,6 +2,7 @@
 title: Memory light
 kind: term
 area: Memory
+status: Tenet
 summary: Light every memory constantly sheds in its emotions' colour, its material running down.
 aliases:
   - obol light

@@ -2,6 +2,7 @@
 title: 记忆之光
 kind: term
 area: Memory
+status: Tenet
 summary: 每段记忆以其情感的颜色不断散发的光，即它的材料在逐渐耗散。
 aliases:
   - 奥波勒斯之光

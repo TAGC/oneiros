@@ -2,6 +2,7 @@
 title: 力度
 kind: term
 area: Memory
+status: Tenet
 summary: 一段记忆或一条信念的整体强弱：它有多少材料，以及扎根多深。
 infobox:
   rows:

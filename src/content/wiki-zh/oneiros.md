@@ -2,6 +2,7 @@
 title: Oneiros
 kind: system
 area: World
+status: Notion
 summary: 一本可以变成游戏、并与他人分享的梦境日记，一款以梦境之地为舞台的系统驱动角色扮演游戏。
 infobox:
   rows:

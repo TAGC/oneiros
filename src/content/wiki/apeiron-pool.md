@@ -2,6 +2,7 @@
 title: Apeiron pool
 kind: term
 area: Temenos
+status: Tenet
 summary: The pool at the Temenos centre that holds your apeiron, beneath an opening in the roof.
 aliases:
   - Temenos pool

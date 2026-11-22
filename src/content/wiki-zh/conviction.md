@@ -2,6 +2,7 @@
 title: 信念度
 kind: term
 area: Beliefs
+status: Tenet
 summary: 一条信念扎根有多深，是它的力度中决定其阶段的那一半。
 infobox:
   rows:

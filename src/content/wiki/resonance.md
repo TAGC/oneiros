@@ -2,6 +2,7 @@
 title: Resonance
 kind: term
 area: Memory
+status: Tenet
 summary: How a bead projects its memory in conjuration, when material fed in the memory's own ratio resonates with the material inside.
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Unmaking
 kind: term
 area: Magic
+status: Notion
 summary: The provisional source of magic that unmakes, dissolving form and paid in your own Coherence.
 aliases:
   - unmake

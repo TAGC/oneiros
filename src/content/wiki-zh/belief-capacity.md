@@ -2,6 +2,7 @@
 title: 信念容量
 kind: term
 area: Beliefs
+status: Notion
 summary: 一条信念通过沉思最多能吸纳的材料，由它的依据决定。
 infobox:
   rows:

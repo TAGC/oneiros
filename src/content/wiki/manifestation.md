@@ -2,6 +2,7 @@
 title: Manifestation
 kind: term
 area: World
+status: Tenet
 summary: Anything held in a will's inner world becoming expressed in the Dreamlands, where it is manifest.
 navbox: world
 ---

@@ -2,6 +2,7 @@
 title: Hypnopompia
 kind: term
 area: Rest
+status: Tenet
 summary: The last explorable phase of a long rest, as you wake and see what changed in your Temenos.
 infobox:
   rows:

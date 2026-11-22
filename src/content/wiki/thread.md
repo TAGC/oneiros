@@ -2,6 +2,7 @@
 title: Thread
 kind: term
 area: Library
+status: Notion
 summary: A quest hanging off a rumour or other belief, kept in the library.
 aliases:
   - Threads

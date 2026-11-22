@@ -2,6 +2,7 @@
 title: 种下
 kind: term
 area: Memory
+status: Notion
 summary: 把一段记忆交给一个地方，那个地方吸纳珠子并持有这段记忆，其凝聚度随之上升。
 infobox:
   rows:

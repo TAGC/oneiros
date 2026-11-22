@@ -2,6 +2,7 @@
 title: 余情
 kind: term
 area: World
+status: Tenet
 summary: 没有意志持有的情感，即形式溶解时释放的力，悬留在发生之处。
 infobox:
   rows:

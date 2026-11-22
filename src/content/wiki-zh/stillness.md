@@ -2,6 +2,7 @@
 title: 静止
 kind: term
 area: Emotion
+status: Tenet
 summary: 意志感到自己不动，它的力完好无损、仍在运动，但它的运动不再被感受到。
 infobox:
   rows:

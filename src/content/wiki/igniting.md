@@ -2,6 +2,7 @@
 title: Igniting
 kind: term
 area: Memory
+status: Tenet
 summary: Starting to burn a memory; a Fixture must be dismantled in the same act.
 aliases:
   - ignite

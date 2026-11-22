@@ -2,6 +2,7 @@
 title: 扮相
 kind: term
 area: Memory
+status: Notion
 summary: 在目标的内在世界中戴上的、对方记忆中某个人的样貌，同时让你的心境与对方对那个人的感受相符。
 infobox:
   rows:

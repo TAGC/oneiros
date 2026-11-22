@@ -2,6 +2,7 @@
 title: 水渠
 kind: term
 area: Temenos
+status: Tenet
 summary: 从无定之池通往一道传送门的短水道，它的水闸让无定流向一个遐梦。
 infobox:
   rows:

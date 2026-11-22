@@ -2,6 +2,7 @@
 title: Eidolon
 kind: term
 area: Body
+status: Notion
 summary: The brief form of a memory's latent mutation, shown while you are Ablaze with it.
 aliases:
   - Eidola

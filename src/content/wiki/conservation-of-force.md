@@ -2,6 +2,7 @@
 title: Conservation of force
 kind: term
 area: World
+status: Tenet
 summary: The named law that force is never created and is lost only when opposed manifest feeling annihilates.
 navbox: world
 ---

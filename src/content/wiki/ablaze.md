@@ -2,6 +2,7 @@
 title: Ablaze
 kind: term
 area: Memory
+status: Tenet
 summary: The state while a memory burns, shown as an orb coloured by its emotions whose rim shows the time left.
 infobox:
   rows:

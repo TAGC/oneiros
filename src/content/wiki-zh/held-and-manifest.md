@@ -2,6 +2,7 @@
 title: 内蕴与外显
 kind: term
 area: Magic
+status: Tenet
 summary: 情感所在之处：在意志之内，相反者共存；或在外部世界中，相反者湮灭。
 aliases:
   - 内蕴

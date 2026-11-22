@@ -2,6 +2,7 @@
 title: 休息
 kind: term
 area: Rest
+status: Tenet
 summary: 造访并打理你的圣域，以恢复凝聚度、治愈伤口，并把经历化为记忆。
 aliases:
   - 长休

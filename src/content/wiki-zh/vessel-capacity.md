@@ -2,6 +2,7 @@
 title: 容器容量
 kind: term
 area: Items
+status: Notion
 summary: 一个容器能装多少库阿托斯。
 infobox:
   rows:

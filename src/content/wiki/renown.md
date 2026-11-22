@@ -2,6 +2,7 @@
 title: Renown
 kind: term
 area: Character
+status: Tenet
 summary: How well the world remembers someone or something; it adds to their maximum Coherence.
 infobox:
   rows:

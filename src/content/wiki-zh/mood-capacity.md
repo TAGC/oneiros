@@ -2,6 +2,7 @@
 title: 心境容量
 kind: term
 area: Character
+status: Tenet
 summary: 你的心境能朝一种情感捏到多远，即这种情感在你所持有的一切中的材料总和。
 infobox:
   rows:

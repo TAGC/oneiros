@@ -2,6 +2,7 @@
 title: 线索
 kind: term
 area: Library
+status: Notion
 summary: 挂在一条谣言或其他信念上的任务，保存在藏书室中。
 infobox:
   rows:

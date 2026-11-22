@@ -2,6 +2,7 @@
 title: Inspect
 kind: term
 area: Magic
+status: Tenet
 summary: Examining a scene, a memory or a feature to see what it feels and how it behaves.
 infobox:
   rows:

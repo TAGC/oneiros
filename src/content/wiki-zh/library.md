@@ -2,6 +2,7 @@
 title: 藏书室
 kind: term
 area: Temenos
+status: Notion
 summary: 圣域中央大厅楼上的环形回廊，收藏无色的信念与记忆，以及你的线索。
 infobox:
   rows:

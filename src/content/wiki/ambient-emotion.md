@@ -2,6 +2,7 @@
 title: Ambient emotion
 kind: term
 area: World
+status: Tenet
 summary: Feeling no will holds, the force freed when a form dissolves, hanging where it happened.
 infobox:
   rows:

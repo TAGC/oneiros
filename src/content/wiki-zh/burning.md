@@ -2,6 +2,7 @@
 title: 燃烧
 kind: term
 area: Memory
+status: Tenet
 summary: 燃烧一段记忆，会把它的材料直接倒入你的心境，代价是它所提供的心境容量，并使你处于燃烧中状态。
 infobox:
   rows:

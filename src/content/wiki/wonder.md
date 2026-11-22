@@ -2,6 +2,7 @@
 title: Wonder
 kind: term
 area: Lucidity
+status: Notion
 summary: Being Calm near a marvel, which brings on Stillness and sometimes leaves a wonder memory.
 aliases:
   - wonder memory

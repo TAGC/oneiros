@@ -2,6 +2,7 @@
 title: Cosmology
 kind: system
 area: World
+status: Tenet
 summary: How the Dreamer's one dream fractured into shards and seams, and why the world's force runs down.
 navbox: world
 ---

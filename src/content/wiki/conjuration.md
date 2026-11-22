@@ -2,6 +2,7 @@
 title: Conjuration
 kind: term
 area: Magic
+status: Notion
 summary: What you make by feeding a bead emotions from your mood, in the Dreamlands only.
 aliases:
   - Conjurations

@@ -2,6 +2,7 @@
 title: Anchored place
 kind: term
 area: World
+status: Tenet
 summary: A place you can fast-travel to from your Temenos, through its door in the hallway.
 aliases:
   - Anchored places

@@ -2,6 +2,7 @@
 title: 梦境之地
 kind: term
 area: World
+status: Tenet
 summary: 做梦者的梦，所有玩家共居的唯一共享世界，每人各有一份副本。
 aliases:
   - 共同世界

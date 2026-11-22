@@ -2,6 +2,7 @@
 title: 底色
 kind: term
 area: Magic
+status: Notion
 summary: 一件事物在主要感受之下怀有的感受；抵消它会释放清明。
 infobox:
   rows:

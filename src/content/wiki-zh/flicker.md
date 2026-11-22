@@ -2,6 +2,7 @@
 title: 闪变
 kind: term
 area: Body
+status: Notion
 summary: 在强烈的心境下、当一段记忆处于独室层级时发生的短暂形态变化，它不是变异。
 infobox:
   rows:

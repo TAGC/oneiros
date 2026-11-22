@@ -2,6 +2,7 @@
 title: 记忆层级
 kind: term
 area: Memory
+status: Tenet
 summary: 记忆在扎根阶梯每个层级上的名称，从印象到试金石。
 aliases:
   - 印象

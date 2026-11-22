@@ -2,6 +2,7 @@
 title: Generation
 kind: system
 area: World
+status: Tenet
 summary: How an LLM fills gaps in the world, always within the engine's rules, once the Dreamer has dreamt the world and its history.
 infobox:
   rows:

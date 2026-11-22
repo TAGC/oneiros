@@ -2,6 +2,7 @@
 title: 爆发
 kind: term
 area: Magic
+status: Tenet
 summary: 当你不再处于燃烧中状态时，超出心境容量的材料从你的身体逸出。
 infobox:
   rows:

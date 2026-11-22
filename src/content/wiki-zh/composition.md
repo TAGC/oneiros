@@ -2,6 +2,7 @@
 title: 构成
 kind: term
 area: Magic
+status: Notion
 summary: 一个法术、一段记忆或一件事物中的情感组合。
 infobox:
   rows:

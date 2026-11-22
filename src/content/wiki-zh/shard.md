@@ -2,6 +2,7 @@
 title: 碎片
 kind: term
 area: World
+status: Tenet
 summary: 做梦者原初意志的任何片段；单独使用时，指世界中一个广大而稳定的区域。
 infobox:
   rows:

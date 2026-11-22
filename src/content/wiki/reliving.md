@@ -2,6 +2,7 @@
 title: Reliving
 kind: term
 area: Memory
+status: Tenet
 summary: Drawing a memory from a bead back into your mind, which pinches your mood towards its emotions.
 aliases:
   - relive

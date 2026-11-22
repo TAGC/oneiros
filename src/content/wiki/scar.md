@@ -2,6 +2,7 @@
 title: Scar
 kind: term
 area: Temenos
+status: Tenet
 summary: The wound left in the house when something rooted at Fixture or above is destroyed or badly uprooted.
 aliases:
   - Scars

@@ -2,6 +2,7 @@
 title: Chain
 kind: term
 area: Magic
+status: Notion
 summary: The run of emotions built on the wheel, where repeats are intensity, up to a shared cap.
 aliases:
   - chain cap

@@ -2,6 +2,7 @@
 title: 鲜明度
 kind: term
 area: Memory
+status: Tenet
 summary: 一段记忆的材料总量，即它的细节与感受，来自新奇与感受的结合。
 infobox:
   rows:

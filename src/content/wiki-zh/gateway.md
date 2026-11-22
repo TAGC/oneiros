@@ -2,6 +2,7 @@
 title: 传送门
 kind: term
 area: Temenos
+status: Tenet
 summary: 圣域中央大厅里一道独立矗立的大理石传送门，通往你的一个遐梦。
 infobox:
   rows:

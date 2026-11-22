@@ -2,6 +2,7 @@
 title: Motive
 kind: term
 area: Magic
+status: Tenet
 summary: A change in the shape of a will's mood through what it knows.
 aliases:
   - Motives

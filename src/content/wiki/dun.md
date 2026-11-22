@@ -2,6 +2,7 @@
 title: Dun
 kind: term
 area: Memory
+status: Tenet
 summary: An empty bead, its memory relived, lost in transfer, or never put in.
 infobox:
   rows:

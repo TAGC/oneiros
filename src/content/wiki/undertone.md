@@ -2,6 +2,7 @@
 title: Undertone
 kind: term
 area: Magic
+status: Notion
 summary: A feeling a thing holds beneath its main feeling; cancelling it releases lucidity.
 aliases:
   - Undertones

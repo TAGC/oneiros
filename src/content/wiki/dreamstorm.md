@@ -2,6 +2,7 @@
 title: Dreamstorm
 kind: term
 area: World
+status: Notion
 summary: A rare, violent event in the Vivid that reshapes whole places.
 aliases:
   - Dreamstorms

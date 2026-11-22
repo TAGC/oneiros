@@ -2,6 +2,7 @@
 title: Gateway
 kind: term
 area: Temenos
+status: Tenet
 summary: A free-standing marble gateway at the Temenos centre leading to one of your Reveries.
 aliases:
   - Gateways

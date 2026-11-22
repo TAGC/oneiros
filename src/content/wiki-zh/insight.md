@@ -2,6 +2,7 @@
 title: 灵感
 kind: term
 area: Library
+status: Notion
 summary: 休息之后，你醒来时有时会带着的一个领悟。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Seam
 kind: term
 area: World
+status: Tenet
 summary: Less Remembered land between shards, where Forgetting has the upper hand and lucidity shimmers.
 aliases:
   - Seams

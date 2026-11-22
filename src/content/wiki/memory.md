@@ -2,6 +2,7 @@
 title: Memory
 kind: term
 area: Memory
+status: Tenet
 summary: A generated item, a snapshot of an experience with an emotional composition that never changes.
 aliases:
   - Memories

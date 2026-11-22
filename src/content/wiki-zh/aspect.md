@@ -2,6 +2,7 @@
 title: 面向
 kind: term
 area: World
+status: Tenet
 summary: 一件事物可以变化的一个方面，例如门的锁或火的高度，由它的心境驱动。
 infobox:
   rows:

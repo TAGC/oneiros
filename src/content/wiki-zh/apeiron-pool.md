@@ -2,6 +2,7 @@
 title: 无定之池
 kind: term
 area: Temenos
+status: Tenet
 summary: 圣域中央大厅里盛放你的无定的水池，位于屋顶的一个开口下方。
 infobox:
   rows:

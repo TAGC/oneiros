@@ -2,6 +2,7 @@
 title: Surfacing
 kind: term
 area: Memory
+status: Tenet
 summary: The last step of a memory's rooting, when its roots break through to the exterior and it becomes a mutation.
 aliases:
   - surface

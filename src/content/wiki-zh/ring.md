@@ -2,6 +2,7 @@
 title: 光环
 kind: term
 area: Magic
+status: Tenet
 summary: 每个角色和事物脚下的圆，显示它的心境的形状。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Dwelling
 kind: term
 area: Beliefs
+status: Tenet
 summary: Turning a belief over in your mind, so that it soaks up feeling from your mood like a sponge.
 aliases:
   - dwell

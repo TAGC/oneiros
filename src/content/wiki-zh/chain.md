@@ -2,6 +2,7 @@
 title: 串
 kind: term
 area: Magic
+status: Notion
 summary: 在转盘上搭建的一串情感，重复的次数就是强度，最多到一个共用的上限。
 aliases:
   - 串长上限

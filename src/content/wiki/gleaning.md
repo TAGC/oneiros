@@ -2,6 +2,7 @@
 title: Gleaning
 kind: term
 area: Memory
+status: Notion
 summary: Taking a memory out of a place, the opposite of planting.
 aliases:
   - glean

@@ -2,6 +2,7 @@
 title: Vessel capacity
 kind: term
 area: Items
+status: Notion
 summary: How many kyathoi a vessel holds.
 infobox:
   rows:

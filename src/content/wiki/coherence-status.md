@@ -2,6 +2,7 @@
 title: Coherence status
 kind: term
 area: Character
+status: Notion
 summary: The four words that show your Coherence at a glance, Anchored, Drifting, Fraying and Unravelling.
 aliases:
   - Anchored

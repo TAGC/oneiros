@@ -2,6 +2,7 @@
 title: 声名
 kind: term
 area: Character
+status: Tenet
 summary: 世界对某人或某物记得有多深；它会加到其凝聚度上限中。
 infobox:
   rows:

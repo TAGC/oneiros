@@ -2,6 +2,7 @@
 title: Body and form
 kind: system
 area: Body
+status: Tenet
 summary: How your body, a will in motion, changes with feeling and harm, and how gear sits on it.
 infobox:
   rows:

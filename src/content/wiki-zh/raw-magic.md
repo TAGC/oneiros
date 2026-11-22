@@ -2,6 +2,7 @@
 title: 原始魔法
 kind: term
 area: Magic
+status: Tenet
 summary: 使事物移动的魔法来源，改变已有事物的心境，以你的心境支付。
 infobox:
   rows:

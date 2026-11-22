@@ -2,6 +2,7 @@
 title: Grounds
 kind: term
 area: Beliefs
+status: Tenet
 summary: What a belief rests on, memories and other beliefs, which set its weight and what it soaks up.
 infobox:
   rows:

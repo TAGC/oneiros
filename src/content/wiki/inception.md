@@ -2,6 +2,7 @@
 title: Inception
 kind: term
 area: Memory
+status: Notion
 summary: Putting a memory or belief into someone's mind, the opposite of extraction.
 aliases:
   - incept

@@ -2,6 +2,7 @@
 title: 幻象
 kind: term
 area: Magic
+status: Tenet
 summary: 来自微弱记忆的脆弱召唤物，最迟在下一个睡眠周期消褪，会被清明打破。
 infobox:
   rows:

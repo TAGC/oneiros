@@ -2,6 +2,7 @@
 title: 无定
 kind: term
 area: Economy
+status: Tenet
 summary: 梦的无形之质，通过订阅提供，用来支付大语言模型的内容生成，只买新鲜感，永远不买实力。
 infobox:
   rows:

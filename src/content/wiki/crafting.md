@@ -2,6 +2,7 @@
 title: Crafting
 kind: system
 area: Items
+status: Notion
 summary: Wide, not tall, built on one shared effects grammar and a power budget that keeps generated content balanced.
 infobox:
   rows:

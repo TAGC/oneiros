@@ -2,6 +2,7 @@
 title: 凝聚度状态
 kind: term
 area: Character
+status: Notion
 summary: 让你一眼看出凝聚度的四个词：稳固、漂浮、绽线和瓦解。
 aliases:
   - 稳固

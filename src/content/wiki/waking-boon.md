@@ -2,6 +2,7 @@
 title: Waking boon
 kind: term
 area: Rest
+status: Notion
 summary: A benefit granted each rest by a tended room.
 aliases:
   - Waking boons

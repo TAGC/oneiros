@@ -2,6 +2,7 @@
 title: 正殿
 kind: term
 area: Temenos
+status: Tenet
 summary: 扎根阶梯的最高层级，圣域中一座承重的大厅。
 infobox:
   rows:

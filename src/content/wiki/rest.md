@@ -2,6 +2,7 @@
 title: Rest
 kind: term
 area: Rest
+status: Tenet
 summary: Visiting and tending your Temenos, which restores Coherence, mends wounds and turns experiences into memories.
 aliases:
   - Long rest

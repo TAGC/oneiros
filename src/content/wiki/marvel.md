@@ -2,6 +2,7 @@
 title: Marvel
 kind: term
 area: World
+status: Notion
 summary: A place or thing near which Calm can become Wonder.
 aliases:
   - Marvels

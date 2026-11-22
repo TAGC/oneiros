@@ -2,6 +2,7 @@
 title: Coherence
 kind: term
 area: Character
+status: Tenet
 summary: Health, how well a will keeps its own motion instead of breaking into simpler ones.
 categories:
   - Tracked values

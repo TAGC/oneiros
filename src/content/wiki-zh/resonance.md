@@ -2,6 +2,7 @@
 title: 共鸣
 kind: term
 area: Memory
+status: Tenet
 summary: 珠子在召唤中投射其记忆的方式：按记忆自身比例喂入的材料，与珠子内的材料产生共鸣。
 infobox:
   rows:

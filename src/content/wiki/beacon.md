@@ -2,6 +2,7 @@
 title: Beacon
 kind: term
 area: Memory
+status: Notion
 summary: A memory planted while lost in the deep, which pulls you back up if you hold out while it draws Attention.
 aliases:
   - Beacons

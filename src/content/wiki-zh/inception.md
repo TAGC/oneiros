@@ -2,6 +2,7 @@
 title: 植入
 kind: term
 area: Memory
+status: Notion
 summary: 把一段记忆或一条信念放进某人的心灵，与拾忆正好相反。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Planting
 kind: term
 area: Memory
+status: Notion
 summary: Giving a memory to a place, which takes the bead in and holds the memory, so its Coherence rises.
 aliases:
   - plant

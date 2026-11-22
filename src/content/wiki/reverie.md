@@ -2,6 +2,7 @@
 title: Reverie
 kind: term
 area: Dreams
+status: Notion
 summary: A place made from a dream journal entry offered to the Dreamer, grown around the entry as its unchangeable core.
 aliases:
   - Reveries

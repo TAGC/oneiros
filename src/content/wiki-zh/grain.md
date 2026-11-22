@@ -2,6 +2,7 @@
 title: 本性
 kind: term
 area: Magic
+status: Notion
 summary: 一件事物静息时的情感，即它的心境最终回归的形状。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Keepsake
 kind: term
 area: Items
+status: Tenet
 summary: A sentimental heirloom that acts like a relic once you know its story.
 aliases:
   - Keepsakes

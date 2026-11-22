@@ -2,6 +2,7 @@
 title: Oceanus
 kind: term
 area: World
+status: Tenet
 summary: The world-river that carries apeiron.
 navbox: world
 ---

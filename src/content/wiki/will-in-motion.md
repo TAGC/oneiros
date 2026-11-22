@@ -2,6 +2,7 @@
 title: Will in motion
 kind: term
 area: Philosophy
+status: Tenet
 summary: After Mainländer, everything in the Dreamlands is a will in motion, and feelings are how that motion is felt from inside.
 infobox:
   rows:

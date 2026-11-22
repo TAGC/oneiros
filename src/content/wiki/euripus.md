@@ -2,6 +2,7 @@
 title: Euripus
 kind: term
 area: Temenos
+status: Tenet
 summary: A short water channel from the apeiron pool to a gateway, whose sluice lets apeiron run to a Reverie.
 aliases:
   - Euripi

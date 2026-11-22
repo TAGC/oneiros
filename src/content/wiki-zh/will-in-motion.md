@@ -2,6 +2,7 @@
 title: 运动中的意志
 kind: term
 area: Philosophy
+status: Tenet
 summary: 依据美因兰德，梦境之地中的一切都是运动中的意志，而感受就是从内部感到的这种运动。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 容量
 kind: term
 area: Character
+status: Tenet
 summary: 某样东西最多能容纳的量，总是带限定词：心境容量、信念容量或容器容量。
 navbox: character
 ---

@@ -2,6 +2,7 @@
 title: 浮现
 kind: term
 area: Memory
+status: Tenet
 summary: 记忆扎根的最后一步，它的根须穿透到外部，成为变异。
 infobox:
   rows:

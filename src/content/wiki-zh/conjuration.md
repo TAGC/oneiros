@@ -2,6 +2,7 @@
 title: 召唤物
 kind: term
 area: Magic
+status: Notion
 summary: 你用心境中的情感喂养一颗珠子所造出的东西，只在梦境之地中可行。
 aliases:
   - 召唤

@@ -2,6 +2,7 @@
 title: Conviction
 kind: term
 area: Beliefs
+status: Tenet
 summary: How rooted a belief is, the half of its strength that sets its stage.
 infobox:
   rows:

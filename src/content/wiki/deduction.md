@@ -2,6 +2,7 @@
 title: Deduction
 kind: term
 area: Library
+status: Notion
 summary: A finding made by placing beliefs side by side in the library; it becomes a new belief.
 aliases:
   - Deductions

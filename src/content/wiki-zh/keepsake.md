@@ -2,6 +2,7 @@
 title: 信物
 kind: term
 area: Items
+status: Tenet
 summary: 一件寄托情感的传家之物，一旦你知道它的故事，它就能像圣物一样发挥作用。
 infobox:
   rows:

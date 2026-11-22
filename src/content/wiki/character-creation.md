@@ -2,6 +2,7 @@
 title: Character creation
 kind: system
 area: Character
+status: Notion
 summary: How you make your Lucid, choosing an origin, then a temperament, then a backstory.
 infobox:
   rows:

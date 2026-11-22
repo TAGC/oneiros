@@ -2,6 +2,7 @@
 title: Megaron
 kind: term
 area: Temenos
+status: Tenet
 summary: The top tier of the rootedness ladder, a load-bearing great hall in the Temenos.
 aliases:
   - Megara

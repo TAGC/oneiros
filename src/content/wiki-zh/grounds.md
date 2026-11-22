@@ -2,6 +2,7 @@
 title: 依据
 kind: term
 area: Beliefs
+status: Tenet
 summary: 一条信念所建立其上的东西，即记忆和其他信念，它们决定它的分量和它吸纳什么。
 infobox:
   rows:

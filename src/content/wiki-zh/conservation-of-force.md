@@ -2,6 +2,7 @@
 title: 力守恒
 kind: term
 area: World
+status: Tenet
 summary: 一条明确命名的定律：力从不被创造，只在相反的外显情感相互湮灭时才会损失。
 navbox: world
 ---

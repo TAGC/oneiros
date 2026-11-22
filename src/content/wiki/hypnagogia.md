@@ -2,6 +2,7 @@
 title: Hypnagogia
 kind: term
 area: Rest
+status: Tenet
 summary: The first explorable phase of a long rest, as you fall asleep and explore your Temenos.
 infobox:
   rows:

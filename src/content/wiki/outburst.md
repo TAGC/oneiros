@@ -2,6 +2,7 @@
 title: Outburst
 kind: term
 area: Magic
+status: Tenet
 summary: Material above your mood capacity escaping through your body when you stop being Ablaze.
 aliases:
   - Outbursts

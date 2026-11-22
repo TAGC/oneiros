@@ -2,6 +2,7 @@
 title: Other minds
 kind: system
 area: Memory
+status: Notion
 summary: Entering another character's Temenos, to help them with a troubling memory or to take and leave memories and beliefs unseen.
 infobox:
   rows:

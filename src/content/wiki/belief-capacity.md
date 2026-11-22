@@ -2,6 +2,7 @@
 title: Belief capacity
 kind: term
 area: Beliefs
+status: Notion
 summary: The most material a belief can soak up through dwelling, set by its grounds.
 infobox:
   rows:

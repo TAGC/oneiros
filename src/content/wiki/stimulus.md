@@ -2,6 +2,7 @@
 title: Stimulus
 kind: term
 area: Magic
+status: Tenet
 summary: A change in the shape of a will's mood caused by something it meets, moving no force.
 aliases:
   - Stimuli

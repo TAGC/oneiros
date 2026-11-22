@@ -2,6 +2,7 @@
 title: 记忆
 kind: term
 area: Memory
+status: Tenet
 summary: 一种生成的物品，是一段经历的快照，其情感构成永不改变。
 infobox:
   rows:

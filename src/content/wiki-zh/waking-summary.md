@@ -2,6 +2,7 @@
 title: 醒来总结
 kind: term
 area: Rest
+status: Notion
 summary: 休息结束时的报告：恢复了什么、记住了什么、什么还需要时间，以及你睡着时发生了什么。
 infobox:
   rows:
