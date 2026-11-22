@@ -32,24 +32,9 @@ The authoring guide and the rest of the reference, by topic:
 - [Checks](docs/checks.md): the content checks, the git hooks and the deploy; allowing a red link or a word, banning a Chinese term.
 - [Layout](docs/layout.md): where things live in the repo.
 - [Pages](docs/pages.md): file names, frontmatter, the contents box, styles and figures.
+- [Wiki links](docs/wiki-links.md): the `[[wiki link]]` syntax and how targets resolve.
 
 ## Authoring guide
-
-### Wiki links
-
-| Syntax                     | Links to                                   |
-| -------------------------- | ------------------------------------------ |
-| `[[Echo]]`                 | the Echo page, shown as "Echo"             |
-| `[[Memory\|memories]]`     | the Memory page, shown as "memories"       |
-| `[[Coherence#At zero]]`    | a section of the Coherence page            |
-| `[[Coherence#At zero\|x]]` | that section, shown as "x"                 |
-| `[[#Coherence status]]`    | a section of the current page              |
-
-(The `\|` above is only escaped because it sits in a table; write a plain `|` in prose. Inside a Markdown table, escape it as `\|`.)
-
-Targets match titles and aliases, ignoring case. A link to a page that does not exist yet shows red and points at the page's would-be URL. When the page is written, it turns blue. Prefer linking the canonical title with a label (`[[Belief|beliefs]]`) until the target page exists, then add plurals as aliases.
-
-Links inside raw HTML (such as `<p class="formula">`) are not processed.
 
 ### Open questions
 
