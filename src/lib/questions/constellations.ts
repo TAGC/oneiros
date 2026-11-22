@@ -7,34 +7,37 @@
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
+import type { Locale } from '../../i18n/ui';
 import {
   type GithubIssue,
   getQuestions,
   isDuplicate,
-  propertyRow,
   QUESTION_CACHE,
   type Question,
   type Questions,
-  splitSections,
-  TITLE,
-  tableRows,
 } from '.';
+import {
+  ENERGIES,
+  type Energy,
+  formatProblems,
+  type MilestoneText,
+  onScale,
+  readConstellation,
+  SIZES,
+  type Size,
+} from './constellation-format';
 import type { Problem } from './problems';
+
+export {
+  CONSTELLATION_MARK,
+  ENERGIES,
+  type Energy,
+  SIZES,
+  type Size,
+} from './constellation-format';
 
 /** Where milestones sit inside the question cache. */
 export const MILESTONE_CACHE = 'milestones';
-
-/** A milestone is a constellation when its title starts with this mark. */
-export const CONSTELLATION_MARK = '✦ ';
-
-/** How long a constellation takes to settle; labels in `ui.ts` (`constellationSizes`). */
-export const SIZES = ['small', 'medium', 'large'] as const;
-/** How much energy a constellation needs; labels in `ui.ts` (`constellationEnergies`). */
-export const ENERGIES = ['low', 'medium', 'high'] as const;
-
-export type Size = (typeof SIZES)[number];
-export type Energy = (typeof ENERGIES)[number];
 
 /** A milestone as GitHub's REST API returns it, as far as the pull needs it. */
 export interface GithubMilestone {
@@ -65,6 +68,8 @@ export interface Constellation {
   energy?: Energy;
   /** Its question issues, open and closed, by number; duplicates are left out. */
   questions: Question[];
+  /** The milestone's title and description as written; set when loaded from the cache. */
+  milestone?: MilestoneText;
 }
 
 export interface Constellations {
@@ -131,64 +136,30 @@ export function writeMilestoneCache(
   }
 }
 
-/** What the description says as written, for the checks. */
-interface Written {
-  size?: string;
-  energy?: string;
-  sections: Locale[];
-}
-
-const written = new WeakMap<Constellation, Written>();
-
-function onScale<T extends string>(scale: readonly T[], value: string | undefined): T | undefined {
-  return scale.find((s) => s === value?.toLowerCase());
-}
-
 function toConstellation(raw: string, questions: Questions): Constellation | undefined {
   const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
   const front = parseYaml(match?.[1] ?? '') as MilestoneFrontmatter;
-  if (!String(front.title).startsWith(CONSTELLATION_MARK)) return undefined;
-  const { lead, sections } = splitSections(raw.slice(match?.[0].length ?? 0), 2, LOCALES);
-  const rows = tableRows(lead);
-
-  const name: Partial<Record<Locale, string>> = {
-    [DEFAULT_LOCALE]: front.title.slice(CONSTELLATION_MARK.length).trim(),
+  const milestone = {
+    title: String(front.title),
+    description: raw.slice(match?.[0].length ?? 0).trim(),
   };
-  const reasoning: Partial<Record<Locale, string>> = {};
-  for (const locale of LOCALES) {
-    let text = sections[locale];
-    if (text === undefined) continue;
-    if (locale !== DEFAULT_LOCALE) {
-      const [first, ...rest] = text.split('\n');
-      const heading = TITLE.exec(first);
-      if (heading) {
-        name[locale] = heading[1];
-        text = rest.join('\n').trim();
-      }
-    }
-    if (text) reasoning[locale] = text;
-  }
-
+  const text = readConstellation(milestone);
+  if (!text) return undefined;
   const constellation: Constellation = {
     number: front.number,
     url: front.url,
     state: front.state,
-    name,
-    reasoning,
+    name: text.name,
+    reasoning: text.reasoning,
     questions: (front.issues ?? [])
       .flatMap((n) => questions.get(n) ?? [])
       .filter((q) => !isDuplicate(q)),
+    milestone,
   };
-  const facts: Written = { sections: LOCALES.filter((l) => sections[l] !== undefined) };
-  const size = propertyRow(rows, 'size');
-  const energy = propertyRow(rows, 'energy');
-  if (size !== undefined) facts.size = size;
-  if (energy !== undefined) facts.energy = energy;
-  const onSize = onScale(SIZES, size);
-  if (onSize) constellation.size = onSize;
-  const onEnergy = onScale(ENERGIES, energy);
-  if (onEnergy) constellation.energy = onEnergy;
-  written.set(constellation, facts);
+  const size = onScale(SIZES, text.size);
+  if (size) constellation.size = size;
+  const energy = onScale(ENERGIES, text.energy);
+  if (energy) constellation.energy = energy;
   return constellation;
 }
 
@@ -228,33 +199,12 @@ export function getConstellations(questions: Questions = getQuestions()): Conste
 }
 
 /**
- * Every open constellation's description has a Size and an Energy on their scales, the
- * English reasoning, and for each other locale a section with its name and reasoning.
- * Finished constellations are not drawn as open ones, so they are not checked.
+ * Every open constellation's milestone follows the format (see `formatProblems`). Finished
+ * constellations are not drawn as open ones, so they are not checked.
  */
 export function constellationProblems(constellations: Constellations): Problem[] {
-  const problems: Problem[] = [];
-  for (const c of constellations.open()) {
-    const report = (message: string) => problems.push({ where: c.url, message });
-    const facts = written.get(c) ?? { sections: [] };
-    for (const [property, scale, value] of [
-      ['Size', SIZES, facts.size],
-      ['Energy', ENERGIES, facts.energy],
-    ] as const) {
-      const list = scale.join(', ');
-      if (value === undefined) report(`no ${property} row; use one of ${list}`);
-      else if (!onScale(scale, value)) report(`${property} "${value}" is not one of ${list}`);
-    }
-    for (const locale of LOCALES) {
-      if (!facts.sections.includes(locale)) {
-        report(`no \`## ${locale}\` section with the reasoning`);
-        continue;
-      }
-      if (locale !== DEFAULT_LOCALE && !c.name[locale]) {
-        report(`the \`## ${locale}\` section has no \`### \` name line`);
-      }
-      if (!c.reasoning[locale]) report(`the \`## ${locale}\` section has no reasoning`);
-    }
-  }
-  return problems;
+  return constellations.open().flatMap((c) => {
+    const text = (c.milestone && readConstellation(c.milestone)) ?? c;
+    return formatProblems(text).map((message) => ({ where: c.url, message }));
+  });
 }

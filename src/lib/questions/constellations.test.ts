@@ -192,7 +192,7 @@ describe('constellation checks', () => {
 
   test('fail on a missing or invalid Size', () => {
     expect(problems(DESCRIPTION.replace('| Size | Small |\n', ''))).toEqual([
-      'no Size row; use one of small, medium, large',
+      'no Size; use one of small, medium, large',
     ]);
     expect(problems(DESCRIPTION.replace('Small', 'Huge'))).toEqual([
       'Size "Huge" is not one of small, medium, large',
@@ -201,7 +201,7 @@ describe('constellation checks', () => {
 
   test('fail on a missing or invalid Energy', () => {
     expect(problems(DESCRIPTION.replace('| Energy | low |\n', ''))).toEqual([
-      'no Energy row; use one of low, medium, high',
+      'no Energy; use one of low, medium, high',
     ]);
     expect(problems(DESCRIPTION.replace('| low |', '| none |'))).toEqual([
       'Energy "none" is not one of low, medium, high',
@@ -210,17 +210,16 @@ describe('constellation checks', () => {
 
   test('fail on a missing English reasoning', () => {
     expect(problems(DESCRIPTION.replace('## en\n\nBoth ask how memories fade.\n\n', ''))).toEqual([
-      'no `## en` section with the reasoning',
+      'no English reasoning',
     ]);
   });
 
   test('fail on a missing Chinese section or Chinese name', () => {
     expect(problems(DESCRIPTION.replace(/\n\n## zh[\s\S]*$/, ''))).toEqual([
-      'no `## zh` section with the reasoning',
+      'no Chinese name',
+      'no Chinese reasoning',
     ]);
-    expect(problems(DESCRIPTION.replace('### 褪色的记忆\n\n', ''))).toEqual([
-      'the `## zh` section has no `### ` name line',
-    ]);
+    expect(problems(DESCRIPTION.replace('### 褪色的记忆\n\n', ''))).toEqual(['no Chinese name']);
   });
 
   test('skip closed constellations, which are not drawn', () => {
