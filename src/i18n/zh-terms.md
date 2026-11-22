@@ -90,6 +90,7 @@ The policy follows how the guides already handle Greek names:
 - **The Astrolabe's Dial** (the constellations view, a brass dial; wiki tooling, not game terms): the view is the Dial, **表盘**. Its parts: sector **扇区** (one per area), ring **圆环** (one per energy), hub **中心**, rim **外缘**, mark **标记** (one per constellation), notch **刻痕** (one per question round a mark). A constellation's GitHub milestone is its **里程碑**. Proposed.
 - **The Astrolabe's cluster choice** (how the night sky and the tiers gather their stars; wiki tooling, not game terms): cluster by **聚集方式**, by Areas **领域** or by Constellations **星座**. The cluster of stars in no constellation is **不在任何星座中**. Proposed.
 - **The Astrolabe's Show settled switch** (shows every settled question, not only those linked to an open one; wiki tooling): **显示已定问题**, reusing 已定 as in 已定之地. Proposed.
+- **Settled blocker** (a blocker that is decided or ruled out, so the question it blocks can reach the frontier; wiki tooling): **已定下**; a blocker that is not settled (open, undermined or unknown) is **尚未定下**, as in the Astrolabe's frontier and blocked help. The Astrolabe's threads take their kinds from it. Proposed.
 
 ---
 
