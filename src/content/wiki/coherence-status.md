@@ -23,5 +23,4 @@ navbox: character
 
 <ul class="status status-coherence"><li>Anchored</li><li>Drifting</li><li>Fraying</li><li>Unravelling</li></ul>
 
-> [!OPEN]
-> No thresholds are defined for the status words: the vision and the Glossary name them but never say where one ends and the next begins.
+> [!ISSUE 35]
