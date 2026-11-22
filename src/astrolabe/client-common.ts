@@ -30,11 +30,11 @@ export interface FilterChoice {
 
 /** What the filter's pressed buttons choose. */
 export function readFilter(root: ParentNode): FilterChoice {
-  const value = (scale: keyof FilterChoice) =>
-    root.querySelector<HTMLButtonElement>(
+  const value = <K extends keyof FilterChoice>(scale: K) =>
+    (root.querySelector<HTMLButtonElement>(
       `.al-scale[data-scale="${scale}"] button[aria-pressed="true"]`,
-    )?.dataset.value ?? 'any';
-  return { size: value('size') as FilterChoice['size'], energy: value('energy') as Energy };
+    )?.dataset.value ?? 'any') as FilterChoice[K];
+  return { size: value('size'), energy: value('energy') };
 }
 
 /** An element fits when its size and energy are the ones chosen; "any" fits everything. */
