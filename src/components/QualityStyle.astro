@@ -41,8 +41,11 @@ const partner = styles.rows.find((r, i) => i !== index && r[0] === pair)?.[1] ??
 /* Emotions without their own page stay plain text rather than red links. */
 const feedsPage = resolve(feeds, locale);
 
-/* "(U then C, pervasive: crossing into Deep…) Daylight falls…" splits into its codes,
-   the condition, and the text. C: continuous; U: unlocked at a given stage. */
+/* Depth cells mark each item with the sheet's codes, C (continuous) and U (unlocked at a
+   given stage). A code either leads its item ("(C) Doors latch…") or trails it ("a water
+   clock… (C); a fine vase…"): a code followed by punctuation or the end trails, any other
+   leads. Items may also be split by " • ". Each item becomes its codes, a condition (the
+   code's own words) and the text. */
 interface Item {
   unlock: boolean;
   continuous: boolean;
@@ -50,22 +53,52 @@ interface Item {
   condition: string;
   text: string;
 }
+const CODE = /[(（]((?:U then C|先 U 后 C|[CU])(?=[\s,:，：)）])[^)）]*)[)）]/g;
+const END = locale === 'zh' ? '。' : '.';
+
+function item(codes: string, raw: string): Item | undefined {
+  // "…goal given up (U: …), and shallow puddles…": drop the joining "and".
+  let text = raw
+    .replace(/^[\s.。;；,，]+/, '')
+    .replace(/^and\s+/, '')
+    .trim();
+  if (!text) return undefined;
+  text = text.replace(/[;；,，]$/, '');
+  if (!/[.。!！?？"”）)]$/.test(text)) text += END;
+  return {
+    unlock: /U/.test(codes),
+    continuous: /C/.test(codes),
+    pervasive: /pervasive|遍及/.test(codes),
+    condition: codes
+      .replace(/^(?:U then C|先 U 后 C|[CU])[\s,:，：]*/, '')
+      .replace(/^pervasive(?:[\s,:，：]+|$)/, '')
+      .replace(/^遍及[\s,:，：]*/, '')
+      .trim(),
+    text,
+  };
+}
+
 function items(cell: string): Item[] {
-  return cell
-    .split(/\s+•\s+/)
-    .filter(Boolean)
-    .map((raw) => {
-      const m = /^[(（]([^)）]*)[)）]\s*(.*)$/s.exec(raw);
-      if (!m) return { unlock: false, continuous: false, pervasive: false, condition: '', text: raw };
-      const [codes, ...rest] = m[1].split(/[:：]/);
-      return {
-        unlock: /U/.test(codes),
-        continuous: /C/.test(codes),
-        pervasive: /pervasive|遍及/.test(codes),
-        condition: rest.join(':').trim(),
-        text: m[2],
-      };
-    });
+  const out: (Item | undefined)[] = [];
+  for (const piece of cell.split(/\s+•\s+/)) {
+    let pos = 0;
+    let pending = '';
+    for (const m of piece.matchAll(CODE)) {
+      const before = piece.slice(pos, m.index);
+      const end = (m.index ?? 0) + m[0].length;
+      const trailing = /^\s*(?:[.。;；,，]|$)/.test(piece.slice(end));
+      if (trailing) {
+        out.push(item([pending, m[1]].filter(Boolean).join(', '), before));
+        pending = '';
+      } else {
+        out.push(item(pending, before));
+        pending = m[1];
+      }
+      pos = end;
+    }
+    out.push(item(pending, piece.slice(pos)));
+  }
+  return out.filter((i): i is Item => i !== undefined);
 }
 const stages = [
   [h[6], early],
