@@ -4,7 +4,7 @@
  * table. Dry run by default: it reads the issues and prints what it would change.
  * Plan lines are `add|remove #N blocked-by|related|undermined-by #M: <reason>`; in a Markdown
  * file only `question-links` code blocks count. Needs the `gh` CLI, signed in.
- * Usage: bun run links <plan file> [--apply]
+ * Usage: bun run links <plan file> [--live]
  */
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
@@ -13,10 +13,10 @@ import { REPO } from '../src/lib/site';
 
 const SLUG = new URL(REPO).pathname.slice(1);
 const args = process.argv.slice(2);
-const apply = args.includes('--apply');
+const live = args.includes('--live');
 const file = args.find((a) => !a.startsWith('--'));
 if (!file) {
-  console.error('Usage: bun run links <plan file> [--apply]');
+  console.error('Usage: bun run links <plan file> [--live]');
   process.exit(1);
 }
 
@@ -58,14 +58,14 @@ function blockedBy(n: number): string {
 }
 
 const planned = planChanges(changes, issues);
-const verb = apply ? '' : 'would ';
+const verb = live ? '' : 'would ';
 for (const { issue, before, after } of planned.bodies) {
   const was = new Set(before.split(/\r?\n/));
   const now = new Set(after.split(/\r?\n/));
   console.log(`#${issue}: ${verb}edit the property table`);
   for (const line of was) if (!now.has(line)) console.log(`  - ${line}`);
   for (const line of now) if (!was.has(line)) console.log(`  + ${line}`);
-  if (apply) {
+  if (live) {
     gh(
       ['-X', 'PATCH', `repos/${SLUG}/issues/${issue}`, '--input', '-'],
       JSON.stringify({ body: after }),
@@ -74,16 +74,16 @@ for (const { issue, before, after } of planned.bodies) {
 }
 for (const { issue, blocker } of planned.block) {
   console.log(`#${issue}: ${verb}add blocked by #${blocker}`);
-  if (apply) gh(['-X', 'POST', blockedBy(issue), '-F', `issue_id=${ids.get(blocker)}`]);
+  if (live) gh(['-X', 'POST', blockedBy(issue), '-F', `issue_id=${ids.get(blocker)}`]);
 }
 for (const { issue, blocker } of planned.unblock) {
   console.log(`#${issue}: ${verb}remove blocked by #${blocker}`);
-  if (apply) gh(['-X', 'DELETE', `${blockedBy(issue)}/${ids.get(blocker)}`]);
+  if (live) gh(['-X', 'DELETE', `${blockedBy(issue)}/${ids.get(blocker)}`]);
 }
 for (const line of planned.skipped) console.log(`skipped: ${line}`);
 const total = planned.bodies.length + planned.block.length + planned.unblock.length;
 console.log(
-  apply
+  live
     ? `Applied ${total} change(s). Run bun run pull.`
-    : `Dry run: ${total} change(s). Add --apply to make them.`,
+    : `Dry run: ${total} change(s). Add --live to make them.`,
 );
