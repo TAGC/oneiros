@@ -1068,16 +1068,22 @@ body:lang(zh) {
   line-height: 1.75;
 }
 
-/* Background art: the Dreamlands at night behind the page. The body and the header paint the
-   same image at the same size and position, so the header reads as part of the scene. */
+/* Background art: the Dreamlands behind the page, at night in dark mode and by day in light mode.
+   The body and the header paint the same image at the same size and position, so the header
+   reads as part of the scene. Only the current theme's image is used, so only it downloads. */
 :root {
-  --art: image-set(
+  --art-night: image-set(
     url('/art/dreamlands-2000.avif') type('image/avif'),
     url('/art/dreamlands-2000.webp') type('image/webp')
   );
+  --art-day: image-set(
+    url('/art/dreamlands-day-2000.avif') type('image/avif'),
+    url('/art/dreamlands-day-2000.webp') type('image/webp')
+  );
+  --art: var(--art-night);
   --art-w: max(100vw, 1800px);
   --art-h: calc(var(--art-w) * 1440 / 3360);
-  /* A thin veil, lighter in light mode, that fades to the page background. */
+  /* A thin veil that fades to the page background. */
   --veil-top: light-dark(
     color-mix(in srgb, var(--bg) 22%, transparent),
     color-mix(in srgb, var(--bg) 38%, transparent)
@@ -1086,6 +1092,18 @@ body:lang(zh) {
     color-mix(in srgb, var(--bg) 45%, transparent),
     color-mix(in srgb, var(--bg) 62%, transparent)
   );
+  /* The header tints the art to the night sky. By day a navy multiply first turns the scene to
+     moonlight (in dark mode it multiplies by white, so changes nothing), then a thin tint. */
+  --head-shade: light-dark(#5656a8, #fff), light-dark(#40408c, #fff);
+  --head-tint: light-dark(#2b2b5e70, #2b2b5eb8), light-dark(#1f204880, #1f2048a0);
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --art: var(--art-day);
+  }
+}
+:root[data-theme='light'] {
+  --art: var(--art-day);
 }
 body {
   background:
@@ -1096,9 +1114,11 @@ body {
 }
 header.top {
   background:
-    linear-gradient(180deg, #2b2b5eb8, #1f2048a0),
+    linear-gradient(180deg, var(--head-tint)),
+    linear-gradient(180deg, var(--head-shade)),
     var(--art) top center / var(--art-w) var(--art-h) no-repeat,
     var(--head);
+  background-blend-mode: normal, multiply, normal, normal;
 }
 nav.side {
   background: light-dark(
@@ -1115,9 +1135,13 @@ nav.side {
 }
 @media (max-width: 900px) {
   :root {
-    --art: image-set(
+    --art-night: image-set(
       url('/art/dreamlands-1200.avif') type('image/avif'),
       url('/art/dreamlands-1200.webp') type('image/webp')
+    );
+    --art-day: image-set(
+      url('/art/dreamlands-day-1200.avif') type('image/avif'),
+      url('/art/dreamlands-day-1200.webp') type('image/webp')
     );
     --art-w: 100vw;
   }
@@ -1130,9 +1154,13 @@ nav.side {
 }
 @media (max-width: 600px) {
   :root {
-    --art: image-set(
+    --art-night: image-set(
       url('/art/dreamlands-800.avif') type('image/avif'),
       url('/art/dreamlands-800.webp') type('image/webp')
+    );
+    --art-day: image-set(
+      url('/art/dreamlands-day-800.avif') type('image/avif'),
+      url('/art/dreamlands-day-800.webp') type('image/webp')
     );
     --art-w: 170vw;
   }
