@@ -38,7 +38,8 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
 - **Red links:** a link to a missing page fails unless its slug is in `src/data/redlinks.json`. Both languages share the list. The check also fails when a listed page has been written or nothing links to it any more.
 - **English style:** no em dashes, and no spaced en dashes used as dashes, in the English pages, sheet data or README.
 - **Chinese parity:** every English page has a Chinese page with the same extension, `kind`, `area`, `navbox` and number of `[!OPEN]` and `[!CONFLICT]` callouts. Every tab in `src/data/sheet-zh/` has the same block types, header lengths, row counts and row lengths as its English tab.
-- **Question markers:** every `[!ISSUE N]` marker must name an open question issue in the question cache.
+- **Question markers:** every `[!ISSUE N]` marker must name an open question issue in the question cache. On an English page, the issue's Page row must link to that page. The English and Chinese pages of a pair must carry the same markers in the same order, and a Certainty or Dogma page may hold none.
+- **Question issues:** every question issue needs a section for each site locale, and the `## zh` section a Chinese title. An answer comment needs a section for each locale. Blocked-by links and Undermined by rows must name question issues. A conflict's sources must be wiki links to pages in both languages or listed non-page sources.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
 To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
@@ -124,7 +125,7 @@ Links inside raw HTML (such as `<p class="formula">`) are not processed.
 > The vision says X; the Glossary says Y. The vision wins until this is settled.
 ```
 
-`[!OPEN]` renders as an "Open question" note and adds the page to "Pages with open questions". `[!CONFLICT]` renders as "Conflict: vision and sheet disagree" and adds "Pages with conflicts". Every callout is listed on `/oneiros/open-questions/`. Use one callout per question so each can be linked.
+`[!OPEN]` renders as an "Open question" note and adds the page to "Pages with open questions". `[!CONFLICT]` renders as "Conflict: vision and sheet disagree" and adds "Pages with conflicts" (a conflict question names its own sources; see below). Every callout is listed on `/oneiros/open-questions/`. Use one callout per question so each can be linked.
 
 ### Question markers
 
@@ -134,7 +135,43 @@ Open questions are moving to GitHub issues labelled `kind:open` or `kind:conflic
 > [!ISSUE 142]
 ```
 
-The build fills in the box from the question cache: the header from the `kind:` label, the body from the issue's `## en` or `## zh` section for the page's language, with wiki links resolved as on pages. The `## zh` section starts with a `### ` line holding the Chinese title. Markers count like callouts on the open questions page and in the automatic categories, and inline callouts keep working beside them. Run `bun run pull` first, or the box says the question is missing.
+The build fills in the box from the question cache: the header from the `kind:` label, the body from the issue's `## en` or `## zh` section for the page's language, with wiki links resolved as on pages. Markers count like callouts on the open questions page and in the automatic categories, and inline callouts keep working beside them. Run `bun run pull` first, or the box says the question is missing.
+
+An issue body looks like this. The English title is the issue title.
+
+```md
+| Property | Value |
+|---|---|
+| Page | [Ablaze](https://tagc.github.io/oneiros/wiki/ablaze/) |
+| Section | While Ablaze |
+| Source | vision and [[Ablaze]] |
+| Raised | 21 Nov 2026, <session or chat link> |
+| Related | #139, #145 |
+| Undermined by | #208 |
+
+## Context
+
+<free-form English prose>
+
+## en
+
+<question text>
+
+## zh
+
+### <Chinese title>
+
+<question text in Chinese>
+```
+
+- **Properties.** The table and Context are English only. Every row is optional, except that a question with a marker needs a Page row linking to the page that holds it. Source lists names separated by commas or "and". Related and Undermined by list issues as `#N`.
+- **Locale sections.** One `## <code>` section per site locale. Only the `## zh` section carries a title, on its first line as `### <title>`. Wiki links work in these sections.
+- **Blocked by.** Use GitHub's own "blocked by" links; the pull fetches them.
+- **Answer.** One comment starting with `## Answer`, with a `### en` and a `### zh` section. Other comments are discussion and are ignored. If there are several answer comments, the last one counts.
+- **Status** comes from GitHub and is never stored: open; decided (closed as completed); ruled out (closed as not planned); undermined (decided, with an Undermined by row).
+- **Conflict header.** A `kind:conflict` question's header names the sources in its Source row: "Conflict: vision and sheet disagree", "Conflict: A, B and C disagree", or just "Conflict" when the row names fewer than two sources or is missing. Each source is a wiki link, shown by its page's title in the page's language, or one of the non-page sources listed in `conflictSources` in `src/i18n/ui.ts` (vision, sheet), which name them in each language.
+
+The open questions page also lists open question issues that no page marks, such as decision issues, under "Not on a page", by area.
 
 ### Contents box and backlinks
 
