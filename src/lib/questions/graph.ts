@@ -3,7 +3,8 @@
  * Every list holds open question numbers, sorted. A blocker counts as settled only when it
  * is decided or ruled out: an undermined decision stands on a broken premise, and a blocker
  * missing from the cache is unknown. Only open questions count as depending on another.
- * Duplicates are left out, so a duplicate blocker is unknown too.
+ * Duplicates are left out; the loader has already turned links to them into links to their
+ * canonical question.
  */
 import { isDuplicate, type Question } from '.';
 

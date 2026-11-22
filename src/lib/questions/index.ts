@@ -361,13 +361,41 @@ function cacheFiles(dir: string): string[] {
   }
 }
 
-/** Reads a question cache; a missing cache holds no questions. */
+/**
+ * The question a duplicate stands in for: the end of its chain of duplicates, when that is a
+ * question in the cache. Otherwise the number itself.
+ */
+function canonical(n: number, byNumber: Map<number, Question>): number {
+  const seen = new Set<number>();
+  let at = byNumber.get(n);
+  while (at && isDuplicate(at) && at.duplicateOf !== undefined && !seen.has(at.number)) {
+    seen.add(at.number);
+    at = byNumber.get(at.duplicateOf);
+  }
+  return at && !isDuplicate(at) ? at.number : n;
+}
+
+/** Rewrites every link to a duplicate as a link to its canonical question, dropping repeats. */
+function resolveDuplicates(byNumber: Map<number, Question>): void {
+  const resolve = (ns: number[]) => [...new Set(ns.map((n) => canonical(n, byNumber)))];
+  for (const q of byNumber.values()) {
+    q.blockedBy = resolve(q.blockedBy).sort((a, b) => a - b);
+    q.underminedBy = resolve(q.underminedBy);
+    if (q.properties.related) q.properties.related = resolve(q.properties.related);
+  }
+}
+
+/**
+ * Reads a question cache; a missing cache holds no questions. Links to a duplicate come back
+ * as links to its canonical question, so nothing downstream sees a duplicate's number.
+ */
 export function loadQuestions(dir: string): Questions {
   const byNumber = new Map<number, Question>();
   for (const file of cacheFiles(dir)) {
     const question = toQuestion(readFileSync(join(dir, file), 'utf8'));
     byNumber.set(question.number, question);
   }
+  resolveDuplicates(byNumber);
   const sorted = [...byNumber.values()].sort((a, b) => a.number - b.number);
   return { all: () => [...sorted], get: (n) => byNumber.get(n) };
 }

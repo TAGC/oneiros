@@ -125,10 +125,8 @@ describe('independent', () => {
       issue(4, { related: [5] }),
       issue(5, { state: 'decided' }),
       issue(6, { related: [404] }),
-      issue(7, { related: [8] }),
-      issue(8, { state: 'duplicate', duplicateOf: 1 }),
     ]);
-    expect(graph.independent).toEqual([1, 6, 7]);
+    expect(graph.independent).toEqual([1, 6]);
   });
 });
 
@@ -173,17 +171,19 @@ describe('duplicates', () => {
       issue(2, { state: 'duplicate', duplicateOf: 1, blockedBy: [3] }),
       issue(3),
       issue(4, { blockedBy: [2] }),
+      issue(5, { related: [2] }),
     ]);
 
   test('are left out of the graph', () => {
-    expect(Object.keys(graph().dependents)).toEqual(['1', '3', '4']);
+    expect(Object.keys(graph().dependents)).toEqual(['1', '3', '4', '5']);
   });
 
-  test('carry no links, so what only a duplicate links to stays independent', () => {
-    expect(graph().independent).toEqual([1, 3]);
+  test('carry no links of their own, so what only a duplicate links to stays independent', () => {
+    expect(graph().independent).toEqual([3]);
   });
 
-  test('a duplicate blocker counts as missing and keeps a question off the frontier', () => {
-    expect(graph().frontier).toEqual([1, 3]);
+  test('a link to a duplicate counts as a link to its canonical question', () => {
+    expect(graph().frontier).toEqual([1, 3, 5]);
+    expect(graph().dependents[1]).toEqual([4]);
   });
 });

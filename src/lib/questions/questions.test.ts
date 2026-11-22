@@ -287,6 +287,48 @@ describe('duplicates', () => {
     expect(q && 'duplicateOf' in q).toBe(false);
   });
 
+  test('a link to a duplicate is a link to its canonical question, without repeats', () => {
+    const rows = '| Related | #5, #3, #8 |\n| Undermined by | #5 |';
+    const q = roundTrip([
+      issue({ number: 3 }),
+      duplicate(),
+      issue({ number: 8 }),
+      issue({
+        number: 9,
+        state: 'closed',
+        state_reason: 'completed',
+        body: `| Property | Value |\n|---|---|\n${rows}\n\n${LOCALES_BODY}`,
+        blockedBy: [{ number: 3 }, { number: 5 }, { number: 8 }],
+      }),
+    ]).get(9);
+    expect(q).toMatchObject({
+      blockedBy: [3, 8],
+      underminedBy: [3],
+      properties: { related: [3, 8] },
+    });
+  });
+
+  test('a chain of duplicates resolves to the question at its end', () => {
+    const q = roundTrip([
+      issue({ number: 3 }),
+      duplicate(),
+      duplicate({ number: 6, duplicateOf: 5 }),
+      issue({ number: 9, blockedBy: [{ number: 6 }] }),
+    ]).get(9);
+    expect(q?.blockedBy).toEqual([3]);
+  });
+
+  test('a link to a duplicate with no canonical question in the cache stays as it is', () => {
+    const q = roundTrip([
+      duplicate({ duplicateOf: undefined }),
+      duplicate({ number: 6, duplicateOf: 404 }),
+      duplicate({ number: 7, duplicateOf: 8 }),
+      duplicate({ number: 8, duplicateOf: 7 }),
+      issue({ number: 9, blockedBy: [5, 6, 7].map((n) => ({ number: n })) }),
+    ]).get(9);
+    expect(q?.blockedBy).toEqual([5, 6, 7]);
+  });
+
   test('isDuplicate picks out duplicates, so consumers can skip them', () => {
     const questions = roundTrip([issue({ number: 3 }), duplicate()]);
     expect(
