@@ -1,5 +1,6 @@
 ---
 import '../styles/wiki.css';
+import IconFrame from '../components/IconFrame.astro';
 import WikiLink from '../components/WikiLink.astro';
 import {
   CJK_FONTS,
@@ -183,7 +184,10 @@ const alternates = path
             {
               SIDEBAR_AREAS.map((area) => (
                 <li>
-                  <a href={categoryUrl(area, locale)}>{area}</a>
+                  <a class="area-link" href={categoryUrl(area, locale)}>
+                    <IconFrame name={area} size="sm" />
+                    {area}
+                  </a>
                 </li>
               ))
             }

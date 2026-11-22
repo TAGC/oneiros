@@ -1,4 +1,5 @@
 ---
+import IconFrame from '../../components/IconFrame.astro';
 import WikiLink from '../../components/WikiLink.astro';
 import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
@@ -31,6 +32,7 @@ for (const term of terms) {
     {
       areas.map((a) => (
         <button type="button" data-area={a} aria-pressed="false">
+          <IconFrame name={a} size="sm" />
           {a}
         </button>
       ))

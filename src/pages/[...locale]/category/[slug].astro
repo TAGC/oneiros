@@ -3,7 +3,6 @@ import IconFrame from '../../../components/IconFrame.astro';
 import WikiLink from '../../../components/WikiLink.astro';
 import { type Locale, LOCALES, localeParam, useTranslations } from '../../../i18n/ui';
 import Wiki from '../../../layouts/Wiki.astro';
-import { ICON_AREAS } from '../../../lib/areas';
 import { getCategories, type Page } from '../../../lib/pages';
 import { slugify } from '../../../lib/site';
 import { categoryLabel } from '../../../lib/wiki';
@@ -39,7 +38,7 @@ const label = categoryLabel(name, locale);
   path={`/category/${slugify(name)}/`}
 >
   <div class="cat-head">
-    {ICON_AREAS.includes(name) && <IconFrame name={name} />}
+    <IconFrame name={name} />
     <h1>{t.categoryTitle(label)}</h1>
   </div>
   <p class="sub">{t.categorySub(pages.length)}</p>

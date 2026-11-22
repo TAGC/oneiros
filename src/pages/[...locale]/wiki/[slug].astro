@@ -1,5 +1,6 @@
 ---
 import { render } from 'astro:content';
+import IconFrame from '../../../components/IconFrame.astro';
 import Infobox from '../../../components/Infobox.astro';
 import Navbox from '../../../components/Navbox.astro';
 import SheetTable from '../../../components/SheetTable.astro';
@@ -51,7 +52,10 @@ const tabs = [
   translated={translated}
 >
   <div data-pagefind-body>
-    <h1>{page.title}</h1>
+    <div class="cat-head">
+      <IconFrame name={entry.data.icon ?? entry.data.area} size="md" />
+      <h1>{page.title}</h1>
+    </div>
     <p class="sub" data-pagefind-ignore>
       {t.fromWiki} · <a href={categoryUrl(entry.data.area, locale)}>{entry.data.area}</a>
     </p>

@@ -8,9 +8,6 @@ export const AREAS = [
   ...new Set((table?.rows ?? []).map((row) => String(row[column] ?? '').trim()).filter(Boolean)),
 ].sort() as [string, ...string[]];
 
-/** Areas with a pixel icon in `src/data/icons.json`. */
-export const ICON_AREAS = ['Memory', 'Beliefs', 'Temenos', 'Magic'];
-
 /** Areas listed in the sidebar, as in the approved mockup. */
 export const SIDEBAR_AREAS = [
   'Character',

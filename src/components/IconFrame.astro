@@ -1,12 +1,20 @@
 ---
-import { ICON_AREAS } from '../lib/areas';
+import { hasIcon } from '../lib/icons';
 import PixelIcon from './PixelIcon.astro';
 
 interface Props {
   name: string;
+  /** lg fills its container (tiles, category heads); md sits beside a page title; sm is inline. */
+  size?: 'lg' | 'md' | 'sm';
 }
 
-const { name } = Astro.props;
+const { name, size = 'lg' } = Astro.props;
 ---
 
-<span class="frame">{ICON_AREAS.includes(name) && <PixelIcon name={name} />}</span>
+{
+  hasIcon(name) && (
+    <span class:list={['frame', size !== 'lg' && size]} data-pagefind-ignore>
+      <PixelIcon name={name} />
+    </span>
+  )
+}

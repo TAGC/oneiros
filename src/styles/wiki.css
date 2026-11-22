@@ -624,6 +624,7 @@ footer.foot p {
 .cat-head .frame {
   width: 72px;
   flex: none;
+  padding: 9px;
 }
 
 /* Pixel icon frame, from reference/mockups/icons.html */
@@ -640,15 +641,16 @@ footer.foot p {
     inset 0 0 0 3px #14152e,
     inset 0 0 0 5px #8f8da6,
     0 6px 0 #0005;
+  --cut: 10px;
   clip-path: polygon(
-    10px 0,
-    calc(100% - 10px) 0,
-    100% 10px,
-    100% calc(100% - 10px),
-    calc(100% - 10px) 100%,
-    10px 100%,
-    0 calc(100% - 10px),
-    0 10px
+    var(--cut) 0,
+    calc(100% - var(--cut)) 0,
+    100% var(--cut),
+    100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%,
+    var(--cut) 100%,
+    0 calc(100% - var(--cut)),
+    0 var(--cut)
   );
   transition: transform 0.15s;
 }
@@ -672,6 +674,42 @@ footer.foot p {
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
+}
+/* Smaller frames keep the icon at a whole multiple of its 24 pixels: md 2×, sm 1×. */
+.frame.md {
+  --cut: 6px;
+  width: 64px;
+  flex: none;
+  padding: 6px;
+  border-width: 2px;
+  box-shadow:
+    inset 0 0 0 2px #14152e,
+    inset 0 0 0 3px #8f8da6;
+}
+.frame.sm {
+  --cut: 3px;
+  display: inline-block;
+  width: 26px;
+  flex: none;
+  padding: 0;
+  border-width: 1px;
+  box-shadow: none;
+  vertical-align: middle;
+}
+.frame.sm::before {
+  content: none;
+}
+nav.side .area-link,
+.filter button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.filter button .frame {
+  margin-inline-start: -8px;
+}
+nav.side .area-link .frame {
+  margin-block: -2px;
 }
 .tiles {
   display: grid;

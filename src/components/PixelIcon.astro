@@ -1,11 +1,11 @@
 ---
-import icons from '../data/icons.json';
+import { ICONS } from '../lib/icons';
 
 interface Props {
   name: string;
 }
 
-const grid = (icons as Record<string, (string | null)[][]>)[Astro.props.name];
+const grid = ICONS[Astro.props.name];
 const runs: { x: number; y: number; w: number; fill: string }[] = [];
 grid?.forEach((row, y) => {
   row.forEach((fill, x) => {
