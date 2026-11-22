@@ -1,6 +1,7 @@
 // Builds the painted area icons in public/icons/ from the masters in art-src/icons/.
-// Each master has a solid dark background. Only background connected to the image edge
-// is keyed out, so dark parts inside the icon (outlines, shadows, a cypress) stay opaque.
+// Each master has a solid dark background. Background connected to the image edge is
+// keyed out, plus large enclosed patches of it; dark parts inside the icon (outlines,
+// shadows, a cypress) stay opaque.
 // The icon is then cropped to a padded square and written at 512 and 128 px as WebP and
 // AVIF. Run with `bun run icons` after changing a master.
 import { readdir, mkdir } from 'node:fs/promises';
@@ -11,6 +12,12 @@ const OUT = 'public/icons';
 const SIZES = [512, 128];
 // Background: pixels within FLOOD of the border's median colour, connected to the edge.
 const FLOOD = 16;
+// Enclosed background (the gap inside a handle or a loop of cord) is keyed out too when it
+// covers at least MIN_HOLE of the image and its mean distance from the background colour is
+// under HOLE_MEAN. Real gaps measure about 1 to 2.5; dark detail (a cypress, shading on a
+// book cover, a mask's eye holes) measures 8 or more and stays.
+const MIN_HOLE = 0.001;
+const HOLE_MEAN = 4;
 // Within EDGE px of the background, pixels closer than SOLID to its colour are faded out
 // over a FEATHER-wide band, to soften the anti-aliased rim.
 const EDGE = 2;
@@ -41,7 +48,8 @@ async function cutOut(path: string): Promise<Buffer> {
   for (let p = 0; p < w * h; p++)
     dist[p] = Math.hypot(data[p * 3] - bg[0], data[p * 3 + 1] - bg[1], data[p * 3 + 2] - bg[2]);
 
-  // Steps from the edge-connected background: 0 inside it, then 1..EDGE, else -1.
+  // Steps from the keyed background: 0 inside it, then 1..EDGE; -1 or -2 (small enclosed
+  // patch) elsewhere.
   const steps = new Int8Array(w * h).fill(-1);
   let queue: number[] = [];
   const seed = (p: number) => {
@@ -65,6 +73,24 @@ async function cutOut(path: string): Promise<Buffer> {
     );
   };
   for (let k = 0; k < queue.length; k++) for (const q of neighbours(queue[k])) seed(q);
+  // Enclosed patches near the background colour: key out the large, flat ones; mark the rest -2.
+  for (let start = 0; start < w * h; start++) {
+    if (steps[start] !== -1 || dist[start] >= FLOOD) continue;
+    const patch = [start];
+    steps[start] = -2;
+    for (let k = 0; k < patch.length; k++)
+      for (const q of neighbours(patch[k]))
+        if (steps[q] === -1 && dist[q] < FLOOD) {
+          steps[q] = -2;
+          patch.push(q);
+        }
+    const mean = patch.reduce((sum, p) => sum + dist[p], 0) / patch.length;
+    if (patch.length >= MIN_HOLE * w * h && mean < HOLE_MEAN)
+      for (const p of patch) {
+        steps[p] = 0;
+        queue.push(p);
+      }
+  }
   for (let step = 1; step <= EDGE; step++) {
     const next: number[] = [];
     for (const p of queue)
