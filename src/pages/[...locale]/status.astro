@@ -15,7 +15,6 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const stages = resolve('Belief stages', locale);
-const parked = resolve('Parked topics', locale);
 ---
 
 <Wiki title={t.status} description={t.statusDescription} locale={locale} path="/status/">
@@ -28,7 +27,9 @@ const parked = resolve('Parked topics', locale);
       STATUSES.map((s) => (
         <li>
           <IconFrame name={s} size="sm" />
-          <span>{t.statusNames[s] ?? s}</span>
+          <span>
+            <strong>{t.statusNames[s] ?? s}</strong>: {t.statusMeanings[s]}
+          </span>
         </li>
       ))
     }
@@ -36,7 +37,5 @@ const parked = resolve('Parked topics', locale);
   <p>
     {t.statusNote[0]}<WikiLink to={stages} locale={locale}>{t.statusBeliefStages}</WikiLink>{t.statusNote[1]}
   </p>
-  <p>
-    {t.statusOpen[0]}<WikiLink to={parked} locale={locale}>{t.statusParked}</WikiLink>{t.statusOpen[1]}
-  </p>
+  <p>{t.statusRule}</p>
 </Wiki>
