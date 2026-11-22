@@ -20,6 +20,8 @@
     "duplicate:mark": "bun scripts/duplicate.ts mark",
     "duplicate:close": "bun scripts/duplicate.ts close",
     "constellations": "bun scripts/constellations.ts",
+    "constellations:plan": "bun scripts/constellations.ts plan",
+    "constellations:apply": "bun scripts/constellations.ts apply",
     "test": "bun test ./src ./scripts",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",

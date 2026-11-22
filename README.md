@@ -18,7 +18,9 @@ bun run format         # oxfmt (format:check to verify)
 bun run check          # spelling and content checks (run after a build)
 bun run test           # unit tests (bun test)
 bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
-bun run constellations # the constellations from .questions/; `apply <plan> --live` charts them
+bun run constellations # the constellations from .questions/: open, ungrouped, ready to close
+bun run constellations:plan         # the current chart as a plan file
+bun run constellations:apply <plan> # the milestone changes a plan needs; `--live` makes them
 bun run links <plan>   # the links a plan adds or removes between questions; `--live` makes them
 bun run duplicate:mark K D   # swap duplicate D's marker for a link to K; `--live` edits
 bun run duplicate:close K D  # after the merge: close D as a duplicate of K; `--live` acts

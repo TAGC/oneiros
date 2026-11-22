@@ -19,7 +19,7 @@ The helper `scripts/constellations.ts` does the GitHub side, through the GitHub 
 
 ## 2. Write the plan
 
-Start from the current chart: `bun run constellations plan > <scratchpad>/constellations.yaml`. The file lists every open constellation and, last, `ungrouped:` for reference. Edit it in place. A new constellation has no `number`:
+Start from the current chart: `bun run constellations:plan > <scratchpad>/constellations.yaml`. The file lists every open constellation and, last, `ungrouped:` for reference. Edit it in place. A new constellation has no `number`:
 
 ```yaml
 constellations:
@@ -60,13 +60,13 @@ On a first chart or a large backlog, fan out with the Agent tool: one subagent p
 
 ## 3. Dry run
 
-Run `bun run constellations apply <scratchpad>/constellations.yaml`. It prints the operations: creates, edits, assignments, closes. Fix every error and run it again. Warnings are of two kinds. A size warning means a size does not match the question count: change the size, or keep it when the reading load justifies it and say so in the report. A counts warning means a reasoning looks like it states counts ("both", "all four", 两个): reword it to name the shared theme only, or keep it when the number is part of the design rather than a count of questions (for example "the four memory sources") and say so in the report. Neither fails `bun run check`.
+Run `bun run constellations:apply <scratchpad>/constellations.yaml`. It prints the operations: creates, edits, assignments, closes. Fix every error and run it again. Warnings are of two kinds. A size warning means a size does not match the question count: change the size, or keep it when the reading load justifies it and say so in the report. A counts warning means a reasoning looks like it states counts ("both", "all four", 两个): reword it to name the shared theme only, or keep it when the number is part of the design rather than a count of questions (for example "the four memory sources") and say so in the report. Neither fails `bun run check`.
 
 Check the operations against step 2: each one has a reason there. An edit to a constellation you meant to leave alone means the plan drifted; restore it.
 
 ## 4. Apply
 
-When no constellation exists yet (the first chart), show the designer the plan and wait for approval. Otherwise apply it: `bun run constellations apply <scratchpad>/constellations.yaml --live`. The changes are public at once and redeploy the site.
+When no constellation exists yet (the first chart), show the designer the plan and wait for approval. Otherwise apply it: `bun run constellations:apply <scratchpad>/constellations.yaml --live`. The changes are public at once and redeploy the site.
 
 The live run ends by pulling. Then run `bun run constellations`: no question is ungrouped and nothing is ready to close. Run the dry run again: it says "Nothing to change". Run `bun run build` and `bun run check`: the Constellations check passes.
 

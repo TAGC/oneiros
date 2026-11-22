@@ -3,9 +3,9 @@
  * chart-constellations skill. A live apply ends by pulling, so the cache matches GitHub.
  * Usage:
  *   bun run constellations                     the state: constellations, ungrouped, to close
- *   bun run constellations plan                the current chart as a plan file (YAML)
- *   bun run constellations apply <plan>        dry run: the operations the plan needs
- *   bun run constellations apply <plan> --live carry them out on GitHub
+ *   bun run constellations:plan                the current chart as a plan file (YAML)
+ *   bun run constellations:apply <plan>        dry run: the operations the plan needs
+ *   bun run constellations:apply <plan> --live carry them out on GitHub
  */
 import { readFileSync } from 'node:fs';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
@@ -100,7 +100,9 @@ if (import.meta.main) {
     const options = { live: flag === '--live', cache: CACHE, log: console.log, warn: console.warn };
     if (!applyChart(liveGitHub(), readFileSync(file, 'utf8'), options)) process.exit(1);
   } else {
-    console.error('Usage: bun run constellations [state | plan | apply <plan> [--live]]');
+    console.error(
+      'Usage: bun run constellations | constellations:plan | constellations:apply <plan> [--live]',
+    );
     process.exit(1);
   }
 }
