@@ -121,6 +121,7 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings, writing the map once per frame. |
 | `fullscreen.ts`, `fullscreen-client.ts` | The full screen button: which way the browser allows, and the button itself. |
 | `brass-client.ts` | The constellations view: its panel, the filter on its marks, and star links that lead to the night sky. |
+| `client-common.ts` | What both clients share: remembered settings, the filter's test, and opening and closing a panel. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 

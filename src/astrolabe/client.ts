@@ -3,23 +3,13 @@
  * star panel, highlighting a star's threads, and pan and zoom on the night sky. The map itself
  * is static SVG from the build.
  */
+import { fitsFilter, readFilter, readSetting, setUpPanel, writeSetting } from './client-common';
 import type { SkyMotionData } from './motion';
 import { skyMotion } from './sky-motion';
-
 import { type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
 
 const astrolabe = document.querySelector<HTMLElement>('.astrolabe');
 if (astrolabe?.querySelector('.al-frame')) setUp(astrolabe);
-
-function storage(key: string, value?: string): string | null {
-  try {
-    if (value === undefined) return localStorage.getItem(key);
-    localStorage.setItem(key, value);
-  } catch {
-    /* Storage unavailable: nothing is remembered. */
-  }
-  return null;
-}
 
 function setUp(root: HTMLElement): void {
   root.classList.add('al-js');
@@ -39,7 +29,7 @@ function setUp(root: HTMLElement): void {
     for (const b of views.querySelectorAll('button')) {
       b.setAttribute('aria-pressed', String(b.dataset.view === view));
     }
-    storage('astrolabe-view', view);
+    writeSetting('astrolabe-view', view);
     // On a narrow screen, open the tiers at the frontier rather than at settled ground.
     const tiersView = root.querySelector<HTMLElement>('.al-view-tiers')!;
     const shown = root.querySelector<SVGElement>(`.al-tiers[data-by="${root.dataset.cluster}"]`);
@@ -48,7 +38,7 @@ function setUp(root: HTMLElement): void {
       tiersView.scrollLeft = frontierX - 8;
     }
   };
-  const saved = storage('astrolabe-view');
+  const saved = readSetting('astrolabe-view');
   if (saved === 'tiers') showView('tiers');
   views.addEventListener('click', (e) => {
     const button = (e.target as Element).closest<HTMLButtonElement>('button[data-view]');
@@ -62,9 +52,9 @@ function setUp(root: HTMLElement): void {
     const showSettled = (all: boolean) => {
       root.dataset.settled = all ? 'all' : 'linked';
       settled.setAttribute('aria-pressed', String(all));
-      storage('astrolabe-settled', all ? 'all' : 'linked');
+      writeSetting('astrolabe-settled', all ? 'all' : 'linked');
     };
-    if (storage('astrolabe-settled') === 'all') showSettled(true);
+    if (readSetting('astrolabe-settled') === 'all') showSettled(true);
     settled.addEventListener('click', () => showSettled(root.dataset.settled !== 'all'));
   }
 
@@ -82,11 +72,11 @@ function setUp(root: HTMLElement): void {
         for (const b of choice.querySelectorAll('button')) {
           b.setAttribute('aria-pressed', String(b.dataset.cluster === by));
         }
-        storage('astrolabe-cluster', by);
+        writeSetting('astrolabe-cluster', by);
         const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
         motion.show(by, animate && !still && root.dataset.view === 'sky');
       };
-      if (storage('astrolabe-cluster') === 'constellations') {
+      if (readSetting('astrolabe-cluster') === 'constellations') {
         // Arrive already clustered: nothing fades or flies on load.
         root.classList.add('al-instant');
         cluster('constellations', false);
@@ -102,13 +92,10 @@ function setUp(root: HTMLElement): void {
       choice.hidden = true;
     }
 
-    const chosen: Record<string, string> = { size: 'any', energy: 'any' };
-    const fits = (el: Element) =>
-      Object.entries(chosen).every(
-        ([scale, value]) => value === 'any' || el.getAttribute(`data-${scale}`) === value,
-      );
     const fitText = cfilter.querySelector<HTMLElement>('.al-fit');
     const applyFilter = () => {
+      const chosen = readFilter(cfilter);
+      const fits = (el: Element) => fitsFilter(el, chosen);
       const unfit = new Set<string>();
       let fitting = 0;
       for (const group of root.querySelectorAll('.al-cgroup:not(.al-cfinished)')) {
@@ -128,8 +115,6 @@ function setUp(root: HTMLElement): void {
     cfilter.addEventListener('click', (e) => {
       const button = (e.target as Element).closest<HTMLButtonElement>('.al-scale button');
       if (!button) return;
-      const scale = button.parentElement!.dataset.scale!;
-      chosen[scale] = button.dataset.value!;
       for (const b of button.parentElement!.querySelectorAll('button')) {
         b.setAttribute('aria-pressed', String(b === button));
       }
@@ -139,75 +124,50 @@ function setUp(root: HTMLElement): void {
 
   /* Selection and the panel. A drag on the sky is not a click on a star. */
   let dragged = false;
-  let selected: number | undefined;
   let returnFocus: Element | null = null;
   const starsOf = (n: number) => root.querySelectorAll(`.al-star[data-n="${n}"]`);
+  const threadsOf = (n: number) =>
+    root.querySelectorAll(`.al-thread[data-from="${n}"], .al-thread[data-to="${n}"]`);
   const highlight = (n: number | undefined, cls: string) => {
     for (const el of root.querySelectorAll(`.${cls}`)) el.classList.remove(cls);
     if (n === undefined) return;
-    for (const t of root.querySelectorAll(
-      `.al-thread[data-from="${n}"], .al-thread[data-to="${n}"]`,
-    )) {
-      t.classList.add(cls);
-    }
+    for (const t of threadsOf(n)) t.classList.add(cls);
   };
-  const select = (n: number | undefined, focusPanel = true) => {
-    for (const el of root.querySelectorAll('.al-open-panel')) el.classList.remove('al-open-panel');
-    for (const el of root.querySelectorAll('.al-selected, .al-near')) {
-      el.classList.remove('al-selected', 'al-near');
-    }
-    selected = n;
-    for (const m of maps) m.classList.toggle('al-has-selection', n !== undefined);
-    highlight(n, 'al-lit');
-    if (n === undefined) {
-      history.replaceState(null, '', location.pathname + location.search);
-      if (returnFocus instanceof HTMLElement || returnFocus instanceof SVGElement) {
-        returnFocus.focus();
+  const star = setUpPanel(root, {
+    prefix: 'star-',
+    mark: '.al-star',
+    marksOf: starsOf,
+    maps,
+    returnFocus: () => returnFocus,
+    onLink: (link) => {
+      if (dragged) return false;
+      if (link.classList.contains('al-star')) returnFocus = link;
+      return true;
+    },
+    onOpen: (n) => {
+      highlight(n, 'al-lit');
+      for (const t of threadsOf(n)) {
+        const other = t.getAttribute('data-from') === String(n) ? 'data-to' : 'data-from';
+        for (const s of starsOf(Number(t.getAttribute(other)))) s.classList.add('al-near');
       }
-      return;
-    }
-    const panel = document.getElementById(`star-${n}`);
-    if (!panel) return;
-    panel.classList.add('al-open-panel');
-    panel.scrollTop = 0;
-    for (const s of starsOf(n)) s.classList.add('al-selected');
-    for (const t of root.querySelectorAll(
-      `.al-thread[data-from="${n}"], .al-thread[data-to="${n}"]`,
-    )) {
-      const other = t.getAttribute('data-from') === String(n) ? 'data-to' : 'data-from';
-      for (const s of starsOf(Number(t.getAttribute(other)))) s.classList.add('al-near');
-    }
-    history.replaceState(null, '', `#star-${n}`);
-    if (root.dataset.view === 'sky') ensureVisible(n);
-    if (focusPanel) panel.focus({ preventScroll: true });
-  };
+      if (root.dataset.view === 'sky') ensureVisible(n);
+    },
+    onClose: () => {
+      for (const el of root.querySelectorAll('.al-near')) el.classList.remove('al-near');
+      highlight(undefined, 'al-lit');
+    },
+  });
 
-  root.addEventListener('click', (e) => {
-    const target = e.target as Element;
-    if (target.closest('[data-close]')) {
-      e.preventDefault();
-      select(undefined);
-      return;
-    }
-    const link = target.closest<Element>('a[href^="#star-"]');
-    if (!link) return;
-    e.preventDefault();
-    if (dragged) return;
-    const n = Number(link.getAttribute('href')!.slice('#star-'.length));
-    if (link.classList.contains('al-star')) returnFocus = link;
-    select(n === selected && link.classList.contains('al-star') ? undefined : n);
-  });
-  root.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && selected !== undefined) select(undefined);
-  });
   for (const m of maps) {
     m.addEventListener('pointerover', (e) => {
-      const star = (e.target as Element).closest<Element>('.al-star');
-      if (star && selected === undefined) highlight(Number(star.getAttribute('data-n')), 'al-lit');
+      const mark = (e.target as Element).closest<Element>('.al-star');
+      if (mark && star.current() === undefined) {
+        highlight(Number(mark.getAttribute('data-n')), 'al-lit');
+      }
     });
     m.addEventListener('pointerout', (e) => {
-      const star = (e.target as Element).closest('.al-star');
-      if (star && selected === undefined) highlight(undefined, 'al-lit');
+      const mark = (e.target as Element).closest('.al-star');
+      if (mark && star.current() === undefined) highlight(undefined, 'al-lit');
     });
   }
 
@@ -327,9 +287,9 @@ function setUp(root: HTMLElement): void {
   /** Pans the sky so a star outside the view (or under the panel) comes into sight. */
   function ensureVisible(n: number) {
     flush();
-    const star = sky.querySelector<SVGGraphicsElement>(`.al-star[data-n="${n}"] g`);
-    if (!star) return;
-    const r = star.getBoundingClientRect();
+    const glyph = sky.querySelector<SVGGraphicsElement>(`.al-star[data-n="${n}"] g`);
+    if (!glyph) return;
+    const r = glyph.getBoundingClientRect();
     const view = sky.getBoundingClientRect();
     const panel = document.getElementById(`star-${n}`)?.getBoundingClientRect();
     const right = panel && panel.left > view.left + 200 ? panel.left - 20 : view.right - 20;
@@ -348,5 +308,5 @@ function setUp(root: HTMLElement): void {
 
   /* Open the star a link points to. */
   const fromHash = /^#star-(\d+)$/.exec(location.hash);
-  if (fromHash) select(Number(fromHash[1]), false);
+  if (fromHash) star.open(Number(fromHash[1]), false);
 }
