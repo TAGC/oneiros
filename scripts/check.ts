@@ -12,12 +12,14 @@ import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
 import type { Locale } from '../src/i18n/ui';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
+import type { MarkedPage, Problem } from '../src/lib/questions/problems';
 import type { CalloutKind } from '../src/lib/wiki';
 
 // Production mode makes the wiki index read each folder once instead of re-checking file times.
 process.env.NODE_ENV = 'production';
 const { calloutKind, issueMarker, WIKI_LINK } = await import('../src/lib/wiki');
-const { getQuestions, QUESTION_CACHE } = await import('../src/lib/questions');
+const { getQuestions } = await import('../src/lib/questions');
+const { issueProblems, markerProblems } = await import('../src/lib/questions/problems');
 const { wikiLinkNode } = await import('../src/lib/remark-wiki');
 
 const ROOT = join(import.meta.dirname, '..');
@@ -25,12 +27,6 @@ const DIST = join(ROOT, 'dist');
 const SHEET = { en: 'src/data/sheet', zh: 'src/data/sheet-zh' };
 const REDLINKS = 'src/data/redlinks.json';
 const FORBIDDEN = 'src/i18n/zh-forbidden.json';
-
-interface Problem {
-  where: string;
-  message: string;
-  detail?: string[];
-}
 
 // ---------------------------------------------------------------- helpers
 
@@ -327,37 +323,28 @@ function markers(raw: string): { issue: number; line: number }[] {
   return out;
 }
 
-/** Every `[!ISSUE N]` marker must name an open question issue in the question cache. */
-function checkMarkers(): Problem[] {
-  const questions = getQuestions();
-  const problems: Problem[] = [];
-  for (const locale of ['en', 'zh'] as const) {
-    for (const file of files(WIKI_DIRS[locale], isPage)) {
-      for (const { issue, line } of markers(read(file))) {
-        const question = questions.get(issue);
-        const where = `${file}:${line}`;
-        if (!question) {
-          problems.push({
-            where,
-            message: `marker names #${issue}, which is not a question issue in ${QUESTION_CACHE}/ (run \`bun run pull\`)`,
-          });
-        } else if (question.state === 'closed') {
-          problems.push({
-            where,
-            message: `marker names #${issue}, which is closed; replace the marker with the settled text`,
-          });
-        }
-      }
-    }
-  }
-  return problems;
+/** Every page in both locales with its markers, for the question checks. */
+function markedPages(): MarkedPage[] {
+  return (['en', 'zh'] as const).flatMap((locale) =>
+    files(WIKI_DIRS[locale], isPage).map((file) => {
+      const raw = read(file);
+      return {
+        file,
+        locale,
+        slug: file.replace(/^.*\/|\.mdx?$/g, ''),
+        status: frontmatter(raw).data.status,
+        markers: markers(raw),
+      };
+    }),
+  );
 }
 
 // ---------------------------------------------------------------- page status
 
 /**
  * Certainty and Dogma need nothing open, so their pages may hold no open or conflict
- * callouts. A Chinese page carries the same status as its English page.
+ * callouts (markers are checked with the questions). A Chinese page carries the same status
+ * as its English page.
  */
 function checkStatus(): Problem[] {
   const problems: Problem[] = [];
@@ -560,7 +547,8 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Chinese sheet parity', checkSheetParity],
   ['Chinese terms', checkChineseTerms],
   ['Page status', checkStatus],
-  ['Question markers', checkMarkers],
+  ['Question markers', () => markerProblems(getQuestions(), markedPages())],
+  ['Question issues', () => issueProblems(getQuestions())],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {

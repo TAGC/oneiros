@@ -45,6 +45,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - Every Undermined by row and blocked-by link names an existing issue.
   - Every source in a conflict's Source row is a wiki link or a listed non-page source.
   - Every answer comment has a section for each site locale.
+  - A Certainty or Dogma page holds no marker.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
 To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
@@ -160,7 +161,7 @@ The issue title is the English title. The body has an English property table, an
 
 - **Page:** the page that holds the marker. Required when the question has a marker; every other row is optional.
 - **Section:** the section of that page.
-- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row is headed "Conflict". Old inline `[!CONFLICT]` callouts keep the fixed header.
+- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row, or only one source, is headed "Conflict". Old inline `[!CONFLICT]` callouts keep the fixed header.
 - **Raised:** when and where the question was raised.
 - **Related:** issues worth reading alongside, not blockers.
 - **Undermined by:** on a decided issue, the later issue that broke its premise.
@@ -187,7 +188,7 @@ The answer is one comment on the issue, posted while the pull request that lands
 Decided by the designer, 22 Nov 2026, in <session or chat link>. Confidence: Tenet (bare yes). Accepted Claude's proposal. Lands in #210.
 ```
 
-The last line is the provenance: who decided, when, in which session, and the pull request that lands it. Other comments are discussion and are ignored.
+The last line is the provenance: who decided, when, in which session, and the pull request that lands it. Other comments are discussion and are ignored. If several comments start with `## Answer`, the last one counts.
 
 Status is derived from GitHub, never stored:
 
@@ -209,6 +210,8 @@ A page marks where an open question's box goes:
 The build fills in the box from the question cache: the header from the `kind:` label (and the Source row for a conflict), the body from the section for the page's language, with wiki links resolved as on pages. The English and Chinese pages carry the same markers. Run `bun run pull` first, or the box says the question is missing.
 
 Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form. They still render, and count like markers, until the migration turns them into issues. Write new questions as issues with markers.
+
+The open questions page also lists open question issues that no page marks, such as decision issues, under "Not on a page", by area.
 
 #### The pull
 

@@ -137,13 +137,11 @@ function transformLinks(tree: Root, page: string | undefined, locale: Locale): v
 }
 
 /** Turns a blockquote into a callout box with its header. */
-function toNote(node: Blockquote, kind: CalloutKind, id: string, locale: Locale): void {
+function toNote(node: Blockquote, kind: CalloutKind, id: string, heading: string): void {
   node.children.unshift({
     type: 'paragraph',
     data: { hProperties: { className: ['note-h'] } },
-    children: [
-      { type: 'strong', children: [{ type: 'text', value: calloutHeading(kind, locale) }] },
-    ],
+    children: [{ type: 'strong', children: [{ type: 'text', value: heading }] }],
   });
   node.data = { hName: 'div', hProperties: { className: ['note', `note-${kind}`], id } };
 }
@@ -165,7 +163,7 @@ function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
     if (n === undefined) return;
     const callout = markerCallout(n, locale, questions);
     node.children = parseFragment(callout.markdown) as Blockquote['children'];
-    toNote(node, callout.kind, callout.id, locale);
+    toNote(node, callout.kind, callout.id, calloutHeading(callout.kind, locale, questions.get(n)));
     return SKIP;
   });
 }
@@ -178,7 +176,7 @@ function transformCallouts(tree: Root, locale: Locale): void {
     if (!kind) return;
     counts[kind] += 1;
     stripCalloutMarker(node);
-    toNote(node, kind, calloutId(kind, counts[kind]), locale);
+    toNote(node, kind, calloutId(kind, counts[kind]), calloutHeading(kind, locale));
   });
 }
 
