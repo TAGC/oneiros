@@ -20,14 +20,16 @@ const readPainted = () =>
       .filter((f) => f.endsWith('-512.webp'))
       .map((f) => f.replace(/-512\.webp$/, '')),
   );
-const built = readPainted();
+let built: Set<string> | undefined;
 
 /**
- * A painted icon replaces the pixel icon of the same name. The dev server re-reads the
- * folder each time, so icons built while it runs show without a restart.
+ * A painted icon replaces the pixel icon of the same name. A build reads the folder once,
+ * on first use. The dev server re-reads it each time, so icons built while it runs show
+ * without a restart.
  */
 export function isPainted(name: string): boolean {
-  return (import.meta.env?.DEV ? readPainted() : built).has(name.toLowerCase());
+  const painted = import.meta.env?.DEV ? readPainted() : (built ??= readPainted());
+  return painted.has(name.toLowerCase());
 }
 
 export function hasIcon(name: string): boolean {
