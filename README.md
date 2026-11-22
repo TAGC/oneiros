@@ -175,7 +175,7 @@ The area icons are painted to match the background art. The designer generates t
 | Memory     | Glass orb of swirling light on a dark stand                | Gold                        |
 | Rest       | Crescent moon of glossy carved stone                       | Cyan blue                   |
 | Lore       | Rolled papyrus scroll tied with a cord                     | Parchment, violet cord      |
-| Economy    | Cluster of glowing white beads (obols) on a knotted cord   | Pearl white                 |
+| Economy    | Cluster of glowing white obols on a knotted cord           | Pearl white                 |
 | Dreams     | Feather quill in an inkwell of glowing ink                 | Violet                      |
 | Lucidity   | Clear faceted crystal                                      | Clear white                 |
 | Body       | Open hand on a round cuff                                  | Warm bronze                 |
