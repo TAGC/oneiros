@@ -18,7 +18,7 @@
     ],
     [
      "Notion (a state, not a stage)",
-     "Pages on its wing's reading-room desk while you dwell on it (limited space)",
+     "Pages on its floor's reading-room desk while you dwell on it (limited space)",
      "Side effect only; its effect is hinted at",
      "The pages are swept away"
     ],
@@ -31,7 +31,7 @@
     [
      "Creed (Room)",
      "A room of its own",
-     "Stronger, and harder for doubt to shake",
+     "Stronger, and harder for doubt to shake, plus a waking boon",
      "The room burns: a ruined room (a scar)"
     ],
     [
@@ -39,72 +39,55 @@
      "A load-bearing great hall around a sealed shrine",
      "Strongest; its rule and side effect become permanent. Changes what is true, never your form",
      "The shrine is defaced and the hall collapses: always a scar, even when uprooted cleanly. A false Dogma hurts when lucidity shatters it"
-    ],
-    [
-     "Rule",
-     "Detail",
-     "",
-     ""
-    ],
+    ]
+   ]
+  },
+  {
+   "type": "table",
+   "header": [
+    "Rule",
+    "Detail"
+   ],
+   "rows": [
     [
      "Scope",
-     "A belief can be about yourself (falls can't hurt me; I can fly) or the world; world beliefs apply to anything you perceive, at any distance",
-     "",
-     ""
+     "A belief can be about yourself (falls can't hurt me; I can fly) or the world; world beliefs apply to anything you perceive, at any distance"
     ],
     [
      "Knowledge",
-     "All knowledge is beliefs: a city's capital, a ferry's times, every rumour (each version heard enters at Hearsay). Threads (quests) are separate items",
-     "",
-     ""
+     "All knowledge is beliefs: a city's capital, a ferry's times, every rumour (each version heard enters at Hearsay). Threads (quests) are separate items"
     ],
     [
      "Strength",
-     "Its own material (soaked up by dwelling) + Conviction (how rooted). Conviction sets the tier; only its own material counts towards capacity and max Coherence",
-     "",
-     ""
+     "Its own material (soaked up by dwelling) + Conviction (how rooted). Conviction sets the tier; only its own material counts towards capacity and max Coherence"
     ],
     [
      "Weight",
-     "The size of its effect: the material of its grounds plus its own. Grounds are memories and beliefs only (people and places count through your memories of them); a belief in the grounds lends only its own material, so nothing is counted twice and nothing loops. Losing a ground lightens it, with a warning first",
-     "",
-     ""
+     "The size of its effect: the material of its grounds plus its own. Grounds are memories and beliefs only (people and places count through your memories of them); a belief in the grounds lends only its own material, so nothing is counted twice and nothing loops. Losing a ground lightens it, with a warning first"
     ],
     [
      "Conviction",
-     "Rises from dwelling, seeing it seem to work and the company of believers; doubt lowers it. Parallel to Hold for memories. Also feeds Hold: memories hold better when you are convinced they happened (open: a damper on this loop)",
-     "",
-     ""
+     "Rises from dwelling, seeing it seem to work and the company of believers; doubt lowers it. Parallel to Hold for memories. Also feeds Hold: memories hold better when you are convinced they happened (open: a damper on this loop)"
     ],
     [
      "Colour",
-     "Shifts as its Conviction changes or as it soaks up feeling, so beliefs move between wings; coloured Notions sit on their wing's desk, colourless ones in the library",
-     "",
-     ""
+     "Shifts as its Conviction changes or as it soaks up feeling, so beliefs move between wings; coloured Notions sit on their floor's desk, colourless ones in the library"
     ],
     [
      "Attention",
-     "Defiance of the dream's natural law x overtness (visible, sustained, witnessed) x strength. Flying over a city at noon on a heavy, firm belief draws a lot; surviving a fall unseen almost none",
-     "",
-     ""
+     "Defiance of the dream's natural law x overtness (visible, sustained, witnessed) x strength. Flying over a city at noon on a heavy, firm belief draws a lot; surviving a fall unseen almost none"
     ],
     [
      "Books",
-     "Outside, books carry ideas, not Conviction: reading one gives a Notion. Conviction cannot be traded; renouncing a belief shrinks your Temenos and gives nothing to anyone",
-     "",
-     ""
+     "Outside, books carry ideas, not Conviction: reading one gives a Notion. Conviction cannot be traded; renouncing a belief shrinks your Temenos and gives nothing to anyone"
     ],
     [
      "Dwelling",
-     "Works like a sponge: dwelling draws feeling from your mood into the belief. It soaks only the emotions it has an affinity for, set by its grounds' composition and your qualities of the will, up to a size set by its grounds' material (multiplier open). Losing a ground shrinks it and the excess wrings out",
-     "",
-     ""
+     "Works like a sponge: dwelling draws feeling from your mood into the belief. It soaks only the emotions it has an affinity for, set by its grounds' composition and your qualities of the will, up to a size set by its grounds' material (multiplier open). Losing a ground shrinks it and the excess wrings out"
     ],
     [
      "What it changes",
-     "What is true: rules about you or about the world. Never your form, so beliefs never become mutations",
-     "",
-     ""
+     "What is true: rules about you or about the world. Never your form, so beliefs never become mutations"
     ]
    ]
   }
