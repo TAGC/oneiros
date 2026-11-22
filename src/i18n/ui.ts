@@ -2,6 +2,7 @@
  * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
+import type { Energy, Size } from '../lib/questions/constellations';
 import type { Status } from '../lib/status';
 
 export const LOCALES = ['en', 'zh'] as const;
@@ -148,13 +149,21 @@ Five pillars hold it together:
   /* Open questions */
   openDescription: 'Every open question and conflict across the wiki.',
   openSub: (n: number) =>
-    `Every open question and every conflict between sources, page by page: ${n} in all.`,
+    `Every open question and every conflict between sources, by constellation: ${n} in all.`,
   openNone: 'No open questions yet.',
+  openUngrouped: 'Not in a constellation',
+  openUngroupedSub: 'Open questions that no constellation holds yet, page by page.',
   openUnmarked: 'Not on a page',
   openUnmarkedSub: 'Open question issues that no page marks yet, by area.',
   noArea: 'No area',
   onGithub: (n: number) => `#${n} on GitHub`,
   onThePage: 'on the page',
+  constellationSize: 'Size',
+  constellationEnergy: 'Energy',
+  constellationSizes: { small: 'Small', medium: 'Medium', large: 'Large' } as Record<Size, string>,
+  constellationEnergies: { low: 'Low', medium: 'Medium', high: 'High' } as Record<Energy, string>,
+  constellationSettled: (settled: number, total: number) => `${settled} of ${total} settled`,
+  constellationFact: (label: string, value: string) => `${label}: ${value}`,
   questionMissing: (n: number) =>
     `Question #${n} is not in the question cache. Run \`bun run pull\`.`,
 
@@ -337,13 +346,21 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   categoryConflict: '含冲突的页面',
 
   openDescription: '整个维基中的所有待定问题与冲突。',
-  openSub: (n) => `逐页列出所有待定问题，以及各来源之间的所有冲突：共 ${n} 处。`,
+  openSub: (n) => `按星座列出所有待定问题，以及各来源之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
+  openUngrouped: '不在星座中',
+  openUngroupedSub: '尚未归入任何星座的待定问题，逐页列出。',
   openUnmarked: '不在页面上',
   openUnmarkedSub: '尚无页面标出的待定问题，按领域列出。',
   noArea: '无领域',
   onGithub: (n) => `GitHub 上的 #${n}`,
   onThePage: '查看原处',
+  constellationSize: '规模',
+  constellationEnergy: '精力',
+  constellationSizes: { small: '小', medium: '中', large: '大' },
+  constellationEnergies: { low: '低', medium: '中', high: '高' },
+  constellationSettled: (settled, total) => `已定 ${settled} / ${total}`,
+  constellationFact: (label, value) => `${label}：${value}`,
   questionMissing: (n) => `问题缓存中没有问题 #${n}。请运行 \`bun run pull\`。`,
 
   statusDescription: '页面所述设计想法的确定程度。',

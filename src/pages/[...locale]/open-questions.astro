@@ -1,13 +1,14 @@
 ---
+import QuestionBox from '../../components/QuestionBox.astro';
 import WikiLink from '../../components/WikiLink.astro';
 import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
-import { renderMarkdown } from '../../lib/markdown';
 import { AREAS } from '../../lib/areas';
-import { getPages } from '../../lib/pages';
+import { getPages, type Page } from '../../lib/pages';
 import { getQuestions, type Question } from '../../lib/questions';
+import { getConstellations } from '../../lib/questions/constellations';
 import { wikiUrl } from '../../lib/site';
-import { calloutHeading } from '../../lib/wiki';
+import { type Callout, calloutHeading } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
 
@@ -18,17 +19,56 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const questions = getQuestions();
+const constellations = getConstellations(questions);
 const pages = (await getPages(locale)).filter((p) => p.callouts.length);
-const marked = new Set(pages.flatMap((p) => p.callouts.map((c) => c.issue)));
-const unmarked = questions.all().filter((q) => q.state === 'open' && !marked.has(q.number));
-const groups = [...AREAS, undefined]
-  .map((area) => ({ area, list: unmarked.filter((q) => q.area === area) }))
-  .filter((g) => g.list.length);
+/** Where each question issue is marked: its page and its box there. */
+const markedOn = new Map<number, { page: Page; callout: Callout }>();
+for (const page of pages) {
+  for (const callout of page.callouts) {
+    if (callout.issue !== undefined) markedOn.set(callout.issue, { page, callout });
+  }
+}
+const unmarked = questions.all().filter((q) => q.state === 'open' && !markedOn.has(q.number));
 const count = pages.reduce((n, p) => n + p.callouts.length, 0) + unmarked.length;
 
-function textOf(q: Question): { markdown: string; lang: Locale } {
-  const lang = q.text[locale] === undefined ? 'en' : locale;
-  return { markdown: q.text[lang] ?? '', lang };
+const grouped = (issue?: number) =>
+  issue !== undefined && constellations.of(issue)?.state === 'open';
+const ungroupedPages = pages
+  .map((p) => ({ ...p, callouts: p.callouts.filter((c) => !grouped(c.issue)) }))
+  .filter((p) => p.callouts.length);
+const ungroupedUnmarked = unmarked.filter((q) => !grouped(q.number));
+const areas = [...AREAS, undefined]
+  .map((area) => ({ area, list: ungroupedUnmarked.filter((q) => q.area === area) }))
+  .filter((g) => g.list.length);
+
+/** A text in the viewer's language, or in English, with the language it is in. */
+function inLocale(text: Partial<Record<Locale, string>>): { text: string; lang: Locale } {
+  const lang = text[locale] === undefined ? 'en' : locale;
+  return { text: text[lang] ?? '', lang };
+}
+
+/** A question issue's box: its text from the page that marks it, or from the issue. */
+function issueBox(q: Question) {
+  const marked = markedOn.get(q.number);
+  const { text, lang } = inLocale(q.text);
+  return {
+    kind: q.kind,
+    heading: calloutHeading(q.kind, locale, q),
+    links: [
+      marked
+        ? {
+            href: wikiUrl(marked.page.slug, marked.callout.id, marked.page.locale),
+            text: marked.page.title,
+          }
+        : { text: t.openUnmarked },
+      { href: q.url, text: t.onGithub(q.number) },
+    ],
+    title: q.title[locale] ?? q.title.en,
+    markdown: marked ? marked.callout.markdown : text,
+    page: marked?.page.slug ?? q.properties.page,
+    lang: marked ? marked.page.locale : lang,
+    locale,
+  };
 }
 ---
 
@@ -42,64 +82,71 @@ function textOf(q: Question): { markdown: string; lang: Locale } {
   <p class="sub">{t.openSub(count)}</p>
   {count === 0 && <p>{t.openNone}</p>}
   {
-    pages.map((p) => (
-      <section>
-        <h2>
-          <WikiLink to={p} locale={locale}>
-            {p.title}
-          </WikiLink>
-        </h2>
-        {p.callouts.map((c) => (
-          <div class={`note note-${c.kind}`}>
-            <p class="note-h">
-              <strong>
-                {calloutHeading(
-                  c.kind,
-                  locale,
-                  c.issue === undefined ? undefined : questions.get(c.issue),
-                )}
-              </strong> ·{' '}
-              <a href={wikiUrl(p.slug, c.id, p.locale)}>{t.onThePage}</a>
-            </p>
-            {p.locale === locale ? (
-              <Fragment set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
-            ) : (
-              <div lang={p.locale} set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
-            )}
-          </div>
-        ))}
-      </section>
-    ))
+    constellations.open().map((c) => {
+      const name = inLocale(c.name);
+      const reasoning = inLocale(c.reasoning);
+      const open = c.questions.filter((q) => q.state === 'open');
+      const facts = [
+        c.size && t.constellationFact(t.constellationSize, t.constellationSizes[c.size]),
+        c.energy && t.constellationFact(t.constellationEnergy, t.constellationEnergies[c.energy]),
+        t.constellationSettled(c.questions.length - open.length, c.questions.length),
+      ].filter(Boolean);
+      return (
+        <section>
+          <h2 lang={name.lang === locale ? undefined : name.lang}>{name.text}</h2>
+          <p class="sub">{facts.join(' · ')}</p>
+          {reasoning.text && (
+            <p lang={reasoning.lang === locale ? undefined : reasoning.lang}>{reasoning.text}</p>
+          )}
+          {open.map((q) => (
+            <QuestionBox {...issueBox(q)} />
+          ))}
+        </section>
+      );
+    })
   }
   {
-    groups.length > 0 && (
+    (ungroupedPages.length > 0 || areas.length > 0) && (
       <section>
-        <h2>{t.openUnmarked}</h2>
-        <p>{t.openUnmarkedSub}</p>
-        {groups.map((g) => (
+        <h2>{t.openUngrouped}</h2>
+        <p>{t.openUngroupedSub}</p>
+        {ungroupedPages.map((p) => (
           <>
-            <h3>{g.area ? (t.areaNames[g.area] ?? g.area) : t.noArea}</h3>
-            {g.list.map((q) => {
-              const { markdown, lang } = textOf(q);
+            <h3>
+              <WikiLink to={p} locale={locale}>
+                {p.title}
+              </WikiLink>
+            </h3>
+            {p.callouts.map((c) => {
+              const q = c.issue === undefined ? undefined : questions.get(c.issue);
               return (
-                <div class={`note note-${q.kind}`}>
-                  <p class="note-h">
-                    <strong>{calloutHeading(q.kind, locale, q)}</strong> ·{' '}
-                    <a href={q.url}>{t.onGithub(q.number)}</a>
-                  </p>
-                  <p>
-                    <strong>{q.title[locale] ?? q.title.en}</strong>
-                  </p>
-                  {lang === locale ? (
-                    <Fragment set:html={renderMarkdown(markdown, undefined, lang)} />
-                  ) : (
-                    <div lang={lang} set:html={renderMarkdown(markdown, undefined, lang)} />
-                  )}
-                </div>
+                <QuestionBox
+                  kind={c.kind}
+                  heading={calloutHeading(c.kind, locale, q)}
+                  links={[{ href: wikiUrl(p.slug, c.id, p.locale), text: t.onThePage }]}
+                  markdown={c.markdown}
+                  page={p.slug}
+                  lang={p.locale}
+                  locale={locale}
+                />
               );
             })}
           </>
         ))}
+        {areas.length > 0 && (
+          <>
+            <h3>{t.openUnmarked}</h3>
+            <p>{t.openUnmarkedSub}</p>
+            {areas.map((g) => (
+              <>
+                <h4>{g.area ? (t.areaNames[g.area] ?? g.area) : t.noArea}</h4>
+                {g.list.map((q) => (
+                  <QuestionBox {...issueBox(q)} />
+                ))}
+              </>
+            ))}
+          </>
+        )}
       </section>
     )
   }
