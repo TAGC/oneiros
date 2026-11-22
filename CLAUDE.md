@@ -11,6 +11,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 - `src/data/sheet/` and `src/data/sheet-zh/`: tabular data (the old reference sheet's tabs), rendered with `<SheetTable>`.
 - `src/data/navboxes.json`, `src/data/icons.json`: navboxes per area; 24×24 pixel icons, now only the fallback. Painted area icons: masters in `art-src/icons/`, built into `public/icons/` by `bun run icons`.
 - `src/i18n/ui.ts`: interface strings (en, zh). `src/i18n/zh-terms.md`: the adopted Chinese term list.
+- `.questions/`: gitignored cache of the question issues, written by `bun run pull`; read it only through `src/lib/questions/`.
 - `src/lib/`: the 16 areas (`areas.ts`), wiki link resolver, backlinks, callouts, render cache digest. `src/pages/[...locale]/`: routes for both languages.
 
 ## Commands
@@ -20,9 +21,9 @@ This repo is the design's wiki and the **single source of truth** for settled de
 ## Content rules
 
 - **Never invent design.** Only what the designer explicitly agreed is a decision. Claude's suggestions are suggestions: say so, and never write them into a page as settled.
-- **Flag, don't settle.** Anything unconfirmed, ambiguous or open gets a `> [!OPEN]` callout on its owner page; contradictions between sources get `> [!CONFLICT]`. The `/open-questions/` page collects them. Resolve a callout only when the designer decides it, and record the outcome in the page itself.
-- **Record decisions only when the designer asks**, and only in the wiki (never in handoff notes or memory).
-- **Page status** (`status:` frontmatter; rules on the `/status/` page): never raise a page's status yourself, only propose. Tenet means the premise is accepted, to keep and refine, so Tenet pages change freely as decisions land. Ask whether a Tenet status still holds only when a change, `[!CONFLICT]` or `[!OPEN]` challenges the page's premise itself.
+- **Flag, don't settle.** Anything unconfirmed, ambiguous or open becomes a question issue (`kind:open`); contradictions between sources become `kind:conflict` issues. Put its `[!ISSUE N]` marker on the owner page; format in `README.md` under "Open questions". The `/open-questions/` page and the Astrolabe collect them. Settle a question only when the designer decides it: post the answer on its issue and write the rule into the page itself.
+- **Record decisions only when the designer asks**, and only in the wiki and its question issues (never in handoff notes or memory). Every recorded decision gets an issue with an answer comment, even with no question behind it.
+- **Page status** (`status:` frontmatter; rules on the `/status/` page): never raise a page's status yourself, only propose. Tenet means the premise is accepted, to keep and refine, so Tenet pages change freely as decisions land. Ask whether a Tenet status still holds only when a change or an open question or conflict challenges the page's premise itself.
 - **One owner page per rule.** State a rule fully on its owner page; elsewhere one line plus a link. Each sheet table renders on one page.
 - **Tables for data, prose for decisions.**
 - **Every English change is mirrored in Chinese** in the same commit series: same sections, claims and callouts, using `src/i18n/zh-terms.md` exactly. The designer delegated Chinese wording to Claude; new Chinese terms go into the term list first.
@@ -49,9 +50,9 @@ This repo is the design's wiki and the **single source of truth** for settled de
 ## Working style
 
 - Keep answers short.
-- To go over conflicts and open questions, follow `.claude/skills/resolve-open-questions`: one cohesive group per session, one question at a time, one commit per group with each decision's provenance in the body.
+- To go over conflicts and open questions, follow `.claude/skills/resolve-open-questions`: one cohesive group per session, one question at a time, an answer comment on each issue, and one pull request per group that closes its issues.
 - For foundational design choices, offer a blind design bake-off (`.claude/skills/blind-design-bakeoff`).
-- `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts. The first audit (21 Nov 2026) covered memory and memory light; its open findings are `[!OPEN]` callouts on their pages. Everything else is unaudited.
+- `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts. The first audit (21 Nov 2026) covered memory and memory light; its open findings are open questions on their pages. Everything else is unaudited.
 - Ideas the designer parks for later go on the Parked topics page, one section and one `[!OPEN]` each.
 - In quality-of-the-will reviews, commit each quality's agreed changes before moving to the next.
 
