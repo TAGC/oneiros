@@ -5,7 +5,10 @@ import { REPO } from '../src/lib/site';
 /** This repo as `owner/name`. */
 export const SLUG = new URL(REPO).pathname.slice(1);
 
-/** Runs `gh api` with these arguments and returns its output, trimmed. */
+/**
+ * Runs `gh api` with these arguments and returns its output, trimmed. Send issue and
+ * milestone text as a JSON request body (`--input -` with `input`), never as `-f` fields.
+ */
 export function gh(args: string[], input?: string): string {
   return execFileSync('gh', ['api', ...args], {
     encoding: 'utf8',

@@ -42,51 +42,30 @@ function describe(op: Operation): string {
   }
 }
 
+/** Sends a JSON request body on stdin, so text of any language reaches GitHub intact. */
+function send(method: string, path: string, body: object, ...args: string[]): string {
+  return gh(['-X', method, `repos/${SLUG}/${path}`, '--input', '-', ...args], JSON.stringify(body));
+}
+
 function run(operations: Operation[]): void {
   const created = new Map<string, number>();
   for (const op of operations) {
     if (op.kind === 'create') {
-      const number = gh([
-        '-X',
-        'POST',
-        `repos/${SLUG}/milestones`,
-        '-f',
-        `title=${op.title}`,
-        '-f',
-        `description=${op.description}`,
-        '--jq',
-        '.number',
-      ]);
+      const { title, description } = op;
+      const number = send('POST', 'milestones', { title, description }, '--jq', '.number');
       created.set(op.ref, Number(number));
       console.log(`${describe(op)}: milestone ${number}`);
       continue;
     }
     if (op.kind === 'edit') {
-      const fields = [
-        ...(op.title === undefined ? [] : ['-f', `title=${op.title}`]),
-        ...(op.description === undefined ? [] : ['-f', `description=${op.description}`]),
-      ];
-      gh(['-X', 'PATCH', `repos/${SLUG}/milestones/${op.number}`, ...fields, '--silent']);
+      const { title, description } = op;
+      send('PATCH', `milestones/${op.number}`, { title, description }, '--silent');
     } else if (op.kind === 'assign') {
       const number = typeof op.milestone === 'number' ? op.milestone : created.get(op.milestone);
       if (number === undefined) throw new Error(`no milestone created for "${op.milestone}"`);
-      gh([
-        '-X',
-        'PATCH',
-        `repos/${SLUG}/issues/${op.issue}`,
-        '-F',
-        `milestone=${number}`,
-        '--silent',
-      ]);
+      send('PATCH', `issues/${op.issue}`, { milestone: number }, '--silent');
     } else {
-      gh([
-        '-X',
-        'PATCH',
-        `repos/${SLUG}/milestones/${op.number}`,
-        '-f',
-        'state=closed',
-        '--silent',
-      ]);
+      send('PATCH', `milestones/${op.number}`, { state: 'closed' }, '--silent');
     }
     console.log(describe(op));
   }
