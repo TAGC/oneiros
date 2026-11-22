@@ -47,13 +47,10 @@ The world's regions are [[Shard|shards]], its most strongly [[Remembered]] and s
 
 The dream has **vertical layers**: the waking dream, your dream, and the Dreamer's deep.
 
-> [!OPEN]
-> "The deep" (the Dreamer's deep, memories drifting in the deep, being lost in the deep) is not defined, and is easily confused with [[Deep]], the sleep phase in which "the deep layers come closer". Whether these are the same layers is not stated.
+> [!ISSUE 120]
 
 ## Open questions
 
-> [!OPEN]
-> What is it like to walk into a region?
+> [!ISSUE 121]
 
-> [!OPEN]
-> Do all players share one generated world, or are there several, each with its own community?
+> [!ISSUE 122]

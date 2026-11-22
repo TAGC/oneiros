@@ -16,8 +16,7 @@ Parked on 21 November 2026. Anything stable might need to be forged from [[Calm]
 
 The idea arose from [[obol|obols]] being minted in Calm, so their light has no opposite and clusters without sparking [[lucidity]] (see [[Memory light]]).
 
-> [!OPEN]
-> Must anything stable be forged from Calm, and is Calm the primary material of most things?
+> [!ISSUE 79]
 
 ## Glass is inert to emotion
 
@@ -25,5 +24,4 @@ Parked on 21 November 2026. Glass might be inert to every form of [[emotion]].
 
 The idea arose from [[bead|beads]] being glass-like containers that hold a memory while it is in the Dreamlands. The [[Kind|Kinds]] table has every solid thing react to every emotion, so glass would be an exception that needs a reason. It may tie into the Calm topic above.
 
-> [!OPEN]
-> Is glass inert to every emotion, and if so, why is it an exception to the solid kind?
+> [!ISSUE 80]

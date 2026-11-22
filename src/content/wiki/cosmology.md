@@ -38,8 +38,6 @@ The world's force diminishes over aeons, too slowly for most inhabitants to noti
 
 ## Open questions
 
-> [!OPEN]
-> How aware are the Dream's inhabitants that it is ending?
+> [!ISSUE 37]
 
-> [!OPEN]
-> "The Dream" (capitalised, as in "the Dream's end") is not defined. It may mean the Dreamlands or the Dreamer's will; the vision does not say.
+> [!ISSUE 38]
