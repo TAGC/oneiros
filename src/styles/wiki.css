@@ -44,6 +44,17 @@ a:hover {
 a.new {
   color: var(--red);
 }
+/* On a Chinese page, a link to a page that only exists in English. */
+a.en::after {
+  content: 'EN';
+  margin-inline-start: 0.15em;
+  font:
+    600 0.6em/1 'Source Sans 3',
+    system-ui,
+    sans-serif;
+  vertical-align: super;
+  color: var(--mute);
+}
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -110,6 +121,16 @@ header.top {
 }
 .menu-btn {
   display: none;
+}
+.lang-btn:hover {
+  text-decoration: none;
+}
+.lang-btn[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.lang-btn[aria-disabled='true']:hover {
+  background: #ffffff1f;
 }
 .search {
   position: relative;
@@ -442,6 +463,19 @@ table.wt {
 .note-conflict {
   border-left-color: var(--red);
 }
+.data-note {
+  color: var(--mute);
+  font-size: 14px;
+}
+.data-note .tag {
+  display: inline-block;
+  padding: 0 6px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--soft);
+  font-size: 12px;
+  font-weight: 600;
+}
 .navbox {
   clear: both;
   margin-top: 36px;
@@ -692,6 +726,70 @@ footer.foot p {
   font:
     600 18px 'Crimson Pro',
     serif;
+}
+
+/* Chinese pages. Latin text keeps the Latin fonts; CJK falls through to Noto, loaded on zh
+   pages only, then to the system's CJK fonts. */
+:lang(zh) {
+  --sans:
+    'Source Sans 3', 'Noto Sans SC', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    system-ui, sans-serif;
+  --serif: 'Crimson Pro', 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+}
+body:lang(zh) {
+  font-family: var(--sans);
+  line-height: 1.8;
+  line-break: strict;
+  text-autospace: normal;
+}
+:lang(zh) :is(p, li, dd, td, th) {
+  text-wrap: pretty;
+}
+:lang(zh) :is(.search input, .hbtn, .toc button, .filter button, nav.side h2, h3) {
+  font-family: var(--sans);
+}
+:lang(zh) article :is(h1, h2) {
+  font-family: var(--serif);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+:lang(zh) article h1 {
+  line-height: 1.25;
+}
+:lang(zh) article h2 {
+  line-height: 1.35;
+}
+:lang(zh) :is(.logo, .infobox .t, .tile .lab, .cards b, .results b, #pop b) {
+  font-family: var(--serif);
+}
+:lang(zh) .infobox .t {
+  font-weight: 700;
+  font-size: 19px;
+}
+:lang(zh) .note-h {
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+/* No italics in Chinese: emphasis takes dots under the characters instead. */
+:lang(zh) :is(em, i) {
+  font-style: normal;
+  text-emphasis: filled dot;
+  text-emphasis-position: under right;
+}
+:lang(zh) strong,
+:lang(zh) b {
+  font-weight: 700;
+}
+:lang(zh) .infobox th,
+:lang(zh) .navbox b {
+  font-weight: 700;
+}
+:lang(zh) .sub,
+:lang(zh) .infobox,
+:lang(zh) .formula,
+:lang(zh) .note {
+  line-height: 1.75;
 }
 
 @media (prefers-reduced-motion: reduce) {
