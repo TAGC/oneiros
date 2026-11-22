@@ -199,11 +199,65 @@ function collide(nodes: Node[]): void {
   }
 }
 
-function anchorsFor(groups: number, sizes: number[]): { x: number; y: number }[] {
+/**
+ * Seats each area in a grid cell so areas with many threads between them sit side by side:
+ * a deterministic swap search that shortens the total length of the threads between areas.
+ */
+function seatAreas(chart: StarChart, cols: number, cells: number): number[] {
+  const groups = chart.areas.length;
+  const groupOf = new Map<number, number>();
+  chart.areas.forEach((g, i) => g.stars.forEach((n) => groupOf.set(n, i)));
+  const weight = Array.from({ length: groups }, () => Array<number>(groups).fill(0));
+  for (const t of chart.threads) {
+    const a = groupOf.get(t.from)!;
+    const b = groupOf.get(t.to)!;
+    if (a !== b) {
+      weight[a][b]++;
+      weight[b][a]++;
+    }
+  }
+  const seat = Array.from({ length: groups }, (_, i) => i);
+  const distance = (p: number, q: number) =>
+    Math.hypot((p % cols) - (q % cols), Math.floor(p / cols) - Math.floor(q / cols));
+  const cost = () => {
+    let total = 0;
+    for (let a = 0; a < groups; a++) {
+      for (let b = a + 1; b < groups; b++) total += weight[a][b] * distance(seat[a], seat[b]);
+    }
+    return total;
+  };
+  let best = cost();
+  for (let improved = true; improved;) {
+    improved = false;
+    for (let a = 0; a < groups; a++) {
+      for (let cell = 0; cell < cells; cell++) {
+        const b = seat.indexOf(cell);
+        const from = seat[a];
+        if (from === cell) continue;
+        seat[a] = cell;
+        if (b >= 0) seat[b] = from;
+        const next = cost();
+        if (next < best - 1e-9) {
+          best = next;
+          improved = true;
+        } else {
+          seat[a] = from;
+          if (b >= 0) seat[b] = cell;
+        }
+      }
+    }
+  }
+  return seat;
+}
+
+function anchorsFor(chart: StarChart): { x: number; y: number }[] {
   const rnd = mulberry32(5);
+  const groups = chart.areas.length;
   const cols = Math.ceil(Math.sqrt(groups));
-  const cell = Math.max(250, Math.sqrt(Math.max(...sizes, 1)) * 92);
-  return Array.from({ length: groups }, (_, i) => {
+  const rows = Math.ceil(groups / cols);
+  const seat = seatAreas(chart, cols, cols * rows);
+  const cell = Math.max(250, Math.sqrt(Math.max(...chart.areas.map((a) => a.stars.length))) * 92);
+  return seat.map((i) => {
     const row = Math.floor(i / cols);
     const col = i % cols;
     const shift = row % 2 ? 0.22 : -0.22;
@@ -305,10 +359,7 @@ function moved(box: Box, dx: number, dy: number): Box {
 
 export function layoutSky(chart: StarChart): SkyLayout {
   const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
-  const anchors = anchorsFor(
-    chart.areas.length,
-    chart.areas.map((a) => a.stars.length),
-  );
+  const anchors = anchorsFor(chart);
   const rnd = mulberry32(7);
   const nodes: Node[] = chart.areas.flatMap((group, g) =>
     group.stars.map((number, k) => {

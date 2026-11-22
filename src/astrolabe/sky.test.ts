@@ -109,6 +109,26 @@ describe('the sky layout', () => {
     }
   });
 
+  test('sets areas with many links between them side by side', () => {
+    const qs = questions();
+    for (const q of qs) q.blockedBy = [];
+    qs[20].blockedBy = [1];
+    qs[21].blockedBy = [2];
+    qs[22].blockedBy = [3];
+    qs[23].blockedBy = [4];
+    const layout = layoutSky(chartQuestions(qs, questionGraph(qs), 'en'));
+    const centre = (area: Area | undefined) => layout.areas.find((a) => a.area === area)!;
+    const beliefs = centre('Beliefs');
+    const others = layout.areas
+      .filter((a) => a !== beliefs)
+      .sort(
+        (a, b) =>
+          Math.hypot(a.x - beliefs.x, a.y - beliefs.y) -
+          Math.hypot(b.x - beliefs.x, b.y - beliefs.y),
+      );
+    expect(others[0].area).toBeUndefined();
+  });
+
   test('draws a thread for each link, as a path between the two stars', () => {
     const layout = sky();
     expect(layout.threads.map((t) => [t.from, t.to])).toEqual([
