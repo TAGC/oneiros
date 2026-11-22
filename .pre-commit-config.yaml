@@ -1,0 +1,46 @@
+# Git hooks, run by pre-commit (https://pre-commit.com). Set up once per clone with
+# `pre-commit install`.
+
+# Without this, a hook with no `stages` runs at every installed stage.
+default_stages: [pre-commit]
+
+# What a plain `pre-commit install` sets up.
+default_install_hook_types: [pre-commit, commit-msg, pre-push]
+
+repos:
+  - repo: local
+    hooks:
+      # Fast checks on each commit. Content checks need a build, so they wait for the push.
+      - id: oxfmt
+        name: oxfmt
+        entry: bunx oxfmt --no-error-on-unmatched-pattern
+        language: system
+        files: \.(ts|js|mjs|json|css)$
+
+      - id: oxlint
+        name: oxlint
+        entry: bun run lint
+        language: system
+        pass_filenames: false
+        files: \.(ts|js|mjs|astro)$
+
+      - id: cspell
+        name: cspell (staged)
+        entry: bunx cspell --no-progress --no-must-find-files
+        language: system
+        files: ^(README\.md|src/content/wiki/.*\.mdx?|src/data/sheet/[^/]*\.json)$
+
+      - id: commitlint
+        name: commitlint
+        entry: bunx commitlint --edit
+        language: system
+        stages: [commit-msg]
+
+      # The same checks as the deploy, before anything reaches GitHub.
+      - id: verify
+        name: verify (build and every check)
+        entry: bun run verify
+        language: system
+        pass_filenames: false
+        always_run: true
+        stages: [pre-push]

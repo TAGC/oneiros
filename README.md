@@ -25,6 +25,12 @@ In dev, a page's link colours are worked out when that page renders. If links lo
 
 `bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs lint, format:check and check after the build, and a failure stops the deploy.
 
+Git hooks run the same checks earlier. Set them up once per clone with `pre-commit install` (needs [pre-commit](https://pre-commit.com)); `.pre-commit-config.yaml` defines them.
+
+- **On commit:** oxfmt formats staged code, oxlint runs, and cspell checks staged pages, sheet data and this README.
+- **On the commit message:** commitlint requires a Conventional Commit (`commitlint.config.js`).
+- **On push:** `bun run verify`, the deploy's checks.
+
 - **Spelling** (cspell, British English): the English pages, this README and the English sheet data. Code, URLs, HTML tags, hex colours, frontmatter keys and Chinese text are skipped. American spellings in `cspell-american.txt` are flagged.
 - **Section links:** every internal link in `dist/` must reach an existing page, and its `#fragment` an existing `id` on that page.
 - **Red links:** a link to a missing page fails unless its slug is in `src/data/redlinks.json`. Both languages share the list. The check also fails when a listed page has been written or nothing links to it any more.
