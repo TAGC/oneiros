@@ -61,3 +61,20 @@ describe('frontier', () => {
     expect(graph.frontier).toEqual([]);
   });
 });
+
+describe('peripheral', () => {
+  test('holds frontier questions that no open question depends on', () => {
+    const graph = graphOf([
+      issue(1),
+      issue(2),
+      issue(3, { blockedBy: [2] }),
+      issue(4, { state: 'decided' }),
+      issue(5, { blockedBy: [4] }),
+      issue(6),
+      issue(7, { state: 'decided', blockedBy: [6] }),
+      issue(8, { state: 'undermined' }),
+      issue(9, { blockedBy: [8] }),
+    ]);
+    expect(graph.peripheral).toEqual([1, 5, 6]);
+  });
+});
