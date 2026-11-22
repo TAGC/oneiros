@@ -1,0 +1,454 @@
+{
+  "ablaze#1": {
+    "en": "Is the vision's list of Ablaze effects (flicker, waking boon, eidolon) confirmed?",
+    "zh": "愿景列出的燃烧中效果（闪变、醒来恩赐、异影）是否已确认？"
+  },
+  "ablaze#2": {
+    "en": "While Ablaze, which higher tier's effects does a memory show, and at what multiplier?",
+    "zh": "燃烧中时，记忆展示哪个更高层级的效果，倍率是多少？"
+  },
+  "adverb#1": {
+    "en": "Should the sheet's slowly adverb example use Sleep magic or Unmaking?",
+    "zh": "参考表中副词缓慢地的例子应属于睡眠魔法还是消解？"
+  },
+  "adverb#2": {
+    "en": "Is Unmaking the home of the old Sleep magic, as the slowly adverb example assumes?",
+    "zh": "消解是否是旧睡眠魔法的归宿，如副词缓慢地的例子所假定？"
+  },
+  "adverb#3": {
+    "en": "Does Joy, deeply cancel Grief in a door, or join its mood alongside it?",
+    "zh": "喜悦，深深地是抵消一扇门中的悲伤，还是与悲伤并存于它的心境中？"
+  },
+  "ambient-emotion#1": {
+    "en": "How do lucidity cascades in manifest ambient emotion work?",
+    "zh": "外显的余情中，清明的连锁反应如何运作？"
+  },
+  "ambient-emotion#2": {
+    "en": "Is drawing ambient emotion into a mood an advanced skill?",
+    "zh": "把余情吸入心境是否是一项进阶技能？"
+  },
+  "anchored-place#1": {
+    "en": "What other ways anchor a place besides planting, and what do anchors do?",
+    "zh": "除种下之外，还有哪些方式锚定一个地方，锚又有什么作用？"
+  },
+  "apeiron#1": {
+    "en": "What should a month's subscription cost, in kyathoi and in money?",
+    "zh": "一个月的订阅应该值多少库阿托斯，又值多少钱？"
+  },
+  "archived-ideas#1": {
+    "en": "Is Unmaking, paid in Coherence, the right home for the old Sleep magic?",
+    "zh": "以凝聚度支付的消解，是否是旧睡眠魔法的合适归宿？"
+  },
+  "attention#1": {
+    "en": "What are the \"Projections\" that pause and stare at the Noticed level of Attention?",
+    "zh": "注意处于“被察觉”时停下来凝视的“投影”指什么？"
+  },
+  "belief-capacity#1": {
+    "en": "What is the sponge-size multiplier for belief capacity?",
+    "zh": "信念容量的海绵大小乘数是多少？"
+  },
+  "belief-stages#1": {
+    "en": "Does a false Dogma hurt when lucidity shatters it?",
+    "zh": "虚假的教条被清明击碎时会造成伤害吗？"
+  },
+  "body-and-form#1": {
+    "en": "Does pain need its own place in the ontology, or is it only a stimulus?",
+    "zh": "疼痛需要在本体论中有自己的位置，还是只是一种刺激？"
+  },
+  "burning#1": {
+    "en": "What does burning a memory cost beyond the memory and its bead?",
+    "zh": "燃烧一段记忆，除了记忆和珠子之外还要付出什么？"
+  },
+  "casting#1": {
+    "en": "How does combat feel moment to moment?",
+    "zh": "战斗时时刻刻的手感是怎样的？"
+  },
+  "chain#1": {
+    "en": "What is the chain cap, and does it grow with the character?",
+    "zh": "串长上限是多少，会随角色成长吗？"
+  },
+  "coherence#1": {
+    "en": "What is the multiplier on renown in maximum Coherence?",
+    "zh": "凝聚度上限中声名的乘数是多少？"
+  },
+  "coherence#2": {
+    "en": "Exactly what survives when you return as an Echo?",
+    "zh": "作为回响归来时究竟保留什么？"
+  },
+  "coherence#3": {
+    "en": "What thresholds mark Anchored, Drifting, Fraying and Unravelling Coherence?",
+    "zh": "稳固、漂浮、绽线、瓦解这些凝聚度状态的阈值是多少？"
+  },
+  "coherence-status#1": {
+    "en": "Where does each Coherence status word end and the next begin?",
+    "zh": "每个凝聚度状态词在哪里结束，下一个从哪里开始？"
+  },
+  "conviction#1": {
+    "en": "Does the Conviction of a belief that a memory happened raise that memory's Hold?",
+    "zh": "相信某段记忆确实发生过的信念，其信念度是否提升那段记忆的扎根度？"
+  },
+  "cosmology#1": {
+    "en": "How aware are the Dream's inhabitants that it is ending?",
+    "zh": "「梦」中的居民在多大程度上意识到它正在终结？"
+  },
+  "cosmology#2": {
+    "en": "What does \"the Dream\" mean: the Dreamlands or the Dreamer's will?",
+    "zh": "「梦」指什么：梦境之地，还是做梦者的意志？"
+  },
+  "cracking-and-collapse#1": {
+    "en": "When are a collapsed room's buried contents destroyed?",
+    "zh": "坍塌房间里被掩埋的东西何时会被摧毁？"
+  },
+  "cracking-and-collapse#2": {
+    "en": "Should a room cracking and a memory cracking get distinct words?",
+    "zh": "房间的开裂与记忆的碎裂，英文是否应改用两个不同的词？"
+  },
+  "crafting#1": {
+    "en": "Can gear amplify, protect, widen or store?",
+    "zh": "装备能否增幅、防护、扩展或储存？"
+  },
+  "crafting#2": {
+    "en": "What are the crafts of bottling, imprinting, materials, anchors and artifice?",
+    "zh": "装瓶、铭印、材料、锚、机巧这些技艺各是什么？"
+  },
+  "dwelling#1": {
+    "en": "What happens to a belief's own material when it loses a ground?",
+    "zh": "信念失去一条依据时，它自身的材料会怎样？"
+  },
+  "echo#1": {
+    "en": "Does an Echo keep only your colourless beliefs and memories, or more?",
+    "zh": "回响只保留你无色的信念和记忆，还是更多？"
+  },
+  "economy#1": {
+    "en": "What does a bead's value come from, and does selling it stop you conjuring it?",
+    "zh": "珠子的价值取决于什么，卖掉它是否就无法再用它召唤？"
+  },
+  "economy#2": {
+    "en": "Are wonder memories the most prized in the economy?",
+    "zh": "惊奇记忆是否在经济中最为珍贵？"
+  },
+  "economy#3": {
+    "en": "What is the reason for the no-forgery principle, now that Unmaking frees feeling?",
+    "zh": "既然消解会释放情感，不可伪造原则的理由是什么？"
+  },
+  "economy#4": {
+    "en": "Can a dealer pass off a worn bead as fresh, and does Inspect show its condition?",
+    "zh": "商贩能否把磨损的珠子当作新的卖出，观察能否显示其状况？"
+  },
+  "economy#5": {
+    "en": "Are gold and onyx goods rather than money?",
+    "zh": "金和缟玛瑙是货物而非货币吗？"
+  },
+  "eidolon#1": {
+    "en": "What vividness threshold lets a burning memory raise an eidolon?",
+    "zh": "怎样的鲜明度阈值能让燃烧中的记忆唤起异影？"
+  },
+  "emotion#1": {
+    "en": "Is Stillness the will stopped, or the will feeling motionless while still moving?",
+    "zh": "静止是意志停止，还是意志仍在运动却感到自己不动？"
+  },
+  "emotion#2": {
+    "en": "Should named double motions such as wrath get their own reactions on a few kinds?",
+    "zh": "狂怒等有名称的双重运动是否应在少数种类上拥有自己的回应？"
+  },
+  "force#1": {
+    "en": "What becomes of excess force when a spell lands on a will with no capacity for its emotion?",
+    "zh": "法术命中对该情感没有容量的意志时，盈余的力会变成什么？"
+  },
+  "generation#1": {
+    "en": "How is a world generated: its starting point, primitives and simulated history?",
+    "zh": "世界如何生成：从什么开始，用哪些基本元素，历史如何模拟？"
+  },
+  "held-and-manifest#1": {
+    "en": "How do twin casting and a buffer keep opposites apart until they land?",
+    "zh": "双重施法和缓冲如何让相反情感在命中前保持分离？"
+  },
+  "held-and-manifest#2": {
+    "en": "What is left of a spell after it strikes something manifest?",
+    "zh": "法术击中外显之物后，还剩下什么？"
+  },
+  "held-and-manifest#3": {
+    "en": "How do held undertones and opposed creatures fit the rule that held feeling never annihilates?",
+    "zh": "内蕴的底色和相反的生物如何符合内蕴情感从不湮灭的规则？"
+  },
+  "hold#1": {
+    "en": "Should one of the two senses of \"crack\" around Hold get another word?",
+    "zh": "扎根度相关的碎裂与开裂在英文中共用一个词，是否应给其中一种换个词？"
+  },
+  "illusion#1": {
+    "en": "Do illusions come from faint, low-vividness memories?",
+    "zh": "幻象是否来自微弱、鲜明度低的记忆？"
+  },
+  "inner-voices#1": {
+    "en": "Is the term \"inner voices\" lowercase or capitalised as \"Voices\"?",
+    "zh": "术语“内心之声”在英文中应写成小写还是首字母大写？"
+  },
+  "intensity#1": {
+    "en": "Should Hate's level 1 read \"Hatred\" or \"Hate\"?",
+    "zh": "恨的第 1 级应写作憎恨还是恨？"
+  },
+  "kyathos#1": {
+    "en": "How many kyathoi does the pithos hold?",
+    "zh": "皮托斯以库阿托斯计有多大？"
+  },
+  "magic#1": {
+    "en": "Does casting pull your mood towards the spell, or only spend area from the emotion's lobe?",
+    "zh": "施法是把心境拉向法术，还是只从所耗情感那一瓣中花掉面积？"
+  },
+  "magic#2": {
+    "en": "Does Unmaking undo weakly held things, draw no Attention and call on Forgetting?",
+    "zh": "消解是否解除扎根不牢的事物、不直接引来注意并借助遗忘？"
+  },
+  "magic#3": {
+    "en": "In Memory magic, do faint memories give illusions and can memories not be forged?",
+    "zh": "记忆魔法中，模糊的记忆是否产生幻象，记忆是否无法伪造？"
+  },
+  "memory#1": {
+    "en": "Are the four memory sources backstory, trading, living and finding?",
+    "zh": "记忆的四个来源是否为身世、交易、经历、拾获？"
+  },
+  "memory#2": {
+    "en": "Do repeated experiences merge into one faint but well-rooted memory?",
+    "zh": "重复的经历是否合并成一段微弱但扎根牢固的记忆？"
+  },
+  "memory#3": {
+    "en": "Which holds: merging memories, or the rule that a memory is a fixed snapshot?",
+    "zh": "记忆合并与“记忆是构成不变的快照”这条规则，以哪条为准？"
+  },
+  "memory#4": {
+    "en": "How does merging memories fit the familiarity rule, under which repeated feelings fade?",
+    "zh": "记忆合并如何与“重复的感受会降低鲜明度”的熟悉度规则兼容？"
+  },
+  "memory-light#1": {
+    "en": "Which fading curve, following Jost's law, should memory light use?",
+    "zh": "记忆之光应采用哪条遵循约斯特定律的褪色曲线？"
+  },
+  "mood#1": {
+    "en": "What lowers a mood, apart from spending?",
+    "zh": "除了消耗之外，还有什么会降低心境？"
+  },
+  "obol#1": {
+    "en": "Does absorbing an obol shore up your Coherence?",
+    "zh": "吸收一枚奥波勒斯能否稳固你的凝聚度？"
+  },
+  "obol#2": {
+    "en": "Does a city's Conviction feed its obols' renown or their Hold?",
+    "zh": "城市的信念度滋养的是它的奥波勒斯的声名，还是扎根度？"
+  },
+  "origin#1": {
+    "en": "Does a Nightmare-born character start with a mutated or a transformed room?",
+    "zh": "梦魇之子角色一开始拥有的是变异的房间，还是变形的房间？"
+  },
+  "origin#2": {
+    "en": "Is origin the first step of character creation, or an idea not yet worked through?",
+    "zh": "出身是角色创建的第一步，还是尚未细化的其他想法？"
+  },
+  "other-minds#1": {
+    "en": "In another mind's house, do the house's depths come closer in the Deep?",
+    "zh": "在他人的宅邸中，深眠阶段宅邸的深处是否会靠得更近？"
+  },
+  "other-minds#2": {
+    "en": "How do you defend your own house against an NPC intruder?",
+    "zh": "你如何守卫自己的宅邸，抵御非玩家角色入侵者？"
+  },
+  "other-minds#3": {
+    "en": "Does the access used to enter other minds' houses work on guarded places?",
+    "zh": "进入他人宅邸的方式能否同样用于有守护的地点？"
+  },
+  "parked-topics#1": {
+    "en": "Must anything stable be forged from Calm, and is Calm most things' main material?",
+    "zh": "稳定的东西是否都必须由平静锻造？平静是否是大多数事物的主要材料？"
+  },
+  "parked-topics#2": {
+    "en": "Is glass inert to every emotion, and why is it an exception to the solid kind?",
+    "zh": "玻璃是否对每一种情感都呈惰性？它为什么是固体这一种类的例外？"
+  },
+  "potions#1": {
+    "en": "Does a Bottled moments potion bottle a memory or the feeling of a moment?",
+    "zh": "“瓶装瞬间”药剂装瓶的是一段记忆，还是一个瞬间的情感？"
+  },
+  "potions#2": {
+    "en": "When potions are mixed, is a charged liquid's feeling held or manifest?",
+    "zh": "混合药剂时，充能液体中的情感是内蕴的还是外显的？"
+  },
+  "potions#3": {
+    "en": "Is Coherence restored by rest and food only, or by potions as well?",
+    "zh": "凝聚度只由休息和食物恢复，还是药剂也能恢复？"
+  },
+  "potions#4": {
+    "en": "How can potions restore Coherence without being health bars in a bottle?",
+    "zh": "药剂如何既能恢复凝聚度，又不是装在瓶子里的血条？"
+  },
+  "potions#5": {
+    "en": "Does potion Saturation stand, and what is its addiction and perception-filter system?",
+    "zh": "药剂的饱和是否成立？它的成瘾与感知滤镜系统是什么？"
+  },
+  "quality-of-the-will#1": {
+    "en": "What happens when a quality weakens and an emotion's plot shrinks below its rooms?",
+    "zh": "当一种品质减弱、某种情感的地块缩小到比已建房间还小时，会发生什么？"
+  },
+  "quality-styles#1": {
+    "en": "What should quality style depth stages be called, and is Marked the same as Growing?",
+    "zh": "品质风格的深度阶段应如何命名？显著是否等同于渐长？"
+  },
+  "quality-styles#2": {
+    "en": "Does Humility's Deep hush fill the Calm wing or the centre?",
+    "zh": "谦卑深厚时的安宁充满的是平静之侧翼，还是中央大厅？",
+    "sources": [
+      "sheet",
+      "vision"
+    ]
+  },
+  "quality-styles#3": {
+    "en": "Do quality styles' wooden floors clash with the house's marble and mosaic floors?",
+    "zh": "描述木地板的品质风格是否与宅邸的大理石和马赛克地面冲突？"
+  },
+  "quality-styles#4": {
+    "en": "Do the candles in the Inflexibility and Temperance styles clash with oil lamps?",
+    "zh": "刚硬与节制风格中的蜡烛是否与油灯相冲突？"
+  },
+  "quality-styles#5": {
+    "en": "Should deep quality style features that touch navigation or plot stay cosmetic?",
+    "zh": "涉及路线或地块的深厚品质风格特征是否应只是外观上的？"
+  },
+  "quality-styles#6": {
+    "en": "Can Humility and Holiness remove mirrors when the Temenos has a fixed Mirror room?",
+    "zh": "圣域有固定的镜子房间，谦卑和圣洁的风格还能去掉镜子吗？"
+  },
+  "recounting#1": {
+    "en": "How does the scar risk of recounting a Fixture scale with the recount rate?",
+    "zh": "倾诉陈设时，伤疤的风险如何随倾诉速率变化？"
+  },
+  "reliving#1": {
+    "en": "Is reliving at high-stakes moments the same act as drawing a memory from a bead?",
+    "zh": "在关键时刻重温，是否与从珠子中抽回记忆是同一个行为？"
+  },
+  "renown#1": {
+    "en": "What is the multiplier on renown?",
+    "zh": "声名的乘数是多少？"
+  },
+  "resonance#1": {
+    "en": "Do healing and repair need a match, and what must match?",
+    "zh": "治疗与修复是否需要匹配？什么必须匹配？"
+  },
+  "resonance#2": {
+    "en": "Should heavy use wear a bead down?",
+    "zh": "频繁使用是否应当磨损珠子？"
+  },
+  "rest#1": {
+    "en": "During a long rest, do the house's depths come closer in the Deep?",
+    "zh": "长时休息时，宅邸的深层是否会在深眠中靠得更近？"
+  },
+  "rootedness-ladder#1": {
+    "en": "What are the exact tier factors for maximum Coherence on the rootedness ladder?",
+    "zh": "扎根阶梯上凝聚度上限的确切层级系数是多少？"
+  },
+  "rootedness-ladder#2": {
+    "en": "Does opposed grain cancel a flicker into lucidity, or only resist and damp it?",
+    "zh": "本性相反时，闪变会被部分抵消为清明，还是只会被抵抗和削弱？"
+  },
+  "rootedness-ladder#3": {
+    "en": "Does maximum Coherence include renown, or only material times tier factor?",
+    "zh": "凝聚度上限是否计入声名，还是只算材料乘以层级系数？"
+  },
+  "rootedness-ladder#4": {
+    "en": "Do repeated experiences merge into one faint memory with high Hold?",
+    "zh": "反复的经历是否会合并为一段材料很少、扎根度很高的记忆？"
+  },
+  "rumour#1": {
+    "en": "Should Memory still keep a rumour accurate when it is not an emotion?",
+    "zh": "记忆并非情感，是否仍应由它让谣言保持准确？"
+  },
+  "scar#1": {
+    "en": "Who heals scars and who uproots in the world: quests, factions, companions?",
+    "zh": "在这个世界里，谁来治愈伤疤、谁来连根拔起：任务、派系，还是同伴？"
+  },
+  "scar#2": {
+    "en": "What word, if any, should replace \"dun\" for a scar's drained colour?",
+    "zh": "伤疤褪去的颜色是否需要另选一个词来代替“枯”？"
+  },
+  "scar#3": {
+    "en": "Does the Dark malus need a different name from Forgetting, \"the dark\"?",
+    "zh": "晦暗减益是否需要换个名字，以免与遗忘的别名“黑暗”同名？"
+  },
+  "spinning-top#1": {
+    "en": "Does the spinning top stay beside the pool or move to the library?",
+    "zh": "陀螺是留在水池边，还是移到藏书室？"
+  },
+  "surfacing#1": {
+    "en": "Is surfacing a memory's step from Room to Megaron, or a last step at Megaron?",
+    "zh": "浮现是记忆从独室到正殿的一步，还是在正殿时的最后一步？"
+  },
+  "temenos#1": {
+    "en": "Is the Temenos's size its Coherence, or does it grow physically with Coherence?",
+    "zh": "圣域的大小就是凝聚度，还是随凝聚度在物理上增长？"
+  },
+  "temenos#2": {
+    "en": "What reason decides which direction each Temenos wing faces?",
+    "zh": "圣域每个侧翼朝向哪个方位，依据什么理由？"
+  },
+  "temenos#3": {
+    "en": "What reason decides where the Temenos's crossing stairs are?",
+    "zh": "圣域的交叉楼梯为何在这个位置，依据什么理由？"
+  },
+  "temenos#4": {
+    "en": "Where do you enter the Temenos, and which wing faces the entrance?",
+    "zh": "你从哪里进入圣域，哪个侧翼朝向入口？"
+  },
+  "temenos#5": {
+    "en": "What happens when an emotion's plot shrinks below the rooms built on it?",
+    "zh": "当某种情感的地块缩小到比已建在上面的房间还小时，会发生什么？"
+  },
+  "temenos#6": {
+    "en": "Does a Temenos form's brightness show vividness or how fast it is fading?",
+    "zh": "圣域中形态的亮度显示鲜明度，还是显示它褪去的速度？"
+  },
+  "temenos#7": {
+    "en": "Does every Temenos floor always have room space, or only start with one room?",
+    "zh": "圣域每层楼是总有容纳一个房间的空间，还是只是一开始有一个房间？"
+  },
+  "temenos#8": {
+    "en": "How should the Scars row describe a fresh scar now that dun means an empty bead?",
+    "zh": "枯现在指空珠子，参考表“伤疤”一行该如何描述新伤？"
+  },
+  "temenos#9": {
+    "en": "Does the Temenos keep the sheet-only Mirror room despite Humility and Holiness?",
+    "zh": "圣域是否保留只见于参考表、又与谦卑和圣洁不太相容的镜子房间？"
+  },
+  "temenos#10": {
+    "en": "Are the sheet-only Temenos details on the centre, library and garden kept?",
+    "zh": "只见于参考表的中央大厅、藏书室和花园三处圣域细节是否保留？"
+  },
+  "temperament#1": {
+    "en": "Is \"Pleasant, low energy\" the right wording for the phlegmatic quadrant?",
+    "zh": "黏液质对应的象限写作“愉快，低能量”是否合适？"
+  },
+  "the-dreamlands#1": {
+    "en": "What is \"the deep\", and is it the layers the Deep phase brings closer?",
+    "zh": "什么是深渊，它与深眠中逼近的深层是否是同一些层级？"
+  },
+  "the-dreamlands#2": {
+    "en": "What is it like to walk into a region of the Dreamlands?",
+    "zh": "走进梦境之地的一个区域是什么感觉？"
+  },
+  "the-dreamlands#3": {
+    "en": "Do all players share one generated world, or are there several?",
+    "zh": "所有玩家共享同一个生成的世界，还是有好几个世界？"
+  },
+  "unmaking#1": {
+    "en": "Is Unmaking, paid in Coherence, the right home for the old Sleep magic?",
+    "zh": "以凝聚度支付的消解，是否是旧睡眠魔法的合适归宿？"
+  },
+  "uprooting#1": {
+    "en": "Who practises uprooting and scar healing in the world: quests, factions, companions?",
+    "zh": "在这个世界里，谁来施行连根拔起和治愈伤疤：任务、派系，还是同伴？"
+  },
+  "waking-boon#1": {
+    "en": "What does a waking boon do, and how is the tended room chosen?",
+    "zh": "醒来恩赐有什么作用，被打理的房间如何选定？"
+  },
+  "wonder#1": {
+    "en": "How does Stillness magic, with a wonder memory as its medium, work?",
+    "zh": "以惊奇记忆为媒介的静止魔法如何运作？"
+  }
+}
