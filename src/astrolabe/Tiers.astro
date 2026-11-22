@@ -37,6 +37,7 @@ const ungrouped = new Set(chart.ungrouped);
   height={layout.height}
   role="group"
   aria-label={a.views.tiers}
+  data-frontier-x={layout.columns.find((c) => c.tier === 1)!.x}
 >
   <g class="al-columns" aria-hidden="true">
     {

@@ -33,6 +33,12 @@ function setUp(root: HTMLElement): void {
       b.setAttribute('aria-pressed', String(b.dataset.view === view));
     }
     storage('astrolabe-view', view);
+    // On a narrow screen, open the tiers at the frontier rather than at settled ground.
+    const tiersView = root.querySelector<HTMLElement>('.al-view-tiers')!;
+    const frontierX = Number(root.querySelector<SVGElement>('.al-tiers')?.dataset.frontierX);
+    if (view === 'tiers' && tiersView.scrollLeft === 0 && tiersView.clientWidth < 700) {
+      tiersView.scrollLeft = frontierX - 8;
+    }
   };
   const saved = storage('astrolabe-view');
   if (saved === 'tiers') showView('tiers');
