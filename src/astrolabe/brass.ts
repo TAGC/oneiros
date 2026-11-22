@@ -8,7 +8,7 @@ import type { Area } from '../lib/questions';
 import { ENERGIES, type Energy, type Size } from '../lib/questions/constellations';
 import { useTranslations } from '../i18n/ui';
 import type { ChartConstellation, StarChart } from './chart';
-import { mulberry32 } from './sky';
+import { type Box, mulberry32, overlapArea } from './sky';
 import { isCjk, textWidth, wrapText } from './text';
 
 export interface DialSector {
@@ -33,13 +33,6 @@ export interface DialMark {
   y: number;
   r: number;
   label: DialLabel;
-}
-
-export interface Box {
-  x1: number;
-  y1: number;
-  x2: number;
-  y2: number;
 }
 
 /** A name in lines; `x` is where the anchor sits, `y` the top of the first line. */
@@ -256,10 +249,6 @@ function wrapName(name: string): string[] {
 /** Names keep a little air between them. */
 const padded = (b: Box): Box => ({ x1: b.x1 - 3, y1: b.y1 - 2, x2: b.x2 + 3, y2: b.y2 + 2 });
 
-const overlap = (a: Box, b: Box) =>
-  Math.max(0, Math.min(a.x2, b.x2) - Math.max(a.x1, b.x1)) *
-  Math.max(0, Math.min(a.y2, b.y2) - Math.max(a.y1, b.y1));
-
 /** Every place a name could sit beside its mark, the outward side first. */
 function spots(m: Omit<DialMark, 'label'>, lines: string[]): DialLabel[] {
   const w = Math.max(...lines.map((l) => textWidth(l, LABEL_SIZE)));
@@ -348,7 +337,7 @@ function placeLabels(
         m.number,
         list.map((label, rank) => ({
           label,
-          base: rank * 0.5 + blocked.reduce((c, b) => c + overlap(label.box, b) * 50, 0),
+          base: rank * 0.5 + blocked.reduce((c, b) => c + overlapArea(label.box, b) * 50, 0),
         })),
       ];
     }),
@@ -357,7 +346,7 @@ function placeLabels(
   const cost = (placed: Map<number, Spot>, n: number, spot: Spot) => {
     let c = spot.base;
     for (const [other, s] of placed)
-      if (other !== n) c += overlap(spot.label.box, padded(s.label.box)) * 50;
+      if (other !== n) c += overlapArea(spot.label.box, padded(s.label.box)) * 50;
     return c;
   };
   const best = (placed: Map<number, Spot>, n: number) => {

@@ -132,7 +132,8 @@ interface Node {
   hy: number;
 }
 
-const overlapArea = (a: Box, b: Box) =>
+/** The area two boxes share; 0 when they do not overlap. */
+export const overlapArea = (a: Box, b: Box) =>
   Math.max(0, Math.min(a.x2, b.x2) - Math.max(a.x1, b.x1)) *
   Math.max(0, Math.min(a.y2, b.y2) - Math.max(a.y1, b.y1));
 
