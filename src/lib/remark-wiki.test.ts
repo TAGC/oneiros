@@ -7,7 +7,7 @@ import { unified } from 'unified';
 import type { Locale } from '../i18n/ui';
 import type { Question, Questions } from './questions';
 import remarkWiki from './remark-wiki';
-import { extractCallouts } from './wiki';
+import { markerBox } from './wiki';
 
 const QUESTIONS: Question[] = [
   {
@@ -128,19 +128,25 @@ describe('issue markers', () => {
     expect(html).not.toContain('id="open-1"');
     expect(html).toContain('<blockquote>');
   });
+
+  test('count only in a quote of their own: a nested or misspelt marker stays a quote', () => {
+    const html = render('> Quoted.\n>\n> > [!ISSUE 7]\n\n> [!issue #142]', 'en');
+    expect(html).not.toContain('class="note');
+    expect(html).toContain('[!ISSUE 7]');
+  });
 });
 
-describe('callouts on a page', () => {
-  const body = '> [!OPEN]\n> Inline text.\n\n> [!ISSUE 142]\n\n> [!ISSUE 7]\n';
-
-  test('list marker questions in page order, not old inline callouts', () => {
-    expect(extractCallouts(body, 'en', questions)).toEqual([
-      { kind: 'open', id: 'issue-142', markdown: 'Does [[vividness]] fade overnight?', issue: 142 },
-      { kind: 'conflict', id: 'issue-7', markdown: 'The vision says X.', issue: 7 },
-    ]);
+describe('a marker box', () => {
+  test('takes its kind, anchor and text from the question', () => {
+    expect(markerBox(7, 'en', questions)).toEqual({
+      kind: 'conflict',
+      id: 'issue-7',
+      markdown: 'The vision says X.',
+      issue: 7,
+    });
   });
 
-  test('take marker text in the page locale', () => {
-    expect(extractCallouts(body, 'zh', questions)[0].markdown).toBe('[[鲜明度]]会在一夜间消退吗？');
+  test('takes its text in the page locale', () => {
+    expect(markerBox(142, 'zh', questions).markdown).toBe('[[鲜明度]]会在一夜间消退吗？');
   });
 });
