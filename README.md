@@ -30,22 +30,7 @@ In dev, a page's link colours are worked out when that page renders. If links lo
 The authoring guide and the rest of the reference, by topic:
 
 - [Checks](docs/checks.md): the content checks, the git hooks and the deploy; allowing a red link or a word, banning a Chinese term.
-
-## Layout
-
-- `src/content/wiki/`: the pages, one Markdown (or MDX) file each.
-- `src/content/wiki-zh/`: Chinese versions of pages, named after the English page's file.
-- `src/i18n/ui.ts`: interface strings in English and Chinese.
-- `src/data/sheet/`: the data tables, imported once from the old reference sheet. Edit them here; the spreadsheet is retired.
-- `src/data/navboxes.json`: navboxes.
-- `src/data/icons.json`: 24×24 pixel icons, one per area.
-- `src/components/figures/`: SVG figures for infoboxes.
-- `public/art/`: the background art the designer generated. Dark mode uses a night scene of the Dreamlands (made with Midjourney), graded darker and bluer for the site. Light mode uses a day scene (`dreamlands-day-*`), graded slightly softer and less saturated. The ungraded originals stay outside the repo.
-- `src/components/LICENSE-lucide.txt`: the licence for the three Lucide icons on the Quality styles page.
-- `src/lib/`: the wiki link resolver, remark plugin and page helpers.
-- `src/lib/questions/`: the questions module, the only way into question data. It writes and reads the question cache.
-- `.questions/`: the question cache, one Markdown file per question issue, and one per milestone under `.questions/milestones/`. `bun run pull` wipes and rewrites it; it is gitignored.
-- `src/astrolabe/`: the Astrolabe, the star map of every question at `/astrolabe/`. Self-contained, with [its own README](src/astrolabe/README.md); only a thin route sits in `src/pages/`.
+- [Layout](docs/layout.md): where things live in the repo.
 
 ## Authoring guide
 
