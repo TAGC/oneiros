@@ -155,6 +155,8 @@ Five pillars hold it together:
   statusIcon: 'Icon',
   statusStage: 'Stage',
   statusMeaning: 'Meaning',
+  statusPagesHeading: 'Pages by status',
+  statusNoPages: 'No pages at this stage yet.',
   /** What each stage means for a page, keyed by the English stage name. */
   statusMeanings: {
     Notion: 'Mentioned or sketched; the core is still open or in conflict.',
@@ -326,6 +328,8 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   statusIcon: '图标',
   statusStage: '阶段',
   statusMeaning: '含义',
+  statusPagesHeading: '按状态列出的页面',
+  statusNoPages: '此阶段尚无页面。',
   statusMeanings: {
     Notion: '只是提及或已有雏形；核心仍未确定或存在冲突。',
     Tenet: '核心已约定，细节仍未确定。',
