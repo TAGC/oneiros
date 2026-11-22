@@ -63,6 +63,7 @@
     "groups": [
       {
         "label": "Who you are",
+        "labelZh": "你是谁",
         "links": [
           "Lucid",
           "Character creation",
@@ -75,6 +76,7 @@
       },
       {
         "label": "Health",
+        "labelZh": "生命",
         "links": [
           "Coherence",
           "Coherence status",
@@ -85,6 +87,7 @@
       },
       {
         "label": "Capacity",
+        "labelZh": "容量",
         "links": [
           "Capacity",
           "Mood capacity"
@@ -92,6 +95,7 @@
       },
       {
         "label": "Change",
+        "labelZh": "变化",
         "links": [
           "Mutation"
         ]
