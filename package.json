@@ -18,7 +18,7 @@
     "pull": "bun scripts/pull.ts",
     "links": "bun scripts/question-links.ts",
     "constellations": "bun scripts/constellations.ts",
-    "test": "bun test",
+    "test": "bun test ./src ./scripts",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",
     "verify": "bun run build && bun run test && bun run lint && bun run format:check && bun run check"
