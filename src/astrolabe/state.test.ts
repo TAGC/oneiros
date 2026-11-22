@@ -238,6 +238,16 @@ describe('what is kept', () => {
     expect(addressOf({ ...state, panel: null })).toBe('');
   });
 
+  test('the address names the Dial while it shows with no panel', () => {
+    const dial = startState(null, '#dial', page);
+    expect(addressOf(dial)).toBe('#dial');
+    expect(addressOf(act(dial, { type: 'view', view: 'sky' }))).toBe('');
+    const closed = act(at({ view: 'brass', panel: { kind: 'constellation', n: 2 } }), {
+      type: 'close',
+    });
+    expect(addressOf(closed)).toBe('#dial');
+  });
+
   test('an address read back opens the same panel', () => {
     expect(startState(null, addressOf(state), page).panel).toEqual(state.panel);
   });

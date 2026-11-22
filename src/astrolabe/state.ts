@@ -145,9 +145,10 @@ export function readAddress(hash: string): OpenPanel | 'dial' | null {
   return null;
 }
 
-/** The address for the state: the open panel's, or none. */
+/** The address for the state: the open panel's, else the Dial's while it shows, else none. */
 export function addressOf(state: AstrolabeState): string {
-  return state.panel ? `#${PREFIX[state.panel.kind]}${state.panel.n}` : '';
+  if (state.panel) return `#${PREFIX[state.panel.kind]}${state.panel.n}`;
+  return state.view === 'brass' ? '#dial' : '';
 }
 
 /** The key of the one saved entry. */

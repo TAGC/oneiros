@@ -101,7 +101,7 @@ One module owns the page state, agreed by the designer on 22 Nov 2026: the view,
 
 - **Saved entry.** One localStorage entry, `astrolabe`, holds the view, the clustering and Show settled as JSON. Reads and writes are wrapped, so the page works without storage; an unreadable entry, or a choice the page does not offer, is ignored. Only a choice made on the page is saved, not one an address made on load: the state keeps the view last chosen on the page (`chosenView`) apart from the view shown.
 - **Not saved.** The time and energy filter resets on every visit. Full screen is state but cannot be restored, since browsers allow it only right after a click or keypress.
-- **Addresses.** `#star-N` opens a star's panel, in the tiers if they were saved and otherwise in the night sky. `#constellation-panel-N` opens a constellation's panel on the Dial, and `#dial` the Dial. On load an address beats the saved choice. Opening a panel writes its address; closing clears it.
+- **Addresses.** `#star-N` opens a star's panel, in the tiers if they were saved and otherwise in the night sky. `#constellation-panel-N` opens a constellation's panel on the Dial, and `#dial` the Dial. On load an address beats the saved choice. The address follows the state: the open panel's, else `#dial` while the Dial shows, else none. So opening a panel writes its address, closing it clears it (back to `#dial` on the Dial), and leaving the Dial clears `#dial`.
 - **One panel.** At most one panel is open, a star's or a constellation's, in any view: opening one closes the other. A star opened from the Dial leads to the night sky; a constellation opens on the Dial. Switching the view keeps the panel.
 - **Escape** closes an open panel first, then leaves full screen.
 
