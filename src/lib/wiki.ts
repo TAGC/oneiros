@@ -72,6 +72,9 @@ interface Index {
 
 const cache = new Map<Locale, { signature: string; index: Index }>();
 
+/** A build reads each folder once; dev re-checks file times so edits show up live. */
+const BUILD = process.env.NODE_ENV === 'production';
+
 function wikiDir(locale: Locale): string {
   return join(process.cwd(), WIKI_DIRS[locale]);
 }
@@ -88,6 +91,8 @@ function nameKey(name: string): string {
 }
 
 function readIndex(locale: Locale): Index {
+  const cached = cache.get(locale);
+  if (BUILD && cached) return cached.index;
   const dir = wikiDir(locale);
   let files: string[] = [];
   try {
@@ -99,7 +104,6 @@ function readIndex(locale: Locale): Index {
     .map((f) => `${f}:${statSync(join(dir, f)).mtimeMs}`)
     .sort()
     .join('|');
-  const cached = cache.get(locale);
   if (cached?.signature === signature) return cached.index;
 
   const sources = files.map((file): WikiSource => {
@@ -180,11 +184,28 @@ export function outgoingSlugs(source: WikiSource, locale: Locale = 'en'): Set<st
   return out;
 }
 
+const linksTo = new Map<Locale, { indexes: Index[]; bySlug: Map<string, WikiSource[]> }>();
+
 /** Pages of one locale linking to `slug`, A to Z by title. */
 export function backlinks(slug: string, locale: Locale = 'en'): WikiSource[] {
-  return allSources(locale)
-    .filter((s) => s.slug !== slug && outgoingSlugs(s, locale).has(slug))
-    .sort((a, b) => a.title.localeCompare(b.title, locale === 'zh' ? 'zh-Hans' : undefined));
+  const indexes = [readIndex(locale), ...(locale === 'en' ? [] : [readIndex('en')])];
+  let cached = linksTo.get(locale);
+  if (!cached || cached.indexes.some((index, i) => index !== indexes[i])) {
+    const bySlug = new Map<string, WikiSource[]>();
+    const sorted = [...indexes[0].sources].sort((a, b) =>
+      a.title.localeCompare(b.title, locale === 'zh' ? 'zh-Hans' : undefined),
+    );
+    for (const source of sorted) {
+      for (const target of outgoingSlugs(source, locale)) {
+        const list = bySlug.get(target);
+        if (list) list.push(source);
+        else bySlug.set(target, [source]);
+      }
+    }
+    cached = { indexes, bySlug };
+    linksTo.set(locale, cached);
+  }
+  return [...(cached.bySlug.get(slug) ?? [])];
 }
 
 /** The callout kind of a blockquote opening with `[!OPEN]` or `[!CONFLICT]`, if any. */
@@ -211,9 +232,11 @@ export function calloutId(kind: CalloutKind, n: number): string {
   return `${kind}-${n}`;
 }
 
+const calloutParser = unified().use(remarkParse).use(remarkGfm);
+
 /** Every callout in a body, in document order, with its Markdown and anchor id. */
 export function extractCallouts(body: string): Callout[] {
-  const tree = unified().use(remarkParse).use(remarkGfm).parse(body) as Root;
+  const tree = calloutParser.parse(body) as Root;
   const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
   const callouts: Callout[] = [];
   visit(tree, 'blockquote', (node: Blockquote) => {
