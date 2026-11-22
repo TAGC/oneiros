@@ -3,6 +3,7 @@ import IconFrame from '../../components/IconFrame.astro';
 import WikiLink from '../../components/WikiLink.astro';
 import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
+import { getPages } from '../../lib/pages';
 import { STATUSES } from '../../lib/status';
 import { resolve } from '../../lib/wiki';
 
@@ -15,6 +16,13 @@ interface Props {
 const { locale } = Astro.props;
 const t = useTranslations(locale);
 const stages = resolve('Belief stages', locale);
+const pages = await getPages(locale);
+const byStatus = STATUSES.map((s) => ({
+  status: s,
+  pages: pages
+    .filter((p) => p.entry.data.status === s)
+    .sort((a, b) => a.title.localeCompare(b.title, locale)),
+}));
 ---
 
 <Wiki title={t.status} description={t.statusDescription} locale={locale} path="/status/">
@@ -50,4 +58,32 @@ const stages = resolve('Belief stages', locale);
     {t.statusNote[0]}<WikiLink to={stages} locale={locale}>{t.statusBeliefStages}</WikiLink>{t.statusNote[1]}
   </p>
   <p>{t.statusRule}</p>
+  <h2>{t.statusPagesHeading}</h2>
+  {
+    byStatus.map(({ status, pages }) => (
+      <section class="status-group">
+        <h3 class="cat-head">
+          <IconFrame name={status} size="sm" />
+          <span>{t.statusNames[status] ?? status}</span>
+          <span class="count">{t.pageCount(pages.length)}</span>
+        </h3>
+        {pages.length ? (
+          <ul class="page-list">
+            {pages.map((p) => (
+              <li>
+                <WikiLink to={p} locale={locale}>
+                  {p.title}
+                </WikiLink>
+                <span class="s" lang={p.locale === locale ? undefined : p.locale}>
+                  {t.colon + p.entry.data.summary}
+                </span>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p>{t.statusNoPages}</p>
+        )}
+      </section>
+    ))
+  }
 </Wiki>
