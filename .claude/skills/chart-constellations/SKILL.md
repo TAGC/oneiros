@@ -30,8 +30,8 @@ constellations:
     size: small
     energy: low
     reasoning:
-      en: Both ask how memories fade and what that costs.
-      zh: 两者都问记忆如何褪色以及代价为何。
+      en: How memories fade and what that costs.
+      zh: 记忆如何褪色以及代价为何。
     questions: [142, 145]
 ```
 
@@ -42,13 +42,14 @@ Change the chart only for these reasons:
 - **Too big for one session.** Split a group of more than eight questions along its natural seam.
 - **Two small groups that are one topic.** Merge them, keeping the older milestone's number.
 - **All its questions closed.** The helper closes it on its own; drop it from the plan or leave it, either way.
+- **A duplicate closed.** It leaves its constellation: `gh issue edit N --remove-milestone`. Reword the reasoning if it named the duplicate.
 
 A group is **cohesive** when settling one question shapes the others: one rule, one mechanic, one owner page or a chain of blocked-by links. A blocker and the questions it blocks belong together. Duplicates of one conflict across pages belong together. Areas do not bound a group; shared rules do.
 
 For every new or changed constellation, write:
 
 - **Name:** a short noun phrase in Glossary terms, spelt and capitalised as the wiki does (CLAUDE.md, "Ubiquitous language"). The Chinese name uses `src/i18n/zh-terms.md` exactly.
-- **Reasoning:** one to three sentences on why the questions belong together: the rule, page or decision they share. Describe the questions, never an answer or a lean: the reasoning is not a place for design. The Chinese reasoning says the same, with the term list's words. A term missing from the list goes into the list first, as CLAUDE.md says.
+- **Reasoning:** one to three sentences on why the questions belong together: the rule, page or decision they share. Name the shared theme only: never counts ("all four", "both", "two are conflicts") or a roll call of which question asks what, because questions close and move and those go stale. Describe the questions, never an answer or a lean: the reasoning is not a place for design. The Chinese reasoning says the same, with the term list's words. A term missing from the list goes into the list first, as CLAUDE.md says.
 - **Size and Energy:** from the README scales, judged from the questions. The graph facts feed Energy: independent and peripheral questions pull it down; central questions, conflicts, foundations and Philosophy pull it up. The two scales are independent. Judge both from the questions alone; the designer's time and energy are theirs to match against the scales, never a question to ask.
 
 Leave an unchanged constellation's name, reasoning, size and energy as they are.

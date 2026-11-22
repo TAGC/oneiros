@@ -69,7 +69,7 @@ The issues and their answer comments are the decision record. Do not keep a sepa
 
 The designer merges the pull request; merging deploys. Once it is merged:
 
-1. Close each ruled-out issue with `gh issue close N --reason "not planned"`, and each duplicate with `gh issue close N --reason duplicate --duplicate-of M`, where M is the canonical issue (README, "Duplicates", has the API call for a `gh` without `--duplicate-of`). Closing either earlier fails the deploy's checks, since its marker still names a closed issue.
+1. Close each ruled-out issue with `gh issue close N --reason "not planned"`, and each duplicate with `gh issue close N --reason duplicate --duplicate-of M`, where M is the canonical issue (README, "Duplicates", has the API call for a `gh` without `--duplicate-of`). A closed duplicate leaves its constellation: `gh issue edit N --remove-milestone`. Closing either earlier fails the deploy's checks, since its marker still names a closed issue.
 2. For each constellation the group drew from, check `gh issue list --state open --milestone "<title>"`. When it lists nothing, close the milestone: `gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`.
 
 ## 5. Hand over
