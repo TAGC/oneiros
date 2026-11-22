@@ -64,7 +64,7 @@ export function categoryLabel(name: string, locale: Locale): string {
 
 /** A page status's display name; frontmatter keeps the English name. */
 export function statusLabel(status: Status, locale: Locale): string {
-  return useTranslations(locale).statusNames[status] ?? status;
+  return useTranslations(locale).statusNames[status];
 }
 
 export const WIKI_LINK = /\[\[([^[\]\n]+?)\]\]/g;

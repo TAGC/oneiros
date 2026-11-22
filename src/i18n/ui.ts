@@ -2,6 +2,8 @@
  * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
+import type { Status } from '../lib/status';
+
 export const LOCALES = ['en', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'en';
@@ -92,7 +94,12 @@ const en = {
   areaNames: {} as Record<string, string>,
   status: 'Status',
   /** Display names of the page statuses; frontmatter keeps the English name. */
-  statusNames: {} as Record<string, string>,
+  statusNames: {
+    Notion: 'Notion',
+    Tenet: 'Tenet',
+    Certainty: 'Certainty',
+    Dogma: 'Dogma',
+  } satisfies Record<Status, string>,
   all: 'All',
   pageCount: (n: number) => (n === 1 ? '1 page' : `${n} pages`),
 
@@ -163,7 +170,7 @@ Five pillars hold it together:
     Tenet: 'Core agreed, details still open.',
     Certainty: 'Agreed and audited, nothing open.',
     Dogma: 'Locked by the designer; it will not change.',
-  } as Record<string, string>,
+  } satisfies Record<Status, string>,
   statusRulesHeading: 'Rules',
   statusRules: [
     'Only the designer raises a status. Claude may propose a status for a new page, or propose lowering one.',
