@@ -545,7 +545,7 @@ table.wt {
   font-variant-numeric: tabular-nums;
 }
 
-/* Status words: from whole (gold) to breaking (violet), echoing the figure. */
+/* Named states as pills. */
 .status {
   display: flex;
   flex-wrap: wrap;
@@ -555,17 +555,21 @@ table.wt {
   padding: 0;
 }
 .status li {
-  --c: var(--joy);
   display: inline-flex;
   align-items: center;
   gap: 8px;
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 3px 14px 3px 11px;
+  padding: 3px 14px;
   background: var(--page);
   font-size: 15px;
 }
-.status li::before {
+/* Coherence status words: from whole (gold) to breaking (violet), echoing the figure. */
+.status-coherence li {
+  --c: var(--joy);
+  padding-inline-start: 11px;
+}
+.status-coherence li::before {
   content: '';
   box-sizing: border-box;
   width: 9px;
@@ -574,15 +578,15 @@ table.wt {
   border: 2px solid var(--c);
   background: var(--c);
 }
-.status li:nth-child(2)::before {
+.status-coherence li:nth-child(2)::before {
   background: none;
 }
-.status li:nth-child(3)::before {
+.status-coherence li:nth-child(3)::before {
   --c: light-dark(var(--despair), #9b72d6);
   background: none;
   border-style: dotted;
 }
-.status li:nth-child(4)::before {
+.status-coherence li:nth-child(4)::before {
   --c: light-dark(var(--despair), #9b72d6);
 }
 

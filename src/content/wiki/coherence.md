@@ -53,7 +53,7 @@ The Glossary words this differently ("its size is your Coherence"); the conflict
 
 Status words show your Coherence at a glance:
 
-<ul class="status"><li>Anchored</li><li>Drifting</li><li>Fraying</li><li>Unravelling</li></ul>
+<ul class="status status-coherence"><li>Anchored</li><li>Drifting</li><li>Fraying</li><li>Unravelling</li></ul>
 
 ## At zero
 

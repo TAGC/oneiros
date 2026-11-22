@@ -53,7 +53,7 @@ navbox: character
 
 状态词让你一眼看出自己的凝聚度：
 
-<ul class="status"><li>稳固</li><li>漂浮</li><li>绽线</li><li>瓦解</li></ul>
+<ul class="status status-coherence"><li>稳固</li><li>漂浮</li><li>绽线</li><li>瓦解</li></ul>
 
 ## 归零时
 

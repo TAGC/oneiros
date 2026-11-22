@@ -120,7 +120,8 @@ A page with three or more `##` headings gets a collapsible contents box before t
 
 - Markdown tables render as wiki tables; numeric cells right-align.
 - `<p class="formula">…</p>` for a formula.
-- `<ul class="status"><li>Anchored</li>…</ul>` for a row of named states.
+- `<ul class="status"><li>Noticed</li>…</ul>` for a row of named states, as neutral pills.
+- `<ul class="status status-coherence"><li>Anchored</li>…</ul>` only for the four Coherence status words, in order: adds dots from gold (whole) to violet (breaking).
 
 ### Sheet tables (MDX only)
 

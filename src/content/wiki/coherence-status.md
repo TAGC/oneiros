@@ -20,7 +20,7 @@ navbox: character
 
 **Coherence status** is the set of words that show your [[Coherence]] at a glance:
 
-<ul class="status"><li>Anchored</li><li>Drifting</li><li>Fraying</li><li>Unravelling</li></ul>
+<ul class="status status-coherence"><li>Anchored</li><li>Drifting</li><li>Fraying</li><li>Unravelling</li></ul>
 
 > [!OPEN]
 > No thresholds are defined for the status words: the vision and the Glossary name them but never say where one ends and the next begins.

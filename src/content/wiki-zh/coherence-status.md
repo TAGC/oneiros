@@ -20,7 +20,7 @@ navbox: character
 
 **凝聚度状态**(Coherence status)是一组让你一眼看出自己[[凝聚度]]的词：
 
-<ul class="status"><li>稳固</li><li>漂浮</li><li>绽线</li><li>瓦解</li></ul>
+<ul class="status status-coherence"><li>稳固</li><li>漂浮</li><li>绽线</li><li>瓦解</li></ul>
 
 > [!OPEN]
 > 状态词还没有定义阈值：Vision 和术语表列出了它们的名字，却从未说明一个在哪里结束、下一个从哪里开始。
