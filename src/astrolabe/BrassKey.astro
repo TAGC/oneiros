@@ -1,0 +1,14 @@
+---
+/** How to read the constellations dial, shown under the map in that view. */
+import { type Locale, useTranslations } from '../i18n/ui';
+
+interface Props {
+  locale: Locale;
+}
+
+const a = useTranslations(Astro.props.locale).astrolabe;
+---
+
+<ul class="al-dialkey">
+  {a.dialKey.map((line) => <li>{line}</li>)}
+</ul>

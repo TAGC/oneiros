@@ -1,0 +1,297 @@
+/* The constellations view: a brass dial, drawn as code on the wiki's tokens. Light: pale brass
+   on a cream plate. Dark: polished brass round a night-blue plate. */
+.astrolabe {
+  --al-brass-hi: light-dark(#f6efdc, #efd593);
+  --al-brass: light-dark(#e4d6b2, #c39b52);
+  --al-brass-lo: light-dark(#c4ad7c, #6e5021);
+  --al-plate-0: light-dark(#fbf6ea, #1d1e4c);
+  --al-plate-1: light-dark(#efe5cb, #0c0d24);
+  --al-plate-ink: light-dark(#6a5634, #d8b46a);
+  --al-engrave: light-dark(#3a2c17, #24180a);
+  --al-mark-ink: light-dark(#3a2c17, #fff3d6);
+  --al-name: light-dark(#2b2116, #f3e6c8);
+  --al-name-halo: light-dark(#f7f0dee6, #13143ae6);
+}
+
+/* Which view shows. */
+.astrolabe[data-view='brass'] :is(.al-view-sky, .al-view-tiers, .al-hint:not([data-for='brass'])),
+.astrolabe:not([data-view='brass']) :is(.al-view-brass, .al-hint[data-for='brass'], .al-dialkey) {
+  display: none;
+}
+/* The dial shows every constellation, so the constellations switch has nothing to do here,
+   and the time and energy filter always shows. */
+.astrolabe[data-view='brass'] .al-ctoggle {
+  display: none;
+}
+.astrolabe.astrolabe[data-view='brass'] .al-scale {
+  display: inline-flex;
+}
+.astrolabe.astrolabe[data-view='brass'] .al-fit {
+  display: block;
+}
+
+/* The frame: as tall as it is wide, up to most of the screen. */
+.astrolabe[data-view='brass'] .al-frame {
+  height: auto;
+  aspect-ratio: 1;
+  max-height: clamp(440px, 92vh, 1040px);
+  background: radial-gradient(ellipse at 45% 40%, var(--al-sky-1), var(--al-sky-2) 70%);
+}
+.al-view-brass {
+  overflow: auto;
+}
+.al-brass {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-width: 720px;
+  min-height: 720px;
+  user-select: none;
+}
+
+/* The instrument. */
+.al-brass-hi {
+  stop-color: var(--al-brass-hi);
+}
+.al-brass-mid {
+  stop-color: var(--al-brass);
+}
+.al-brass-lo {
+  stop-color: var(--al-brass-lo);
+}
+.al-plate-0 {
+  stop-color: var(--al-plate-0);
+}
+.al-plate-1 {
+  stop-color: var(--al-plate-1);
+}
+.al-shackle {
+  fill: none;
+  stroke: url(#al-brass-a);
+  stroke-width: 6;
+}
+.al-throne,
+.al-limb,
+.al-bandring {
+  stroke: var(--al-brass-lo);
+  stroke-width: 1;
+}
+.al-throne,
+.al-limb {
+  fill: url(#al-brass-a);
+}
+.al-bandring {
+  fill: url(#al-brass-b);
+}
+.al-ticks {
+  stroke: var(--al-engrave);
+  stroke-width: 1;
+  opacity: 0.7;
+}
+.al-band-tint {
+  fill: none;
+  stroke: var(--tint);
+  stroke-width: 3;
+  opacity: 0.75;
+}
+.al-band-line {
+  stroke: var(--al-engrave);
+  stroke-width: 1.2;
+}
+.al-band-rule {
+  fill: var(--al-brass-lo);
+  opacity: 0.35;
+}
+.al-band-name {
+  font: 700 13px var(--serif, 'Crimson Pro', serif);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  fill: var(--al-engrave);
+}
+.al-band-name:lang(zh) {
+  letter-spacing: 0.3em;
+}
+.al-plate {
+  fill: url(#al-brass-plate);
+  stroke: var(--al-brass-lo);
+  stroke-width: 1.5;
+}
+.al-plate-edge,
+.al-sector,
+.al-ring {
+  fill: none;
+  stroke: var(--al-plate-ink);
+}
+.al-plate-edge {
+  stroke-width: 0.8;
+  opacity: 0.4;
+}
+.al-sector {
+  stroke-width: 0.8;
+  stroke-dasharray: 2 5;
+  opacity: 0.35;
+}
+.al-ring {
+  stroke-width: 1;
+  opacity: 0.5;
+}
+.al-ring-none {
+  stroke-dasharray: 5 4;
+}
+.al-rule {
+  fill: url(#al-brass-b);
+  stroke: var(--al-brass-lo);
+  stroke-width: 1;
+  opacity: 0.85;
+}
+.al-rule-name {
+  font: 700 11px var(--sans, 'Source Sans 3', sans-serif);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-anchor: middle;
+  fill: var(--al-engrave);
+}
+.al-rule-name:lang(zh) {
+  letter-spacing: 0;
+}
+.al-hub,
+.al-hub-in {
+  stroke: var(--al-brass-lo);
+}
+.al-hub {
+  fill: url(#al-brass-plate);
+  stroke-width: 1.2;
+}
+.al-hub-in {
+  fill: none;
+  stroke-width: 0.8;
+  opacity: 0.6;
+}
+.al-hub-count,
+.al-hub-note {
+  text-anchor: middle;
+}
+.al-hub-count {
+  font: 600 19px var(--serif, 'Crimson Pro', serif);
+  fill: var(--ink);
+}
+.al-hub-note {
+  font: 11.5px var(--sans, 'Source Sans 3', sans-serif);
+  fill: var(--mute);
+}
+.al-hub-energy {
+  font-style: italic;
+}
+
+/* A constellation's mark: a brass boss with a star, ringed by one notch per question. */
+.al-cmark {
+  cursor: pointer;
+  outline: none;
+  transition: opacity 0.25s;
+}
+.al-cmark .al-hit {
+  fill: transparent;
+}
+.al-boss {
+  fill: url(#al-brass-a);
+  stroke: var(--al-brass-lo);
+  stroke-width: 1.2;
+}
+.al-cmark-unsized .al-boss {
+  stroke-dasharray: 3 2;
+}
+.al-boss-star {
+  fill: var(--al-mark-ink);
+  opacity: 0.85;
+}
+.al-notch {
+  fill: none;
+  stroke: var(--al-plate-ink);
+  stroke-width: 1.6;
+  opacity: 0.55;
+}
+.al-notch-settled {
+  stroke: var(--open);
+  stroke-width: 3;
+  opacity: 1;
+}
+.al-leader {
+  stroke: var(--al-plate-ink);
+  stroke-width: 0.9;
+  opacity: 0.6;
+}
+.al-cmark-name {
+  font: italic 600 16px var(--serif, 'Crimson Pro', serif);
+  fill: var(--al-name);
+  paint-order: stroke;
+  stroke: var(--al-name-halo);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+.al-cmark-name:lang(zh) {
+  font-style: normal;
+  font-size: 15.5px;
+}
+.al-cmark-focus {
+  fill: none;
+  stroke: var(--link);
+  stroke-width: 2;
+  stroke-dasharray: 3 2.5;
+  opacity: 0;
+}
+.al-cmark:focus-visible .al-cmark-focus {
+  opacity: 1;
+}
+.al-cmark:hover .al-boss,
+.al-cmark.al-selected .al-boss {
+  stroke: var(--open);
+  stroke-width: 2.4;
+}
+.al-cmark:hover .al-cmark-name,
+.al-cmark.al-selected .al-cmark-name {
+  fill: var(--ink);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+}
+.al-brass.al-has-selection .al-cmark:not(.al-selected) {
+  opacity: 0.55;
+}
+.al-cmark.al-unfit {
+  opacity: 0.2;
+}
+
+/* The constellation panel, and the key under the dial. */
+.al-cpanel .al-card-facts {
+  margin: 0 0 6px;
+}
+.al-cpanel-stars {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.al-cpanel-stars li {
+  padding: 3px 0;
+}
+.al-cpanel-page {
+  margin-inline-start: 30px;
+  font-size: 13px;
+  color: var(--mute);
+}
+.al-cpanel-page::before {
+  content: '→ ';
+}
+.al-dialkey {
+  margin: 10px 0 0;
+  padding-inline-start: 20px;
+  color: var(--mute);
+  font-size: 14px;
+}
+
+/* Phone: the dial keeps a readable size and scrolls inside the frame. */
+@media (max-width: 600px) {
+  .astrolabe[data-view='brass'] .al-frame {
+    aspect-ratio: auto;
+    height: 70vh;
+  }
+}
