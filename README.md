@@ -70,6 +70,7 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
 - `src/lib/questions/`: the questions module, the only way into question data. It writes and reads the question cache.
 - `.questions/`: the question cache, one Markdown file per question issue. `bun run pull` wipes and rewrites it; it is gitignored.
+- `src/astrolabe/`: the Astrolabe, the star map of every question at `/astrolabe/`. Self-contained, with [its own README](src/astrolabe/README.md); only a thin route sits in `src/pages/`.
 
 ## Authoring guide
 
