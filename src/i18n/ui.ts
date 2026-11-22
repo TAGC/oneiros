@@ -177,7 +177,7 @@ Five pillars hold it together:
       `${c.open} open: ${c.frontier} on the frontier, ${c.blocked} blocked. ${c.decided} decided, ${c['ruled-out']} ruled out, ${c.undermined} undermined.`,
     empty: 'No questions yet. Run `bun run pull` to fetch them from GitHub.',
     view: 'View',
-    views: { sky: 'Night sky', tiers: 'Tiers', brass: 'Constellations' },
+    views: { sky: 'Night sky', tiers: 'Tiers', brass: 'Dial' },
     hint: 'Drag to pan; pinch, Ctrl and scroll, or the buttons to zoom. Select a star to read it.',
     tiersHint:
       'Settled ground on the left, the frontier next, then the questions further out. Select a star to read it.',
@@ -482,7 +482,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
       `${c.open} 个待定：${c.frontier} 个前沿，${c.blocked} 个受阻。${c.decided} 个已定，${c['ruled-out']} 个不采纳，${c.undermined} 个前提动摇。`,
     empty: '尚无问题。请运行 `bun run pull` 从 GitHub 获取。',
     view: '视图',
-    views: { sky: '夜空', tiers: '层级', brass: '星座' },
+    views: { sky: '夜空', tiers: '层级', brass: '表盘' },
     hint: '拖动平移；双指、Ctrl 加滚轮或按钮缩放。选择一颗星即可阅读。',
     tiersHint: '左边是已定之地，接着是前沿，再往右是更远的问题。选择一颗星即可阅读。',
     brassHint:

@@ -110,7 +110,7 @@ function setUpBrass(root: HTMLElement): void {
   } catch {
     /* Storage unavailable: nothing is remembered. */
   }
-  const toView = fromHash || location.hash === '#constellations';
+  const toView = fromHash || location.hash === '#dial';
   if (toView || (saved === 'brass' && !location.hash.startsWith('#star-'))) showView('brass');
   if (fromHash) show(Number(fromHash[1]), false);
 }

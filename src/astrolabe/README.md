@@ -35,7 +35,7 @@ A constellation is a group of related open questions sized for one session. The 
 
 The time and energy filter keeps lit only the constellations that fit: a constellation fits when its size is the time chosen and its energy the energy chosen. One without a size or energy fits only "Any". The designer chose exact matches on 22 Nov 2026.
 
-### The constellations view
+### The Dial
 
 A brass dial, agreed with the designer on 22 November 2026. Sectors are the 16 areas, in the wiki's order clockwise from the top; rings are energy, low near the hub and high at the rim. Each open constellation is one mark:
 
@@ -45,7 +45,7 @@ A brass dial, agreed with the designer on 22 November 2026. Sectors are the 16 a
 
 A sector widens with the constellations it holds and never gets narrower than its area's name on the band, so an area with none keeps a short, named sector. A narrow rule at the top carries the energy scale. Both are Claude's choices for legibility. A constellation with no energy gets a dashed ring inside the low one, and one with no area a "No area" sector at the end; both appear only when needed.
 
-Selecting a mark opens its panel: name, size, energy and progress, areas, reasoning, and its questions. A question opens its star in the night sky, or its box on its wiki page. Without JavaScript, `:target` shows the panel, as for stars. The time and energy filter dims the marks that do not fit; the constellations switch has nothing to do in this view and hides. On a phone the dial keeps a readable size and scrolls inside the frame. A link to `/astrolabe/#constellations` opens this view.
+Selecting a mark opens its panel: name, size, energy and progress, areas, reasoning, and its questions. A question opens its star in the night sky, or its box on its wiki page. Without JavaScript, `:target` shows the panel, as for stars. The time and energy filter dims the marks that do not fit; the constellations switch has nothing to do in this view and hides. On a phone the dial keeps a readable size and scrolls inside the frame. A link to `/astrolabe/#dial` opens this view. It is named the Dial (表盘), not Constellations, because the Constellations switch already has that name.
 
 ### Milestone format
 
