@@ -85,7 +85,7 @@ const wisps = layout.stars.flatMap((s) => {
     specks.map((p) => (
       <path
         d={p.d}
-        opacity={p.opacity}
+        fill-opacity={p.opacity}
         class={p.tw ? 'al-tw' : undefined}
         style={p.tw ? `--tw:${p.tw.period}s;--tw-delay:-${p.tw.delay}s` : undefined}
       />

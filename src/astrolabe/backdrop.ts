@@ -1,7 +1,8 @@
 /**
  * The night sky's background specks, merged into a few paths. Thousands of single circles
  * made the sky slow to paint; one path per opacity step (and per twinkle rhythm) draws the
- * same specks with a handful of elements.
+ * same specks with a handful of elements. Each path spans the whole sky, so it takes its
+ * opacity as fill-opacity, which needs no layer of its own.
  */
 import { mulberry32 } from './sky';
 

@@ -387,7 +387,8 @@
   fill: var(--ink);
 }
 
-/* Twinkle: frontier halos and a few specks. Speck paths hold many specks, so they only fade. */
+/* Twinkle: frontier halos and a few specks. A speck path spans the whole sky, so it fades
+   by fill-opacity: opacity would composite a sky-sized layer for every path. */
 .al-halo {
   animation: al-twinkle var(--tw, 4s) ease-in-out var(--tw-delay, 0s) infinite alternate;
   transform-box: fill-box;
@@ -408,10 +409,10 @@
 }
 @keyframes al-twinkle-fade {
   from {
-    opacity: 0.45;
+    fill-opacity: 0.45;
   }
   to {
-    opacity: 1;
+    fill-opacity: 1;
   }
 }
 /* It rests while the sky is dragged or zoomed, so each frame only redraws the move. */
