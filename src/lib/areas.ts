@@ -1,12 +1,22 @@
-import glossary from '../data/sheet/glossary.json';
-
-const table = glossary.blocks.find((b) => b.type === 'table');
-const column = table?.header?.indexOf('Area') ?? -1;
-
-/** The Glossary's Area values, A to Z. */
+/** The wiki's areas, A to Z. Every page's `area:` must be one of them. */
 export const AREAS = [
-  ...new Set((table?.rows ?? []).map((row) => String(row[column] ?? '').trim()).filter(Boolean)),
-].sort() as [string, ...string[]];
+  'Beliefs',
+  'Body',
+  'Character',
+  'Dreams',
+  'Economy',
+  'Emotion',
+  'Items',
+  'Library',
+  'Lore',
+  'Lucidity',
+  'Magic',
+  'Memory',
+  'Philosophy',
+  'Rest',
+  'Temenos',
+  'World',
+] as const;
 
 /** Areas listed in the sidebar, as in the approved mockup. */
 export const SIDEBAR_AREAS = [
