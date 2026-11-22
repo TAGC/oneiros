@@ -28,7 +28,7 @@ navbox: temenos
 
 ## Why uproot
 
-- **To move a memory out.** Only Loose memories go into [[bead|beads]], so a rooted one must be uprooted before [[recounting]].
+- **To move a memory out.** Only Loose memories and Fixtures go into [[bead|beads]], so a Room or Megaron must be uprooted before [[recounting]].
 - **To clear a collapse.** A collapsed room can be rooted again or uprooted (see [[Cracking and collapse|cracking and collapse]]).
 - **To undo a mutation.** A surfaced memory is undone by uprooting (see [[surfacing]]).
 - **To help someone.** Some quests take you into another character's [[Temenos]] to help them uproot a troubling memory. If they let you keep it, it arrives vivid but Loose (see [[Other minds]]).

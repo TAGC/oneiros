@@ -11,7 +11,7 @@ aliases:
 infobox:
   rows:
     - label: Left by
-      value: Destroying something at Fixture or above; a botched [[uprooting]]; any Megaron
+      value: Destroying something at Fixture or above; a botched [[uprooting]]; a Fixture [[Recounting|recounted]] too fast; any Megaron
     - label: Costs
       value: Its plot, its [[mood capacity]] and its share of [[Coherence]]
     - label: Maluses
@@ -37,7 +37,7 @@ Each tier leaves its own ruin:
 For a memory Megaron, there is a mark on the body too. Loose items and [[Belief stages|Musings]] leave none.
 
 - **[[Uprooting]]** below Megaron scars only when botched; a Megaron always scars, even when cleanly uprooted.
-- **[[Igniting]]** a Fixture in a rush risks a scar; done carefully, it takes time and keeps its Hold.
+- **[[Recounting]]** a Fixture too fast risks a scar; too slow risks an interruption instead.
 - **A belief** destroyed does what destroying its form would: a bookcase torn out leaves marks on the wall, a burnt room scars the building, and a Dogma's shrine is defaced as its hall collapses (see [[Belief]]).
 
 ## Maluses

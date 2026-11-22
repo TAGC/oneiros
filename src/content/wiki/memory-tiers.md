@@ -38,7 +38,7 @@ The **memory tiers** are the names a [[memory]] takes as its [[Hold]] grows, one
 ## Each tier
 
 - An **Impression** is Loose. Its effect is small, and it is the only kind of memory you can pour into a [[bead]] (see [[recounting]]). Memories from others arrive vivid but Loose, which makes them the readiest fuel for [[burning]].
-- A **Recollection** is a Fixture. Its effect is steadier, and burning one means dismantling it in the act of [[igniting]].
+- A **Recollection** is a Fixture. Its effect is steadier. To burn one, you first [[Recounting|recount]] it into a bead, where it loses all its [[Hold]].
 - A **Refrain** has a room of its own. Its effect is strong and lasting, plus a [[waking boon]], and its [[mutation]] is shown in full, so a strong mood can already cause brief [[Flicker|flickers]].
 - A **Touchstone** is a [[Megaron]]. It may [[surfacing|surface]] as a mutation, and destroying or uprooting it always leaves a [[scar]] on the house and a mark on the body.
 

@@ -11,7 +11,7 @@ infobox:
     - label: Shown as
       value: An orb coloured by its emotions, its rim showing the time left
     - label: Lasts
-      value: World-time scaled by the memory's [[Hold]] alone
+      value: World-time scaled by the memory's [[vividness]]
     - label: Spells
       value: Using its emotions, take on its sensory details
     - label: Ends
@@ -25,10 +25,7 @@ You are **Ablaze** while a [[memory]] [[Burning|burns]]. The burning memory show
 
 ## How long it lasts
 
-Time is world-time, and how long you stay Ablaze scales with the memory's [[Hold]] alone, jumping at each tier line. A fresh traded memory burns hot and short; a dismantled [[Fixture]] smoulders (see [[igniting]]).
-
-> [!OPEN]
-> That burn duration jumps at each tier line was assumed in discussion and never answered. The designer has not confirmed it.
+Time is world-time, and how long you stay Ablaze scales with the memory's [[vividness]].
 
 ## While Ablaze
 

@@ -22,4 +22,4 @@ A bead becomes dun in two ways:
 - **[[Reliving]]** draws its memory back into your mind and leaves the bead dun.
 - An **interrupted transfer** loses the whole memory: its material floods out as [[ambient emotion]] and the bead is left dun (see [[recounting]]).
 
-[[Recounting]] pours a Loose memory into an empty bead, so only a dun bead can take one.
+[[Recounting]] pours a Loose memory or a Fixture into an empty bead, so only a dun bead can take one.

@@ -3,31 +3,22 @@ title: Igniting
 kind: term
 area: Memory
 status: Tenet
-summary: Starting to burn a memory; a Fixture must be dismantled in the same act.
+summary: Starting to burn a memory held in a bead; the more vivid the memory, the longer it takes.
 aliases:
   - ignite
 infobox:
   rows:
     - label: Starts
-      value: '[[Burning]] a memory'
-    - label: Loose memory
-      value: Ignites at once
-    - label: Fixture, careful
-      value: Takes time, keeps its [[Hold]], burns long
-    - label: Fixture, rushed
-      value: Risks a [[scar]]
+      value: '[[Burning]] a memory held in a [[bead]]'
+    - label: Takes
+      value: Longer the more [[vividness|vivid]] the memory
+    - label: Fixtures
+      value: Dismantled before this, when [[Recounting|recounted]]
     - label: Rooms and Megara
-      value: Cannot be burnt
+      value: Cannot be burnt until [[Uprooting|uprooted]]
 navbox: memory
 ---
 
-**Igniting** is starting to [[Burning|burn]] a [[memory]]. A [[Loose]] memory ignites at once. A [[Fixture]] must be dismantled in the same act of igniting.
+**Igniting** is starting to [[Burning|burn]] a [[memory]] held in a [[bead]]. It takes longer the more [[vividness|vivid]] the memory: a log takes longer to kindle than kindling.
 
-## Dismantling a Fixture
-
-A Fixture is mentally dismantled as it is lit:
-
-- **Done carefully**, it takes time and keeps its [[Hold]], so it burns long: a dismantled Fixture smoulders (see [[Ablaze]]).
-- **Rushed**, it risks a botch that leaves a [[scar]]: marks on the wall, where the Fixture was torn out.
-
-Rooms and [[Megaron|Megara]] cannot be burnt, so cannot be ignited (that Megara cannot be burnt is not yet confirmed; see [[Burning]]).
+A [[Fixture]] is dismantled before it is ignited, when it is [[Recounting|recounted]] into its bead, where it loses all its [[Hold]] (see [[Recounting#Recounting a Fixture]]). Rooms and [[Megaron|Megara]] must be [[Uprooting|uprooted]] before they can be recounted, so they are never ignited directly.

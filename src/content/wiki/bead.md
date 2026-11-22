@@ -26,7 +26,7 @@ navbox: memory
 
 A **bead** is a glass-like container. A [[memory]] is intangible: held, it lives in your [[Temenos]]; in the [[Dreamlands]] it lives in a bead. An empty bead is [[dun]]. Every memory travels in a bead, [[Obol|obols]] included.
 
-A memory enters a bead through [[recounting]] and leaves it through [[reliving]]. Both happen anywhere in the Dreamlands, never inside the Temenos, and only a Loose memory can be recounted into a bead (a rooted one must be [[Uprooting|uprooted]] first). The bead holds the memory's form, so it can project it in [[conjuration]] (see [[resonance]]).
+A memory enters a bead through [[recounting]] and leaves it through [[reliving]]. Both happen anywhere in the Dreamlands, never inside the Temenos. Only a Loose memory or a Fixture can be recounted into a bead (a Room or Megaron must be [[Uprooting|uprooted]] first). [[Burning]] destroys both the memory and its bead, whose glass shatters. The bead holds the memory's form, so it can project it in [[conjuration]] (see [[resonance]]).
 
 ## While a memory is out
 

@@ -3,54 +3,46 @@ title: Burning
 kind: term
 area: Memory
 status: Tenet
-summary: Burning a memory pours its material straight into your mood, at the cost of the mood capacity it gave, and leaves you Ablaze.
+summary: Destroying a memory held in a bead, in the Dreamlands. The glass shatters, the memory's material pours into your mood, and you are Ablaze.
 aliases:
   - burn
   - burnt
 infobox:
   rows:
+    - label: Destroys
+      value: A [[memory]] held in a [[bead]], and the bead with it
+    - label: Where
+      value: The [[Dreamlands]], from a bead only
     - label: Pours
-      value: A memory's [[material]] straight into your [[mood]]
-    - label: Costs
-      value: The [[mood capacity]] the memory gave, and the memory
+      value: The memory's [[material]] into your [[mood]]
     - label: Leaves you
       value: '[[Ablaze]]'
-    - label: Can burn
-      value: Loose memories at once; [[Fixture|Fixtures]] by [[igniting]]
+    - label: Your own memories
+      value: '[[Recounting|Recounted]] into a bead first'
     - label: Cannot burn
-      value: Rooms and [[Megaron|Megara]]
+      value: Rooms and [[Megaron|Megara]], until [[Uprooting|uprooted]]
     - label: Conjures
       value: Nothing
 navbox: memory
 ---
 
-**Burning** a [[memory]] pours its [[material]] straight into your [[mood]], at the cost of the [[mood capacity]] it gave, and you are [[Ablaze]] with it. It conjures nothing and draws heavy [[Attention]].
+**Burning** destroys a [[memory]] held in a [[bead]], in the [[Dreamlands]]. The glass shatters, the memory's [[material]] pours into your [[mood]], and you are [[Ablaze]] with it. It conjures nothing. It draws [[Attention]] only when what it does is overt, such as an [[outburst]] (see [[Attention#What draws it]]).
 
-Burning lets you hold more of an emotion than your mood capacity allows, and is the only way to pay for the top [[intensity|intensities]], which cost more than a developed character's mood capacity.
-
-> [!OPEN]
-> The designer asked for burning to be described by what it is, not by what it is for, so the sentence "burning lets you hold more of an emotion than your mood capacity allows" is under review.
+Burning is the only way to pay for the top [[intensity|intensities]], which cost more than a developed character's [[mood capacity]].
 
 > [!OPEN]
-> That burning draws heavy Attention is an assumption added in discussion. The designer agreed the outburst, not this detail, and has not confirmed it.
+> The Glossary said burning costs "the mood capacity it gave". A memory in a bead already gives no mood capacity (see [[recounting]]), so what burning costs beyond the memory and its bead is not settled.
 
-## What can be burnt
+## Burning a memory you hold
 
-| Tier | Burning |
+You can burn only from a bead. To burn a memory held within you, first [[Recounting|recount]] it into a bead, then [[igniting|ignite]] it.
+
+| Tier | To burn it |
 | --- | --- |
-| [[Loose]] | Ignites at once |
-| [[Fixture]] | Must be dismantled in the same act of [[igniting]]: done carefully it takes time and keeps its [[Hold]]; rushed, it risks a [[scar]] |
-| [[Rootedness ladder\|Room]] | Cannot be burnt |
-| [[Megaron]] | Cannot be burnt |
-
-> [!OPEN]
-> That Megara cannot be burnt was an assumption made in discussion. The designer said only that Rooms cannot be burnt, and has not confirmed it for Megara.
-
-> [!CONFLICT]
-> The Glossary defines burning as "destroying a bead to release its stored force (its material) straight into your mood". The vision says "burn a memory: its material pours straight into your mood", lets you dismantle a Fixture to burn it, and lets only Loose memories into beads. The vision's wording is used until this is settled.
-
-> [!OPEN]
-> Whether a memory is burnt from a bead, from within you, or both is not settled.
+| [[Loose]] | Recount it into a bead, then ignite it |
+| [[Fixture]] | Recount it into a bead, where it loses all its [[Hold]], then ignite it. You set the recount rate (see [[Recounting#Recounting a Fixture]]) |
+| [[Rootedness ladder\|Room]] | Cannot be recounted until [[Uprooting\|uprooted]] |
+| [[Megaron]] | Cannot be recounted until uprooted |
 
 ## The readiest fuel
 
@@ -64,5 +56,4 @@ Burning a memory also loses it as a [[grounds|ground]]: every belief resting on 
 
 ## Harvest and burn
 
-> [!OPEN]
-> Burning Loose memories refills mood cheaply and leaves no scar: what stops a harvest-and-burn loop? Short burns for low-Hold memories, outbursts and Attention all help; a harder brake may still be needed.
+Burning does not make a free loop. The brake is supply: faint memories, such as [[Obol|obols]], burn for very little, while vivid memories are more useful but scarce. Recount time, the shattered bead and outbursts add friction.

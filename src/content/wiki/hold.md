@@ -27,7 +27,7 @@ navbox: memory
 
 - **Fading.** Inside you, a memory loses a fixed fraction of its light at any moment, smaller the higher its Hold. A fresh, Loose memory blazes and dims fast; a deeply rooted one glows softly for a long time (see [[memory light]]).
 - **Cracking.** Inside you, the lower a memory's vividness and Hold, the more likely it is to crack and spill out as [[ambient emotion]] (see [[Memory light#Cracking|cracking]]).
-- **Burning.** How long you stay [[Ablaze]] scales with the memory's Hold alone.
+- **Recounting.** The more Hold, the slower a memory flows into a [[bead]]. A Fixture recounted into a bead loses all its Hold (see [[recounting]]).
 - **Coherence.** Hold sets the tier, and the tier factor multiplies the memory's material into its share of maximum [[Coherence]], so a faint but deeply rooted memory still holds you together.
 
 ## Raising Hold

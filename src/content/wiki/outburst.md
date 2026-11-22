@@ -11,7 +11,7 @@ infobox:
     - label: Comes from
       value: Material above your [[mood capacity]] when you stop being [[Ablaze]]
     - label: Escapes
-      value: Through your body
+      value: Through your body, all at once, as unaimed [[Raw magic]] around you
     - label: Control
       value: Uncontrolled, unaimed, no [[adverb]]
     - label: Flavour
@@ -21,11 +21,8 @@ infobox:
 navbox: magic
 ---
 
-An **outburst** is what happens to [[material]] above your [[mood capacity]] when you stop being [[Ablaze]], including when [[Burning|burning]] another memory replaces the burn. It escapes through your body: uncontrolled, unaimed, flavoured by the memory and flaring [[Attention]]. It has no [[adverb]].
+An **outburst** is what happens to [[material]] above your [[mood capacity]] when you stop being [[Ablaze]], including when [[Burning|burning]] another memory replaces the burn. It bursts out of your body all at once, as unaimed [[Raw magic]] around you: uncontrolled, with no target and no [[adverb]], flavoured by the memory. It is overt, so it flares [[Attention]].
 
 Burnt material still within mood capacity is not part of the outburst: it stays in your [[mood]].
-
-> [!OPEN]
-> The outburst itself is the designer's, but that it is "unaimed" and flares Attention are details added in discussion. The designer has not confirmed them.
 
 Outbursts are one of the things that help stop a harvest-and-burn loop; see [[Burning#Harvest and burn|harvest and burn]].
