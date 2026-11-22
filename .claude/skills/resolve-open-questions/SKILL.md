@@ -24,7 +24,9 @@ Finding facts is Claude's job, never the designer's. Before asking, read:
 
 Many open questions are already answered in one of these. Say so with the source, instead of asking.
 
-No source wins by default. The sheet was ruled authoritative for the qualities of the will (22 Nov 2026), but every other sheet-against-vision conflict is decided one by one.
+The sheet is an older source and is no longer updated. Where it disagrees with a page whose rule was settled (no callout left, and `git log -p` on the page shows the decision), the wiki wins: do not raise it again as a conflict.
+
+Between unsettled sources, no source wins by default. The sheet was ruled authoritative for the qualities of the will (22 Nov 2026), but every other sheet-against-vision conflict is decided one by one.
 
 ## 3. Ask one question at a time
 
