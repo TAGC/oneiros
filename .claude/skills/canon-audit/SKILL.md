@@ -42,7 +42,7 @@ Tell the sub-agent, in full:
 - Offer two next steps: review the flags one by one, or audit the next section.
 
 ## 4. Record the findings
-- Flag each unconfirmed, changed, untraceable or contradictory claim with a question issue (format in `README.md` under "Open questions"), saying in its Context what is unconfirmed and where it came from. Put its `[!ISSUE N]` marker on the owner page in both languages. Ask the designer before opening the issues. The `/open-questions/` page collects them.
+- Flag each unconfirmed, changed, untraceable or contradictory claim with a question issue (format in `docs/open-questions.md`), saying in its Context what is unconfirmed and where it came from. Put its `[!ISSUE N]` marker on the owner page in both languages. Ask the designer before opening the issues. The `/open-questions/` page collects them.
 - Do not keep a separate worklist file. Update the audit-coverage line in `CLAUDE.md` with the sections now audited.
 - Add new stale items discovered while recording other decisions the same way.
 
