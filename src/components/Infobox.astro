@@ -3,18 +3,21 @@ import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
 import { renderInline } from '../lib/markdown';
 import { categoryUrl } from '../lib/site';
+import type { Status } from '../lib/status';
 import { categoryLabel } from '../lib/wiki';
+import StatusBadge from './StatusBadge.astro';
 
 interface Props {
   title: string;
   area: string;
+  status?: Status;
   figure?: string;
   caption?: string;
   rows: { label: string; value: string }[];
   locale?: Locale;
 }
 
-const { title, area, figure, caption, rows, locale = DEFAULT_LOCALE } = Astro.props;
+const { title, area, status, figure, caption, rows, locale = DEFAULT_LOCALE } = Astro.props;
 const t = useTranslations(locale);
 const figures = import.meta.glob<{ default: AstroComponentFactory }>('./figures/*.astro', {
   eager: true,
@@ -38,6 +41,16 @@ if (figure && !Figure) throw new Error(`Infobox figure "${figure}" not found in 
       <th scope="row">{t.area}</th>
       <td><a href={categoryUrl(area, locale)}>{categoryLabel(area, locale)}</a></td>
     </tr>
+    {
+      status && (
+        <tr data-pagefind-ignore>
+          <th scope="row">{t.status}</th>
+          <td>
+            <StatusBadge status={status} locale={locale} />
+          </td>
+        </tr>
+      )
+    }
     {
       rows.map((row) => (
         <tr>

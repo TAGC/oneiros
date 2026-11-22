@@ -1,0 +1,42 @@
+---
+import IconFrame from '../../components/IconFrame.astro';
+import WikiLink from '../../components/WikiLink.astro';
+import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import Wiki from '../../layouts/Wiki.astro';
+import { STATUSES } from '../../lib/status';
+import { resolve } from '../../lib/wiki';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const stages = resolve('Belief stages', locale);
+---
+
+<Wiki title={t.status} description={t.statusDescription} locale={locale} path="/status/">
+  <h1>{t.status}</h1>
+  <p class="sub">{t.statusSub}</p>
+  <p>{t.statusIntro}</p>
+  <p>{t.statusStagesLead}</p>
+  <ol class="stages">
+    {
+      STATUSES.map((s) => (
+        <li>
+          <IconFrame name={s} size="sm" />
+          <span>{t.statusNames[s] ?? s}</span>
+        </li>
+      ))
+    }
+  </ol>
+  <p>
+    {t.statusNote[0]}<WikiLink to={stages} locale={locale}>{t.statusBeliefStages}</WikiLink>{t.statusNote[1]}
+  </p>
+  <div class="note note-open">
+    <p class="note-h"><strong>{t.openQuestion}</strong></p>
+    <p>{t.statusOpen}</p>
+  </div>
+</Wiki>

@@ -1,0 +1,19 @@
+---
+import { type Locale, useTranslations } from '../i18n/ui';
+import type { Status } from '../lib/status';
+import { url } from '../lib/site';
+import IconFrame from './IconFrame.astro';
+
+interface Props {
+  status: Status;
+  locale: Locale;
+}
+
+const { status, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<a class="stage-badge" href={url('/status/', locale)}>
+  <IconFrame name={status} size="sm" />
+  <span>{t.statusNames[status] ?? status}</span>
+</a>

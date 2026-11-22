@@ -90,6 +90,9 @@ const en = {
   area: 'Area',
   /** Display names of areas; URLs and frontmatter keep the English name. */
   areaNames: {} as Record<string, string>,
+  status: 'Status',
+  /** Display names of the page statuses; frontmatter keeps the English name. */
+  statusNames: {} as Record<string, string>,
   all: 'All',
   pageCount: (n: number) => (n === 1 ? '1 page' : `${n} pages`),
 
@@ -136,6 +139,21 @@ Five pillars hold it together:
     `Every open question and every conflict between the vision and the sheet, page by page: ${n} in all.`,
   openNone: 'No open questions yet.',
   onThePage: 'on the page',
+
+  /* Status */
+  statusDescription: "How settled a page's design idea is.",
+  statusSub: "How settled a page's design idea is.",
+  statusIntro:
+    "Status shows how settled the idea on a page is. It sits in the page's infobox, or beside the title when the page has no infobox. A page shows a Status only once it has been given one.",
+  statusStagesLead: 'The five stages, from least to most settled:',
+  /** The text before and after the link to the belief stages. */
+  statusNote: [
+    'Status reuses the names of the ',
+    ', but it is about the wiki, not the game. It is not a game concept and has no Glossary term.',
+  ] as readonly [string, string],
+  statusBeliefStages: 'belief stages',
+  statusOpen:
+    'What does each stage mean for a page, and when does a page move up to the next? The designer has not defined this yet.',
 
   /* Random page */
   randomFinding: 'Finding a page…',
@@ -218,6 +236,14 @@ const zh: UI = {
   footer: 'Oneiros 是一个出于兴趣的游戏设计项目。文字取自愿景文档与术语表。',
   infoboxLabel: (title) => `${title}概要`,
   area: '领域',
+  status: '状态',
+  statusNames: {
+    Hearsay: '传闻',
+    Notion: '念头',
+    Tenet: '信条',
+    Creed: '教义',
+    Dogma: '教条',
+  },
   areaNames: {
     Beliefs: '信念',
     Body: '身体与形态',
@@ -277,6 +303,18 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   openSub: (n) => `逐页列出所有待定问题，以及愿景与参考表之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
   onThePage: '查看原处',
+
+  statusDescription: '页面所述设计想法的确定程度。',
+  statusSub: '页面所述设计想法的确定程度。',
+  statusIntro:
+    '状态表示页面上的想法有多确定。页面有信息框时，状态显示在信息框中；没有信息框时，显示在标题旁。只有被赋予状态的页面才会显示它。',
+  statusStagesLead: '五个阶段，从最不确定到最确定：',
+  statusNote: [
+    '状态沿用了',
+    '的名称，但它说的是维基，而不是游戏。它不是游戏概念，也没有术语表词条。',
+  ],
+  statusBeliefStages: '信念阶段',
+  statusOpen: '每个阶段对页面意味着什么？页面何时升到下一阶段？设计者尚未定义。',
 
   randomFinding: '正在寻找页面…',
   randomNoScript: (link) => `随机页面需要 JavaScript。请试试${link}。`,

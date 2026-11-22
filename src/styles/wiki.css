@@ -1069,6 +1069,34 @@ footer.foot p {
   padding: 9px;
 }
 
+/* A page's Status: the small painted icon and the stage name, linking to the explainer. */
+.stage-badge,
+.stages li {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.stage-badge {
+  font-size: 14px;
+  white-space: nowrap;
+}
+.cat-head .stage-badge {
+  flex: none;
+  margin-inline-start: 4px;
+}
+.cat-head:has(.stage-badge) {
+  flex-wrap: wrap;
+}
+.stages {
+  list-style: none;
+  margin: 8px 0 16px;
+  padding: 0;
+}
+.stages li {
+  display: flex;
+  margin: 6px 0;
+}
+
 /* Pixel icon frame, from the approved icon mockup */
 .frame {
   position: relative;
