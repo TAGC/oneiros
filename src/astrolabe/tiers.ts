@@ -99,7 +99,7 @@ function path(a: TierStar, b: TierStar, aLabelEnd: number, kind: Thread['kind'])
     return `M${f(sx)},${f(a.y)}H${f(mid)}V${f(b.y)}H${f(b.x - b.r - 4)}`;
   }
   const sx = a.x - a.r - 4;
-  const ex = b.x + b.r + 4;
+  const ex = b.label.box.x2 + 6;
   const bow = Math.max(40, Math.abs(sx - ex) * 0.3);
   return `M${f(sx)},${f(a.y)}C${f(sx - bow)},${f(a.y)} ${f(ex + bow)},${f(b.y)} ${f(ex)},${f(b.y)}`;
 }
