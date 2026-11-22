@@ -82,7 +82,7 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
                     <span lang={lang(star.labelLang)}>{star.label}</span>
                   </a>
                   {page && (
-                    <a class="al-cpanel-page" href={wikiUrl(page, issueId(n), locale)}>
+                    <a class="al-cpanel-page" href={wikiUrl(page, star.question.state === 'open' ? issueId(n) : undefined, locale)}>
                       {a.onItsPage}
                     </a>
                   )}
