@@ -63,8 +63,7 @@ The Temenos's phases mirror the world's. In the [[Deep]], recent memories consol
 
 The full table, with what each phase means for getting into someone else's house, is on [[Other minds]].
 
-> [!OPEN]
-> That the house's depths come closer in the Deep is marked "tentative" in the vision.
+> [!ISSUE 98]
 
 ## What rest touches
 

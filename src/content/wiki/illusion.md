@@ -21,8 +21,7 @@ navbox: magic
 
 An **illusion** is a flimsy [[conjuration]] from a faint, low-[[vividness]] [[memory]]. Illusions fade by the next [[sleep cycle]] and are broken by [[lucidity]].
 
-> [!OPEN]
-> That illusions come from faint, low-vividness memories was added as a knock-on change while the vision was being recorded. The designer has not confirmed it.
+> [!ISSUE 59]
 
 ## Broken by lucidity
 

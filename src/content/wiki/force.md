@@ -41,8 +41,7 @@ A [[stimulus]] changes the shape of a mood without moving any force. A [[Raw mag
 
 Force from a spell that lands is the target's to spend freely: what you send, they carry. If the target has no capacity for that emotion, all of it is excess, so beings made of one feeling are fragile to any other.
 
-> [!OPEN]
-> The vision does not say what becomes of excess force when a spell lands on a will with no capacity for its emotion.
+> [!ISSUE 53]
 
 ## Across the world
 

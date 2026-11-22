@@ -19,5 +19,4 @@ navbox: beliefs
 
 Like a sponge, a belief draws feeling from your mood, but only the emotions it has an affinity for, and only up to its belief capacity. What it soaks up is its own material, the only part of it that counts towards [[mood capacity]] and [[Coherence]].
 
-> [!OPEN]
-> The sponge-size multiplier for beliefs is not yet set.
+> [!ISSUE 26]

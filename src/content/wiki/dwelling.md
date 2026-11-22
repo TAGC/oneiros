@@ -35,5 +35,4 @@ Only a belief's own material counts towards [[mood capacity]] and [[Coherence]],
 
 Burnt material still within your mood capacity stays in your mood after a [[burning|burn]], and dwelling can later soak it into beliefs.
 
-> [!OPEN]
-> The sheet says "Losing a ground shrinks it and the excess wrings out". The vision does not say what happens to a belief's own material when it loses a ground.
+> [!ISSUE 43]

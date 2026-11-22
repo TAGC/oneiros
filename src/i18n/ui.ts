@@ -72,7 +72,6 @@ const en = {
   colon: ': ',
   fromWiki: 'From the Oneiros Wiki',
   openQuestion: 'Open question',
-  conflict: 'Conflict: vision and sheet disagree',
   conflictBare: 'Conflict',
   conflictBetween: (names: string[]) =>
     `Conflict: ${names.slice(0, -1).join(', ')} and ${names.at(-1)} disagree`,
@@ -262,7 +261,6 @@ const zh: UI = {
   colon: '：',
   fromWiki: '来自 Oneiros 维基',
   openQuestion: '待定问题',
-  conflict: '冲突：愿景与参考表不一致',
   conflictBare: '冲突',
   conflictBetween: (names) => `冲突：${names.slice(0, -1).join('、')}与${names.at(-1)}不一致`,
   conflictSources: { vision: '愿景', sheet: '参考表' },

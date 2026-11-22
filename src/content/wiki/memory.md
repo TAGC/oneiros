@@ -44,8 +44,7 @@ Memories come from four sources:
 - **living** in the Dreamlands (consolidated during [[Rest|long rests]], or they fade);
 - **finding** them (planted by others, dropped, or drifting in the deep).
 
-> [!OPEN]
-> The four memory sources (backstory, trading, living, finding) appear in the vision but cannot be traced to any design discussion. The designer has not confirmed them.
+> [!ISSUE 66]
 
 ## Where a memory lives
 
@@ -65,11 +64,8 @@ Everything wants to live, and memory is what holds a being together, so memory i
 
 The vision says repeated experiences merge into one faint but well-rooted memory, so grinding never pays.
 
-> [!OPEN]
-> Merging repeated experiences into one faint but well-rooted memory was proposed in discussion and never agreed. The designer has not confirmed it.
+> [!ISSUE 67]
 
-> [!OPEN]
-> Merging contradicts the rule that a memory is a snapshot whose composition never changes. The designer has not settled which holds.
+> [!ISSUE 68]
 
-> [!OPEN]
-> Merging also sits uneasily with the familiarity rule, under which a feeling you have had many times fades in vividness rather than rooting deeper. The designer has not settled how the two fit.
+> [!ISSUE 69]

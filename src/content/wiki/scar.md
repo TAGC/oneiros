@@ -63,11 +63,8 @@ Healing can fail. A scar rebuilt with the wrong emotion, or rushed, sets badly a
 
 ## Open questions
 
-> [!OPEN]
-> Who uproots and who heals scars in the world: quests, factions, companions?
+> [!ISSUE 104]
 
-> [!OPEN]
-> The Glossary describes a scar as "its colour drained to dun", but **dun** now means an empty [[bead]]. The word has been dropped here until the designer picks another, if any.
+> [!ISSUE 105]
 
-> [!OPEN]
-> The Dark malus shares its name with Forgetting, "the dark". Whether the malus needs a different name is undecided.
+> [!ISSUE 106]

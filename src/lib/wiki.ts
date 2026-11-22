@@ -42,8 +42,8 @@ export interface Callout {
   kind: CalloutKind;
   id: string;
   markdown: string;
-  /** The question issue behind a `[!ISSUE N]` marker; inline callouts have none. */
-  issue?: number;
+  /** The question issue behind the `[!ISSUE N]` marker. */
+  issue: number;
 }
 
 /** Callout kinds and the automatic category each adds (an English name, as are all categories). */
@@ -52,15 +52,11 @@ export const CALLOUTS: Record<CalloutKind, { category: string }> = {
   conflict: { category: 'Pages with conflicts' },
 };
 
-/**
- * A callout box's header. A conflict question names the sources in its Source row; an
- * inline `[!CONFLICT]` callout keeps the fixed vision-and-sheet header.
- */
+/** A callout box's header. A conflict question names the sources in its Source row. */
 export function calloutHeading(kind: CalloutKind, locale: Locale, question?: Question): string {
   const t = useTranslations(locale);
   if (kind === 'open') return t.openQuestion;
-  if (!question) return t.conflict;
-  const sources = question.properties.sources ?? [];
+  const sources = question?.properties.sources ?? [];
   if (sources.length < 2) return t.conflictBare;
   return t.conflictBetween(sources.map((s) => sourceName(s, locale) ?? s));
 }
@@ -258,20 +254,6 @@ export function issueMarker(node: Blockquote): number | undefined {
   return match ? Number(match[1]) : undefined;
 }
 
-/** Removes the `[!KIND]` marker, dropping the opening paragraph if nothing else is in it. */
-export function stripCalloutMarker(node: Blockquote): void {
-  const first = node.children[0] as Paragraph;
-  const text = first.children[0];
-  if (text.type !== 'text') return;
-  text.value = text.value.replace(MARKER, '');
-  if (!text.value) first.children.shift();
-  if (first.children.length === 0) node.children.shift();
-}
-
-export function calloutId(kind: CalloutKind, n: number): string {
-  return `${kind}-${n}`;
-}
-
 /** The anchor id of a question marker's box. */
 export function issueId(n: number): string {
   return `issue-${n}`;
@@ -289,8 +271,8 @@ export function markerCallout(issue: number, locale: Locale, questions: Question
 const calloutParser = unified().use(remarkParse).use(remarkGfm);
 
 /**
- * Every callout in a body, in document order, with its Markdown and anchor id. A question
- * marker takes its kind and text (in the page's locale) from its question.
+ * Every question marker in a body, in document order, as a callout with its Markdown and
+ * anchor id, its kind and text (in the page's locale) taken from its question.
  */
 export function extractCallouts(
   body: string,
@@ -298,26 +280,10 @@ export function extractCallouts(
   questions: Questions = getQuestions(),
 ): Callout[] {
   const tree = calloutParser.parse(body) as Root;
-  const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
   const callouts: Callout[] = [];
   visit(tree, 'blockquote', (node: Blockquote) => {
     const issue = issueMarker(node);
-    if (issue !== undefined) {
-      callouts.push(markerCallout(issue, locale, questions));
-      return;
-    }
-    const kind = calloutKind(node);
-    if (!kind) return;
-    const start = node.position?.start.offset ?? 0;
-    const end = node.position?.end.offset ?? start;
-    const markdown = body
-      .slice(start, end)
-      .split('\n')
-      .map((line) => line.replace(/^\s*>\s?/, ''))
-      .join('\n')
-      .replace(MARKER, '');
-    counts[kind] += 1;
-    callouts.push({ kind, id: calloutId(kind, counts[kind]), markdown });
+    if (issue !== undefined) callouts.push(markerCallout(issue, locale, questions));
   });
   return callouts;
 }

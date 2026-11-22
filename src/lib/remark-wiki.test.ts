@@ -116,39 +116,31 @@ describe('issue markers', () => {
     expect(render('> [!ISSUE 9]', 'zh')).toContain('<strong>冲突</strong>');
   });
 
-  test('an inline conflict callout keeps its fixed header', () => {
-    expect(render('> [!CONFLICT]\n> Text.', 'en')).toContain(
-      '<strong>Conflict: vision and sheet disagree</strong>',
-    );
-  });
-
   test('a missing question still renders a box that says so', () => {
     const html = render('> [!ISSUE 999]', 'en');
     expect(html).toContain('id="issue-999"');
     expect(html).toContain('#999');
   });
 
-  test('sit alongside inline callouts', () => {
-    const html = render('> [!OPEN]\n> Inline text.\n\n> [!ISSUE 7]\n\n> [!OPEN]\n> More.', 'en');
-    expect(html).toContain('id="open-1"');
-    expect(html).toContain('id="open-2"');
+  test('are the only boxes: an old inline callout stays a plain quote', () => {
+    const html = render('> [!OPEN]\n> Inline text.\n\n> [!ISSUE 7]', 'en');
     expect(html).toContain('id="issue-7"');
-    expect(html).toContain('Inline text.');
+    expect(html).not.toContain('id="open-1"');
+    expect(html).toContain('<blockquote>');
   });
 });
 
 describe('callouts on a page', () => {
   const body = '> [!OPEN]\n> Inline text.\n\n> [!ISSUE 142]\n\n> [!ISSUE 7]\n';
 
-  test('list inline callouts and marker questions in page order', () => {
+  test('list marker questions in page order, not old inline callouts', () => {
     expect(extractCallouts(body, 'en', questions)).toEqual([
-      { kind: 'open', id: 'open-1', markdown: 'Inline text.' },
       { kind: 'open', id: 'issue-142', markdown: 'Does [[vividness]] fade overnight?', issue: 142 },
       { kind: 'conflict', id: 'issue-7', markdown: 'The vision says X.', issue: 7 },
     ]);
   });
 
   test('take marker text in the page locale', () => {
-    expect(extractCallouts(body, 'zh', questions)[1].markdown).toBe('[[鲜明度]]会在一夜间消退吗？');
+    expect(extractCallouts(body, 'zh', questions)[0].markdown).toBe('[[鲜明度]]会在一夜间消退吗？');
   });
 });

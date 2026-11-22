@@ -25,14 +25,13 @@ const pages = (await getPages(locale)).filter((p) => p.callouts.length);
 const markedOn = new Map<number, { page: Page; callout: Callout }>();
 for (const page of pages) {
   for (const callout of page.callouts) {
-    if (callout.issue !== undefined) markedOn.set(callout.issue, { page, callout });
+    markedOn.set(callout.issue, { page, callout });
   }
 }
 const unmarked = questions.all().filter((q) => q.state === 'open' && !markedOn.has(q.number));
 const count = pages.reduce((n, p) => n + p.callouts.length, 0) + unmarked.length;
 
-const grouped = (issue?: number) =>
-  issue !== undefined && constellations.of(issue)?.state === 'open';
+const grouped = (issue: number) => constellations.of(issue)?.state === 'open';
 const ungroupedPages = pages
   .map((p) => ({ ...p, callouts: p.callouts.filter((c) => !grouped(c.issue)) }))
   .filter((p) => p.callouts.length);
@@ -117,20 +116,17 @@ function issueBox(q: Question) {
                 {p.title}
               </WikiLink>
             </h3>
-            {p.callouts.map((c) => {
-              const q = c.issue === undefined ? undefined : questions.get(c.issue);
-              return (
-                <QuestionBox
-                  kind={c.kind}
-                  heading={calloutHeading(c.kind, locale, q)}
-                  links={[{ href: wikiUrl(p.slug, c.id, p.locale), text: t.onThePage }]}
-                  markdown={c.markdown}
-                  page={p.slug}
-                  lang={p.locale}
-                  locale={locale}
-                />
-              );
-            })}
+            {p.callouts.map((c) => (
+              <QuestionBox
+                kind={c.kind}
+                heading={calloutHeading(c.kind, locale, questions.get(c.issue))}
+                links={[{ href: wikiUrl(p.slug, c.id, p.locale), text: t.onThePage }]}
+                markdown={c.markdown}
+                page={p.slug}
+                lang={p.locale}
+                locale={locale}
+              />
+            ))}
           </>
         ))}
         {areas.length > 0 && (
