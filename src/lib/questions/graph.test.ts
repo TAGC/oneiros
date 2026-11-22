@@ -9,10 +9,14 @@ const LOCALES_BODY = '## en\n\nEnglish text.\n\n## zh\n\n### 中文标题\n\n中
 type Fixture = {
   blockedBy?: number[];
   underminedBy?: number[];
-  state?: 'decided' | 'ruled-out' | 'undermined';
+  state?: 'decided' | 'ruled-out' | 'undermined' | 'duplicate';
+  duplicateOf?: number;
 };
 
-function issue(number: number, { blockedBy = [], underminedBy, state }: Fixture = {}): PulledIssue {
+function issue(
+  number: number,
+  { blockedBy = [], underminedBy, state, duplicateOf }: Fixture = {},
+): PulledIssue {
   const breakers = underminedBy ?? (state === 'undermined' ? [999] : []);
   const row = breakers.map((n) => `#${n}`).join(', ');
   return {
@@ -22,12 +26,20 @@ function issue(number: number, { blockedBy = [], underminedBy, state }: Fixture 
       ? `| Property | Value |\n|---|---|\n| Undermined by | ${row} |\n\n${LOCALES_BODY}`
       : LOCALES_BODY,
     state: state ? 'closed' : 'open',
-    state_reason: state === 'ruled-out' ? 'not_planned' : state ? 'completed' : null,
+    state_reason: state ? REASONS[state] : null,
     labels: [{ name: 'kind:open' }, { name: 'area:memory' }],
     html_url: `https://github.com/TAGC/oneiros/issues/${number}`,
     blockedBy: blockedBy.map((n) => ({ number: n })),
+    ...(duplicateOf !== undefined && { duplicateOf }),
   };
 }
+
+const REASONS = {
+  decided: 'completed',
+  'ruled-out': 'not_planned',
+  undermined: 'completed',
+  duplicate: 'duplicate',
+} as const;
 
 let dir: string;
 
@@ -132,5 +144,27 @@ describe('central', () => {
     expect(dependents[5]).toEqual([6, 7]);
     expect(dependents[9]).toEqual([10, 11, 12]);
     expect(dependents[16]).toEqual([]);
+  });
+});
+
+describe('duplicates', () => {
+  const graph = () =>
+    graphOf([
+      issue(1),
+      issue(2, { state: 'duplicate', duplicateOf: 1, blockedBy: [3] }),
+      issue(3),
+      issue(4, { blockedBy: [2] }),
+    ]);
+
+  test('are left out of the graph', () => {
+    expect(Object.keys(graph().dependents)).toEqual(['1', '3', '4']);
+  });
+
+  test('carry no links, so what only a duplicate links to stays independent', () => {
+    expect(graph().independent).toEqual([1, 3]);
+  });
+
+  test('a duplicate blocker counts as missing and keeps a question off the frontier', () => {
+    expect(graph().frontier).toEqual([1, 3]);
   });
 });

@@ -111,6 +111,16 @@ describe('loading constellations from milestones', () => {
     ]);
   });
 
+  test('leaves duplicates out of their constellation', () => {
+    const duplicate = issue(145, 3, {
+      state: 'closed',
+      state_reason: 'duplicate',
+      duplicateOf: 142,
+    });
+    const [c] = load([issue(142, 3), duplicate], [milestone({ number: 3 })]).all();
+    expect(numbers(c.questions)).toEqual([142]);
+  });
+
   test('lists every constellation but only open ones to draw', () => {
     const milestones = [milestone({ number: 3 }), milestone({ number: 4, state: 'closed' })];
     const constellations = load([issue(142, 3), closed(145, 4)], milestones);

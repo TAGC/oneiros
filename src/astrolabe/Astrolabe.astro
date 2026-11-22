@@ -1,0 +1,115 @@
+---
+/**
+ * The Astrolabe page: every question as a star, in two views (night sky and tiers) with a
+ * panel per star. Everything is laid out at build time; `client.ts` only adds interaction.
+ */
+import './astrolabe.css';
+import { type Locale, useTranslations } from '../i18n/ui';
+import Wiki from '../layouts/Wiki.astro';
+import { getQuestions, questionGraph } from '../lib/questions';
+import { getConstellations } from '../lib/questions/constellations';
+import { chartQuestions } from './chart';
+import ConstellationFilter from './ConstellationFilter.astro';
+import ConstellationList from './ConstellationList.astro';
+import Legend from './Legend.astro';
+import Panels from './Panels.astro';
+import SharedDefs from './SharedDefs.astro';
+import Sky from './Sky.astro';
+import { layoutSky } from './sky';
+import Tiers from './Tiers.astro';
+import { layoutTiers } from './tiers';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+
+const all = getQuestions();
+const questions = all.all();
+const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
+const sky = chart.stars.length ? layoutSky(chart) : undefined;
+const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
+---
+
+<Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">
+  <div
+    class="astrolabe"
+    data-view="sky"
+    data-constellations={chart.constellations.length ? 'on' : 'off'}
+  >
+    <h1>{a.name}</h1>
+    <p class="sub">{a.sub}</p>
+    {
+      sky && tiers ? (
+        <>
+          <p class="al-stats">{a.stats(chart.counts)}</p>
+          <div class="al-bar">
+            <div class="al-views" role="group" aria-label={a.view} hidden>
+              <button type="button" data-view="sky" aria-pressed="true">
+                {a.views.sky}
+              </button>
+              <button type="button" data-view="tiers" aria-pressed="false">
+                {a.views.tiers}
+              </button>
+            </div>
+            <ConstellationFilter chart={chart} locale={locale} />
+            <p class="al-hint" data-for="sky">
+              {a.hint}
+            </p>
+            <p class="al-hint" data-for="tiers">
+              {a.tiersHint}
+            </p>
+          </div>
+          <div class="al-frame">
+            <SharedDefs />
+            <div class="al-view al-view-sky">
+              <Sky chart={chart} layout={sky} locale={locale} />
+              <div class="al-zoom" hidden>
+                <button type="button" data-zoom="in" aria-label={a.zoomIn} title={a.zoomIn}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                </button>
+                <button type="button" data-zoom="out" aria-label={a.zoomOut} title={a.zoomOut}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M3 8h10" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  data-zoom="reset"
+                  aria-label={a.resetView}
+                  title={a.resetView}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+                    <path d="M8 1v3M8 12v3M1 8h3M12 8h3" stroke="currentColor" stroke-width="1.6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="al-view al-view-tiers">
+              <Tiers chart={chart} layout={tiers} locale={locale} />
+            </div>
+            <Panels chart={chart} locale={locale} />
+          </div>
+          <ConstellationList chart={chart} locale={locale} />
+          <Legend locale={locale} />
+        </>
+      ) : (
+        <p>{a.empty}</p>
+      )
+    }
+  </div>
+  <p slot="footer" class="al-credit">
+    {a.inspiredBy} <a href="https://github.com/rengwu/wayfinder-maps">wayfinder-maps</a>
+    {a.licence}
+  </p>
+</Wiki>
+
+<script>
+  import './client';
+</script>

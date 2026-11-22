@@ -61,7 +61,7 @@ navbox: temenos
 
 ## 待定问题
 
-> [!ISSUE 104]
+见[[连根拔起#issue-124|连根拔起]]上的待定问题。
 
 > [!ISSUE 105]
 

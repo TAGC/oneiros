@@ -38,15 +38,18 @@ export interface PulledIssue extends GithubIssue {
   blockedBy?: Pick<GithubIssue, 'number'>[];
   /** From GitHub's `issues/N/comments`; only the answer comment is kept. */
   issueComments?: { body: string | null }[];
+  /** For an issue closed as a duplicate: its canonical issue, from GraphQL `Issue.duplicateOf`. */
+  duplicateOf?: number;
 }
 
-export type CloseReason = 'completed' | 'not_planned';
+export type CloseReason = 'completed' | 'not_planned' | 'duplicate';
 
 /**
- * Derived from GitHub's state, never stored: closed as not planned is ruled out, any other
- * close is decided, and a decided question with an Undermined by row is undermined.
+ * Derived from GitHub's state, never stored: closed as not planned is ruled out, closed as a
+ * duplicate is a duplicate, any other close is decided, and a decided question with an
+ * Undermined by row is undermined.
  */
-export type QuestionStatus = 'open' | 'decided' | 'ruled-out' | 'undermined';
+export type QuestionStatus = 'open' | 'decided' | 'ruled-out' | 'undermined' | 'duplicate';
 
 /** The English property table at the top of an issue; every row is optional. */
 export interface QuestionProperties {
@@ -82,6 +85,13 @@ export interface Question {
   answer?: Partial<Record<Locale, string>>;
   /** The answer comment's last line: who decided, when, where, and the PR that lands it. */
   provenance?: string;
+  /** On a duplicate: the canonical issue, when GitHub names one. */
+  duplicateOf?: number;
+}
+
+/** Duplicates stand in for their canonical issue: lists, graphs and maps skip them. */
+export function isDuplicate(question: Question): boolean {
+  return question.status === 'duplicate';
 }
 
 export interface Questions {
@@ -102,6 +112,7 @@ interface CacheFrontmatter {
   properties?: Record<string, string>;
   blockedBy?: number[];
   provenance?: string;
+  duplicateOf?: number;
 }
 
 const KIND_LABEL = /^kind:(open|conflict)$/;
@@ -188,6 +199,10 @@ function cacheFile(issue: PulledIssue): string {
   const reason = issue.state_reason;
   if (issue.state === 'closed' && (reason === 'completed' || reason === 'not_planned')) {
     front.closeReason = reason;
+  }
+  if (issue.state === 'closed' && reason === 'duplicate') {
+    front.closeReason = reason;
+    if (issue.duplicateOf !== undefined) front.duplicateOf = issue.duplicateOf;
   }
   const { lead, sections } = splitSections(issue.body ?? '', 2, BODY_SECTIONS);
   const properties = tableRows(lead);
@@ -279,6 +294,7 @@ function toProperties(rows: Record<string, string>): QuestionProperties {
 function deriveStatus(question: Omit<Question, 'status'>): QuestionStatus {
   if (question.state === 'open') return 'open';
   if (question.closeReason === 'not_planned') return 'ruled-out';
+  if (question.closeReason === 'duplicate') return 'duplicate';
   return question.underminedBy.length ? 'undermined' : 'decided';
 }
 
@@ -324,6 +340,7 @@ function toQuestion(raw: string): Question {
   if (front.closeReason) question.closeReason = front.closeReason;
   if (sections[CONTEXT]) question.context = sections[CONTEXT];
   if (front.provenance) question.provenance = front.provenance;
+  if (front.duplicateOf !== undefined) question.duplicateOf = front.duplicateOf;
   if (sections[ANSWER] !== undefined) {
     const { sections: locales } = splitSections(sections[ANSWER], 3, LOCALE_CODES);
     question.answer = Object.fromEntries(

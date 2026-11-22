@@ -63,7 +63,7 @@ Healing can fail. A scar rebuilt with the wrong emotion, or rushed, sets badly a
 
 ## Open questions
 
-> [!ISSUE 104]
+See the open question on [[Uprooting#issue-124|Uprooting]].
 
 > [!ISSUE 105]
 

@@ -3,8 +3,9 @@
  * Every list holds open question numbers, sorted. A blocker counts as settled only when it
  * is decided or ruled out: an undermined decision stands on a broken premise, and a blocker
  * missing from the cache is unknown. Only open questions count as depending on another.
+ * Duplicates are left out, so a duplicate blocker is unknown too.
  */
-import type { Question } from '.';
+import { isDuplicate, type Question } from '.';
 
 /** A question is central when it directly blocks at least this many open questions. */
 export const CENTRAL_MIN_DEPENDENTS = 3;
@@ -26,7 +27,8 @@ export interface QuestionGraph {
   dependents: Record<number, number[]>;
 }
 
-export function questionGraph(questions: Question[]): QuestionGraph {
+export function questionGraph(all: Question[]): QuestionGraph {
+  const questions = all.filter((q) => !isDuplicate(q));
   const byNumber = new Map(questions.map((q) => [q.number, q]));
   const settled = (n: number) => {
     const status = byNumber.get(n)?.status;

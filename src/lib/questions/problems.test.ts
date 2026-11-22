@@ -200,3 +200,56 @@ describe('issue checks', () => {
     ]);
   });
 });
+
+describe('duplicate checks', () => {
+  const duplicate = (number: number, duplicateOf?: number) =>
+    question({
+      number,
+      state: 'closed',
+      status: 'duplicate',
+      closeReason: 'duplicate',
+      ...(duplicateOf !== undefined && { duplicateOf }),
+    });
+
+  test('a marker naming a duplicate names the canonical issue and its page', () => {
+    const canonical = question({ number: 3, properties: { page: 'vividness' } });
+    const qs = questions(canonical, duplicate(5, 3));
+    const fix = 'replace the marker with one line linking to #3 there';
+    expect(messages(markerProblems(qs, [page('en', [5]), page('zh', [5])]))).toEqual([
+      `src/content/wiki/ablaze.md:10: marker names #5, a duplicate of #3 on vividness; ${fix}`,
+      `src/content/wiki-zh/ablaze.md:10: marker names #5, a duplicate of #3 on vividness; ${fix}`,
+    ]);
+  });
+
+  test('a marker naming a duplicate of an issue with no Page row says so', () => {
+    const qs = questions(question({ number: 3, properties: {} }), duplicate(5, 3));
+    expect(messages(markerProblems(qs, [page('en', [5]), page('zh', [5])]))[0]).toBe(
+      'src/content/wiki/ablaze.md:10: marker names #5, a duplicate of #3, which has no Page row; replace the marker with one line linking to #3 on its page',
+    );
+  });
+
+  test('a sound duplicate passes without an answer comment', () => {
+    expect(issueProblems(questions(question({ number: 3 }), duplicate(5, 3)))).toEqual([]);
+  });
+
+  test('a duplicate of a duplicate, of a missing issue or of no issue fails', () => {
+    const qs = questions(
+      question({ number: 3 }),
+      duplicate(4, 3),
+      duplicate(5, 4),
+      duplicate(6, 9),
+      duplicate(7),
+    );
+    expect(messages(issueProblems(qs))).toEqual([
+      expect.stringMatching(
+        /issues\/5: a duplicate of #4, which is itself a duplicate of #3; mark #5 a duplicate of #3$/,
+      ),
+      expect.stringMatching(
+        /issues\/6: a duplicate of #9, which is not a question issue in \.questions\/ \(missing, or no `kind:` label\)$/,
+      ),
+      expect.stringMatching(
+        /issues\/7: closed as a duplicate, but GitHub names no canonical issue in this repo/,
+      ),
+    ]);
+  });
+});

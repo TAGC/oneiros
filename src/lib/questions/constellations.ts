@@ -11,6 +11,7 @@ import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
 import {
   type GithubIssue,
   getQuestions,
+  isDuplicate,
   QUESTION_CACHE,
   type Question,
   type Questions,
@@ -60,7 +61,7 @@ export interface Constellation {
   size?: Size;
   /** Absent when the Energy row is missing or off the scale (`check` fails). */
   energy?: Energy;
-  /** Its question issues, open and closed, by number. */
+  /** Its question issues, open and closed, by number; duplicates are left out. */
   questions: Question[];
 }
 
@@ -165,7 +166,9 @@ function toConstellation(raw: string, questions: Questions): Constellation | und
     state: front.state,
     name,
     reasoning,
-    questions: (front.issues ?? []).flatMap((n) => questions.get(n) ?? []),
+    questions: (front.issues ?? [])
+      .flatMap((n) => questions.get(n) ?? [])
+      .filter((q) => !isDuplicate(q)),
   };
   const facts: Written = { sections: LOCALES.filter((l) => sections[l] !== undefined) };
   const size = row(rows, 'size');
