@@ -223,6 +223,8 @@ Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form. They still render,
 
 The `resolve-open-questions` skill walks through a session.
 
+The question workflow borrows ideas from [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-maps) (MIT): questions as tickets, blocked-by edges, derived status, the frontier, undermined decisions and its GitHub pull script. Ideas are borrowed, not code.
+
 ### Contents box and backlinks
 
 A page with three or more `##` headings gets a collapsible contents box before the first one. "What links here", the navbox and the categories footer are added automatically.
