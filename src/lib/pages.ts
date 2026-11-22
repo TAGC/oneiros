@@ -94,18 +94,33 @@ export function categoryBySlug(categories: Map<string, Page[]>, slug: string): s
   return [...categories.keys()].find((name) => slugify(name) === slug);
 }
 
+/** Each wiki file's last commit date (YYYY-MM-DD), from one `git log` over both folders. */
+function readEditDates(): Map<string, string> {
+  const dates = new Map<string, string>();
+  let out = '';
+  try {
+    out = execFileSync(
+      'git',
+      ['log', '--format=%x00%cs', '--name-only', '--', ...Object.values(WIKI_DIRS)],
+      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 64 * 1024 * 1024 },
+    );
+  } catch {
+    return dates;
+  }
+  for (const commit of out.split('\0')) {
+    const [date, ...files] = commit.split('\n');
+    for (const file of files) if (file && !dates.has(file)) dates.set(file, date);
+  }
+  return dates;
+}
+
+let editDates: Map<string, string> | undefined;
+
 /** The file's last commit date (YYYY-MM-DD), or undefined without git history. */
 export function lastEdited(file: string, locale: Locale = DEFAULT_LOCALE): string | undefined {
-  const path = join(WIKI_DIRS[locale], file);
-  try {
-    const out = execFileSync('git', ['log', '-1', '--format=%cs', '--', path], {
-      encoding: 'utf8',
-      stdio: ['ignore', 'pipe', 'ignore'],
-    }).trim();
-    return out || undefined;
-  } catch {
-    return undefined;
-  }
+  const dates = (import.meta.env.PROD && editDates) || readEditDates();
+  editDates = dates;
+  return dates.get(join(WIKI_DIRS[locale], file)) || undefined;
 }
 
 export function formatDate(iso: string, locale: Locale = DEFAULT_LOCALE): string {
