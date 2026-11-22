@@ -6,6 +6,7 @@ import Navbox from '../../../components/Navbox.astro';
 import QualityIndex from '../../../components/QualityIndex.astro';
 import QualityStyle from '../../../components/QualityStyle.astro';
 import SheetTable from '../../../components/SheetTable.astro';
+import StatusBadge from '../../../components/StatusBadge.astro';
 import WikiLink from '../../../components/WikiLink.astro';
 import { type Locale, LOCALES, localeParam, useTranslations } from '../../../i18n/ui';
 import Wiki from '../../../layouts/Wiki.astro';
@@ -57,6 +58,9 @@ const tabs = [
     <div class="cat-head">
       <IconFrame name={entry.data.icon ?? entry.data.area} size="md" />
       <h1>{page.title}</h1>
+      {entry.data.status && !entry.data.infobox && (
+        <StatusBadge status={entry.data.status} locale={locale} />
+      )}
     </div>
     <p class="sub" data-pagefind-ignore>
       {t.fromWiki} · <a href={categoryUrl(entry.data.area, locale)}>{categoryLabel(entry.data.area, locale)}</a>
@@ -66,6 +70,7 @@ const tabs = [
         <Infobox
           title={page.title}
           area={entry.data.area}
+          status={entry.data.status}
           figure={entry.data.infobox.figure}
           caption={entry.data.infobox.caption}
           rows={entry.data.infobox.rows}
