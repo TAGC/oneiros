@@ -59,7 +59,10 @@ const byStatus = STATUSES.map((s) => ({
   <p>
     {t.statusNote[0]}<WikiLink to={stages} locale={locale}>{t.statusBeliefStages}</WikiLink>{t.statusNote[1]}
   </p>
-  <p>{t.statusRule}</p>
+  <h2>{t.statusRulesHeading}</h2>
+  <ul>
+    {t.statusRules.map((rule) => <li>{rule}</li>)}
+  </ul>
   <h2>{t.statusPagesHeading}</h2>
   {
     byStatus.map(({ status, pages }) => (
