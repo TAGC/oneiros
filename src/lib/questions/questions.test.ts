@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { loadQuestions, type PulledIssue, writeQuestionCache } from '.';
+import { isDuplicate, loadQuestions, type PulledIssue, writeQuestionCache } from '.';
 
 const URL = 'https://github.com/TAGC/oneiros/issues';
 
@@ -254,5 +254,46 @@ describe('derived status', () => {
 
   test('an open question with an Undermined by row is still open', () => {
     expect(roundTrip([issue({ number: 1, body: undermined })]).get(1)?.status).toBe('open');
+  });
+});
+
+describe('duplicates', () => {
+  const duplicate = (fields: Partial<PulledIssue> = {}) =>
+    issue({ number: 5, state: 'closed', state_reason: 'duplicate', duplicateOf: 3, ...fields });
+
+  test('a question closed as a duplicate is a duplicate of its canonical issue', () => {
+    expect(roundTrip([duplicate()]).get(5)).toMatchObject({
+      state: 'closed',
+      closeReason: 'duplicate',
+      status: 'duplicate',
+      duplicateOf: 3,
+    });
+  });
+
+  test('a duplicate with an Undermined by row is still a duplicate', () => {
+    const body = `| Property | Value |\n|---|---|\n| Undermined by | #9 |\n\n${LOCALES_BODY}`;
+    expect(roundTrip([duplicate({ body })]).get(5)?.status).toBe('duplicate');
+  });
+
+  test('a duplicate whose target GitHub does not name has no duplicateOf', () => {
+    const q = roundTrip([duplicate({ duplicateOf: undefined })]).get(5);
+    expect(q?.status).toBe('duplicate');
+    expect(q && 'duplicateOf' in q).toBe(false);
+  });
+
+  test('only a duplicate keeps a duplicateOf', () => {
+    const q = roundTrip([issue({ number: 5, duplicateOf: 3 })]).get(5);
+    expect(q?.status).toBe('open');
+    expect(q && 'duplicateOf' in q).toBe(false);
+  });
+
+  test('isDuplicate picks out duplicates, so consumers can skip them', () => {
+    const questions = roundTrip([issue({ number: 3 }), duplicate()]);
+    expect(
+      questions
+        .all()
+        .filter((q) => !isDuplicate(q))
+        .map((q) => q.number),
+    ).toEqual([3]);
   });
 });

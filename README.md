@@ -45,7 +45,9 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
   - Every Undermined by row names a question issue, and so does every blocked-by link: an issue with neither `kind:` label is not a question.
   - A conflict's Source row names at least two sources, each a wiki link or a listed non-page source.
-  - Every closed issue has an answer comment, with a section for each site locale.
+  - Every closed issue has an answer comment, with a section for each site locale. Duplicates need none.
+  - No marker names a duplicate; the failure names the canonical issue and its page.
+  - Every duplicate names its canonical issue, which is a question issue and not itself a duplicate.
   - A Certainty or Dogma page holds no marker.
   - Every open constellation's milestone has a Size and an Energy on their scales, the `## en` reasoning, and a `## zh` section with its Chinese name and reasoning.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
@@ -201,6 +203,7 @@ Status is derived from GitHub, never stored:
 | Decided     | Closed as completed, with an answer comment               |
 | Ruled out   | Closed as not planned, with an answer comment             |
 | Undermined  | Decided, with an Undermined by row                        |
+| Duplicate   | Closed as a duplicate of another question issue           |
 
 #### Markers
 
@@ -214,11 +217,41 @@ The build fills in the box from the question cache: the header from the `kind:` 
 
 Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form, and `bun run check` fails on them. Write every question as an issue with a marker.
 
+#### Duplicates
+
+When two issues ask the same question, the designer picks the canonical one and the page that keeps its marker (its Page row). Close the other issue as a duplicate of it, here #145 of #142:
+
+```sh
+gh issue close 145 --reason duplicate --duplicate-of 142
+```
+
+Without `--duplicate-of` in your `gh`, use the GraphQL API, with each issue's `node_id` from `gh api repos/TAGC/oneiros/issues/<number> --jq .node_id`:
+
+```sh
+gh api graphql -f query='mutation($id: ID!, $of: ID!) { closeIssue(input: {issueId: $id, stateReason: DUPLICATE, duplicateIssueId: $of}) { issue { number } } }' -f id=<node_id of 145> -f of=<node_id of 142>
+```
+
+Close it once the pull request that replaces its marker (below) is merged: a marker naming a duplicate fails the checks. GitHub then shows "Duplicate of #142", and the pull reads it (`duplicateOf` in the cache). A duplicate needs no answer comment. It is left out of the open questions page, the graph facts, constellations and the Astrolabe.
+
+The canonical issue keeps its marker on its owner page. On the duplicate's page, its marker gives way to one plain line linking to the canonical question's box, whose anchor is `issue-<number>`. In English, "See the open question on" (or "See the conflict on") and the page:
+
+```md
+See the open question on [[Ablaze#issue-142|Ablaze]].
+```
+
+In Chinese, 见, the page and 上的待定问题 (or 上的冲突), with the Chinese page title:
+
+```md
+见[[燃烧中#issue-142|燃烧中]]上的待定问题。
+```
+
+If both markers were on the same page, remove the duplicate's marker instead. Once the canonical question is settled, its box goes, and the section links check fails on these lines until they link to the settled rule.
+
 The open questions page groups the questions by constellation. Open questions in no open constellation come last, under "Not in a constellation": page by page, then those that no page marks, such as decision issues, under "Not on a page", by area.
 
 #### The pull
 
-`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments, and every milestone. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. Each milestone goes to `.questions/milestones/<number>.md`, with the question issues in it in frontmatter and its description below. The cache is gitignored. The deploy pulls before every build. Editing, labelling, linking or closing an issue, setting or removing its milestone, and creating, editing, closing, reopening or deleting a milestone all redeploy the site. Locally, pull again after changing issues or milestones.
+`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments, each duplicate's canonical issue, and every milestone. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. Each milestone goes to `.questions/milestones/<number>.md`, with the question issues in it in frontmatter and its description below. The cache is gitignored. The deploy pulls before every build. Editing, labelling, linking or closing an issue, setting or removing its milestone, and creating, editing, closing, reopening or deleting a milestone all redeploy the site. Locally, pull again after changing issues or milestones.
 
 #### Constellations
 
@@ -243,8 +276,9 @@ The description holds an English property table, then one section per site local
 <the reasoning in Chinese>
 ```
 
-- **Size:** `small`, `medium` or `large`, ignoring case.
-- **Energy:** `low`, `medium` or `high`, ignoring case.
+- **Size:** `small`, `medium` or `large`, ignoring case. Size is time: how many questions and how much reading. Small is one or two questions, under 30 minutes; large is six or more, a long session.
+- **Energy:** `low`, `medium` or `high`, ignoring case. Energy is weight: how hard and far-reaching the decisions are. Low is peripheral or independent questions, mostly confirming wording; high is central questions, foundations, conflicts or philosophy.
+- The two are independent: eight wording fixes are large but low energy; one central question about a premise is small but high energy.
 - Both scales' labels are in `src/i18n/ui.ts`, in both languages.
 
 An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.

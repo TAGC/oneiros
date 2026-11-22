@@ -29,9 +29,10 @@ const LOCKED = new Set(['Certainty', 'Dogma']);
 const numbers = (list: number[]) => list.map((n) => `#${n}`).join(', ') || 'none';
 
 /**
- * Every marker names an open question issue; an English marker's issue has a Page row naming
- * its page; English and Chinese pages carry the same markers; Certainty and Dogma pages hold
- * none; no page holds an inline callout.
+ * Every marker names an open question issue (a duplicate's failure names its canonical issue
+ * and that issue's page); an English marker's issue has a Page row naming its page; English
+ * and Chinese pages carry the same markers; Certainty and Dogma pages hold none; no page holds
+ * an inline callout.
  */
 export function markerProblems(questions: Questions, pages: MarkedPage[]): Problem[] {
   const problems: Problem[] = [];
@@ -49,6 +50,15 @@ export function markerProblems(questions: Questions, pages: MarkedPage[]): Probl
         problems.push({
           where,
           message: `marker names #${issue}, which is not a question issue in ${QUESTION_CACHE}/ (run \`bun run pull\`)`,
+        });
+      } else if (question.duplicateOf !== undefined) {
+        const n = question.duplicateOf;
+        const home = questions.get(n)?.properties.page;
+        problems.push({
+          where,
+          message: home
+            ? `marker names #${issue}, a duplicate of #${n} on ${home}; replace the marker with one line linking to #${n} there`
+            : `marker names #${issue}, a duplicate of #${n}, which has no Page row; replace the marker with one line linking to #${n} on its page`,
         });
       } else if (question.state === 'closed') {
         problems.push({
@@ -94,10 +104,11 @@ export function markerProblems(questions: Questions, pages: MarkedPage[]): Probl
 }
 
 /**
- * Every issue has a section for each site locale and a Chinese title; a closed issue has an
- * answer comment, with a section for each locale; blocked-by links and Undermined by rows name
- * question issues; a conflict names at least two sources, each a wiki link to a page in every
- * locale or a listed non-page source.
+ * Every issue has a section for each site locale and a Chinese title; a closed issue other
+ * than a duplicate has an answer comment, with a section for each locale; a duplicate names a
+ * canonical question issue that is not itself a duplicate; blocked-by links and Undermined by
+ * rows name question issues; a conflict names at least two sources, each a wiki link to a page
+ * in every locale or a listed non-page source.
  */
 export function issueProblems(questions: Questions): Problem[] {
   const problems: Problem[] = [];
@@ -114,7 +125,22 @@ export function issueProblems(questions: Questions): Problem[] {
         if (!q.answer[locale]) report(`the answer comment has no \`### ${locale}\` section`);
       }
     }
-    if (q.state === 'closed' && !q.answer) report('closed with no answer comment');
+    if (q.status === 'duplicate') {
+      const target = q.duplicateOf === undefined ? undefined : questions.get(q.duplicateOf);
+      if (q.duplicateOf === undefined)
+        report('closed as a duplicate, but GitHub names no canonical issue in this repo');
+      else if (!target)
+        report(
+          `a duplicate of #${q.duplicateOf}, which is not a question issue in ${QUESTION_CACHE}/ (missing, or no \`kind:\` label)`,
+        );
+      else if (target.status === 'duplicate') {
+        const root =
+          target.duplicateOf === undefined ? 'its canonical issue' : `#${target.duplicateOf}`;
+        report(
+          `a duplicate of #${target.number}, which is itself a duplicate of ${root}; mark #${q.number} a duplicate of ${root}`,
+        );
+      }
+    } else if (q.state === 'closed' && !q.answer) report('closed with no answer comment');
     for (const n of q.blockedBy) {
       if (!questions.get(n))
         report(
