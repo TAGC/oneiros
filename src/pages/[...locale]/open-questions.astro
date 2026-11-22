@@ -6,7 +6,7 @@ import { renderMarkdown } from '../../lib/markdown';
 import { AREAS } from '../../lib/areas';
 import { getPages } from '../../lib/pages';
 import { getQuestions, type Question } from '../../lib/questions';
-import { wikiUrl } from '../../lib/site';
+import { url, wikiUrl } from '../../lib/site';
 import { calloutHeading } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
@@ -40,6 +40,7 @@ function textOf(q: Question): { markdown: string; lang: Locale } {
 >
   <h1>{t.openQuestions}</h1>
   <p class="sub">{t.openSub(count)}</p>
+  <p><a href={url('/astrolabe/', locale)}>{t.astrolabe.seeMap}</a></p>
   {count === 0 && <p>{t.openNone}</p>}
   {
     pages.map((p) => (
