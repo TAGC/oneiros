@@ -49,6 +49,7 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 ## Working style
 
 - Keep answers short.
+- To go over conflicts and open questions, follow `.claude/skills/resolve-open-questions`: one cohesive group per session, one question at a time, one commit per group with each decision's provenance in the body.
 - For foundational design choices, offer a blind design bake-off (`.claude/skills/blind-design-bakeoff`).
 - `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts. The first audit (21 Nov 2026) covered memory and memory light; its open findings are `[!OPEN]` callouts on their pages. Everything else is unaudited.
 - Ideas the designer parks for later go on the Parked topics page, one section and one `[!OPEN]` each.
