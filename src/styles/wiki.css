@@ -1077,6 +1077,12 @@ footer.foot p {
   font-size: 14px;
   white-space: nowrap;
 }
+/* The badge shows the painted icon bare: its own outline is enough at this size. */
+.stage-badge .frame {
+  background: none;
+  border: none;
+  clip-path: none;
+}
 .cat-head .stage-badge {
   flex: none;
   margin-inline-start: 4px;
