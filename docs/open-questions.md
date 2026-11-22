@@ -57,7 +57,7 @@ add #139 related #142: both ask about fading on Memory.
 remove #142 undermined-by #208: #208 left its premise standing.
 ```
 
-A Related link goes on both issues' rows; an Undermined by row only on the first issue. In a Markdown file, only `question-links` code blocks count. The helper prints the changes and makes them only with `--live`. The `link-questions` skill proposes such plans.
+A Related link goes on both issues' rows; an Undermined by row only on the first issue. In a Markdown file, only `question-links` code blocks count. The helper prints the changes and makes them only with `--live`; a live run ends by pulling. The `link-questions` skill proposes such plans.
 
 ## Answers and status
 
@@ -119,7 +119,7 @@ Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form, and `bun run check
 
 ## The pull
 
-`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments, each duplicate's canonical issue, and every milestone. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. Each milestone goes to `.questions/milestones/<number>.md`, with the question issues in it in frontmatter and its description below. The cache is gitignored. The deploy pulls before every build. Editing, labelling, linking or closing an issue, setting or removing its milestone, and creating, editing, closing, reopening or deleting a milestone all redeploy the site. Locally, pull again after changing issues or milestones.
+`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments, each duplicate's canonical issue, and every milestone. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. Each milestone goes to `.questions/milestones/<number>.md`, with the question issues in it in frontmatter and its description below. The cache is gitignored. The deploy pulls before every build. Editing, labelling, linking or closing an issue, setting or removing its milestone, and creating, editing, closing, reopening or deleting a milestone all redeploy the site. Locally, pull again after changing issues or milestones by hand. The `--live` runs of `bun run links`, `bun run constellations apply` and `bun run duplicate` end by pulling, so the cache never lags behind them. The pull fetches the issues with one paginated GraphQL query.
 
 ## Resolving questions
 

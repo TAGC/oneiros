@@ -9,7 +9,7 @@ A **constellation** is a GitHub milestone whose title starts with `✦ `: a cohe
 
 The chart is **stable**: a sound constellation stays exactly as it is, so a run with no new or newly closed questions changes nothing. Change a constellation only for one of the reasons in step 2.
 
-The helper `scripts/constellations.ts` does the GitHub side. It never touches milestones without the mark. It writes and checks descriptions with the format module `src/lib/questions/constellation-format.ts`, the same rules `bun run check` uses, and sends text to GitHub as a JSON request body.
+The helper `scripts/constellations.ts` does the GitHub side, through the GitHub module `scripts/github.ts`. It never touches milestones without the mark. It writes and checks descriptions with the format module `src/lib/questions/constellation-format.ts`, the same rules `bun run check` uses, and sends text to GitHub as a JSON request body.
 
 ## 1. Read the state
 
@@ -68,7 +68,7 @@ Check the operations against step 2: each one has a reason there. An edit to a c
 
 When no constellation exists yet (the first chart), show the designer the plan and wait for approval. Otherwise apply it: `bun run constellations apply <scratchpad>/constellations.yaml --live`. The changes are public at once and redeploy the site.
 
-Then run `bun run pull` and `bun run constellations`: no question is ungrouped and nothing is ready to close. Run the dry run again: it says "Nothing to change". Run `bun run build` and `bun run check`: the Constellations check passes.
+The live run ends by pulling. Then run `bun run constellations`: no question is ungrouped and nothing is ready to close. Run the dry run again: it says "Nothing to change". Run `bun run build` and `bun run check`: the Constellations check passes.
 
 ## 5. Report
 
