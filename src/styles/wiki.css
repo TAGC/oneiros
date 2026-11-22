@@ -1078,6 +1078,10 @@ footer.foot p {
   font-size: 14px;
   white-space: nowrap;
 }
+/* In the infobox the name comes first, so it lines up with the other values. */
+.infobox .stage-badge {
+  flex-direction: row-reverse;
+}
 /* The badge shows the painted icon bare: its own outline is enough at this size. */
 .stage-badge .frame.sm {
   width: 22px;
