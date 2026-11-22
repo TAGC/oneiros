@@ -62,7 +62,7 @@ navbox: character
 
 ## 待定问题
 
-> [!ISSUE 32]
+见[[声名#issue-95|声名]]上的待定问题。
 
 > [!ISSUE 33]
 
