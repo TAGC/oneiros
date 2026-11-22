@@ -32,3 +32,18 @@ An issue's milestone is its constellation, so an issue sits in at most one. Ever
 Code reads constellations only through `src/lib/questions/constellations.ts`; the finished rule is `isFinished` there. `bun run check` checks each open, unfinished constellation's description (see [Checks](checks.md)); finished ones are not checked.
 
 The `chart-constellations` skill keeps the constellations sound: it assigns new questions, splits or merges groups and closes finished ones. `bun run constellations` prints the current chart; `bun run constellations apply <plan>` shows the milestone changes a plan file needs, and `--live` makes them with `gh api`.
+
+## Clusters
+
+A **clustering** is a way to gather the questions: by **areas** or by **constellations**. A **cluster** is one group in a clustering. Each holds its kind, its identity (an area or a milestone number), its name in the page's language (or English), and its questions with their open and total counts. The kinds:
+
+- **area:** the questions of one area.
+- **constellation:** an open constellation's questions, open and settled.
+- **finished:** a finished constellation's settled questions.
+- **none:** the rest: the questions of no area, or in no constellation.
+
+Every question sits in exactly one cluster of each clustering. By constellation, a question sits in its open constellation; else, if settled, in its finished constellation; else in none. So a question reopened in a finished constellation sits in none. Duplicates sit in no cluster. Agreed by the designer on 22 Nov 2026.
+
+The clusters come in one order. By area: the wiki's areas, then "No area". By constellation: the open constellations, then "In no constellation", then the finished constellations, each by milestone number. Empty clusters are left out.
+
+The cluster list, `clusterList` in `src/lib/questions/clusters.ts`, is the one place that decides membership and order. The Astrolabe's night sky and tiers lay it out. The open questions page reads the clustering by constellation, keeps only the open questions and drops the clusters left empty: the open constellations, then "Not in a constellation".

@@ -42,7 +42,9 @@ A constellation is a group of related open questions sized for one session. Unde
 A **Cluster by** choice above the map, asked for by the designer on 22 Nov 2026, gathers the night sky and the tiers by **Areas** or by **Constellations**:
 
 - **Areas:** the sky's clusters are the areas, each in its own glow; the tiers' rows are the areas.
-- **Constellations:** the sky's stars gather by constellation, joined by lines, with the constellation's name, size, energy and progress (how many of its questions are settled) beside them. The questions in no constellation gather in one more cluster, "In no constellation". The tiers' rows are the constellations, then that one.
+- **Constellations:** the sky's stars gather by constellation, joined by lines, with the constellation's name, size, energy and progress (how many of its questions are settled) beside them. The questions in no constellation gather in one more cluster, "In no constellation". The tiers' rows are the constellations, then that one, then the finished constellations.
+
+Both views lay out the same cluster list, in the same order (`clusterList`; clusters, clusterings and the membership rule are defined in `docs/constellations.md`).
 
 Both sky layouts are computed at build time on one canvas, so they are the same on every visit. Switching in the night sky animates: each star flies from its old place to its new one, setting off a moment after its neighbours, and its label, threads and constellation lines follow. With reduced motion the stars jump instead. Without JavaScript the sky and tiers show by area. The choice is remembered in the browser. The Dial is unaffected.
 
@@ -89,7 +91,7 @@ Each constellation is a GitHub milestone on this repo. Its title is `✦ ` follo
 - **Size:** `small`, `medium` or `large`, ignoring case.
 - **Energy:** `low`, `medium` or `high`, ignoring case.
 - An issue's milestone is its constellation. Closed questions stay in it and count as settled.
-- A constellation is **finished** when its milestone is closed or every question in it is closed (`isFinished` in `src/lib/questions/constellations.ts`; agreed by the designer on 22 Nov 2026). It stops showing as an open constellation at once: no Dial mark, no card in the list, no open cluster or row. Clustered by constellation, a settled question in a finished constellation that shows at all (linked to an open question, or with Show settled on) sits in a cluster or row for it: drawn faint, its name dimmed, with no size, energy or progress line, and outside the time and energy filter. Finished rows sit last in the tiers, below "In no constellation". A reopened question in a finished constellation is ungrouped.
+- A constellation is **finished** when its milestone is closed or every question in it is closed (`isFinished` in `src/lib/questions/constellations.ts`; agreed by the designer on 22 Nov 2026). It stops showing as an open constellation at once: no Dial mark, no card in the list, no open cluster or row. Clustered by constellation, a settled question in a finished constellation that shows at all (linked to an open question, or with Show settled on) sits in a cluster or row for it: drawn faint, its name dimmed, with no size, energy or progress line, and outside the time and energy filter. Finished clusters sit last, after "In no constellation", in the night sky and the tiers. A reopened question in a finished constellation is ungrouped.
 
 The Astrolabe reads constellations only through `src/lib/questions/constellations.ts` (`getConstellations()`). The full reference is `docs/constellations.md`.
 
@@ -99,9 +101,9 @@ Everything is laid out at build time and written as static SVG, so positions are
 
 | File | Role |
 | --- | --- |
-| `chart.ts` | Shapes questions and their question graph facts into stars, threads and area groups for one locale. It derives no graph fact itself. |
-| `sky.ts` | The night sky layouts, by area and by constellation on one canvas: clusters seated so linked clusters sit side by side, a seeded force layout settled before the page is written, and label placement. |
-| `tiers.ts` | The tiers layout, by area or by constellation. It only maps each star's steps out to a column. |
+| `chart.ts` | Shapes questions and their question graph facts into stars, threads and the cluster list of each clustering for one locale. It derives no graph fact and decides no cluster itself. |
+| `sky.ts` | The night sky layouts, by area and by constellation on one canvas, from the chart's cluster list: clusters seated so linked clusters sit side by side, a seeded force layout settled before the page is written, and label placement. |
+| `tiers.ts` | The tiers layout, by area or by constellation: a row per cluster of the chart's cluster list. It only maps each star's steps out to a column. |
 | `curve.ts` | A thread's path in the sky, shared by the build and the client. |
 | `motion.ts` | The data the build hands the client for the flight between clusterings, and each star's progress along it. |
 | `brass.ts` | The constellations dial layout: sectors, rings, marks and name placement. |
@@ -125,9 +127,9 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
-The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Every graph fact (a star's place, steps out and roles, and the threads with their kinds) comes from `questionGraph()`, whose terms `docs/open-questions.md` defines. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
+The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Every graph fact (a star's place, steps out and roles, and the threads with their kinds) comes from `questionGraph()`, whose terms `docs/open-questions.md` defines. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Which cluster a question sits in, and the clusters' order, are decided in one place too, `clusterList` in `src/lib/questions/clusters.ts`, which the open questions page also reads. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The graph facts are tested in `src/lib/questions/graph.test.ts`. The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
+The graph facts are tested in `src/lib/questions/graph.test.ts`, and cluster membership and order in `src/lib/questions/clusters.test.ts`. The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
 
 ## Keeping it fast
 
