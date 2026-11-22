@@ -187,20 +187,22 @@ describe('issue context, edges and answer', () => {
       { body: '## Answer\r\n\r\n### en\r\n\r\nIt fades.\r\n\r\n### zh\r\n\r\n会消退。' },
       { body: 'More discussion after the answer.' },
     ];
-    const q = roundTrip([issue({ number: 1, comments })]).get(1);
+    const q = roundTrip([issue({ number: 1, issueComments: comments })]).get(1);
     expect(q?.answer).toEqual({ en: 'It fades.', zh: '会消退。' });
   });
 
   test('an answer comment missing a locale keeps the locales it has', () => {
     const comments = [{ body: '## Answer\n\n### en\n\nEnglish only.' }];
-    expect(roundTrip([issue({ number: 1, comments })]).get(1)?.answer).toEqual({
+    expect(roundTrip([issue({ number: 1, issueComments: comments })]).get(1)?.answer).toEqual({
       en: 'English only.',
     });
   });
 
   test('no answer comment means no answer', () => {
     const comments = [{ body: 'Thinking about an Answer here.' }, { body: null }];
-    expect(roundTrip([issue({ number: 1, comments })]).get(1)?.answer).toBeUndefined();
+    expect(
+      roundTrip([issue({ number: 1, issueComments: comments })]).get(1)?.answer,
+    ).toBeUndefined();
   });
 });
 
@@ -211,13 +213,13 @@ describe('derived status', () => {
   test('open, decided, ruled out and undermined', () => {
     const questions = roundTrip([
       issue({ number: 1 }),
-      issue({ number: 2, state: 'closed', state_reason: 'completed', comments: answer }),
-      issue({ number: 3, state: 'closed', state_reason: 'not_planned', comments: answer }),
+      issue({ number: 2, state: 'closed', state_reason: 'completed', issueComments: answer }),
+      issue({ number: 3, state: 'closed', state_reason: 'not_planned', issueComments: answer }),
       issue({
         number: 4,
         state: 'closed',
         state_reason: 'completed',
-        comments: answer,
+        issueComments: answer,
         body: undermined,
       }),
     ]);

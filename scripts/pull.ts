@@ -1,19 +1,25 @@
 /**
  * Mirrors the repo's question issues (labelled `kind:open` or `kind:conflict`, open and
- * closed) into the gitignored question cache. Needs the `gh` CLI, signed in.
+ * closed) into the gitignored question cache, with each issue's blocked-by links and
+ * comments (the cache keeps only the answer comment). Needs the `gh` CLI, signed in.
  * Usage: bun run pull
  */
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
-import { type GithubIssue, QUESTION_CACHE, writeQuestionCache } from '../src/lib/questions';
+import {
+  type GithubIssue,
+  type PulledIssue,
+  QUESTION_CACHE,
+  writeQuestionCache,
+} from '../src/lib/questions';
 import { REPO } from '../src/lib/site';
 
 const ROOT = join(import.meta.dirname, '..');
 const SLUG = new URL(REPO).pathname.slice(1);
 const KIND_LABELS = ['kind:open', 'kind:conflict'];
 
-function fetchIssues(label: string): GithubIssue[] {
-  const path = `repos/${SLUG}/issues?labels=${encodeURIComponent(label)}&state=all&per_page=100`;
+/** Every item of a paginated list endpoint. */
+function list<T>(path: string): T[] {
   const out = execFileSync('gh', ['api', '--paginate', '--jq', '.[]', path], {
     encoding: 'utf8',
     maxBuffer: 64 * 1024 * 1024,
@@ -21,13 +27,25 @@ function fetchIssues(label: string): GithubIssue[] {
   return out
     .split('\n')
     .filter(Boolean)
-    .map((line) => JSON.parse(line) as GithubIssue);
+    .map((line) => JSON.parse(line) as T);
 }
 
 const byNumber = new Map<number, GithubIssue>();
 for (const label of KIND_LABELS) {
-  for (const issue of fetchIssues(label)) byNumber.set(issue.number, issue);
+  const path = `repos/${SLUG}/issues?labels=${encodeURIComponent(label)}&state=all&per_page=100`;
+  for (const issue of list<GithubIssue>(path)) byNumber.set(issue.number, issue);
 }
-const issues = [...byNumber.values()].filter((i) => !i.pull_request);
+
+const issues: PulledIssue[] = [...byNumber.values()]
+  .filter((i) => !i.pull_request)
+  .map((issue) => ({
+    ...issue,
+    blockedBy: list<GithubIssue>(
+      `repos/${SLUG}/issues/${issue.number}/dependencies/blocked_by?per_page=100`,
+    ),
+    issueComments: issue.comments
+      ? list<{ body: string | null }>(`repos/${SLUG}/issues/${issue.number}/comments?per_page=100`)
+      : [],
+  }));
 writeQuestionCache(join(ROOT, QUESTION_CACHE), issues);
 console.log(`Wrote ${issues.length} question(s) to ${QUESTION_CACHE}/`);

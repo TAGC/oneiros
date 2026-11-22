@@ -27,6 +27,8 @@ export interface GithubIssue {
   state_reason?: 'completed' | 'not_planned' | 'reopened' | 'duplicate' | null;
   labels: ({ name: string } | string)[];
   html_url: string;
+  /** How many comments the issue has. */
+  comments?: number;
   pull_request?: unknown;
 }
 
@@ -34,8 +36,8 @@ export interface GithubIssue {
 export interface PulledIssue extends GithubIssue {
   /** From GitHub's `issues/N/dependencies/blocked_by`. */
   blockedBy?: Pick<GithubIssue, 'number'>[];
-  /** The issue's comments; only the answer comment is kept. */
-  comments?: { body: string | null }[];
+  /** From GitHub's `issues/N/comments`; only the answer comment is kept. */
+  issueComments?: { body: string | null }[];
 }
 
 export type CloseReason = 'completed' | 'not_planned';
@@ -166,7 +168,7 @@ function labelNames(issue: GithubIssue): string[] {
 
 /** The last comment that opens with an `## Answer` heading, without that heading. */
 function answerComment(issue: PulledIssue): string | undefined {
-  const answers = (issue.comments ?? [])
+  const answers = (issue.issueComments ?? [])
     .map((c) => (c.body ?? '').replace(/\r\n?/g, '\n').trim())
     .filter((body) => ANSWER_HEADING.test(body.split('\n')[0]));
   return answers.at(-1)?.split('\n').slice(1).join('\n');
