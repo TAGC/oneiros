@@ -11,3 +11,6 @@ dist/
 
 # Private: project brief for Claude (kept local)
 CLAUDE.md
+
+# Agent worktrees
+.claude/worktrees/
