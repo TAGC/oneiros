@@ -13,6 +13,3 @@ dist/
 
 # Agent worktrees
 .claude/worktrees/
-
-# Question cache, written by `bun run pull`
-.questions/
