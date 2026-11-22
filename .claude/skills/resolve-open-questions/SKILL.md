@@ -1,17 +1,17 @@
 ---
 name: "resolve-open-questions"
-description: "Work through the wiki's open questions and conflicts (question issues and [!OPEN] or [!CONFLICT] callouts) with the designer, one cohesive group per session: ask one question at a time, answer each on its issue and land the group as one pull request. Use when asked to go over conflicts, open questions or outstanding callouts."
+description: "Work through the wiki's open questions and conflicts (question issues) with the designer, one cohesive group per session: ask one question at a time, answer each on its issue and land the group as one pull request. Use when asked to go over conflicts or open questions."
 ---
 
 # Resolve open questions
 
 The designer settles the wiki's open questions in small sessions. Each session takes one cohesive group, settles it, lands it as one pull request and ends, so the next group starts with a fresh agent.
 
-Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marker on its page. Some pages still hold old inline `[!OPEN]` and `[!CONFLICT]` callouts. The issue format, the answer comment format and the labels are in `README.md` under "Open questions"; follow them exactly.
+Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marker on its page. The issue format, the answer comment format and the labels are in `README.md` under "Open questions"; follow them exactly.
 
 ## 1. Pick a group
 
-- Run `bun run pull`, then list the open questions: `gh issue list --state open --label kind:conflict` and `--label kind:open`, or grep `.questions/`. List the old callouts too: `grep -n -A2 '\[!CONFLICT\]\|\[!OPEN\]' src/content/wiki/*.md*`. The `/open-questions/` page collects both.
+- Run `bun run pull`, then list the open questions: `gh issue list --state open --label kind:conflict` and `--label kind:open`, or grep `.questions/`. The `/open-questions/` page collects them.
 - A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (README, "Constellations"). List them with `gh api 'repos/TAGC/oneiros/milestones?state=open' --jq '.[] | select(.title | startswith("✦ ")) | "\(.number) \(.title)"'` and offer one first. Its questions are `gh issue list --state open --milestone "<title>"`.
 - Without a fitting constellation: conflicts before opens. Then opens area by area.
 - Prefer questions whose blockers are all settled: an open question blocked by another open question waits for it.
@@ -52,9 +52,9 @@ Between unsettled sources, no source wins by default. The sheet was ruled author
 Once every question in the group is settled, ask the designer whether to open the pull request. Then:
 
 1. Work on a branch off `main`, never on `main` itself.
-2. Make sure every decision has an issue. Every decision the designer asked to record gets one, even with no question behind it: an old inline callout, a knock-on rule, a decision taken along the way. Open it in the README format with `gh issue create --title "<English title>" --label kind:open --label area:<area> --body-file <file>`.
+2. Make sure every decision has an issue. Every decision the designer asked to record gets one, even with no question behind it: a knock-on rule, a decision taken along the way. Open it in the README format with `gh issue create --title "<English title>" --label kind:open --label area:<area> --body-file <file>`.
 3. Open a question issue for each new open question, and put its marker on the English and Chinese pages.
-4. Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Replace each decided marker or old callout with its outcome as plain rule. Remove the marker of each ruled-out question.
+4. Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Replace each decided marker with its outcome as plain rule. Remove the marker of each ruled-out question.
 5. When a decision is hard to reverse, surprising to a later reader and the result of a real trade-off (for example "burn only from a bead"), add a short "why" to the owner page's prose, using only reasons the designer gave. Other decisions need no reason on the page; the answer comment holds the provenance.
 6. Changing a Tenet page's rules needs no status question; ask only if a change challenges the page's premise itself.
 7. Add new blocked-by links and Undermined by rows on GitHub.
