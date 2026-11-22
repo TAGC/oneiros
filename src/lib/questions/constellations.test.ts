@@ -128,6 +128,32 @@ describe('loading constellations from milestones', () => {
     expect(numbers(constellations.open())).toEqual([3]);
   });
 
+  test('finishes a constellation at once when all its questions close, before its milestone does', () => {
+    const milestones = [
+      milestone({ number: 3 }),
+      milestone({ number: 4 }),
+      milestone({ number: 5, state: 'closed' }),
+    ];
+    const issues = [closed(142, 3), closed(145, 3), issue(150, 4), closed(151, 4), closed(160, 5)];
+    const constellations = load(issues, milestones);
+    expect(numbers(constellations.open())).toEqual([4]);
+    expect(numbers(constellations.finished())).toEqual([3, 5]);
+    expect(numbers(constellations.toClose())).toEqual([3]);
+  });
+
+  test('keeps an empty open milestone open: it has nothing to finish', () => {
+    const constellations = load([issue(1)], [milestone({ number: 6 })]);
+    expect(numbers(constellations.open())).toEqual([6]);
+    expect(numbers(constellations.finished())).toEqual([]);
+  });
+
+  test('counts a reopened question in a finished constellation as ungrouped', () => {
+    const issues = [issue(142, 5), closed(145, 5)];
+    const constellations = load(issues, [milestone({ number: 5, state: 'closed' })]);
+    expect(numbers(constellations.ungrouped())).toEqual([142]);
+    expect(numbers(constellations.finished())).toEqual([5]);
+  });
+
   test('ignores milestones without the constellation mark', () => {
     const milestones = [milestone({ number: 3 }), milestone({ number: 5, title: 'Release 1' })];
     const constellations = load([issue(142, 3), issue(150, 5)], milestones);

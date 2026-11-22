@@ -150,8 +150,8 @@ export function stateReport(questions: Questions, constellations: Constellations
   const graph = questionGraph(questions.all());
   const open = questions.all().filter((q) => q.state === 'open');
   const ungrouped = constellations.ungrouped();
-  const live = constellations.open().filter((c) => c.questions.some((q) => q.state === 'open'));
-  const done = constellations.open().filter((c) => !live.includes(c));
+  const live = constellations.open();
+  const done = constellations.toClose();
 
   const out = [
     `${plural(open.length, 'open question')} in ${plural(live.length, 'open constellation')}; ${ungrouped.length} ungrouped.`,

@@ -6,7 +6,7 @@ import Wiki from '../../layouts/Wiki.astro';
 import { AREAS } from '../../lib/areas';
 import { getPages, type Page } from '../../lib/pages';
 import { getQuestions, type Question } from '../../lib/questions';
-import { getConstellations } from '../../lib/questions/constellations';
+import { getConstellations, isFinished } from '../../lib/questions/constellations';
 import { url, wikiUrl } from '../../lib/site';
 import { type Callout, calloutHeading } from '../../lib/wiki';
 
@@ -31,7 +31,10 @@ for (const page of pages) {
 const unmarked = questions.all().filter((q) => q.state === 'open' && !markedOn.has(q.number));
 const count = pages.reduce((n, p) => n + p.callouts.length, 0) + unmarked.length;
 
-const grouped = (issue: number) => constellations.of(issue)?.state === 'open';
+const grouped = (issue: number) => {
+  const c = constellations.of(issue);
+  return c !== undefined && !isFinished(c);
+};
 const ungroupedPages = pages
   .map((p) => ({ ...p, callouts: p.callouts.filter((c) => !grouped(c.issue)) }))
   .filter((p) => p.callouts.length);

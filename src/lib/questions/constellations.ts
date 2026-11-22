@@ -68,12 +68,26 @@ export interface Constellation {
 export interface Constellations {
   /** Every constellation, open and closed, by number. */
   all(): Constellation[];
-  /** The open constellations, the ones drawn. */
+  /** The open constellations that are not finished: the ones drawn and charted. */
   open(): Constellation[];
+  /** The finished constellations (see `isFinished`), by number. */
+  finished(): Constellation[];
+  /** Finished constellations whose milestone is still open, waiting to be closed. */
+  toClose(): Constellation[];
   /** The constellation holding a question, open or closed. */
   of(number: number): Constellation | undefined;
   /** Open questions in no open constellation, by number. */
   ungrouped(): Question[];
+}
+
+/**
+ * A constellation is finished when its milestone is closed, or when every question in it is
+ * closed: it stops showing as open at once, without waiting for its milestone to close. An
+ * open milestone with no questions is not finished. Agreed with the designer on 22 Nov 2026.
+ */
+export function isFinished(c: Pick<Constellation, 'state' | 'questions'>): boolean {
+  if (c.state === 'closed') return true;
+  return c.questions.length > 0 && c.questions.every((q) => q.state === 'closed');
 }
 
 interface MilestoneFrontmatter {
@@ -197,14 +211,17 @@ export function loadConstellations(dir: string, questions: Questions): Constella
   const all = milestoneFiles(folder)
     .flatMap((f) => toConstellation(readFileSync(join(folder, f), 'utf8'), questions) ?? [])
     .sort((a, b) => a.number - b.number);
-  const open = all.filter((c) => c.state === 'open');
+  const open = all.filter((c) => !isFinished(c));
+  const finished = all.filter(isFinished);
+  const toClose = finished.filter((c) => c.state === 'open');
   const byNumber = new Map(all.flatMap((c) => c.questions.map((q) => [q.number, c] as const)));
-  const ungrouped = questions
-    .all()
-    .filter((q) => q.state === 'open' && byNumber.get(q.number)?.state !== 'open');
+  const held = new Set(open.flatMap((c) => c.questions.map((q) => q.number)));
+  const ungrouped = questions.all().filter((q) => q.state === 'open' && !held.has(q.number));
   return {
     all: () => [...all],
     open: () => [...open],
+    finished: () => [...finished],
+    toClose: () => [...toClose],
     of: (n) => byNumber.get(n),
     ungrouped: () => [...ungrouped],
   };
@@ -218,7 +235,7 @@ export function getConstellations(questions: Questions = getQuestions()): Conste
 /**
  * Every open constellation's description has a Size and an Energy on their scales, the
  * English reasoning, and for each other locale a section with its name and reasoning.
- * Closed constellations are not drawn, so they are not checked.
+ * Finished constellations are not drawn as open ones, so they are not checked.
  */
 export function constellationProblems(constellations: Constellations): Problem[] {
   const problems: Problem[] = [];

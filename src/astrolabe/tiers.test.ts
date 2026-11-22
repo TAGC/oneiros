@@ -121,6 +121,8 @@ function constellations(questions: Question[], members: Record<number, number[]>
     all: () => open,
     open: () => open,
     of: () => undefined,
+    finished: () => [],
+    toClose: () => [],
     ungrouped: () => questions.filter((q) => !held.has(q.number) && q.status === 'open'),
   };
 }

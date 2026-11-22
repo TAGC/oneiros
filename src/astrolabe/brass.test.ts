@@ -50,6 +50,8 @@ function dial(groups: Constellation[], locale: 'en' | 'zh' = 'en') {
     all: () => groups,
     open: () => groups.filter((c) => c.state === 'open'),
     of: (n) => groups.find((c) => c.questions.some((q) => q.number === n)),
+    finished: () => [],
+    toClose: () => [],
     ungrouped: () => [],
   };
   return layoutBrass(chartQuestions(questions, questionGraph(questions), locale, fake));

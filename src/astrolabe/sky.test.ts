@@ -148,6 +148,8 @@ describe('the sky layout', () => {
         },
       ],
       of: () => undefined,
+      finished: () => [],
+      toClose: () => [],
       ungrouped: () => [],
     };
     const layout = layoutSky(chartQuestions(qs, questionGraph(qs), 'en', fake));
@@ -197,6 +199,8 @@ function fakeConstellations(qs: Question[], members = MEMBERS) {
     all: () => open,
     open: () => open,
     of: () => undefined,
+    finished: () => [],
+    toClose: () => [],
     ungrouped: () => qs.filter((q) => !held.has(q.number) && q.status === 'open'),
   };
 }

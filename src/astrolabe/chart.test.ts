@@ -138,6 +138,8 @@ describe('constellations', () => {
       all: () => constellations,
       open: () => open,
       of: (n) => constellations.find((c) => c.questions.some((q) => q.number === n)),
+      finished: () => [],
+      toClose: () => [],
       ungrouped: () => questions.filter((q) => q.state === 'open' && !grouped.has(q.number)),
     };
     return chartQuestions(questions, questionGraph(questions), locale, fake);
