@@ -309,6 +309,39 @@ function callouts(raw: string): Record<CalloutKind, number[]> {
   return out;
 }
 
+// ---------------------------------------------------------------- page status
+
+/**
+ * Certainty and Dogma need nothing open, so their pages may hold no open or conflict
+ * callouts. A Chinese page carries the same status as its English page.
+ */
+function checkStatus(): Problem[] {
+  const problems: Problem[] = [];
+  const english = new Map<string, unknown>();
+  for (const locale of ['en', 'zh'] as const) {
+    for (const file of files(WIKI_DIRS[locale], isPage)) {
+      const raw = read(file);
+      const { status } = frontmatter(raw).data;
+      const slug = file.replace(/^.*\//, '').replace(/\.mdx?$/, '');
+      if (locale === 'en') english.set(slug, status);
+      else if (english.has(slug) && english.get(slug) !== status)
+        problems.push({
+          where: file,
+          message: `status ${String(status)} differs from the English page's ${String(english.get(slug))}`,
+        });
+      if (status !== 'Certainty' && status !== 'Dogma') continue;
+      const found = callouts(raw);
+      for (const kind of ['open', 'conflict'] as const)
+        for (const line of found[kind])
+          problems.push({
+            where: `${file}:${line}`,
+            message: `${status} page holds ${kind === 'open' ? 'an open' : 'a conflict'} callout; resolve it or lower the status`,
+          });
+    }
+  }
+  return problems;
+}
+
 function checkPageParity(): Problem[] {
   const problems: Problem[] = [];
   const en = files(WIKI_DIRS.en, isPage);
@@ -482,6 +515,7 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Chinese page parity', checkPageParity],
   ['Chinese sheet parity', checkSheetParity],
   ['Chinese terms', checkChineseTerms],
+  ['Page status', checkStatus],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {
