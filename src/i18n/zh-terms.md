@@ -158,7 +158,7 @@ Column key: **Source** is guide (new), guide (old), guide (new, old) or proposed
 | --- | --- | --- | --- | --- |
 | Envy / Good will | 嫉妒 / 善意 | | guide (new, old) | 善意 rightly drops the English pun on "will". |
 | Greed / Generosity | 贪婪 / 慷慨 | | proposed | |
-| Cruelty / Mercifulness (sheet: Mercy) | 残忍 / 仁慈 | 慈悲 | guide (new, old) | 仁慈 covers both "mercy" and "mercifulness", so the English naming question disappears. |
+| Cruelty / Mercy (Mainländer: mercifulness) | 残忍 / 仁慈 | 慈悲 | guide (new, old) | 仁慈 covers both "mercy" and "mercifulness". |
 | Falseness / Fidelity | 虚伪 / 忠诚 | | guide (old) | |
 | Pride / Humility | 骄傲 / 谦卑 | | proposed | |
 | Defiance / Despondency | 不屈 / 颓丧 | 桀骜 | proposed | 颓丧 keeps it apart from Despair (绝望). |
@@ -507,7 +507,7 @@ Superseded old-guide terms (do not reuse): the **睡眠** (Sleep) source and tra
 - **Core.** The guides use 内核 both for the core layer and for a Reverie's unchangeable core, exactly as English does with "core". Keep it, but never make bare 内核 an alias. Alternatively, call the Reverie's core 原核.
 - **Anchored.** The status word 稳固 and the anchored place (锚定地点) are separated in Chinese, though the same English word links them. Accept that.
 - **Good will.** The Chinese 善意 drops the false link to "will" (意志).
-- **Mercy vs Mercifulness.** Both English names are 仁慈 in Chinese, so the open naming question does not reach the Chinese text.
+- **Mercy vs Mercifulness.** Settled as Mercy (22 Nov 2026). Both English names are 仁慈 in Chinese, so the Chinese text did not change.
 - **Hold vs Conviction.** These are 扎根度 and 信念度. Hold shares 扎根 with the ladder (扎根阶梯), which is apt.
 - **Echo, Refrain, Resonance.** These are 回响, 萦回 and 共鸣: three sound metaphors, all distinct. Do not use 回响 for anything else.
 - **Illusion, Eidolon, Guise, persona.** These are 幻象, 异影, 扮相 and 外相: all distinct.
