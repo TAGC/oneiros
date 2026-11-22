@@ -17,7 +17,7 @@
      "Impression",
      "Hearsay",
      "An object on a shelf: an oil lamp or a loose leaf",
-     "Small, while placed (memory); none (belief)",
+     "Small (memory); none (belief)",
      "No scar"
     ],
     [
@@ -63,11 +63,11 @@
     ],
     [
      "Max Coherence",
-     "Material times a tier factor, summed over everything you hold: Loose x0.5, Fixture x1, Room x2, Megaron x3, collapsed x0.5 (factors to tune). Colourless items are Calm material"
+     "Material times a tier factor, summed over everything you hold (Loose x0.5, Fixture x1, Room x2, Megaron x3, collapsed x0.5; factors to tune), plus renown. Colourless items are Calm material"
     ],
     [
      "Rising and falling",
-     "Rise smoothly, fall hard. Hold that slips below its tier's line cracks the room, a warning that mends if Hold recovers. Too long or too far below, it collapses: it keeps its mood capacity, drops to x0.5 Coherence, loses its boons, still takes plot, carries scar maluses and buries its contents (destroying them is possible). Restore it by raising Hold, or uproot it"
+     "Rise smoothly, fall hard. Hold or Conviction that slips below its tier's line cracks the room, a warning that mends if it recovers. Too long or too far below, it collapses: it keeps its mood capacity, drops to x0.5 Coherence, loses its boons, still takes plot, carries scar maluses and buries its contents (destroying them is possible). Restore it by rooting it again, or uproot it"
     ],
     [
      "Surfacing",
@@ -75,7 +75,7 @@
     ],
     [
      "Flickers",
-     "At Room, a strong memory can briefly change your form under a strong mood, scaled by stability. Not a mutation. Gear reshapes (low stability), slips off (medium) or binds the change at a cost (high); matching grain welcomes it, opposed grain cancels some into lucidity"
+     "At Room, a strong memory can briefly change your form under a strong mood, scaled by stability. Not a mutation. Gear reshapes (low stability), slips off (medium) or binds the change at a cost in Fear or Coherence (high); matching grain welcomes it, opposed grain resists and damps it, and nothing cancels"
     ],
     [
      "Scars",
