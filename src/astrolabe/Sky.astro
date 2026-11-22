@@ -8,7 +8,7 @@ import Backdrop from './Backdrop.astro';
 import type { StarChart } from './chart';
 import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
-import type { SkyMotionData } from './motion';
+import type { SkyMotionData, SkySpot } from './motion';
 import type { SkyLayout } from './sky';
 import { areaKey, areaTint } from './tints';
 
@@ -29,12 +29,13 @@ const ungrouped = new Set(chart.ungrouped);
 const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 /* Constellation lines, rings and names show only when clustered by constellation. */
 const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
-const motion = (l: SkyLayout) =>
+const motion = (l: SkyLayout): Record<string, SkySpot> =>
   Object.fromEntries(
-    l.stars.map((s) => [
-      s.number,
-      [s.x, s.y, s.r, s.label.x, Number((s.label.y + s.label.size - 1).toFixed(1)), s.label.anchor],
-    ]),
+    l.stars.map((s) => {
+      const baseline = Number((s.label.y + s.label.size - 1).toFixed(1));
+      const spot: SkySpot = [s.x, s.y, s.r, s.label.x, baseline, s.label.anchor];
+      return [s.number, spot];
+    }),
   );
 const motionData: SkyMotionData | undefined = byConstellation && {
   lineHeight: layout.stars[0]?.label.lineHeight ?? 15,
