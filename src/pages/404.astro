@@ -1,33 +1,77 @@
 ---
+import { CJK_FONTS, HTML_LANG, LOCALES, otherLocale, useTranslations } from '../i18n/ui';
 import Wiki from '../layouts/Wiki.astro';
 import { url } from '../lib/site';
+
+/* One 404 for both languages: the script shows the Chinese text on /zh/ addresses. */
+const t = useTranslations('en');
+const texts = LOCALES.map((locale) => {
+  const l = useTranslations(locale);
+  const link = (path: string, text: string) => `<a href="${url(path, locale)}">${text}</a>`;
+  const other = otherLocale(locale);
+  return {
+    locale,
+    other: { href: url('/', other), lang: HTML_LANG[other], name: useTranslations(other).languageName },
+    lang: HTML_LANG[locale],
+    title: l.notFoundTitle,
+    msg: l.notFoundMsg,
+    named: l.notFoundNamed,
+    siteName: l.siteName,
+    help: l.notFoundHelp(
+      link('/glossary/', l.glossaryIndex),
+      link('/open-questions/', l.notFoundOpen),
+      link('/', l.mainPage),
+    ),
+  };
+});
 ---
 
-<Wiki title="Page not written yet">
-  <h1 class="nf-title">Page not written yet</h1>
-  <p class="sub">From the Oneiros Wiki</p>
-  <p class="nf-msg">There is no page at this address yet.</p>
-  <p>
-    Red links point to pages that have not been written. Try the <a href={url('/glossary/')}
-      >Glossary index</a
-    >, the <a href={url('/open-questions/')}>open questions</a> or the <a href={url('/')}
-      >Main page</a
-    >.
-  </p>
+<Wiki title={t.notFoundTitle}>
+  {
+    texts.map((x) => (
+      <div
+        class="nf"
+        lang={x.locale === 'en' ? undefined : x.lang}
+        data-locale={x.locale}
+        data-lang={x.lang}
+        data-named={x.named}
+        data-site={x.siteName}
+        hidden={x.locale !== 'en'}
+      >
+        <h1 class="nf-title">{x.title}</h1>
+        <p class="sub">{useTranslations(x.locale).fromWiki}</p>
+        <p class="nf-msg">{x.msg}</p>
+        <p set:html={x.help} />
+        <p>
+          <a href={x.other.href} hreflang={x.other.lang} lang={x.other.lang}>
+            {x.other.name}
+          </a>
+        </p>
+      </div>
+    ))
+  }
 </Wiki>
 
-<script>
+<script define:vars={{ cjkFonts: CJK_FONTS }}>
   const base = document.body.dataset.base ?? '/';
-  const match = location.pathname.match(new RegExp(`^${base}wiki/([^/]+)/?$`));
-  if (match) {
+  const zh = location.pathname.startsWith(`${base}zh/`);
+  const shown = document.querySelector(`.nf[data-locale="${zh ? 'zh' : 'en'}"]`);
+  for (const block of document.querySelectorAll('.nf')) block.hidden = block !== shown;
+  if (zh && shown) {
+    document.documentElement.lang = shown.dataset.lang;
+    const fonts = document.createElement('link');
+    fonts.rel = 'stylesheet';
+    fonts.href = cjkFonts;
+    document.head.append(fonts);
+  }
+  const match = location.pathname.match(new RegExp(`^${base}(?:zh/)?wiki/([^/]+)/?$`));
+  if (match && shown) {
     const words = decodeURIComponent(match[1]).replace(/-/g, ' ');
     const name = words.charAt(0).toUpperCase() + words.slice(1);
-    const title = document.querySelector('.nf-title');
-    const msg = document.querySelector('.nf-msg');
+    const title = shown.querySelector('.nf-title');
+    const msg = shown.querySelector('.nf-msg');
     if (title) title.textContent = name;
-    if (msg) {
-      msg.textContent = `The page "${name}" has not been written yet. Its link shows red wherever it appears.`;
-    }
-    document.title = `${name} – Oneiros Wiki`;
+    if (msg) msg.textContent = shown.dataset.named.replace('{name}', name);
+    document.title = `${name} – ${shown.dataset.site}`;
   }
 </script>

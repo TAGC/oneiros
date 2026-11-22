@@ -1,0 +1,42 @@
+---
+import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import Wiki from '../../layouts/Wiki.astro';
+import { url } from '../../lib/site';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<Wiki title={t.randomPage} locale={locale} path="/random/">
+  <h1>{t.randomPage}</h1>
+  <p class="random-msg" data-failed={t.randomFailed}>{t.randomFinding}</p>
+  <noscript
+    ><p set:html={t.randomNoScript(`<a href="${url('/glossary/', locale)}">${t.glossaryIndex}</a>`)} /></noscript
+  >
+</Wiki>
+
+<script>
+  const base = document.body.dataset.base ?? '/';
+  const root = document.body.dataset.root ?? base;
+  const msg = document.querySelector<HTMLElement>('.random-msg');
+  /* Each entry is [title, summary], plus the page's language when it falls back to English. */
+  fetch(`${root}previews.json`)
+    .then((r) => r.json() as Promise<Record<string, [string, string, string?]>>)
+    .then((pages) => {
+      const all = Object.entries(pages);
+      const own = all.filter(([, p]) => !p[2]);
+      const pool = own.length ? own : all;
+      if (!pool.length) throw new Error('No pages');
+      const [slug, page] = pool[Math.floor(Math.random() * pool.length)];
+      location.replace(`${page[2] ? base : root}wiki/${slug}/`);
+    })
+    .catch(() => {
+      if (msg) msg.textContent = msg.dataset.failed ?? '';
+    });
+</script>

@@ -1,0 +1,68 @@
+---
+import IconFrame from '../../components/IconFrame.astro';
+import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import Wiki from '../../layouts/Wiki.astro';
+import { AREAS } from '../../lib/areas';
+import { renderMarkdown } from '../../lib/markdown';
+import { getCategories, getPages } from '../../lib/pages';
+import { categoryUrl, url } from '../../lib/site';
+import { TABS } from '../../lib/sheet';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const pages = await getPages(locale);
+const categories = await getCategories(locale);
+const openCount = pages.reduce((n, p) => n + p.callouts.length, 0);
+const translatedCount = pages.filter((p) => p.locale === 'zh').length;
+const welcome = renderMarkdown(t.welcome, undefined, locale);
+---
+
+<Wiki title={t.siteName} description={t.mainDescription} locale={locale} path="/">
+  <h1>{t.welcomeTitle}</h1>
+  <p class="sub">{t.mainSub(pages.length, translatedCount)}</p>
+  <div class="lede" set:html={welcome} />
+
+  <h2>{t.exploreHeading}</h2>
+  <ul class="tiles">
+    {
+      AREAS.map((area) => {
+        const n = categories.get(area)?.length ?? 0;
+        return (
+          <li>
+            <a class="tile" href={categoryUrl(area, locale)}>
+              <IconFrame name={area} />
+              <span class="lab">{area}</span>
+              <span class="desc">{t.pageCount(n)}</span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ul>
+
+  <h2>{t.findYourWay}</h2>
+  <ul class="cards">
+    <li>
+      <b><a href={url('/glossary/', locale)}>{t.glossaryIndex}</a></b>
+      {t.glossaryCard}
+    </li>
+    <li>
+      <b><a href={url('/tables/', locale)}>{t.sheetTables}</a></b>
+      {t.tablesCard(TABS.length)}
+    </li>
+    <li>
+      <b><a href={url('/open-questions/', locale)}>{t.openQuestions}</a></b>
+      {t.openCard(openCount)}
+    </li>
+    <li>
+      <b><a href={url('/random/', locale)}>{t.randomPage}</a></b>
+      {t.randomCard}
+    </li>
+  </ul>
+</Wiki>

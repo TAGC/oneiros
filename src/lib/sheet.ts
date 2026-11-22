@@ -1,3 +1,5 @@
+import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+
 export interface SheetTableBlock {
   type: 'table';
   header: string[];
@@ -35,6 +37,21 @@ export function getTab(slug: string): SheetTab {
   const tab = TABS.find((t) => t.slug === slug);
   if (!tab) throw new Error(`Sheet tab "${slug}" not found in src/data/sheet/`);
   return tab;
+}
+
+/** Translated tabs: `src/data/sheet-zh/<slug>.json`, in the same shape as the English tab. */
+const zhFiles = import.meta.glob<{ default: { name?: string; blocks: SheetBlock[] } }>(
+  '../data/sheet-zh/*.json',
+  { eager: true },
+);
+
+/** A tab in one language: zh uses `src/data/sheet-zh/` when the tab is there, else English. */
+export function localTab(slug: string, locale: Locale = DEFAULT_LOCALE) {
+  const tab = getTab(slug);
+  if (locale === DEFAULT_LOCALE) return { tab, translated: true };
+  const zh = zhFiles[`../data/sheet-zh/${slug}.json`]?.default;
+  if (!zh) return { tab, translated: false };
+  return { tab: { ...tab, name: zh.name ?? tab.name, blocks: zh.blocks }, translated: true };
 }
 
 export function isArchive(tab: SheetTab): boolean {

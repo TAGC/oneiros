@@ -1,0 +1,55 @@
+---
+import WikiLink from '../../components/WikiLink.astro';
+import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import Wiki from '../../layouts/Wiki.astro';
+import { renderMarkdown } from '../../lib/markdown';
+import { getPages } from '../../lib/pages';
+import { wikiUrl } from '../../lib/site';
+import { calloutHeading } from '../../lib/wiki';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const pages = (await getPages(locale)).filter((p) => p.callouts.length);
+const count = pages.reduce((n, p) => n + p.callouts.length, 0);
+---
+
+<Wiki
+  title={t.openQuestions}
+  description={t.openDescription}
+  locale={locale}
+  path="/open-questions/"
+>
+  <h1>{t.openQuestions}</h1>
+  <p class="sub">{t.openSub(count)}</p>
+  {pages.length === 0 && <p>{t.openNone}</p>}
+  {
+    pages.map((p) => (
+      <section>
+        <h2>
+          <WikiLink to={p} locale={locale}>
+            {p.title}
+          </WikiLink>
+        </h2>
+        {p.callouts.map((c) => (
+          <div class={`note note-${c.kind}`}>
+            <p class="note-h">
+              <strong>{calloutHeading(c.kind, locale)}</strong> ·{' '}
+              <a href={wikiUrl(p.slug, c.id, p.locale)}>{t.onThePage}</a>
+            </p>
+            {p.locale === locale ? (
+              <Fragment set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
+            ) : (
+              <div lang={p.locale} set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
+            )}
+          </div>
+        ))}
+      </section>
+    ))
+  }
+</Wiki>

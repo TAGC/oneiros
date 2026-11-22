@@ -1,19 +1,25 @@
+import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+
 export const SITE = 'https://tagc.github.io';
 export const BASE = '/oneiros';
 export const REPO = 'https://github.com/TAGC/oneiros';
 export const WIKI_DIR = 'src/content/wiki';
 
-/** A site path under the base, such as `url('/glossary/')`. */
-export function url(path = '/'): string {
-  return BASE + (path.startsWith('/') ? path : `/${path}`);
+/** Where each locale's pages live; a zh page pairs with the English page of the same slug. */
+export const WIKI_DIRS: Record<Locale, string> = { en: WIKI_DIR, zh: 'src/content/wiki-zh' };
+
+/** A site path under the base, such as `url('/glossary/')`; zh paths gain a `/zh` prefix. */
+export function url(path = '/', locale: Locale = DEFAULT_LOCALE): string {
+  const prefix = locale === DEFAULT_LOCALE ? '' : `/${locale}`;
+  return BASE + prefix + (path.startsWith('/') ? path : `/${path}`);
 }
 
-export function wikiUrl(slug: string, section?: string): string {
-  return url(`/wiki/${slug}/`) + (section ? `#${section}` : '');
+export function wikiUrl(slug: string, section?: string, locale: Locale = DEFAULT_LOCALE): string {
+  return url(`/wiki/${slug}/`, locale) + (section ? `#${section}` : '');
 }
 
-export function categoryUrl(name: string): string {
-  return url(`/category/${slugify(name)}/`);
+export function categoryUrl(name: string, locale: Locale = DEFAULT_LOCALE): string {
+  return url(`/category/${slugify(name)}/`, locale);
 }
 
 /** Kebab-case of a title: the slug, file name and URL segment of a page. */
@@ -26,10 +32,10 @@ export function slugify(text: string): string {
     .replace(/^-+|-+$/g, '');
 }
 
-export function sourceUrl(file: string): string {
-  return `${REPO}/blob/main/${WIKI_DIR}/${file}`;
+export function sourceUrl(file: string, locale: Locale = DEFAULT_LOCALE): string {
+  return `${REPO}/blob/main/${WIKI_DIRS[locale]}/${file}`;
 }
 
-export function historyUrl(file: string): string {
-  return `${REPO}/commits/main/${WIKI_DIR}/${file}`;
+export function historyUrl(file: string, locale: Locale = DEFAULT_LOCALE): string {
+  return `${REPO}/commits/main/${WIKI_DIRS[locale]}/${file}`;
 }

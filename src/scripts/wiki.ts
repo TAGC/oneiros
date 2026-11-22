@@ -1,4 +1,6 @@
 const base = document.body.dataset.base ?? '/';
+/** The current language's root: `base` for English, `base` + `zh/` for Chinese. */
+const root = document.body.dataset.root ?? base;
 
 /* Theme: system, light, dark. */
 const THEMES = ['system', 'light', 'dark'] as const;
@@ -12,9 +14,11 @@ function currentTheme(): Theme {
 
 function showTheme(theme: Theme): void {
   if (!themeBtn) return;
-  themeBtn.setAttribute('aria-label', `Theme: ${theme}`);
+  const d = themeBtn.dataset;
+  themeBtn.setAttribute('aria-label', `${d.themeLabel ?? 'Theme: '}${d[theme] ?? theme}`);
   const label = themeBtn.querySelector('.lbl');
-  if (label) label.textContent = theme === 'system' ? 'Auto' : theme === 'light' ? 'Light' : 'Dark';
+  const labels = { system: d.autoLabel, light: d.lightLabel, dark: d.darkLabel };
+  if (label) label.textContent = labels[theme] ?? theme;
 }
 
 showTheme(currentTheme());
@@ -54,7 +58,7 @@ const pop = document.getElementById('pop');
 let previews: Promise<Previews> | undefined;
 
 function loadPreviews(): Promise<Previews> {
-  previews ??= fetch(`${base}previews.json`)
+  previews ??= fetch(`${root}previews.json`)
     .then((r) => (r.ok ? (r.json() as Promise<Previews>) : {}))
     .catch(() => ({}));
   return previews;
@@ -101,7 +105,8 @@ document.addEventListener('keydown', (e) => {
 });
 addEventListener('scroll', hidePreview, { passive: true });
 
-/* Search, through the Pagefind JS API. */
+/* Search, through the Pagefind JS API. Pagefind builds one index per `<html lang>` and
+   picks the index matching the current page's lang, so zh pages search Chinese pages. */
 interface PagefindResult {
   data(): Promise<{ url: string; excerpt: string; meta: { title?: string } }>;
 }
@@ -163,10 +168,10 @@ async function runSearch(q: string): Promise<void> {
   if (!list) return;
   if (!q.trim()) return setOpen(false);
   const pf = await loadPagefind();
-  if (!pf) return message('Search is available on the built site.');
+  if (!pf) return message(form?.dataset.unavailable ?? '');
   const search = await pf.debouncedSearch(q);
   if (!search || input?.value !== q) return;
-  if (!search.results.length) return message('No pages match.');
+  if (!search.results.length) return message(form?.dataset.none ?? '');
   const items = await Promise.all(search.results.slice(0, 8).map((r) => r.data()));
   if (input?.value !== q) return;
   list.replaceChildren(

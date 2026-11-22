@@ -1,0 +1,28 @@
+---
+import { type Locale, useTranslations } from '../i18n/ui';
+import { wikiUrl } from '../lib/site';
+
+interface Props {
+  /** The page linked to; `locale` is the language it exists in. */
+  to: { slug: string; title: string; locale: Locale; exists?: boolean };
+  /** The language of the page the link sits on. */
+  locale: Locale;
+  class?: string;
+}
+
+const { to, locale, class: extra } = Astro.props;
+const t = useTranslations(locale);
+const exists = to.exists ?? true;
+const href = wikiUrl(to.slug, undefined, exists ? to.locale : locale);
+const fallback = exists && to.locale !== locale;
+const classes = [extra, !exists && 'new', fallback && 'en'].filter(Boolean).join(' ') || undefined;
+const title = !exists ? t.pageMissing(to.title) : fallback ? t.englishOnly : undefined;
+---
+
+<a
+  class={classes}
+  href={href}
+  data-t={exists ? to.slug : undefined}
+  title={title}
+  hreflang={fallback ? to.locale : undefined}><slot /></a
+>

@@ -1,19 +1,35 @@
 ---
-import { cellText, getTab, isNumeric } from '../lib/sheet';
+import { type Locale, toLocale, useTranslations } from '../i18n/ui';
+import { cellText, isNumeric, localTab } from '../lib/sheet';
 
 interface Props {
   tab: string;
   block?: number;
+  /** Defaults to the page's locale, so MDX pages need not pass it. */
+  locale?: Locale;
+  /** Show the "English data" note when the tab has no translation (default true). */
+  note?: boolean;
 }
 
-const { tab: slug, block: n = 0 } = Astro.props;
-const block = getTab(slug).blocks[n];
+const { tab: slug, block: n = 0, note = true } = Astro.props;
+const locale = Astro.props.locale ?? toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const { tab, translated } = localTab(slug, locale);
+const block = tab.blocks[n];
 if (!block) throw new Error(`Sheet tab "${slug}" has no block ${n}`);
 ---
 
 {
+  note && !translated && (
+    <p class="data-note">
+      <span class="tag">{t.englishData}</span>{' '}
+      {t.englishDataNote}
+    </p>
+  )
+}
+{
   block.type === 'table' ? (
-    <div class="wt-wrap">
+    <div class="wt-wrap" lang={translated ? undefined : 'en'}>
       <table class="wt">
         <thead>
           <tr>
@@ -35,7 +51,7 @@ if (!block) throw new Error(`Sheet tab "${slug}" has no block ${n}`);
       </table>
     </div>
   ) : (
-    <div class="note">
+    <div class="note" lang={translated ? undefined : 'en'}>
       <ul>
         {block.items.map((item) => (
           <li>{item}</li>

@@ -1,29 +1,38 @@
 ---
 import navboxes from '../data/navboxes.json';
-import { wikiUrl } from '../lib/site';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
 import { resolve } from '../lib/wiki';
+import WikiLink from './WikiLink.astro';
 
 interface Props {
   id: string;
   current?: string;
+  locale?: Locale;
 }
 
+/** `titleZh` and `labelZh` are optional; zh pages fall back to the English text. */
 interface NavboxData {
   title: string;
-  groups: { label: string; links: string[] }[];
+  titleZh?: string;
+  groups: { label: string; labelZh?: string; links: string[] }[];
 }
 
-const { id, current } = Astro.props;
+const { id, current, locale = DEFAULT_LOCALE } = Astro.props;
 const box = (navboxes as Record<string, NavboxData>)[id];
 if (!box) throw new Error(`Navbox "${id}" not found in src/data/navboxes.json`);
+const zh = locale === 'zh';
+const title = (zh && box.titleZh) || box.title;
 const groups = box.groups.map((g) => ({
-  label: g.label,
-  links: g.links.map((name) => ({ name, ...resolve(name) })),
+  label: (zh && g.labelZh) || g.label,
+  links: g.links.map((name) => {
+    const found = resolve(name, locale);
+    return { ...found, name: zh && found.exists && found.locale === 'zh' ? found.title : name };
+  }),
 }));
 ---
 
-<nav class="navbox" aria-label={box.title} data-pagefind-ignore>
-  <div class="t">{box.title}</div>
+<nav class="navbox" aria-label={title} data-pagefind-ignore>
+  <div class="t">{title}</div>
   {
     groups.map((g) => (
       <div class="row">
@@ -34,14 +43,10 @@ const groups = box.groups.map((g) => ({
               {i > 0 && ' · '}
               {l.slug === current ? (
                 <strong>{l.name}</strong>
-              ) : l.exists ? (
-                <a href={wikiUrl(l.slug)} data-t={l.slug}>
-                  {l.name}
-                </a>
               ) : (
-                <a class="new" href={wikiUrl(l.slug)} title={`${l.name} (page does not exist)`}>
+                <WikiLink to={{ ...l, title: l.name }} locale={locale}>
                   {l.name}
-                </a>
+                </WikiLink>
               )}
             </>
           ))}

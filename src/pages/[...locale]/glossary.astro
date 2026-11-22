@@ -1,0 +1,81 @@
+---
+import WikiLink from '../../components/WikiLink.astro';
+import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import Wiki from '../../layouts/Wiki.astro';
+import { getPages } from '../../lib/pages';
+import { categoryUrl } from '../../lib/site';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const terms = (await getPages(locale)).filter((p) => p.entry.data.kind === 'term');
+const areas = [...new Set(terms.map((term) => term.entry.data.area))].sort();
+const letters = new Map<string, typeof terms>();
+for (const term of terms) {
+  const letter = term.sortTitle.charAt(0).toUpperCase();
+  letters.set(letter, [...(letters.get(letter) ?? []), term]);
+}
+---
+
+<Wiki title={t.glossaryIndex} description={t.glossaryDescription} locale={locale} path="/glossary/">
+  <h1>{t.glossaryIndex}</h1>
+  <p class="sub">{t.glossarySub(terms.length)}</p>
+  <fieldset class="filter">
+    <legend>{t.area}</legend>
+    <button type="button" data-area="" aria-pressed="true">{t.all}</button>
+    {
+      areas.map((a) => (
+        <button type="button" data-area={a} aria-pressed="false">
+          {a}
+        </button>
+      ))
+    }
+  </fieldset>
+  <div class="az">
+    {
+      [...letters].map(([letter, list]) => (
+        <section data-letter={letter}>
+          <h2>{letter}</h2>
+          <dl>
+            {list.map((term) => (
+              <div data-area={term.entry.data.area}>
+                <dt>
+                  <WikiLink to={term} locale={locale}>
+                    {term.title}
+                  </WikiLink>{' '}
+                  <small>
+                    (<a href={categoryUrl(term.entry.data.area, locale)}>{term.entry.data.area}</a>)
+                  </small>
+                </dt>
+                <dd lang={term.locale === locale ? undefined : term.locale}>
+                  {term.entry.data.summary}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+      ))
+    }
+  </div>
+</Wiki>
+
+<script>
+  const buttons = [...document.querySelectorAll<HTMLButtonElement>('.filter button')];
+  for (const btn of buttons) {
+    btn.addEventListener('click', () => {
+      const area = btn.dataset.area ?? '';
+      for (const b of buttons) b.setAttribute('aria-pressed', String(b === btn));
+      for (const item of document.querySelectorAll<HTMLElement>('.az [data-area]')) {
+        item.hidden = Boolean(area) && item.dataset.area !== area;
+      }
+      for (const section of document.querySelectorAll<HTMLElement>('.az section')) {
+        section.hidden = !section.querySelector('[data-area]:not([hidden])');
+      }
+    });
+  }
+</script>

@@ -1,5 +1,6 @@
 ---
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
+import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
 import { renderInline } from '../lib/markdown';
 import { categoryUrl } from '../lib/site';
 
@@ -9,9 +10,11 @@ interface Props {
   figure?: string;
   caption?: string;
   rows: { label: string; value: string }[];
+  locale?: Locale;
 }
 
-const { title, area, figure, caption, rows } = Astro.props;
+const { title, area, figure, caption, rows, locale = DEFAULT_LOCALE } = Astro.props;
+const t = useTranslations(locale);
 const figures = import.meta.glob<{ default: AstroComponentFactory }>('./figures/*.astro', {
   eager: true,
 });
@@ -19,7 +22,7 @@ const Figure = figure ? figures[`./figures/${figure}.astro`]?.default : undefine
 if (figure && !Figure) throw new Error(`Infobox figure "${figure}" not found in src/components/figures/`);
 ---
 
-<aside class="infobox" aria-label={`${title} summary`}>
+<aside class="infobox" aria-label={t.infoboxLabel(title)}>
   <div class="t" data-pagefind-ignore>{title}</div>
   {
     Figure && (
@@ -31,14 +34,14 @@ if (figure && !Figure) throw new Error(`Infobox figure "${figure}" not found in 
   }
   <table>
     <tr data-pagefind-ignore>
-      <th scope="row">Area</th>
-      <td><a href={categoryUrl(area)}>{area}</a></td>
+      <th scope="row">{t.area}</th>
+      <td><a href={categoryUrl(area, locale)}>{area}</a></td>
     </tr>
     {
       rows.map((row) => (
         <tr>
           <th scope="row">{row.label}</th>
-          <td set:html={renderInline(row.value)} />
+          <td set:html={renderInline(row.value, undefined, locale)} />
         </tr>
       ))
     }

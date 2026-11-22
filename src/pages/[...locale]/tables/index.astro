@@ -1,0 +1,43 @@
+---
+import { type Locale, localePaths, useTranslations } from '../../../i18n/ui';
+import Wiki from '../../../layouts/Wiki.astro';
+import { url } from '../../../lib/site';
+import { isArchive, localTab, shortTitle, TABS } from '../../../lib/sheet';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const tabs = TABS.map((tab) => localTab(tab.slug, locale).tab);
+const current = tabs.filter((tab) => !isArchive(tab));
+const archive = tabs.filter(isArchive);
+---
+
+<Wiki title={t.sheetTables} description={t.tablesDescription} locale={locale} path="/tables/">
+  <h1>{t.sheetTables}</h1>
+  <p class="sub">{t.tablesSub}</p>
+  <ul class="page-list">
+    {
+      current.map((tab) => (
+        <li>
+          <a href={url(`/tables/${tab.slug}/`, locale)}>{shortTitle(tab)}</a>
+        </li>
+      ))
+    }
+  </ul>
+  <h2>{t.archive}</h2>
+  <p>{t.archiveNote}</p>
+  <ul class="page-list">
+    {
+      archive.map((tab) => (
+        <li>
+          <a href={url(`/tables/${tab.slug}/`, locale)}>{shortTitle(tab)}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Wiki>

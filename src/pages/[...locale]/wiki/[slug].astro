@@ -1,0 +1,100 @@
+---
+import { render } from 'astro:content';
+import Infobox from '../../../components/Infobox.astro';
+import Navbox from '../../../components/Navbox.astro';
+import SheetTable from '../../../components/SheetTable.astro';
+import WikiLink from '../../../components/WikiLink.astro';
+import { type Locale, LOCALES, localeParam, useTranslations } from '../../../i18n/ui';
+import Wiki from '../../../layouts/Wiki.astro';
+import { formatDate, getPages, lastEdited, type Page } from '../../../lib/pages';
+import { categoryUrl, historyUrl, sourceUrl } from '../../../lib/site';
+import { backlinks, categoryLabel, sourceBySlug } from '../../../lib/wiki';
+
+/** One page per English page, and a zh page per file in `src/content/wiki-zh/`. */
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of LOCALES) {
+    for (const page of await getPages(locale)) {
+      if (page.locale !== locale) continue;
+      paths.push({ params: { locale: localeParam(locale), slug: page.slug }, props: { page } });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  page: Page;
+}
+
+const { page } = Astro.props;
+const { entry } = page;
+const locale: Locale = page.locale;
+const t = useTranslations(locale);
+const { Content } = await render(entry);
+const linksHere = backlinks(page.slug, locale);
+const edited = lastEdited(page.file, locale);
+const translated = Boolean(sourceBySlug(page.slug, locale === 'zh' ? 'en' : 'zh'));
+const tabs = [
+  { label: t.article, current: true },
+  { label: t.source, href: sourceUrl(page.file, locale) },
+  { label: t.history, href: historyUrl(page.file, locale), right: true },
+];
+---
+
+<Wiki
+  title={page.title}
+  description={entry.data.summary}
+  tabs={tabs}
+  article
+  locale={locale}
+  path={`/wiki/${page.slug}/`}
+  translated={translated}
+>
+  <div data-pagefind-body>
+    <h1>{page.title}</h1>
+    <p class="sub" data-pagefind-ignore>
+      {t.fromWiki} · <a href={categoryUrl(entry.data.area, locale)}>{entry.data.area}</a>
+    </p>
+    {
+      entry.data.infobox && (
+        <Infobox
+          title={page.title}
+          area={entry.data.area}
+          figure={entry.data.infobox.figure}
+          caption={entry.data.infobox.caption}
+          rows={entry.data.infobox.rows}
+          locale={locale}
+        />
+      )
+    }
+    <Content components={{ SheetTable }} />
+  </div>
+  <h2 id="links">{t.whatLinksHere}</h2>
+  {
+    linksHere.length ? (
+      <ul class="links">
+        {linksHere.map((s) => (
+          <li>
+            <WikiLink to={{ ...s, locale }} locale={locale}>
+              {s.title}
+            </WikiLink>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>{t.noLinksHere}</p>
+    )
+  }
+  {entry.data.navbox && <Navbox id={entry.data.navbox} current={page.slug} locale={locale} />}
+  <div class="cats">
+    {t.categories}{t.colon}{
+      page.categories.map((c, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={categoryUrl(c, locale)}>{categoryLabel(c, locale)}</a>
+        </>
+      ))
+    }
+  </div>
+  {edited && <p slot="footer">{t.lastEdited(formatDate(edited, locale))}</p>}
+</Wiki>

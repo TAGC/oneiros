@@ -1,0 +1,64 @@
+---
+import IconFrame from '../../../components/IconFrame.astro';
+import WikiLink from '../../../components/WikiLink.astro';
+import { type Locale, LOCALES, localeParam, useTranslations } from '../../../i18n/ui';
+import Wiki from '../../../layouts/Wiki.astro';
+import { ICON_AREAS } from '../../../lib/areas';
+import { getCategories, type Page } from '../../../lib/pages';
+import { slugify } from '../../../lib/site';
+import { categoryLabel } from '../../../lib/wiki';
+
+export async function getStaticPaths() {
+  const paths = [];
+  for (const locale of LOCALES) {
+    for (const [name, pages] of await getCategories(locale)) {
+      paths.push({
+        params: { locale: localeParam(locale), slug: slugify(name) },
+        props: { name, pages, locale },
+      });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  name: string;
+  pages: Page[];
+  locale: Locale;
+}
+
+const { name, pages, locale } = Astro.props;
+const t = useTranslations(locale);
+const label = categoryLabel(name, locale);
+---
+
+<Wiki
+  title={t.categoryTitle(label)}
+  description={t.categoryDescription(label)}
+  locale={locale}
+  path={`/category/${slugify(name)}/`}
+>
+  <div class="cat-head">
+    {ICON_AREAS.includes(name) && <IconFrame name={name} />}
+    <h1>{t.categoryTitle(label)}</h1>
+  </div>
+  <p class="sub">{t.categorySub(pages.length)}</p>
+  {
+    pages.length ? (
+      <ul class="page-list">
+        {pages.map((p) => (
+          <li>
+            <WikiLink to={p} locale={locale}>
+              {p.title}
+            </WikiLink>
+            <span class="s" lang={p.locale === locale ? undefined : p.locale}>
+              {t.colon + p.entry.data.summary}
+            </span>
+          </li>
+        ))}
+      </ul>
+    ) : (
+      <p>{t.categoryEmpty}</p>
+    )
+  }
+</Wiki>

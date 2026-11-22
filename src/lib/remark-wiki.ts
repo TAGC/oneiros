@@ -13,11 +13,12 @@ import type {
 } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { SKIP, visit } from 'unist-util-visit';
-import { wikiUrl } from './site';
+import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { WIKI_DIRS, wikiUrl } from './site';
 import {
+  calloutHeading,
   calloutId,
   calloutKind,
-  CALLOUTS,
   type CalloutKind,
   parseWikiLink,
   resolve,
@@ -30,39 +31,68 @@ export interface RemarkWikiOptions {
   article?: boolean;
   /** The page slug that `[[#Section]]` links point into, when rendered off that page. */
   page?: string;
+  /** The locale links resolve in; by default worked out from the file's folder. */
+  locale?: Locale;
 }
 
 const NUMERIC = /^[-−+]?(?:×\s?)?[\d.,]+\s?(?:%|×)?$/;
 
-/** A wiki link as an mdast link node: existing pages carry `data-t`, missing ones are red. */
-export function wikiLinkNode(inner: string, page?: string): PhrasingContent {
+/**
+ * A wiki link as an mdast link node: existing pages carry `data-t`, missing ones are red.
+ * On a zh page, a target with only an English page links there with the class `en`.
+ */
+export function wikiLinkNode(
+  inner: string,
+  page?: string,
+  locale: Locale = DEFAULT_LOCALE,
+): PhrasingContent {
   const link = parseWikiLink(inner);
   const sectionId = link.section ? new GithubSlugger().slug(link.section) : undefined;
   const children: PhrasingContent[] = [{ type: 'text', value: link.label }];
   if (!link.target) {
-    const url = page ? wikiUrl(page, sectionId) : `#${sectionId ?? ''}`;
+    const url = page ? wikiUrl(page, sectionId, locale) : `#${sectionId ?? ''}`;
     return { type: 'link', url, children };
   }
-  const found = resolve(link.target);
-  const node: Link = { type: 'link', url: wikiUrl(found.slug, sectionId), children };
-  if (found.exists) {
-    node.data = { hProperties: { dataT: found.slug } };
-  } else {
+  const t = useTranslations(locale);
+  const found = resolve(link.target, locale);
+  const node: Link = { type: 'link', url: wikiUrl(found.slug, sectionId, found.locale), children };
+  if (!found.exists) {
     const name = found.title.charAt(0).toUpperCase() + found.title.slice(1);
-    node.title = `${name} (page does not exist)`;
+    node.title = t.pageMissing(name);
     node.data = { hProperties: { className: ['new'] } };
+  } else if (found.locale !== locale) {
+    node.title = t.englishOnly;
+    node.data = { hProperties: { dataT: found.slug, className: ['en'], hrefLang: found.locale } };
+  } else {
+    node.data = { hProperties: { dataT: found.slug } };
   }
   return node;
 }
 
-function splitText(node: Text, page?: string): PhrasingContent[] | undefined {
+/** The part of a VFile this plugin reads. */
+interface SourceFile {
+  path?: string;
+  history: string[];
+}
+
+/** The locale of a content file, from the folder it sits in. */
+export function fileLocale(file?: SourceFile): Locale {
+  const path = String(file?.path ?? file?.history[0] ?? '').replaceAll('\\', '/');
+  return path.includes(`/${WIKI_DIRS.zh}/`) ? 'zh' : DEFAULT_LOCALE;
+}
+
+function splitText(
+  node: Text,
+  page: string | undefined,
+  locale: Locale,
+): PhrasingContent[] | undefined {
   if (!node.value.includes('[[')) return undefined;
   const out: PhrasingContent[] = [];
   let last = 0;
   for (const match of node.value.matchAll(WIKI_LINK)) {
     const at = match.index ?? 0;
     if (at > last) out.push({ type: 'text', value: node.value.slice(last, at) });
-    out.push(wikiLinkNode(match[1], page));
+    out.push(wikiLinkNode(match[1], page, locale));
     last = at + match[0].length;
   }
   if (last === 0) return undefined;
@@ -84,18 +114,18 @@ function mergeText(tree: Root): void {
   });
 }
 
-function transformLinks(tree: Root, page?: string): void {
+function transformLinks(tree: Root, page: string | undefined, locale: Locale): void {
   mergeText(tree);
   visit(tree, 'text', (node: Text, index, parent: Parent | undefined) => {
     if (!parent || index === undefined || parent.type === 'link') return;
-    const parts = splitText(node, page);
+    const parts = splitText(node, page, locale);
     if (!parts) return;
     parent.children.splice(index, 1, ...(parts as RootContent[]));
     return [SKIP, index + parts.length];
   });
 }
 
-function transformCallouts(tree: Root): void {
+function transformCallouts(tree: Root, locale: Locale): void {
   const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
   visit(tree, 'blockquote', (node: Blockquote) => {
     const kind = calloutKind(node);
@@ -105,7 +135,9 @@ function transformCallouts(tree: Root): void {
     node.children.unshift({
       type: 'paragraph',
       data: { hProperties: { className: ['note-h'] } },
-      children: [{ type: 'strong', children: [{ type: 'text', value: CALLOUTS[kind].heading }] }],
+      children: [
+        { type: 'strong', children: [{ type: 'text', value: calloutHeading(kind, locale) }] },
+      ],
     });
     node.data = {
       hName: 'div',
@@ -142,12 +174,13 @@ function addHeadingIds(tree: Root): Heading[] {
   return headings;
 }
 
-function contentsBox(tree: Root, headings: Heading[]): void {
+function contentsBox(tree: Root, headings: Heading[], locale: Locale): void {
+  const t = useTranslations(locale);
   const h2s = headings.filter((h) => h.depth === 2);
   if (h2s.length < 3) return;
   const entries = [
     ...h2s.map((h) => ({ id: String(h.data?.hProperties?.id), text: toString(h) })),
-    { id: 'links', text: 'What links here' },
+    { id: 'links', text: t.whatLinksHere },
   ];
   const toc = {
     type: 'wikiToc',
@@ -156,7 +189,7 @@ function contentsBox(tree: Root, headings: Heading[]): void {
       {
         type: 'wikiTocButton',
         data: { hName: 'button', hProperties: { type: 'button', ariaExpanded: 'true' } },
-        children: [{ type: 'text', value: 'Contents' }],
+        children: [{ type: 'text', value: t.contents }],
       },
       {
         type: 'list',
@@ -183,11 +216,12 @@ function contentsBox(tree: Root, headings: Heading[]): void {
 
 /** Wiki links everywhere; for articles also callouts, `.wt` tables, heading ids and contents. */
 export default function remarkWiki(options: RemarkWikiOptions = {}) {
-  return (tree: Root) => {
-    transformLinks(tree, options.page);
+  return (tree: Root, file?: SourceFile) => {
+    const locale = options.locale ?? fileLocale(file);
+    transformLinks(tree, options.page, locale);
     if (!options.article) return;
-    transformCallouts(tree);
+    transformCallouts(tree, locale);
     transformTables(tree);
-    contentsBox(tree, addHeadingIds(tree));
+    contentsBox(tree, addHeadingIds(tree), locale);
   };
 }
