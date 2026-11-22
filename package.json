@@ -19,7 +19,8 @@
     "test": "bun test",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",
-    "verify": "bun run build && bun run test && bun run lint && bun run format:check && bun run check"
+    "check:constellations": "bun scripts/check-constellations.ts",
+    "verify": "bun run build && bun run test && bun run lint && bun run format:check && bun run check && bun run check:constellations"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.10",

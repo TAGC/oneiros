@@ -5,6 +5,7 @@ files:
   - README.md
   - src/content/wiki/**/*.{md,mdx}
   - src/data/sheet/*.json
+  - src/data/constellations.yaml
 ignorePaths:
   - src/content/wiki-zh/**
   - src/data/sheet-zh/**
