@@ -31,7 +31,7 @@ const byStatus = STATUSES.map((s) => ({
   <p>{t.statusIntro}</p>
   <p>{t.statusStagesLead}</p>
   <div class="wt-wrap">
-    <table class="wt stages-table">
+    <table class="wt status-table">
       <thead>
         <tr>
           <th scope="col" aria-label={t.statusIcon}></th>
@@ -43,7 +43,7 @@ const byStatus = STATUSES.map((s) => ({
         {
           STATUSES.map((s) => (
             <tr>
-              <td class="stage-icon">
+              <td class="status-icon">
                 <IconFrame name={s} size="md" />
               </td>
               <td>

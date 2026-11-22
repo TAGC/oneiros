@@ -1070,7 +1070,7 @@ footer.foot p {
 }
 
 /* A page's Status: the small painted icon and the stage name, linking to the explainer. */
-.stage-badge {
+.status-badge {
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1079,22 +1079,22 @@ footer.foot p {
   white-space: nowrap;
 }
 /* In the infobox the name comes first, so it lines up with the other values. */
-.infobox .stage-badge {
+.infobox .status-badge {
   flex-direction: row-reverse;
 }
 /* The badge shows the painted icon bare: its own outline is enough at this size. */
-.stage-badge .frame.sm {
+.status-badge .frame.sm {
   width: 22px;
   margin-block: -4px;
   background: none;
   border: none;
   clip-path: none;
 }
-.cat-head .stage-badge {
+.cat-head .status-badge {
   flex: none;
   margin-inline-start: 4px;
 }
-.cat-head:has(.stage-badge) {
+.cat-head:has(.status-badge) {
   flex-wrap: wrap;
 }
 .status-group h3 {
@@ -1105,10 +1105,10 @@ footer.foot p {
   font-size: 14px;
   font-weight: 400;
 }
-.stages-table td {
+.status-table td {
   vertical-align: middle;
 }
-.stages-table .stage-icon {
+.status-table .status-icon {
   width: 64px;
 }
 

@@ -13,7 +13,7 @@ interface Props {
 const { status, locale } = Astro.props;
 ---
 
-<a class="stage-badge" href={url('/status/', locale)}>
+<a class="status-badge" href={url('/status/', locale)}>
   <IconFrame name={status} size="sm" />
   <span>{statusLabel(status, locale)}</span>
 </a>
