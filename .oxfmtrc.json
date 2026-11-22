@@ -15,7 +15,6 @@
     "dist",
     ".astro",
     ".claude/",
-    "reference/",
     "CLAUDE.md",
     "*.md",
     "*.mdx",

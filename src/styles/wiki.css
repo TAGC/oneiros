@@ -1,4 +1,4 @@
-/* Ported from the approved mockup, reference/mockups/wiki-coherence.html.
+/* Ported from the approved mockup (the Coherence page).
    VOICE: a game wiki you could lose an evening in; calm, dense, quietly dreamlike.
    IDEA: an encyclopaedia page kept in the Temenos library: marble page, ink, memory-coloured links. */
 :root {
@@ -627,7 +627,7 @@ footer.foot p {
   padding: 9px;
 }
 
-/* Pixel icon frame, from reference/mockups/icons.html */
+/* Pixel icon frame, from the approved icon mockup */
 .frame {
   position: relative;
   display: block;

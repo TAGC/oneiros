@@ -37,12 +37,12 @@ Tell the sub-agent, in full:
 - Do not quote the sub-agent's whole table unless asked.
 - Offer two next steps: review the flags one by one, or audit the next section.
 
-## 4. Persistent worklist
-- Save the results to the project as a single worklist doc (for example `claude/canon-audit.md`), replacing it in place on later runs rather than creating new files.
-- Structure: purpose line (not decisions), status key with checkboxes, source-chat key, one section per audit run (unconfirmed, changed or stale, not traceable, contradictions, confirmed), and a list of sections not yet audited.
-- Tick an item only after the user has decided it in conversation, noting the outcome and date. Add new stale items discovered while recording other decisions.
+## 4. Record the findings
+- Flag each unconfirmed, changed, untraceable or contradictory claim with a `> [!OPEN]` callout on its owner page (both languages), saying what is unconfirmed and where it came from. The `/open-questions/` page collects them.
+- Do not keep a separate worklist file. Update the audit-coverage line in `CLAUDE.md` with the sections now audited.
+- Add new stale items discovered while recording other decisions the same way.
 
 ## 5. Resolving items
 - Take items one at a time with the user. For each: keep, cut or reword, in the user's own words.
-- Only then edit the source document and glossary, and tick the item.
+- Only then edit the page (both languages) and remove or rewrite its callout.
 - Never re-record a claim as agreed because the user didn't object to it during review.

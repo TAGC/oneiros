@@ -10,7 +10,7 @@ These are suggestions for David to approve; nothing here is final.
 
 Every term either guide covers keeps the guide's word. Where the two disagree, or where the old guide names something that has since been redesigned, the row says so and the term is also listed under section 3. A term is marked **proposed** only where neither guide has a word for it. "guide (new, old)" means both guides agree.
 
-Other sources: `reference/vision.md` (source of truth), the Glossary and sheet tabs, migration map sections 1, 2 and 7, and the pages under `src/content/wiki/`.
+Other sources: the legacy vision doc (since migrated into the wiki), the Glossary and sheet tabs, migration map sections 1, 2 and 7, and the pages under `src/content/wiki/`.
 
 ---
 

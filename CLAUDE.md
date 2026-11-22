@@ -12,7 +12,6 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 - `src/data/navboxes.json`, `src/data/icons.json`: navboxes per area; 24×24 pixel icons per area.
 - `src/i18n/ui.ts`: interface strings (en, zh). `src/i18n/zh-terms.md`: the adopted Chinese term list.
 - `src/lib/`: wiki link resolver, backlinks, callouts, render cache digest. `src/pages/[...locale]/`: routes for both languages.
-- `reference/` (gitignored, local only): the legacy claude.ai exports the wiki was migrated from (vision doc, sheet, mockups, `parked-topics.md`, `canon-audit.md`). Read them only for provenance; the wiki wins.
 
 ## Commands
 
@@ -49,7 +48,8 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 
 - Keep answers short.
 - For foundational design choices, offer a blind design bake-off (`.claude/skills/blind-design-bakeoff`).
-- `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts.
+- `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts. The first audit (21 Nov 2026) covered memory and memory light; its open findings are `[!OPEN]` callouts on their pages. Everything else is unaudited.
+- Ideas the designer parks for later go on the Parked topics page, one section and one `[!OPEN]` each.
 - In quality-of-the-will reviews, commit each quality's agreed changes before moving to the next.
 
 ## Git
