@@ -94,9 +94,10 @@ export function markerProblems(questions: Questions, pages: MarkedPage[]): Probl
 }
 
 /**
- * Every issue has a section for each site locale and a Chinese title; an answer comment has
- * a section for each locale; blocked-by links and Undermined by rows name question issues;
- * a conflict's sources are wiki links to pages in every locale or listed non-page sources.
+ * Every issue has a section for each site locale and a Chinese title; a closed issue has an
+ * answer comment, with a section for each locale; blocked-by links and Undermined by rows name
+ * question issues; a conflict names at least two sources, each a wiki link to a page in every
+ * locale or a listed non-page source.
  */
 export function issueProblems(questions: Questions): Problem[] {
   const problems: Problem[] = [];
@@ -113,14 +114,21 @@ export function issueProblems(questions: Questions): Problem[] {
         if (!q.answer[locale]) report(`the answer comment has no \`### ${locale}\` section`);
       }
     }
+    if (q.state === 'closed' && !q.answer) report('closed with no answer comment');
     for (const n of q.blockedBy) {
-      if (!questions.get(n)) report(`blocked by #${n}, which is not a question issue`);
+      if (!questions.get(n))
+        report(
+          `blocked by #${n}, which is not a question (no \`kind:open\` or \`kind:conflict\` label)`,
+        );
     }
     for (const n of q.underminedBy) {
       if (!questions.get(n)) report(`Undermined by names #${n}, which is not a question issue`);
     }
     if (q.kind !== 'conflict') continue;
-    for (const source of q.properties.sources ?? []) {
+    const sources = q.properties.sources ?? [];
+    if (sources.length < 2)
+      report(`a conflict needs at least two sources; the Source row names ${sources.length}`);
+    for (const source of sources) {
       const missing = LOCALES.filter((l) => sourceName(source, l) === undefined);
       if (!missing.length) continue;
       if (/^\[\[.*\]\]$/.test(source.trim()))

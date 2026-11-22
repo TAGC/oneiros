@@ -107,9 +107,36 @@ describe('issue checks', () => {
     expect(issueProblems(questions(answered, question({ number: 2 })))).toEqual([]);
   });
 
+  test('a closed issue with no answer comment fails', () => {
+    const qs = questions(
+      question({ number: 1, state: 'closed', status: 'decided' }),
+      question({
+        number: 2,
+        state: 'closed',
+        status: 'ruled-out',
+        closeReason: 'not_planned',
+      }),
+      question({
+        number: 3,
+        state: 'closed',
+        status: 'decided',
+        answer: { en: 'Y.', zh: '是。' },
+      }),
+      question({ number: 4 }),
+    );
+    expect(messages(issueProblems(qs))).toEqual([
+      expect.stringMatching(/issues\/1: closed with no answer comment$/),
+      expect.stringMatching(/issues\/2: closed with no answer comment$/),
+    ]);
+  });
+
   test('a missing locale section or Chinese title fails', () => {
     const qs = questions(
-      question({ number: 1, text: { en: 'English.' }, title: { en: 'A question' } }),
+      question({
+        number: 1,
+        text: { en: 'English.' },
+        title: { en: 'A question' },
+      }),
       question({ number: 2, title: { en: 'A question' } }),
     );
     expect(messages(issueProblems(qs))).toEqual([
@@ -128,7 +155,7 @@ describe('issue checks', () => {
   test('Undermined by or blocked-by naming a missing issue fails', () => {
     const qs = questions(question({ number: 1, underminedBy: [8], blockedBy: [9] }));
     expect(messages(issueProblems(qs))).toEqual([
-      expect.stringMatching(/issues\/1: blocked by #9, which is not a question issue/),
+      expect.stringMatching(/issues\/1: blocked by #9, which is not a question/),
       expect.stringMatching(/issues\/1: Undermined by names #8, which is not a question issue/),
     ]);
   });
@@ -139,6 +166,37 @@ describe('issue checks', () => {
     expect(messages(issueProblems(qs))).toEqual([
       expect.stringMatching(/issues\/1: Source "the forum" is neither a wiki link nor one of/),
       expect.stringMatching(/issues\/1: Source "\[\[No such page\]\]" links to no page in en, zh$/),
+    ]);
+  });
+
+  test('a blocked-by link to a non-question issue says it is not a question', () => {
+    const qs = questions(question({ number: 1, blockedBy: [9] }));
+    expect(messages(issueProblems(qs))).toEqual([
+      expect.stringMatching(
+        /issues\/1: blocked by #9, which is not a question \(no `kind:open` or `kind:conflict` label\)$/,
+      ),
+    ]);
+  });
+
+  test('a conflict naming fewer than two sources fails', () => {
+    const one = { sources: ['vision'] };
+    const qs = questions(
+      question({ number: 1, kind: 'conflict', properties: {} }),
+      question({ number: 2, kind: 'conflict', properties: one }),
+      question({
+        number: 3,
+        kind: 'conflict',
+        properties: { sources: ['vision', 'sheet'] },
+      }),
+      question({ number: 4, kind: 'open', properties: one }),
+    );
+    expect(messages(issueProblems(qs))).toEqual([
+      expect.stringMatching(
+        /issues\/1: a conflict needs at least two sources; the Source row names 0$/,
+      ),
+      expect.stringMatching(
+        /issues\/2: a conflict needs at least two sources; the Source row names 1$/,
+      ),
     ]);
   });
 });
