@@ -20,6 +20,9 @@ const scales = [
   { name: 'size', label: a.time, values: SIZES, labels: t.constellationSizes },
   { name: 'energy', label: t.constellationEnergy, values: ENERGIES, labels: t.constellationEnergies },
 ] as const;
+const all = chart.constellations.length;
+/** The line under the filter for each number of constellations that fit, from none to all. */
+const fitTexts = Array.from({ length: all + 1 }, (_, fit) => a.fit(fit, all));
 ---
 
 <div class="al-cfilter" hidden data-total={chart.constellations.length}>
@@ -63,8 +66,8 @@ const scales = [
   }
   {
     chart.constellations.length > 0 && (
-      <p class="al-fit" aria-live="polite" data-template={a.fit(9999, chart.constellations.length)}>
-        {a.fit(chart.constellations.length, chart.constellations.length)}
+      <p class="al-fit" aria-live="polite" data-texts={JSON.stringify(fitTexts)}>
+        {fitTexts[all]}
       </p>
     )
   }

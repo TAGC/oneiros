@@ -94,6 +94,7 @@ function setUp(root: HTMLElement): void {
     }
 
     const fitText = cfilter.querySelector<HTMLElement>('.al-fit');
+    const fitTexts = JSON.parse(fitText?.dataset.texts ?? '[]') as string[];
     const applyFilter = () => {
       const chosen = readFilter(cfilter);
       const fits = (el: Element) => fitsFilter(el, chosen);
@@ -111,7 +112,7 @@ function setUp(root: HTMLElement): void {
       for (const star of root.querySelectorAll('.al-star[data-c]')) {
         star.classList.toggle('al-unfit', unfit.has(star.getAttribute('data-c')!));
       }
-      if (fitText) fitText.textContent = fitText.dataset.template!.replace('9999', String(fitting));
+      if (fitText) fitText.textContent = fitTexts[fitting];
     };
     cfilter.addEventListener('click', (e) => {
       const button = (e.target as Element).closest<HTMLButtonElement>('.al-scale button');
