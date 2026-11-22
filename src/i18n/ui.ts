@@ -152,12 +152,15 @@ Five pillars hold it together:
     ": it shows the wiki's own beliefs about how the game should play. It is not a game concept and has no Glossary term.",
   ] as readonly [string, string],
   statusBeliefStages: 'belief stages',
+  statusIcon: 'Icon',
+  statusStage: 'Stage',
+  statusMeaning: 'Meaning',
   /** What each stage means for a page, keyed by the English stage name. */
   statusMeanings: {
-    Notion: 'mentioned or sketched; the core is still open or in conflict.',
-    Tenet: 'core agreed, details still open.',
-    Certainty: 'agreed and audited, nothing open.',
-    Dogma: 'locked by the designer; it will not change.',
+    Notion: 'Mentioned or sketched; the core is still open or in conflict.',
+    Tenet: 'Core agreed, details still open.',
+    Certainty: 'Agreed and audited, nothing open.',
+    Dogma: 'Locked by the designer; it will not change.',
   } as Record<string, string>,
   statusRule:
     'A page goes above Tenet only when the designer says so. Very little is set in stone yet.',
@@ -320,6 +323,9 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     '的同一阶梯：它表示维基自身对游戏应如何运作的信念。它不是游戏概念，也没有术语表词条。',
   ],
   statusBeliefStages: '信念阶段',
+  statusIcon: '图标',
+  statusStage: '阶段',
+  statusMeaning: '含义',
   statusMeanings: {
     Notion: '只是提及或已有雏形；核心仍未确定或存在冲突。',
     Tenet: '核心已约定，细节仍未确定。',
