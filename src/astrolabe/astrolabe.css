@@ -417,7 +417,8 @@
 }
 /* It rests while the sky is dragged or zoomed, so each frame only redraws the move. */
 .al-dragging :is(.al-halo, .al-tw),
-.al-zooming :is(.al-halo, .al-tw) {
+.al-zooming :is(.al-halo, .al-tw),
+.al-flying :is(.al-halo, .al-tw) {
   animation-play-state: paused;
 }
 @media (prefers-reduced-motion: reduce) {

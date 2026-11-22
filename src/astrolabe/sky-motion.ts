@@ -33,6 +33,7 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
   }));
   const segments = [...sky.querySelectorAll<SVGLineElement>('.al-cline')];
   const rings = [...sky.querySelectorAll<SVGCircleElement>('.al-cring')];
+  const view = sky.closest('.al-view-sky');
 
   const at = new Map<string, { x: number; y: number; r: number }>();
   for (const [n, s] of Object.entries(data.areas)) at.set(n, { x: s[0], y: s[1], r: s[2] });
@@ -82,6 +83,7 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
     cancelAnimationFrame(frame);
     const target = data[by];
     if (!animate) {
+      view?.classList.remove('al-flying');
       for (const [n, s] of Object.entries(target)) {
         at.set(n, { x: s[0], y: s[1], r: s[2] });
         setLabel(n, s);
@@ -114,7 +116,10 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
       }
       draw();
       if (t < 1) frame = requestAnimationFrame(tick);
+      else view?.classList.remove('al-flying');
     };
+    // The twinkle rests while the stars fly, as it does while the sky is dragged or zoomed.
+    view?.classList.add('al-flying');
     frame = requestAnimationFrame(tick);
   };
 

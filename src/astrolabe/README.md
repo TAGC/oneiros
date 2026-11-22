@@ -130,7 +130,8 @@ The night sky is one large SVG, so every repaint redraws all of it. A few rules 
 - Animate the decoration only in its own layer (`.al-sky-back`), never in the map above it.
 - Fade paths that span the sky with `fill-opacity`, not `opacity`: opacity composites a layer as large as the path.
 - Pan and zoom write the view box at most once per frame and never read the SVG's screen matrix in an event handler.
-- The twinkle pauses while the sky is dragged or zoomed.
+- The twinkle pauses while the sky is dragged or zoomed, or its stars fly between clusterings.
+- The flight between clusterings moves only the map, never the decoration layer, and writes it once per frame.
 
 ## Art
 
