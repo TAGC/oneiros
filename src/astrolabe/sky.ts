@@ -278,6 +278,14 @@ function anchorsFor(chart: StarChart): { x: number; y: number }[] {
   });
 }
 
+/** A star's label lines and the space they take. */
+function labelSize(star: Star): { lines: string[]; size: number; w: number; h: number } {
+  const size = star.roles.includes('central') ? CENTRAL_SIZE : LABEL_SIZE;
+  const lines = wrapText(star.label, size, star.labelLang === 'zh' ? 118 : 136);
+  const w = Math.max(...lines.map((l) => textWidth(l, size))) + 4;
+  return { lines, size, w, h: lines.length * LINE_HEIGHT };
+}
+
 function placeLabels(nodes: Node[], areas: SkyArea[]): Map<number, SkyLabel> {
   const starBoxes = nodes.map((n) => ({
     x1: n.x - n.r - 2,
@@ -294,15 +302,11 @@ function placeLabels(nodes: Node[], areas: SkyArea[]): Map<number, SkyLabel> {
   );
   const labels = new Map<number, SkyLabel>();
   for (const n of order) {
-    const central = n.star.roles.includes('central');
-    const size = central ? CENTRAL_SIZE : LABEL_SIZE;
-    const lines = wrapText(n.star.label, size, n.star.labelLang === 'zh' ? 118 : 136);
-    const w = Math.max(...lines.map((l) => textWidth(l, size))) + 4;
-    const h = lines.length * LINE_HEIGHT;
+    const { lines, size, w, h } = labelSize(n.star);
     const best = bestLabelSpot(n, w, h, (box) => {
       let cost = 0;
       starBoxes.forEach((o, i) => {
-        if (nodes[i] !== n) cost += overlapArea(box, o) * 3;
+        if (nodes[i] !== n) cost += overlapArea(box, o) * 40;
       });
       for (const o of placed) cost += overlapArea(box, o) * 1000;
       for (const o of areaBoxes) cost += overlapArea(box, o) * 6;
@@ -322,7 +326,7 @@ function bestLabelSpot(
 ): Omit<SkyLabel, 'lines' | 'size' | 'lineHeight'> {
   let best: Omit<SkyLabel, 'lines' | 'size' | 'lineHeight'> | undefined;
   let bestCost = Infinity;
-  for (let ring = 0; ring < 8; ring++) {
+  for (let ring = 0; ring < 14; ring++) {
     const r = n.r + 5 + ring * 12;
     const candidates: { x: number; y: number; anchor: SkyLabel['anchor'] }[] = [
       { x: n.x + r, y: n.y - h / 2, anchor: 'start' },
@@ -459,6 +463,7 @@ export function layoutSky(chart: StarChart): SkyLayout {
       const angle = k * 2.39996 + rnd() * 0.4;
       const radius = 30 * Math.sqrt(k + 0.6);
       const r = starRadius(star);
+      const { w, h } = labelSize(star);
       return {
         star,
         group: g,
@@ -467,8 +472,8 @@ export function layoutSky(chart: StarChart): SkyLayout {
         vx: 0,
         vy: 0,
         r,
-        hx: Math.max(40, r + 30),
-        hy: Math.max(26, r + 18),
+        hx: Math.max(40, r + 30, w * 0.55),
+        hy: Math.max(26, r + 18, h * 0.6 + 6),
       };
     }),
   );
