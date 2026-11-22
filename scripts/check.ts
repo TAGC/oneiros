@@ -16,7 +16,8 @@ import type { CalloutKind } from '../src/lib/wiki';
 
 // Production mode makes the wiki index read each folder once instead of re-checking file times.
 process.env.NODE_ENV = 'production';
-const { calloutKind, WIKI_LINK } = await import('../src/lib/wiki');
+const { calloutKind, issueMarker, WIKI_LINK } = await import('../src/lib/wiki');
+const { getQuestions, QUESTION_CACHE } = await import('../src/lib/questions');
 const { wikiLinkNode } = await import('../src/lib/remark-wiki');
 
 const ROOT = join(import.meta.dirname, '..');
@@ -309,6 +310,49 @@ function callouts(raw: string): Record<CalloutKind, number[]> {
   return out;
 }
 
+// ---------------------------------------------------------------- question markers
+
+function markers(raw: string): { issue: number; line: number }[] {
+  const { bodyLine } = frontmatter(raw);
+  const body = raw
+    .split('\n')
+    .slice(bodyLine - 1)
+    .join('\n');
+  const out: { issue: number; line: number }[] = [];
+  visit(calloutParser.parse(body) as Root, 'blockquote', (node: Blockquote) => {
+    const issue = issueMarker(node);
+    if (issue !== undefined)
+      out.push({ issue, line: (node.position?.start.line ?? 1) + bodyLine - 1 });
+  });
+  return out;
+}
+
+/** Every `[!ISSUE N]` marker must name an open question issue in the question cache. */
+function checkMarkers(): Problem[] {
+  const questions = getQuestions();
+  const problems: Problem[] = [];
+  for (const locale of ['en', 'zh'] as const) {
+    for (const file of files(WIKI_DIRS[locale], isPage)) {
+      for (const { issue, line } of markers(read(file))) {
+        const question = questions.get(issue);
+        const where = `${file}:${line}`;
+        if (!question) {
+          problems.push({
+            where,
+            message: `marker names #${issue}, which is not a question issue in ${QUESTION_CACHE}/ (run \`bun run pull\`)`,
+          });
+        } else if (question.state === 'closed') {
+          problems.push({
+            where,
+            message: `marker names #${issue}, which is closed; replace the marker with the settled text`,
+          });
+        }
+      }
+    }
+  }
+  return problems;
+}
+
 // ---------------------------------------------------------------- page status
 
 /**
@@ -516,6 +560,7 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Chinese sheet parity', checkSheetParity],
   ['Chinese terms', checkChineseTerms],
   ['Page status', checkStatus],
+  ['Question markers', checkMarkers],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {
