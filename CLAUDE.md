@@ -22,7 +22,7 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 - **Never invent design.** Only what the designer explicitly agreed is a decision. Claude's suggestions are suggestions: say so, and never write them into a page as settled.
 - **Flag, don't settle.** Anything unconfirmed, ambiguous or open gets a `> [!OPEN]` callout on its owner page; contradictions between sources get `> [!CONFLICT]`. The `/open-questions/` page collects them. Resolve a callout only when the designer decides it, and record the outcome in the page itself.
 - **Record decisions only when the designer asks**, and only in the wiki (never in handoff notes or memory).
-- **Page status** (`status:` frontmatter; rules on the `/status/` page): never raise a page's status yourself, only propose. When you add a `[!CONFLICT]` or a core `[!OPEN]` to a Tenet page, or change a page's core rule, ask the designer whether its status still holds.
+- **Page status** (`status:` frontmatter; rules on the `/status/` page): never raise a page's status yourself, only propose. Tenet means the premise is accepted, to keep and refine, so Tenet pages change freely as decisions land. Ask whether a Tenet status still holds only when a change, `[!CONFLICT]` or `[!OPEN]` challenges the page's premise itself.
 - **One owner page per rule.** State a rule fully on its owner page; elsewhere one line plus a link. Each sheet table renders on one page.
 - **Tables for data, prose for decisions.**
 - **Every English change is mirrored in Chinese** in the same commit series: same sections, claims and callouts, using `src/i18n/zh-terms.md` exactly. The designer delegated Chinese wording to Claude; new Chinese terms go into the term list first.

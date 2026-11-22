@@ -166,7 +166,7 @@ Five pillars hold it together:
   /** What each stage means for a page, keyed by the English stage name. */
   statusMeanings: {
     Notion: 'Mentioned or sketched; the core is still open or in conflict.',
-    Tenet: 'Core agreed, details still open.',
+    Tenet: 'Premise accepted, to keep and refine; details still open.',
     Certainty: 'Agreed and audited, nothing open.',
     Dogma: 'Locked by the designer; it will not change.',
   } satisfies Record<Status, string>,
@@ -175,7 +175,7 @@ Five pillars hold it together:
     'Only the designer raises a status. Claude may propose a status for a new page, or propose lowering one.',
     'Certainty needs a passed canon audit and nothing open. Dogma also needs the designer to lock it, and its page changes only with their approval.',
     'The build fails if a Certainty or Dogma page holds an open question or a conflict.',
-    "When a conflict or an open question about a page's core lands on a Tenet page, or its core rule changes, Claude asks whether its status still holds.",
+    'Tenet pages keep changing as the design is refined. Claude asks whether a Tenet status still holds only when a change, conflict or open question challenges the premise itself.',
     'Very little is set in stone yet.',
   ],
 
@@ -343,7 +343,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   statusNoPages: '此阶段尚无页面。',
   statusMeanings: {
     Notion: '只是提及或已有雏形；核心仍未确定或存在冲突。',
-    Tenet: '核心已约定，细节仍未确定。',
+    Tenet: '前提已接受，予以保留并完善；细节仍未确定。',
     Certainty: '已约定并经过审核，没有未决问题。',
     Dogma: '由设计者锁定，不会再变。',
   },
@@ -352,7 +352,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     '只有设计者能提升状态。Claude 可以为新页面提议状态，或提议降低状态。',
     '确信需要通过正典审核，且没有未决问题。教条还需设计者锁定，其页面只有经设计者同意才会改动。',
     '如果确信或教条页面含有未决问题或冲突，构建会失败。',
-    '当信条页面出现冲突或关于其核心的未决问题，或其核心规则改变时，Claude 会询问其状态是否仍然成立。',
+    '信条页面会随着设计的完善而不断改动。只有当改动、冲突或未决问题动摇其前提本身时，Claude 才会询问其信条状态是否仍然成立。',
     '目前定下来的东西还很少。',
   ],
 
