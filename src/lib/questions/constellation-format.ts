@@ -4,7 +4,7 @@
  * and `## zh` with `### <Chinese name>` and the reasoning. The one place that writes, reads and
  * validates it: reading a written constellation gives the same constellation.
  */
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
+import { DEFAULT_LOCALE, LANGUAGE, LOCALES, type Locale } from '../../i18n/locale';
 import { propertyRow, splitSections, TITLE, tableRows } from '.';
 
 /** A milestone is a constellation when its title starts with this mark. */
@@ -31,8 +31,6 @@ export interface ConstellationText {
   size?: string;
   energy?: string;
 }
-
-const LANGUAGE: Record<Locale, string> = { en: 'English', zh: 'Chinese' };
 
 /** The value on the scale, ignoring case, or undefined. */
 export function onScale<T extends string>(

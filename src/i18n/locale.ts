@@ -6,6 +6,9 @@ export const LOCALES = ['en', 'zh'] as const;
 export type Locale = (typeof LOCALES)[number];
 export const DEFAULT_LOCALE: Locale = 'en';
 
+/** Each locale's language, named in English, for the scripts' and checks' messages. */
+export const LANGUAGE: Record<Locale, string> = { en: 'English', zh: 'Chinese' };
+
 /** The `<html lang>` value; Pagefind builds one search index per value. */
 export const HTML_LANG: Record<Locale, string> = { en: 'en-GB', zh: 'zh-Hans' };
 

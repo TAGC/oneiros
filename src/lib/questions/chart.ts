@@ -3,7 +3,7 @@
  * GitHub operations that make the milestones match it. Used by `scripts/constellations.ts`
  * and the chart-constellations skill. Pure: works from the loaded constellations, never GitHub.
  */
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
+import { DEFAULT_LOCALE, LANGUAGE, LOCALES, type Locale } from '../../i18n/locale';
 import { type Question, type QuestionGraph, type Questions, questionGraph } from '.';
 import {
   CONSTELLATION_MARK,
@@ -47,8 +47,6 @@ export interface ChartResult {
   warnings: string[];
   operations: Operation[];
 }
-
-const LANGUAGE: Record<Locale, string> = { en: 'English', zh: 'Chinese' };
 
 /** Which sizes fit how many questions, from the scale in docs/constellations.md. */
 const SIZE_FIT: Record<Size, { fits: (n: number) => boolean; means: string }> = {
