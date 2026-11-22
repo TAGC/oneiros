@@ -63,7 +63,7 @@ When you go in matters. A house's phases mirror the world's [[sleep cycle]]: [[S
 | Deep   | Still and heavy; recent memories consolidate; the house's depths come closer (tentative)                      | Hardest and riskiest | Easiest: Attention climbs slowest                                                                                           |
 | Vivid  | Weak memories are discarded, the house reshuffles, and the sleeper's dreams manifest as hostile creatures     | Fairly easy          | Dangerous and hard to navigate, but the most darkness, and you stand out least; a memory taken now passes as natural loss  |
 
-> [!ISSUE 76]
+See the open question on [[Rest#issue-98|Rest]].
 
 ## Practitioners
 
