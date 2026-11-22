@@ -43,6 +43,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - An issue's Page row matches the page that holds its marker.
   - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
   - Every Undermined by row and blocked-by link names an existing issue.
+  - Every source in a conflict's Source row is a wiki link or a listed non-page source.
   - Every answer comment has a section for each site locale.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
@@ -159,7 +160,7 @@ The issue title is the English title. The body has an English property table, an
 
 - **Page:** the page that holds the marker. Required when the question has a marker; every other row is optional.
 - **Section:** the section of that page.
-- **Source:** where the question comes from. Each source is a wiki link to a page, such as `[[Memory]]`, or one of `vision` and `sheet`, separated by commas. On a conflict, the box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree". A conflict with no Source row is headed "Conflict".
+- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row is headed "Conflict". Old inline `[!CONFLICT]` callouts keep the fixed header.
 - **Raised:** when and where the question was raised.
 - **Related:** issues worth reading alongside, not blockers.
 - **Undermined by:** on a decided issue, the later issue that broke its premise.
