@@ -16,7 +16,7 @@ It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-ma
 | Red, turned 45 degrees | A conflict between sources |
 | Larger star | Central: blocks at least `CENTRAL_MIN_DEPENDENTS` open questions |
 | Small moon | Peripheral: on the frontier, and no open question waits on it |
-| Dotted orbit | Independent: no links at all (always peripheral too, so it shows the orbit only) |
+| Dotted orbit | Independent: no links at all, Related rows included (always peripheral too, so it shows the orbit only) |
 | Gold thread with an arrow | Blocked by an open question |
 | Faint dashed thread | Blocked by a closed question |
 | Dotted violet thread | Broke the premise of a decision |

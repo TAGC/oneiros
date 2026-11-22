@@ -9,21 +9,26 @@ const LOCALES_BODY = '## en\n\nEnglish text.\n\n## zh\n\n### 中文标题\n\n中
 type Fixture = {
   blockedBy?: number[];
   underminedBy?: number[];
+  related?: number[];
   state?: 'decided' | 'ruled-out' | 'undermined' | 'duplicate';
   duplicateOf?: number;
 };
 
 function issue(
   number: number,
-  { blockedBy = [], underminedBy, state, duplicateOf }: Fixture = {},
+  { blockedBy = [], underminedBy, related = [], state, duplicateOf }: Fixture = {},
 ): PulledIssue {
   const breakers = underminedBy ?? (state === 'undermined' ? [999] : []);
-  const row = breakers.map((n) => `#${n}`).join(', ');
+  const refs = (ns: number[]) => ns.map((n) => `#${n}`).join(', ');
+  const rows = [
+    ...(related.length ? [`| Related | ${refs(related)} |`] : []),
+    ...(breakers.length ? [`| Undermined by | ${refs(breakers)} |`] : []),
+  ];
   return {
     number,
     title: `Question ${number}`,
-    body: breakers.length
-      ? `| Property | Value |\n|---|---|\n| Undermined by | ${row} |\n\n${LOCALES_BODY}`
+    body: rows.length
+      ? `| Property | Value |\n|---|---|\n${rows.join('\n')}\n\n${LOCALES_BODY}`
       : LOCALES_BODY,
     state: state ? 'closed' : 'open',
     state_reason: state ? REASONS[state] : null,
@@ -110,6 +115,20 @@ describe('independent', () => {
       issue(9, { blockedBy: [404] }),
     ]);
     expect(graph.independent).toEqual([1]);
+  });
+
+  test('a Related row to a question in the graph links both questions', () => {
+    const graph = graphOf([
+      issue(1),
+      issue(2, { related: [3] }),
+      issue(3),
+      issue(4, { related: [5] }),
+      issue(5, { state: 'decided' }),
+      issue(6, { related: [404] }),
+      issue(7, { related: [8] }),
+      issue(8, { state: 'duplicate', duplicateOf: 1 }),
+    ]);
+    expect(graph.independent).toEqual([1, 6, 7]);
   });
 });
 

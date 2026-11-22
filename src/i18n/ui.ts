@@ -216,7 +216,8 @@ Five pillars hold it together:
     roleHelp: {
       central: (n: number) => `Open, and blocks ${n} or more open questions. A larger star.`,
       peripheral: () => 'On the frontier, and no open question waits on it. A small moon.',
-      independent: () => 'Open, with no links to any question. A dotted orbit.',
+      independent: () =>
+        'Open, with no links to any question, not even a related one. A dotted orbit.',
     } as Record<string, (n: number) => string>,
     threads: {
       open: 'Blocked by an open question.',
@@ -526,7 +527,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     roleHelp: {
       central: (n) => `待定，且阻挡 ${n} 个或更多待定问题。星更大。`,
       peripheral: () => '处于前沿，且没有待定问题在等它。旁边有一颗小卫星。',
-      independent: () => '待定，与任何问题都没有关联。外绕虚线轨道。',
+      independent: () => '待定，与任何问题都没有关联，连相关问题也没有。外绕虚线轨道。',
     },
     threads: {
       open: '被一个待定问题阻挡。',

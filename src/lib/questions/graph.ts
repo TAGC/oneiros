@@ -18,7 +18,8 @@ export interface QuestionGraph {
   peripheral: number[];
   /**
    * Open questions with no links at all: no blocked-by or Undermined by edge in either
-   * direction, to questions in any state. Every independent question is also peripheral.
+   * direction, to questions in any state, and no Related row to or from a question in the
+   * graph. Every independent question is also peripheral.
    */
   independent: number[];
   /** Open questions that block at least `CENTRAL_MIN_DEPENDENTS` open questions directly. */
@@ -45,6 +46,9 @@ export function questionGraph(all: Question[]): QuestionGraph {
   for (const q of questions) {
     for (const n of [...q.blockedBy, ...q.underminedBy]) linked.add(n);
     if (q.blockedBy.length || q.underminedBy.length) linked.add(q.number);
+    for (const n of q.properties.related ?? []) {
+      if (byNumber.has(n)) linked.add(n).add(q.number);
+    }
   }
 
   const numbers = open.map((q) => q.number);
