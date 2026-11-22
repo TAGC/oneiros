@@ -90,6 +90,7 @@ navbox: character # optional; an id in src/data/navboxes.json
 - `summary` feeds hover previews, the Glossary index, category pages and search. Keep it to one plain sentence.
 - `area` is also a category. The infobox's Area row is added automatically.
 - `icon: Lore` (optional) shows that key of `src/data/icons.json` beside the title instead of the area's icon.
+- `status: Tenet` (optional) shows how settled the page's design idea is: one of Hearsay, Notion, Tenet, Creed or Dogma, from least to most settled. It reuses the belief stage names but is about the wiki, not the game. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. What each stage means is not defined yet (an open question on that page), so only the designer assigns a status.
 - Quote YAML values that start with `[[` or contain `: `.
 
 ### Wiki links
@@ -184,6 +185,16 @@ The area icons are painted to match the background art. The designer generates t
 | Emotion    | Shallow bowl of still water with a soft white glow         | Pale gold, white glow       |
 | World      | Floating shard of land with a tiny temple and a cypress    | Green and grey              |
 | Character  | Theatre mask with a calm, neutral face                     | Porcelain white, blue       |
+
+**Status icons.** The five page-status icons are not area icons but follow this recipe. Their masters sit in `art-src/icons/` and `bun run icons` builds them the same way. `status:` in a page's frontmatter picks one by name.
+
+| Stage   | Subject                                          | Main colour     |
+| ------- | ------------------------------------------------ | --------------- |
+| Hearsay | Loose parchment leaf                             | Warm cream      |
+| Notion  | Sheaf of three pages tied with a red ribbon      | Warm cream, red |
+| Tenet   | Closed book with a leather strap                 | Tan leather     |
+| Creed   | Thick book with a buckle clasp                   | Crimson         |
+| Dogma   | Massive book with bronze boards and a round seal | Bronze          |
 
 **Moodboards.** Keep two. "Oneiros Scenes" holds the background scenes and is for scenes only: it pulls icons towards isometric angles, scenery and a pixel texture. "Oneiros Icons" holds only approved icons; add each new one once it passes. Midjourney applies moodboards through personalisation, so its switch stays on; select only Oneiros Icons and no profile.
 
