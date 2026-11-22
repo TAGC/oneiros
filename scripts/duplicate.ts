@@ -1,10 +1,10 @@
 /**
  * Makes DROP a duplicate of KEEP (docs/duplicates.md), in two steps, each a dry run unless
  * `--live`:
- *   bun run duplicate KEEP DROP [--live]          on DROP's page, in both languages, swap its
+ *   bun run duplicate:mark KEEP DROP [--live]   on DROP's page, in both languages, swap its
  *     marker for one line linking to KEEP's box (or remove it, when KEEP's marker is on the
  *     same page). Reads the question cache; never touches GitHub.
- *   bun run duplicate KEEP DROP --close [--live]  once the pull request with those edits has
+ *   bun run duplicate:close KEEP DROP [--live]  once the pull request with those edits has
  *     merged: close DROP as a duplicate of KEEP, remove its milestone, then pull. Refuses
  *     while any page still holds DROP's marker.
  * Page titles come from the page files, read as UTF-8; no text passes through argv.
@@ -150,7 +150,7 @@ export function duplicatePages(
   if (!edits.length) log('Nothing to change.');
   else if (!live) log(`Dry run: ${edits.length} change(s). Add --live to make them.`);
   else {
-    const next = `bun run duplicate ${keep} ${drop} --close`;
+    const next = `bun run duplicate:close ${keep} ${drop}`;
     log(`Made ${edits.length} change(s). After the pull request merges, run ${next}.`);
   }
   return true;
@@ -231,10 +231,11 @@ export function closeDuplicate(
 }
 
 if (import.meta.main) {
-  const args = process.argv.slice(2);
+  const [step, ...args] = process.argv.slice(2);
   const [keep, drop] = args.filter((a) => !a.startsWith('--')).map(Number);
-  if (!Number.isInteger(keep) || !Number.isInteger(drop) || keep < 1 || drop < 1) {
-    console.error('Usage: bun run duplicate KEEP DROP [--close] [--live]');
+  const valid = (n: number) => Number.isInteger(n) && n > 0;
+  if ((step !== 'mark' && step !== 'close') || !valid(keep) || !valid(drop)) {
+    console.error('Usage: bun run duplicate:mark|duplicate:close KEEP DROP [--live]');
     process.exit(1);
   }
   const options = {
@@ -244,8 +245,9 @@ if (import.meta.main) {
     log: console.log,
     warn: console.error,
   };
-  const ok = args.includes('--close')
-    ? closeDuplicate(liveGitHub(), keep, drop, options)
-    : duplicatePages(keep, drop, options);
+  const ok =
+    step === 'close'
+      ? closeDuplicate(liveGitHub(), keep, drop, options)
+      : duplicatePages(keep, drop, options);
   if (!ok) process.exit(1);
 }

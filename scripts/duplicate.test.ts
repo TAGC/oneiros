@@ -87,7 +87,7 @@ describe('the duplicate command, on the pages', () => {
     expect(github.writes).toEqual([]);
     expect(github.question(2).state).toBe('open');
     expect(out.at(-1)).toBe(
-      'Made 2 change(s). After the pull request merges, run bun run duplicate 1 2 --close.',
+      'Made 2 change(s). After the pull request merges, run bun run duplicate:close 1 2.',
     );
   });
 
