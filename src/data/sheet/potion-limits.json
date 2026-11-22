@@ -22,7 +22,7 @@
     ],
     [
      "No generic healing",
-     "Recovery comes from resting in the Temenos and from food, so potions stay strange rather than becoming health bars in a bottle."
+     "Rest restores Coherence, as do food and potions, but potions stay strange rather than becoming health bars in a bottle."
     ]
    ]
   }
