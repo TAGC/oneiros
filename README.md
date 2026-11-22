@@ -15,9 +15,30 @@ bun run build          # astro check, astro build, then the Pagefind index
 bun run preview        # serve dist/ (search works here, not in dev)
 bun run lint           # oxlint
 bun run format         # oxfmt (format:check to verify)
+bun run check          # spelling and content checks (run after a build)
+bun run verify         # build, lint, format:check and check
 ```
 
 In dev, a page's link colours are worked out when that page renders. If links look stale after adding a page, restart the dev server.
+
+## Checks
+
+`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs lint, format:check and check after the build, and a failure stops the deploy.
+
+- **Spelling** (cspell, British English): the English pages, this README and the English sheet data. Code, URLs, HTML tags, hex colours, frontmatter keys and Chinese text are skipped. American spellings in `cspell-american.txt` are flagged.
+- **Section links:** every internal link in `dist/` must reach an existing page, and its `#fragment` an existing `id` on that page.
+- **Red links:** a link to a missing page fails unless its slug is in `src/data/redlinks.json`. Both languages share the list. The check also fails when a listed page has been written or nothing links to it any more.
+- **English style:** no em dashes, and no spaced en dashes used as dashes, in the English pages, sheet data or README.
+- **Chinese parity:** every English page has a Chinese page with the same extension, `kind`, `area`, `navbox` and number of `[!OPEN]` and `[!CONFLICT]` callouts. Every tab in `src/data/sheet-zh/` has the same block types, header lengths, row counts and row lengths as its English tab.
+- **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
+
+To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
+
+```json
+{ "damage": "Linked from the Coherence infobox; the page is not written yet." }
+```
+
+To accept a word cspell does not know, add it to `cspell-words.txt` under the right heading. Add only genuine domain words, Greek names and proper nouns; fix anything else. To ban a Chinese term, add `{ "term", "preferred", "note", "allow" }` to `src/i18n/zh-forbidden.json`, where `allow` lists longer strings that contain the term legitimately (as `做梦者` contains `梦者`).
 
 ## Layout
 
