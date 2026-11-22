@@ -1,0 +1,160 @@
+---
+/**
+ * The night sky's decoration, drawn as code: background specks, a faint engraved dial and a
+ * soft glow per area. The designer ruled the Astrolabe interface decoration, so it may be
+ * drawn as code; it stays in this one file all the same, so painted art could replace it.
+ */
+import type { StarChart } from './chart';
+import { mulberry32, type SkyLayout } from './sky';
+import { areaKey, areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: SkyLayout;
+}
+
+const { chart, layout } = Astro.props;
+const f = (v: number) => Number(v.toFixed(1));
+const W = layout.width;
+const H = layout.height;
+/** The client lets the sky zoom out to about 1.6 times the fitted view. */
+const pad = Math.max(W, H) * 0.35;
+
+const speckRandom = mulberry32(7);
+const specks = Array.from({ length: Math.round(((W + 2 * pad) * (H + 2 * pad)) / 4500) }, () => ({
+  x: f(-pad + speckRandom() * (W + 2 * pad)),
+  y: f(-pad + speckRandom() * (H + 2 * pad)),
+  r: Number((0.35 + speckRandom() * speckRandom() * 1.3).toFixed(2)),
+  o: Number((0.25 + speckRandom() * 0.75).toFixed(2)),
+}));
+
+const cx = W / 2;
+const cy = H / 2;
+const R = Math.max(W, H) * 0.58;
+const ticks = Array.from({ length: 72 }, (_, i) => {
+  const a = (i * 5 * Math.PI) / 180;
+  const inner = i % 3 === 0 ? R : R + 7;
+  return {
+    x1: f(cx + Math.cos(a) * inner),
+    y1: f(cy + Math.sin(a) * inner),
+    x2: f(cx + Math.cos(a) * (R + 14)),
+    y2: f(cy + Math.sin(a) * (R + 14)),
+  };
+});
+const spokes = Array.from({ length: 12 }, (_, i) => {
+  const a = (i * 30 * Math.PI) / 180;
+  return {
+    x1: f(cx + Math.cos(a) * R * 0.2),
+    y1: f(cy + Math.sin(a) * R * 0.2),
+    x2: f(cx + Math.cos(a) * R),
+    y2: f(cy + Math.sin(a) * R),
+    lx: f(cx + Math.cos(a) * (R + 32)),
+    ly: f(cy + Math.sin(a) * (R + 32) + 4),
+    deg: i * 30,
+  };
+});
+
+const areaOf = new Map(chart.stars.map((s) => [s.number, s.question.area]));
+const glowRandom = mulberry32(11);
+const wisps = layout.stars.flatMap((s) => {
+  const key = areaKey(areaOf.get(s.number));
+  const main = { x: s.x, y: s.y, r: f(78 + glowRandom() * 26), key, o: 1 };
+  const extra = [0, 1].map(() => {
+    const angle = glowRandom() * Math.PI * 2;
+    const dist = 24 + glowRandom() * 34;
+    return {
+      x: f(s.x + Math.cos(angle) * dist),
+      y: f(s.y + Math.sin(angle) * dist),
+      r: f(40 + glowRandom() * 40),
+      key,
+      o: 0.7,
+    };
+  });
+  return [main, ...extra];
+});
+---
+
+<defs>
+  {
+    chart.areas.map((g) => (
+      <radialGradient id={`al-neb-${areaKey(g.area)}`} style={`--tint:${areaTint(g.area)}`}>
+        <stop offset="0" class="al-neb-0" />
+        <stop offset="0.5" class="al-neb-1" />
+        <stop offset="1" class="al-neb-2" />
+      </radialGradient>
+    ))
+  }
+</defs>
+<g class="al-specks" aria-hidden="true">
+  {
+    specks.map((s, i) => (
+      <circle
+        cx={s.x}
+        cy={s.y}
+        r={s.r}
+        opacity={s.o}
+        class={i % 9 === 0 ? 'al-tw' : undefined}
+        style={i % 9 === 0 ? `--tw:${3 + (i % 5)}s;--tw-delay:-${i % 7}s` : undefined}
+      />
+    ))
+  }
+</g>
+<g class="al-dial" aria-hidden="true">
+  {
+    [1, 2, 3, 4, 5].map((i) => (
+      <circle
+        cx={f(cx)}
+        cy={f(cy)}
+        r={f((R * i) / 5)}
+        stroke-width={i === 5 ? 1.2 : 0.7}
+        stroke-dasharray={i === 5 ? undefined : '2 6'}
+      />
+    ))
+  }
+  <circle cx={f(cx)} cy={f(cy)} r={f(R + 14)} stroke-width="0.7" />
+  {ticks.map((t) => <line {...t} stroke-width="0.7" />)}
+  {
+    spokes.map((s) => (
+      <>
+        <line x1={s.x1} y1={s.y1} x2={s.x2} y2={s.y2} stroke-width="0.6" stroke-dasharray="1 7" />
+        <text x={s.lx} y={s.ly} text-anchor="middle">
+          {s.deg}°
+        </text>
+      </>
+    ))
+  }
+  <ellipse
+    cx={f(cx)}
+    cy={f(cy)}
+    rx={f(R * 0.78)}
+    ry={f(R * 0.5)}
+    transform={`rotate(-18 ${f(cx)} ${f(cy)})`}
+    stroke-width="0.8"
+    stroke-dasharray="6 5"
+  />
+</g>
+<g class="al-nebulae" aria-hidden="true">
+  {
+    wisps.map((w) => (
+      <circle
+        cx={w.x}
+        cy={w.y}
+        r={w.r}
+        fill={`url(#al-neb-${w.key})`}
+        opacity={w.o === 1 ? undefined : w.o}
+      />
+    ))
+  }
+  {
+    layout.areas.map((a) => (
+      <ellipse
+        cx={a.x}
+        cy={a.y}
+        rx={f(a.rx + 30)}
+        ry={f(a.ry + 20)}
+        fill={`url(#al-neb-${areaKey(a.area)})`}
+        opacity="0.8"
+      />
+    ))
+  }
+</g>

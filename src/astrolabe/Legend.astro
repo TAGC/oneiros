@@ -1,0 +1,74 @@
+---
+/** The key: what each glyph, line and glow means. */
+import { type Locale, useTranslations } from '../i18n/ui';
+import { CENTRAL_MIN_DEPENDENTS } from '../lib/questions';
+import { STAR_STATUSES, type StarRole } from './chart';
+import Glyph from './Glyph.astro';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const a = useTranslations(locale).astrolabe;
+const roles: StarRole[] = ['central', 'peripheral', 'independent'];
+const threads = ['open', 'settled', 'undermines'] as const;
+---
+
+<details class="al-key" open>
+  <summary>{a.key}</summary>
+  <div class="al-key-grid">
+    <ul>
+      {
+        STAR_STATUSES.map((status) => (
+          <li>
+            <svg class="al-key-mark" viewBox="-16 -16 32 32" aria-hidden="true">
+              <Glyph status={status} />
+            </svg>
+            <span>
+              <b>{a.named(a.status[status])}</b> {a.statusHelp[status]}
+            </span>
+          </li>
+        ))
+      }
+      <li>
+        <svg class="al-key-mark" viewBox="-16 -16 32 32" aria-hidden="true">
+          <Glyph status="frontier" conflict />
+        </svg>
+        <span><b>{a.named(a.conflict)}</b> {a.conflictHelp}</span>
+      </li>
+    </ul>
+    <ul>
+      {
+        roles.map((role) => (
+          <li>
+            <svg class="al-key-mark" viewBox="-16 -16 32 32" aria-hidden="true">
+              <Glyph status="frontier" roles={[role]} />
+            </svg>
+            <span>
+              <b>{a.named(a.roles[role])}</b> {a.roleHelp[role](CENTRAL_MIN_DEPENDENTS)}
+            </span>
+          </li>
+        ))
+      }
+      {
+        threads.map((kind) => (
+          <li>
+            <svg class="al-key-mark" viewBox="0 -8 40 16" aria-hidden="true">
+              <path
+                class={`al-thread al-thread-${kind}`}
+                d="M2,0H32"
+                marker-end={`url(#al-arrow-${kind})`}
+              />
+            </svg>
+            <span>{a.threads[kind]}</span>
+          </li>
+        ))
+      }
+      <li>
+        <span class="al-key-glow" aria-hidden="true"></span>
+        <span>{a.areaGlow}</span>
+      </li>
+    </ul>
+  </div>
+</details>

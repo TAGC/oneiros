@@ -1,0 +1,142 @@
+---
+/** The tiers view: columns by how far a question is from being ready, rows by area. */
+import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import type { StarChart } from './chart';
+import Glyph from './Glyph.astro';
+import type { TiersLayout } from './tiers';
+import { areaKey, areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: TiersLayout;
+  locale: Locale;
+}
+
+const { chart, layout, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
+const counts = new Map(
+  chart.areas.map((g) => [
+    areaKey(g.area),
+    {
+      open: g.stars.filter((n) => byNumber.get(n)!.question.status === 'open').length,
+      all: g.stars.length,
+    },
+  ]),
+);
+const LINE = 18;
+---
+
+<svg
+  class="al-tiers"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  width={layout.width}
+  height={layout.height}
+  role="group"
+  aria-label={a.views.tiers}
+>
+  <g class="al-columns" aria-hidden="true">
+    {
+      layout.columns.map((c) => (
+        <>
+          <rect
+            class={`al-band al-band-${c.tier}`}
+            x={c.x}
+            y="0"
+            width={c.width}
+            height={layout.height}
+          />
+          <text class="al-col-name" x={c.x + 16} y="26">
+            {a.tiers[c.tier]}
+          </text>
+          <text class="al-col-help" x={c.x + 16} y="45">
+            {a.tierHelp[c.tier]}
+          </text>
+        </>
+      ))
+    }
+  </g>
+  <g class="al-rows" aria-hidden="true">
+    {
+      layout.rows.map((row) => {
+        const count = counts.get(areaKey(row.area))!;
+        return (
+          <>
+            <line class="al-row-line" x1="0" x2={layout.width} y1={row.y} y2={row.y} />
+            <rect
+              class="al-row-tint"
+              x="0"
+              y={row.y + 12}
+              width="3"
+              height={Math.max(12, row.height - 24)}
+              style={`--tint:${areaTint(row.area)}`}
+            />
+            <text class="al-row-name" x="14" y={row.y + 26}>
+              {areaName(row.area)}
+            </text>
+            <text class="al-row-count" x="14" y={row.y + 44}>
+              {a.areaOpen(count.open, count.all)}
+            </text>
+          </>
+        );
+      })
+    }
+  </g>
+  <g class="al-threads" aria-hidden="true">
+    {
+      layout.threads.map((thread) => (
+        <path
+          class={`al-thread al-thread-${thread.kind}`}
+          data-from={thread.from}
+          data-to={thread.to}
+          d={thread.d}
+          marker-end={`url(#al-arrow-${thread.kind})`}
+        />
+      ))
+    }
+  </g>
+  <g class="al-stars">
+    {
+      layout.stars.map((placed) => {
+        const star = byNumber.get(placed.number)!;
+        const q = star.question;
+        const status =
+          q.kind === 'conflict' ? a.withConflict(a.status[star.status]) : a.status[star.status];
+        return (
+          <a
+            href={`#star-${star.number}`}
+            class:list={[
+              'al-star',
+              `al-st-${star.status}`,
+              q.status === 'open' ? 'al-is-open' : 'al-is-closed',
+              star.roles.includes('central') && 'al-central',
+            ]}
+            data-n={star.number}
+            aria-label={a.starLabel(star.number, star.label, status, areaName(q.area))}
+          >
+            <rect
+              class="al-hit"
+              x={placed.x - 16}
+              y={placed.label.box.y1 - 4}
+              width={placed.label.box.x2 - placed.x + 20}
+              height={placed.label.box.y2 - placed.label.box.y1 + 8}
+            />
+            <g transform={`translate(${placed.x} ${placed.y})`}>
+              <circle class="al-focus" r={placed.r + 6} />
+              <Glyph status={star.status} conflict={q.kind === 'conflict'} roles={star.roles} />
+            </g>
+            <text class="al-label" lang={HTML_LANG[star.labelLang]}>
+              {placed.label.lines.map((line, i) => (
+                <tspan x={placed.label.x} y={placed.label.y + 13 + i * LINE}>
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          </a>
+        );
+      })
+    }
+  </g>
+</svg>

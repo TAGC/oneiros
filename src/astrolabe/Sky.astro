@@ -1,0 +1,108 @@
+---
+/** The night sky view: the build-time layout drawn as one static SVG. */
+import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import Backdrop from './Backdrop.astro';
+import type { StarChart } from './chart';
+import Glyph from './Glyph.astro';
+import type { SkyLayout } from './sky';
+import { areaKey, areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: SkyLayout;
+  locale: Locale;
+}
+
+const { chart, layout, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
+---
+
+<svg
+  class="al-sky"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  preserveAspectRatio="xMidYMid meet"
+  data-width={layout.width}
+  data-height={layout.height}
+  role="group"
+  aria-label={a.views.sky}
+>
+  <Backdrop chart={chart} layout={layout} />
+  <g class="al-area-names" aria-hidden="true">
+    {
+      layout.areas.map((area) => (
+        <text
+          x={area.label.x}
+          y={area.label.y}
+          text-anchor="middle"
+          style={`--tint:${areaTint(area.area)}`}
+        >
+          {areaName(area.area)}
+        </text>
+      ))
+    }
+  </g>
+  <g class="al-threads" aria-hidden="true">
+    {
+      layout.threads.map((thread) => (
+        <path
+          class={`al-thread al-thread-${thread.kind}`}
+          data-from={thread.from}
+          data-to={thread.to}
+          d={thread.d}
+          marker-end={`url(#al-arrow-${thread.kind})`}
+        />
+      ))
+    }
+  </g>
+  <g class="al-stars">
+    {
+      layout.stars.map((placed) => {
+        const star = byNumber.get(placed.number)!;
+        const q = star.question;
+        const status =
+          q.kind === 'conflict' ? a.withConflict(a.status[star.status]) : a.status[star.status];
+        const { label } = placed;
+        return (
+          <a
+            href={`#star-${star.number}`}
+            class:list={[
+              'al-star',
+              `al-st-${star.status}`,
+              q.status === 'open' ? 'al-is-open' : 'al-is-closed',
+              star.roles.includes('central') && 'al-central',
+            ]}
+            data-n={star.number}
+            data-area={areaKey(q.area)}
+            aria-label={a.starLabel(star.number, star.label, status, areaName(q.area))}
+          >
+            <g transform={`translate(${placed.x} ${placed.y})`}>
+              <circle class="al-hit" r="16" />
+              <circle class="al-focus" r={placed.r + 8} />
+              <Glyph
+                status={star.status}
+                conflict={q.kind === 'conflict'}
+                roles={star.roles}
+                number={star.number}
+              />
+            </g>
+            <text
+              class="al-label"
+              text-anchor={label.anchor}
+              lang={HTML_LANG[star.labelLang]}
+              style={`font-size:${label.size}px`}
+            >
+              {label.lines.map((line, i) => (
+                <tspan x={label.x} y={Number((label.y + label.size - 1 + i * label.lineHeight).toFixed(1))}>
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          </a>
+        );
+      })
+    }
+  </g>
+</svg>
