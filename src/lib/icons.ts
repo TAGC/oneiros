@@ -14,15 +14,20 @@ export const ICON_NAMES = Object.keys(ICONS) as [string, ...string[]];
  * record, so adding a master and rebuilding is enough.
  */
 const PAINTED_DIR = 'public/icons';
-const painted = new Set(
-  readdirSync(PAINTED_DIR)
-    .filter((f) => f.endsWith('-512.webp'))
-    .map((f) => f.replace(/-512\.webp$/, '')),
-);
+const readPainted = () =>
+  new Set(
+    readdirSync(PAINTED_DIR)
+      .filter((f) => f.endsWith('-512.webp'))
+      .map((f) => f.replace(/-512\.webp$/, '')),
+  );
+const built = readPainted();
 
-/** A painted icon replaces the pixel icon of the same name. */
+/**
+ * A painted icon replaces the pixel icon of the same name. The dev server re-reads the
+ * folder each time, so icons built while it runs show without a restart.
+ */
 export function isPainted(name: string): boolean {
-  return painted.has(name.toLowerCase());
+  return (import.meta.env?.DEV ? readPainted() : built).has(name.toLowerCase());
 }
 
 export function hasIcon(name: string): boolean {
