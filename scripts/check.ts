@@ -4,20 +4,15 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Blockquote, Root } from 'mdast';
-import remarkGfm from 'remark-gfm';
-import remarkParse from 'remark-parse';
-import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
 import { LOCALES } from '../src/i18n/ui';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
 import type { MarkedPage, Problem } from '../src/lib/questions/problems';
-import type { CalloutKind } from '../src/lib/wiki';
 
 // Production mode makes the wiki index read each folder once instead of re-checking file times.
 process.env.NODE_ENV = 'production';
-const { calloutKind, issueMarker, WIKI_LINK } = await import('../src/lib/wiki');
+const { WIKI_LINK } = await import('../src/lib/wiki');
+const { readMarkers } = await import('../src/lib/questions/markers');
 const { getQuestions } = await import('../src/lib/questions');
 const { cycleProblems, issueProblems, markerProblems } =
   await import('../src/lib/questions/problems');
@@ -294,38 +289,22 @@ function checkEnglishStyle(): Problem[] {
 
 // ---------------------------------------------------------------- question markers
 
-const calloutParser = unified().use(remarkParse).use(remarkGfm);
-
-/** A page's question markers and any old inline callouts, with their lines. */
-function blockquotes(raw: string): Pick<MarkedPage, 'markers' | 'callouts'> {
-  const { bodyLine } = frontmatter(raw);
-  const body = raw
-    .split('\n')
-    .slice(bodyLine - 1)
-    .join('\n');
-  const markers: MarkedPage['markers'] = [];
-  const callouts: { kind: CalloutKind; line: number }[] = [];
-  visit(calloutParser.parse(body) as Root, 'blockquote', (node: Blockquote) => {
-    const line = (node.position?.start.line ?? 1) + bodyLine - 1;
-    const issue = issueMarker(node);
-    if (issue !== undefined) markers.push({ issue, line });
-    const kind = calloutKind(node);
-    if (kind) callouts.push({ kind, line });
-  });
-  return { markers, callouts };
-}
-
 /** Every page in both locales with its markers, for the question checks. */
 function markedPages(): MarkedPage[] {
   return LOCALES.flatMap((locale) =>
     files(WIKI_DIRS[locale], isPage).map((file) => {
       const raw = read(file);
+      const { data, bodyLine } = frontmatter(raw);
+      const body = raw
+        .split('\n')
+        .slice(bodyLine - 1)
+        .join('\n');
       return {
         file,
         locale,
         slug: file.replace(/^.*\/|\.mdx?$/g, ''),
-        status: frontmatter(raw).data.status,
-        ...blockquotes(raw),
+        status: data.status,
+        ...readMarkers(body, bodyLine),
       };
     }),
   );

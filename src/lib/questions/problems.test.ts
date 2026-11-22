@@ -93,6 +93,17 @@ describe('marker checks', () => {
       'src/content/wiki-zh/ablaze.md:8: inline [!CONFLICT] callout; make it a question issue and put a `> [!ISSUE N]` marker here',
     ]);
   });
+
+  test('another spelling of a marker fails and shows the right one', () => {
+    const misspelt = [
+      { found: '> [!issue #12]', issue: 12, line: 4 },
+      { found: '> [!Issue]', line: 8 },
+    ];
+    expect(messages(markerProblems(questions(), [page('en', [], { misspelt })]))).toEqual([
+      'src/content/wiki/ablaze.md:4: `> [!issue #12]` is not a marker; write `> [!ISSUE 12]`, alone in a quote of its own',
+      'src/content/wiki/ablaze.md:8: `> [!Issue]` is not a marker; write `> [!ISSUE N]`, alone in a quote of its own',
+    ]);
+  });
 });
 
 describe('issue checks', () => {
