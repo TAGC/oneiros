@@ -15,9 +15,10 @@
     "lint": "oxlint",
     "format": "oxfmt",
     "icons": "bun scripts/icons.ts",
+    "test": "bun test",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",
-    "verify": "bun run build && bun run lint && bun run format:check && bun run check"
+    "verify": "bun run build && bun run test && bun run lint && bun run format:check && bun run check"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.10",
