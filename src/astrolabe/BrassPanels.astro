@@ -1,0 +1,97 @@
+---
+/**
+ * One panel per open constellation, for the constellations view: its name, reasoning, size,
+ * energy, progress and questions. Without JavaScript, `:target` shows the panel a mark links to.
+ */
+import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { wikiUrl } from '../lib/site';
+import { issueId } from '../lib/wiki';
+import type { DialLayout } from './brass';
+import type { StarChart } from './chart';
+import { constellationFacts } from './facts';
+import Glyph from './Glyph.astro';
+import { areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: DialLayout;
+  locale: Locale;
+}
+
+const { chart, layout, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const markOf = new Map(layout.marks.map((m) => [m.number, m]));
+const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
+---
+
+<div class="al-panels al-cpanels">
+  {
+    chart.constellations.map((c) => {
+      const mark = markOf.get(c.number)!;
+      return (
+        <section
+          class="al-panel al-cpanel"
+          id={`constellation-panel-${c.number}`}
+          aria-labelledby={`constellation-panel-${c.number}-title`}
+          tabindex="-1"
+        >
+          <div class="al-panel-top">
+            <a class="al-panel-number" href={c.url}>
+              {a.milestone}
+            </a>
+            <a class="al-close" href="#" data-close aria-label={a.close} title={a.close}>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+            </a>
+          </div>
+          <h2 id={`constellation-panel-${c.number}-title`} lang={lang(c.nameLang)}>
+            {c.name}
+          </h2>
+          <p class="al-card-facts">{constellationFacts(c, t)}</p>
+          {mark.areas.length > 0 && (
+            <ul class="al-chips" aria-label={a.areas}>
+              {mark.areas.map((area) => (
+                <li style={`--tint:${areaTint(area)}`}>
+                  <i class="al-dot" />
+                  {t.areaNames[area] ?? area}
+                </li>
+              ))}
+            </ul>
+          )}
+          {c.reasoning && <p lang={lang(c.reasoning.lang)}>{c.reasoning.text}</p>}
+          <h3>{a.members}</h3>
+          <ul class="al-cpanel-stars">
+            {c.stars.map((n) => {
+              const star = byNumber.get(n)!;
+              const page = star.question.properties.page;
+              return (
+                <li>
+                  <a
+                    class="al-star-link"
+                    href={`#star-${n}`}
+                    data-star={n}
+                    title={a.starInSky}
+                  >
+                    <svg class="al-mini" viewBox="-13 -13 26 26" aria-hidden="true">
+                      <Glyph status={star.status} conflict={star.question.kind === 'conflict'} />
+                    </svg>
+                    <span class="al-link-n">#{n}</span>
+                    <span lang={lang(star.labelLang)}>{star.label}</span>
+                  </a>
+                  {page && (
+                    <a class="al-cpanel-page" href={wikiUrl(page, issueId(n), locale)}>
+                      {a.onItsPage}
+                    </a>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      );
+    })
+  }
+</div>
