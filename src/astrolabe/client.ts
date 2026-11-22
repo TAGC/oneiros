@@ -111,7 +111,7 @@ function setUp(root: HTMLElement): void {
     const applyFilter = () => {
       const unfit = new Set<string>();
       let fitting = 0;
-      for (const group of root.querySelectorAll('.al-cgroup')) {
+      for (const group of root.querySelectorAll('.al-cgroup:not(.al-cfinished)')) {
         const ok = fits(group);
         group.classList.toggle('al-unfit', !ok);
         if (ok) fitting++;

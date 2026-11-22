@@ -71,6 +71,8 @@ export interface SkyConstellation {
   segments: [number, number][];
   /** The centre of the name's first line, and the box its two lines take. */
   label: { x: number; y: number; box: Box };
+  /** A finished constellation, holding settled questions: drawn faint, with no facts line. */
+  finished?: boolean;
 }
 
 export interface SkyLayout {
@@ -422,7 +424,10 @@ function placeConstellations(
   ];
   const t = useTranslations(chart.locale);
   const out: SkyConstellation[] = [];
-  for (const c of chart.constellations) {
+  const finished = new Set(chart.finished.map((c) => c.number));
+  const named =
+    by === 'constellations' ? [...chart.constellations, ...chart.finished] : chart.constellations;
+  for (const c of named) {
     const points = c.stars.flatMap((n) => at.get(n) ?? []);
     if (!points.length) continue;
     const boxes = points.flatMap((p) => [
@@ -435,7 +440,7 @@ function placeConstellations(
     const y2 = Math.max(...boxes.map((b) => b.y2));
     const w = Math.max(
       textWidth(c.name, NAME_SIZE) * 0.95,
-      textWidth(constellationFacts(c, t), FACTS_SIZE),
+      finished.has(c.number) ? 0 : textWidth(constellationFacts(c, t), FACTS_SIZE),
       160,
     );
     const cx = (x1 + x2) / 2;
@@ -468,7 +473,13 @@ function placeConstellations(
       if (bestCost < 1000) break;
     }
     taken.push(best!.box);
-    out.push({ number: c.number, segments: shortestTree(points), label: best! });
+    const placed: SkyConstellation = {
+      number: c.number,
+      segments: shortestTree(points),
+      label: best!,
+    };
+    if (finished.has(c.number)) placed.finished = true;
+    out.push(placed);
   }
   return out;
 }
@@ -476,10 +487,12 @@ function placeConstellations(
 /** The stars of each cluster: areas in the chart's order, or open constellations then the rest. */
 function groupsFor(chart: StarChart, by: Clustering): Group[] {
   if (by === 'areas') return chart.areas;
-  const groups: Group[] = chart.constellations
+  const groups: Group[] = [...chart.constellations, ...chart.finished]
     .filter((c) => c.stars.length)
     .map((c) => ({ constellation: c.number, stars: c.stars }));
-  const rest = chart.stars.filter((s) => s.constellation === undefined).map((s) => s.number);
+  const rest = chart.stars
+    .filter((s) => s.constellation === undefined && s.finishedIn === undefined)
+    .map((s) => s.number);
   if (rest.length) groups.push({ stars: rest });
   return groups;
 }

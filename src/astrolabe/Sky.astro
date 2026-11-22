@@ -30,7 +30,7 @@ const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? are
 const ungrouped = new Set(chart.ungrouped);
 /* Settled questions with no thread to an open one hide unless "Show settled" is on. */
 const quiet = new Set(quietSettled(chart));
-const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
+const groupOf = new Map([...chart.constellations, ...chart.finished].map((c) => [c.number, c]));
 /* Constellation lines, rings and names show only when clustered by constellation. */
 const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
 const motion = (l: SkyLayout): Record<string, SkySpot> =>
@@ -120,8 +120,19 @@ const motionData: SkyMotionData | undefined = byConstellation && {
       <g class="al-constellations" aria-hidden="true">
         {byConstellation.constellations.map((placed) => {
           const c = groupOf.get(placed.number)!;
+          // A finished constellation is faint, has no facts line and ignores the filter.
+          const allQuiet = c.stars.every((n) => quiet.has(n));
           return (
-            <g class="al-cgroup" data-c={c.number} data-size={c.size} data-energy={c.energy}>
+            <g
+              class:list={[
+                'al-cgroup',
+                placed.finished && 'al-cfinished',
+                allQuiet && 'al-quiet',
+              ]}
+              data-c={c.number}
+              data-size={placed.finished ? undefined : c.size}
+              data-energy={placed.finished ? undefined : c.energy}
+            >
               {placed.segments.map(([from, to]) => {
                 const p = linedAt.get(from)!;
                 const q = linedAt.get(to)!;
@@ -161,14 +172,16 @@ const motionData: SkyMotionData | undefined = byConstellation && {
               >
                 {c.name}
               </text>
-              <text
-                class="al-cmeta"
-                x={placed.label.x}
-                y={placed.label.y + 31}
-                text-anchor="middle"
-              >
-                {constellationFacts(c, t)}
-              </text>
+              {!placed.finished && (
+                <text
+                  class="al-cmeta"
+                  x={placed.label.x}
+                  y={placed.label.y + 31}
+                  text-anchor="middle"
+                >
+                  {constellationFacts(c, t)}
+                </text>
+              )}
             </g>
           );
         })}

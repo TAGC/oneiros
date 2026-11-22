@@ -5,7 +5,7 @@
  */
 import type { Locale } from '../i18n/ui';
 import type { Area } from '../lib/questions';
-import type { Star, StarChart, Thread } from './chart';
+import type { ChartConstellation, Star, StarChart, Thread } from './chart';
 import type { Box, Clustering } from './sky';
 import { starRadius } from './sky';
 import { textWidth, wrapText } from './text';
@@ -23,6 +23,8 @@ export interface TierColumn {
 export interface TierRow {
   area?: Area;
   constellation?: number;
+  /** A finished constellation's row, holding settled questions. */
+  finished?: boolean;
   /** A constellation's name, wrapped to the name column. */
   name?: { lines: string[]; lang: Locale };
   y: number;
@@ -112,6 +114,16 @@ function path(a: TierStar, b: TierStar, aLabelEnd: number, kind: Thread['kind'])
   return `M${f(sx)},${f(a.y)}C${f(sx - bow)},${f(a.y)} ${f(ex + bow)},${f(b.y)} ${f(ex)},${f(b.y)}`;
 }
 
+/** A constellation's row: open ones first, finished ones last, below the questions in none. */
+function constellationRow(c: ChartConstellation, finished: boolean) {
+  const row: Omit<TierRow, 'y' | 'height'> = {
+    constellation: c.number,
+    name: { lines: wrapText(c.name, NAME_SIZE, CONSTELLATION_WIDTH - 28), lang: c.nameLang },
+  };
+  if (finished) row.finished = true;
+  return { row, stars: c.stars };
+}
+
 export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLayout {
   const nameWidth = by === 'areas' ? AREA_WIDTH : CONSTELLATION_WIDTH;
   const steps = stepsOut(chart);
@@ -133,19 +145,14 @@ export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLa
     by === 'areas'
       ? chart.areas.map((g) => ({ row: g.area ? { area: g.area } : {}, stars: g.stars }))
       : [
-          ...chart.constellations
-            .filter((c) => c.stars.length)
-            .map((c) => ({
-              row: {
-                constellation: c.number,
-                name: { lines: wrapText(c.name, NAME_SIZE, nameWidth - 28), lang: c.nameLang },
-              },
-              stars: c.stars,
-            })),
+          ...chart.constellations.map((c) => constellationRow(c, false)),
           {
             row: {},
-            stars: chart.stars.filter((s) => s.constellation === undefined).map((s) => s.number),
+            stars: chart.stars
+              .filter((s) => s.constellation === undefined && s.finishedIn === undefined)
+              .map((s) => s.number),
           },
+          ...chart.finished.map((c) => constellationRow(c, true)),
         ].filter((g) => g.stars.length);
   for (const group of groups) {
     const cells = new Map<Tier, number>();

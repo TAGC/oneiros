@@ -23,9 +23,9 @@ const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? are
 const rowStars = (row: TiersLayout['rows'][number]) =>
   layout.stars.filter((s) => {
     const star = byNumber.get(s.number)!;
-    return layout.by === 'areas'
-      ? star.question.area === row.area
-      : star.constellation === row.constellation;
+    if (layout.by === 'areas') return star.question.area === row.area;
+    if (row.finished) return star.finishedIn === row.constellation;
+    return star.constellation === row.constellation && star.finishedIn === undefined;
   });
 const countOf = (row: TiersLayout['rows'][number]) => {
   const stars = rowStars(row);
@@ -37,7 +37,7 @@ const countOf = (row: TiersLayout['rows'][number]) => {
 const rowTint = (row: TiersLayout['rows'][number]) =>
   layout.by === 'areas'
     ? areaTint(row.area)
-    : row.constellation === undefined
+    : row.constellation === undefined || row.finished
       ? 'var(--mute)'
       : 'var(--al-const)';
 const LINE = 18;
@@ -81,6 +81,10 @@ const quiet = new Set(quietSettled(chart));
     {
       layout.rows.map((row) => {
         const count = countOf(row);
+        // A finished constellation's row is dimmed and has no progress line; a row whose
+        // stars are all hidden settled questions hides its name too.
+        const allQuiet = rowStars(row).every((s) => quiet.has(s.number));
+        const rowClass = [row.finished && 'al-row-finished', allQuiet && 'al-quiet'];
         const lines = row.name?.lines ?? [
           layout.by === 'areas' ? areaName(row.area) : a.noConstellation,
         ];
@@ -88,7 +92,7 @@ const quiet = new Set(quietSettled(chart));
           <>
             <line class="al-row-line" x1="0" x2={layout.width} y1={row.y} y2={row.y} />
             <rect
-              class="al-row-tint"
+              class:list={['al-row-tint', ...rowClass]}
               x="0"
               y={row.y + 12}
               width="3"
@@ -96,7 +100,7 @@ const quiet = new Set(quietSettled(chart));
               style={`--tint:${rowTint(row)}`}
             />
             <text
-              class="al-row-name"
+              class:list={['al-row-name', ...rowClass]}
               lang={row.name ? HTML_LANG[row.name.lang] : undefined}
             >
               {lines.map((line, i) => (
@@ -105,9 +109,15 @@ const quiet = new Set(quietSettled(chart));
                 </tspan>
               ))}
             </text>
-            <text class="al-row-count" x="14" y={row.y + 26 + lines.length * LINE}>
-              {a.areaOpen(count.open, count.all)}
-            </text>
+            {!row.finished && (
+              <text
+                class:list={['al-row-count', allQuiet && 'al-quiet']}
+                x="14"
+                y={row.y + 26 + lines.length * LINE}
+              >
+                {a.areaOpen(count.open, count.all)}
+              </text>
+            )}
           </>
         );
       })

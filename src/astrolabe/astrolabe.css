@@ -1015,3 +1015,19 @@
   background: color-mix(in srgb, var(--open) 18%, transparent);
   color: var(--ink);
 }
+
+/* A finished constellation (its settled questions, clustered by constellation): faint, its
+   name dimmed, and no facts line. */
+.al-cfinished {
+  opacity: 0.45;
+}
+.al-cfinished .al-cname {
+  font-weight: 400;
+}
+.al-row-finished.al-row-name {
+  fill: var(--mute);
+  font-weight: 400;
+}
+.al-row-finished.al-row-tint {
+  opacity: 0.4;
+}

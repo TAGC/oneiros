@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import type { Area, Question } from '../lib/questions';
 import { questionGraph } from '../lib/questions';
+import { isFinished } from '../lib/questions/constellations';
 import { chartQuestions } from './chart';
 import { layoutTiers } from './tiers';
 
@@ -119,9 +120,9 @@ function constellations(questions: Question[], members: Record<number, number[]>
   const held = new Set(Object.values(members).flat());
   return {
     all: () => open,
-    open: () => open,
+    open: () => open.filter((c) => !isFinished(c)),
     of: () => undefined,
-    finished: () => [],
+    finished: () => open.filter(isFinished),
     toClose: () => [],
     ungrouped: () => questions.filter((q) => !held.has(q.number) && q.status === 'open'),
   };
@@ -156,6 +157,16 @@ describe('the tiers layout by constellation', () => {
     expect(row.name!.lines.length).toBeGreaterThan(1);
     expect(row.height).toBeGreaterThanOrEqual(row.name!.lines.length * 18 + 18);
     expect(layout.columns[0].x).toBe(layout.areaWidth);
+  });
+
+  test('puts finished constellations last, below the questions in none', () => {
+    const qs = [question(1), question(2, { status: 'decided' }), question(3)];
+    const layout = byConstellation(qs, { 4: [1], 5: [2] });
+    expect(layout.rows.map((r) => [r.constellation, r.finished ?? false])).toEqual([
+      [4, false],
+      [undefined, false],
+      [5, true],
+    ]);
   });
 
   test('keeps the same tiers as by area', () => {

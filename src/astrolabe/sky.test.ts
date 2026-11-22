@@ -2,6 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import type { Area, Question } from '../lib/questions';
 import { questionGraph } from '../lib/questions';
 import { useTranslations } from '../i18n/ui';
+import { isFinished } from '../lib/questions/constellations';
 import { chartQuestions } from './chart';
 import { constellationFacts } from './facts';
 import { type Box, layoutSkies, layoutSky } from './sky';
@@ -197,9 +198,9 @@ function fakeConstellations(qs: Question[], members = MEMBERS) {
   }));
   return {
     all: () => open,
-    open: () => open,
+    open: () => open.filter((c) => !isFinished(c)),
     of: () => undefined,
-    finished: () => [],
+    finished: () => open.filter(isFinished),
     toClose: () => [],
     ungrouped: () => qs.filter((q) => !held.has(q.number) && q.status === 'open'),
   };
@@ -283,6 +284,14 @@ describe('the sky clustered by constellation', () => {
         expect(box.x2 - box.x1).toBeGreaterThanOrEqual(textWidth(constellationFacts(c, t), 12));
       }
     }
+  });
+
+  test('keeps settled stars with their finished constellation, named but without facts', () => {
+    const layout = skies('en', { ...MEMBERS, 9: [21] }).constellations!;
+    expect(layout.clusters.map((c) => c.constellation)).toEqual([1, 2, 9, undefined]);
+    const named = layout.constellations.find((c) => c.number === 9)!;
+    expect(named.finished).toBe(true);
+    expect(layout.constellations.filter((c) => c.finished).map((c) => c.number)).toEqual([9]);
   });
 
   test('has no clustering by constellation without constellations', () => {
