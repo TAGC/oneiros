@@ -106,7 +106,7 @@ ${ISSUE_FIELDS}`;
 
 const QUESTION = `query($owner: String!, $name: String!, $number: Int!) {
   repository(owner: $owner, name: $name) {
-    issueOrPullRequest(number: $number) { __typename ...question }
+    issueOrPullRequest(number: $number) { ...question }
   }
 }
 ${ISSUE_FIELDS}`;
@@ -203,11 +203,10 @@ export function liveGitHub(): GitHub {
       return found.map(pulled);
     },
     question(number) {
-      type Found = {
-        repository: { issueOrPullRequest: (GraphIssue & { __typename: string }) | null };
-      };
+      type Found = { repository: { issueOrPullRequest: Partial<GraphIssue> | null } };
       const issue = graphql<Found>(QUESTION, { owner, name, number }).repository.issueOrPullRequest;
-      const question = issue?.__typename === 'Issue' ? pulled(issue) : undefined;
+      // A pull request matches no field of the Issue fragment, so it comes back empty.
+      const question = issue?.number === number ? pulled(issue as GraphIssue) : undefined;
       if (!question || !isQuestionIssue(question)) {
         throw new Error(`#${number} is not a question issue`);
       }
