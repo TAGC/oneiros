@@ -90,7 +90,9 @@ export interface Question {
 }
 
 /** Duplicates stand in for their canonical issue: lists, graphs and maps skip them. */
-export const isDuplicate = (question: Question): boolean => question.status === 'duplicate';
+export function isDuplicate(question: Question): boolean {
+  return question.status === 'duplicate';
+}
 
 export interface Questions {
   /** Every question, by number. */
