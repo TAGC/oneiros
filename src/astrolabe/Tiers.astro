@@ -4,7 +4,7 @@
  * constellation. The page draws one of each; the choice of clustering shows one.
  */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
-import type { StarChart } from './chart';
+import { quietSettled, type StarChart } from './chart';
 import Glyph from './Glyph.astro';
 import type { TiersLayout } from './tiers';
 import { areaTint } from './tints';
@@ -42,6 +42,8 @@ const rowTint = (row: TiersLayout['rows'][number]) =>
       : 'var(--al-const)';
 const LINE = 18;
 const ungrouped = new Set(chart.ungrouped);
+/* Settled questions with no thread to an open one hide unless "Show settled" is on. */
+const quiet = new Set(quietSettled(chart));
 ---
 
 <svg
@@ -115,7 +117,11 @@ const ungrouped = new Set(chart.ungrouped);
     {
       layout.threads.map((thread) => (
         <path
-          class={`al-thread al-thread-${thread.kind}`}
+          class:list={[
+            'al-thread',
+            `al-thread-${thread.kind}`,
+            (quiet.has(thread.from) || quiet.has(thread.to)) && 'al-quiet',
+          ]}
           data-from={thread.from}
           data-to={thread.to}
           d={thread.d}
@@ -139,6 +145,7 @@ const ungrouped = new Set(chart.ungrouped);
               `al-st-${star.status}`,
               q.status === 'open' ? 'al-is-open' : 'al-is-closed',
               star.roles.includes('central') && 'al-central',
+              quiet.has(star.number) && 'al-quiet',
             ]}
             data-n={star.number}
             data-c={star.constellation}

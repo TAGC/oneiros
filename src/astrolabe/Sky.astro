@@ -7,7 +7,7 @@
  */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
-import type { StarChart } from './chart';
+import { quietSettled, type StarChart } from './chart';
 import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
 import type { SkyMotionData, SkySpot } from './motion';
@@ -28,6 +28,8 @@ const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
 const ungrouped = new Set(chart.ungrouped);
+/* Settled questions with no thread to an open one hide unless "Show settled" is on. */
+const quiet = new Set(quietSettled(chart));
 const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 /* Constellation lines, rings and names show only when clustered by constellation. */
 const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
@@ -85,7 +87,11 @@ const motionData: SkyMotionData | undefined = byConstellation && {
     {
       layout.threads.map((thread) => (
         <path
-          class={`al-thread al-thread-${thread.kind}`}
+          class:list={[
+            'al-thread',
+            `al-thread-${thread.kind}`,
+            (quiet.has(thread.from) || quiet.has(thread.to)) && 'al-quiet',
+          ]}
           data-from={thread.from}
           data-to={thread.to}
           data-kind={thread.kind}
@@ -121,7 +127,10 @@ const motionData: SkyMotionData | undefined = byConstellation && {
                 const q = linedAt.get(to)!;
                 return (
                   <line
-                    class="al-cline"
+                    class:list={[
+                      'al-cline',
+                      (quiet.has(from) || quiet.has(to)) && 'al-quiet',
+                    ]}
                     data-a={from}
                     data-b={to}
                     x1={p.x}
@@ -133,7 +142,15 @@ const motionData: SkyMotionData | undefined = byConstellation && {
               })}
               {c.stars.map((n) => {
                 const p = linedAt.get(n)!;
-                return <circle class="al-cring" data-n={n} cx={p.x} cy={p.y} r={p.r + 6} />;
+                return (
+                  <circle
+                    class:list={['al-cring', quiet.has(n) && 'al-quiet']}
+                    data-n={n}
+                    cx={p.x}
+                    cy={p.y}
+                    r={p.r + 6}
+                  />
+                );
               })}
               <text
                 class="al-cname"
@@ -174,6 +191,7 @@ const motionData: SkyMotionData | undefined = byConstellation && {
               `al-st-${star.status}`,
               q.status === 'open' ? 'al-is-open' : 'al-is-closed',
               star.roles.includes('central') && 'al-central',
+              quiet.has(star.number) && 'al-quiet',
             ]}
             data-n={star.number}
             data-c={star.constellation}

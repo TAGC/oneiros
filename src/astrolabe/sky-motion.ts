@@ -42,6 +42,14 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
   let frame = 0;
 
   const f = (v: number) => v.toFixed(1);
+  // A hidden label (a settled question kept off the map) has no box; some browsers throw.
+  const boxOf = (label: SVGTextElement) => {
+    try {
+      return label.getBBox();
+    } catch {
+      return { x: 0, y: 0 };
+    }
+  };
   const setLabel = (n: string, spot: SkySpot) => {
     const star = stars.get(n)!;
     star.label.setAttribute('text-anchor', spot[5]);
@@ -93,12 +101,12 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
       return;
     }
     // Each label keeps its place on screen as it takes its new attributes, then flies home.
-    const before = new Map([...stars].map(([n, s]) => [n, s.label.getBBox()]));
+    const before = new Map([...stars].map(([n, s]) => [n, boxOf(s.label)]));
     for (const [n, s] of Object.entries(target)) setLabel(n, s);
     const start = new Map<string, { x: number; y: number }>();
     for (const [n, s] of stars) {
       const was = before.get(n)!;
-      const now = s.label.getBBox();
+      const now = boxOf(s.label);
       const o = offset.get(n) ?? { x: 0, y: 0 };
       start.set(n, { x: was.x + o.x - now.x, y: was.y + o.y - now.y });
     }

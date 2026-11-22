@@ -55,6 +55,19 @@ function setUp(root: HTMLElement): void {
     if (button) showView(button.dataset.view!);
   });
 
+  /* Settled questions with no thread to an open one: hidden unless asked for. */
+  const settled = root.querySelector<HTMLButtonElement>('.al-settled');
+  if (settled) {
+    settled.hidden = false;
+    const showSettled = (all: boolean) => {
+      root.dataset.settled = all ? 'all' : 'linked';
+      settled.setAttribute('aria-pressed', String(all));
+      storage('astrolabe-settled', all ? 'all' : 'linked');
+    };
+    if (storage('astrolabe-settled') === 'all') showSettled(true);
+    settled.addEventListener('click', () => showSettled(root.dataset.settled !== 'all'));
+  }
+
   /* Constellations: clustering by area or by constellation, and the time and energy filter. */
   const cfilter = root.querySelector<HTMLElement>('.al-cfilter');
   const motionData = root.querySelector('.al-sky-motion')?.textContent;
