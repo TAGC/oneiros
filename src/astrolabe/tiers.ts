@@ -5,7 +5,8 @@
  */
 import type { Locale } from '../i18n/ui';
 import type { Area } from '../lib/questions';
-import type { ChartConstellation, Star, StarChart, Thread } from './chart';
+import type { Cluster } from '../lib/questions/clusters';
+import type { Star, StarChart, Thread } from './chart';
 import type { Box, Clustering } from './sky';
 import { starRadius } from './sky';
 import { textWidth, wrapText } from './text';
@@ -19,7 +20,7 @@ export interface TierColumn {
   width: number;
 }
 
-/** An area's row, or a constellation's; by constellation, the last row holds the rest. */
+/** An area's row or a constellation's, or the row of the questions in none. */
 export interface TierRow {
   area?: Area;
   constellation?: number;
@@ -27,6 +28,9 @@ export interface TierRow {
   finished?: boolean;
   /** A constellation's name, wrapped to the name column. */
   name?: { lines: string[]; lang: Locale };
+  /** Its cluster's questions, by number, and how many are open. */
+  stars: number[];
+  open: number;
   y: number;
   height: number;
 }
@@ -89,14 +93,18 @@ function path(a: TierStar, b: TierStar, aLabelEnd: number, kind: Thread['kind'])
   return `M${f(sx)},${f(a.y)}C${f(sx - bow)},${f(a.y)} ${f(ex + bow)},${f(b.y)} ${f(ex)},${f(b.y)}`;
 }
 
-/** A constellation's row: open ones first, finished ones last, below the questions in none. */
-function constellationRow(c: ChartConstellation, finished: boolean) {
-  const row: Omit<TierRow, 'y' | 'height'> = {
-    constellation: c.number,
-    name: { lines: wrapText(c.name, NAME_SIZE, CONSTELLATION_WIDTH - 28), lang: c.nameLang },
+/** A row for each cluster, in the order of the chart's cluster list. */
+function rowOf(c: Cluster): Omit<TierRow, 'y' | 'height'> {
+  const row: Omit<TierRow, 'y' | 'height'> = { stars: c.questions, open: c.open };
+  if (c.area) row.area = c.area;
+  if (c.constellation === undefined) return row;
+  row.constellation = c.constellation;
+  row.name = {
+    lines: wrapText(c.name!.text, NAME_SIZE, CONSTELLATION_WIDTH - 28),
+    lang: c.name!.lang,
   };
-  if (finished) row.finished = true;
-  return { row, stars: c.stars };
+  if (c.kind === 'finished') row.finished = true;
+  return row;
 }
 
 export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLayout {
@@ -115,23 +123,10 @@ export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLa
   const rows: TierRow[] = [];
   const stars: TierStar[] = [];
   let y = HEADER;
-  const groups: { row: Omit<TierRow, 'y' | 'height'>; stars: number[] }[] =
-    by === 'areas'
-      ? chart.areas.map((g) => ({ row: g.area ? { area: g.area } : {}, stars: g.stars }))
-      : [
-          ...chart.constellations.map((c) => constellationRow(c, false)),
-          {
-            row: {},
-            stars: chart.stars
-              .filter((s) => s.constellation === undefined && s.finishedIn === undefined)
-              .map((s) => s.number),
-          },
-          ...chart.finished.map((c) => constellationRow(c, true)),
-        ].filter((g) => g.stars.length);
-  for (const group of groups) {
+  for (const row of chart.clusters[by].map(rowOf)) {
     const cells = new Map<Tier, number>();
     const placed: TierStar[] = [];
-    for (const number of group.stars) {
+    for (const number of row.stars) {
       const star = byNumber.get(number)!;
       const tier = tiers.get(number)!;
       const column = columnOf.get(tier)!;
@@ -160,13 +155,13 @@ export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLa
         },
       });
     }
-    const named = (group.row.name?.lines.length ?? 1) * LINE + 38;
+    const named = (row.name?.lines.length ?? 1) * LINE + 38;
     const height = Math.max(
       54,
       named,
       ...[...cells.values()].map((h) => h - CELL_GAP + ROW_PAD * 2),
     );
-    rows.push({ ...group.row, y, height });
+    rows.push({ ...row, y, height });
     stars.push(...placed);
     y += height;
   }

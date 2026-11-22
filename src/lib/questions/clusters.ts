@@ -83,8 +83,10 @@ export function clusterList(
     ].filter((c) => c.total);
   }
 
+  const all = constellations?.all() ?? [];
+  const of = new Map(all.flatMap((c) => c.questions.map((q) => [q.number, c] as const)));
   const home = (q: Question): number | undefined => {
-    const c = constellations?.of(q.number);
+    const c = of.get(q.number);
     if (!c) return undefined;
     return !isFinished(c) || q.state === 'closed' ? c.number : undefined;
   };
@@ -97,7 +99,6 @@ export function clusterList(
       },
       listed.filter((q) => home(q) === c.number),
     );
-  const all = constellations?.all() ?? [];
   return [
     ...all.filter((c) => !isFinished(c)).map(toCluster),
     cluster(

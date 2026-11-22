@@ -236,9 +236,7 @@ describe('constellations', () => {
       [7, [1, 2]],
       [8, [4]],
     ]);
-    const of = (n: number) => c.stars.find((s) => s.number === n)!;
-    expect([of(1).finishedIn, of(4).finishedIn, of(3).finishedIn]).toEqual([7, 8, undefined]);
-    expect(of(3).constellation).toBeUndefined();
+    expect(c.stars.find((s) => s.number === 3)!.constellation).toBeUndefined();
     expect(c.ungrouped).toEqual([3]);
   });
 
@@ -249,26 +247,12 @@ describe('constellations', () => {
   });
 });
 
-describe('labels and areas', () => {
+describe('labels', () => {
   test("label each star with the locale's title, falling back to English", () => {
     const c = chart([question(1), question(2, { title: { en: 'Only English' } })], 'zh');
     expect(c.stars.map((s) => [s.label, s.labelLang])).toEqual([
       ['问题 1', 'zh'],
       ['Only English', 'en'],
-    ]);
-  });
-
-  test('group stars by area in the wiki order, with questions of no area last', () => {
-    const c = chart([
-      question(1, { area: 'World' }),
-      question(2, { area: undefined }),
-      question(3, { area: 'Beliefs' }),
-      question(4, { area: 'World' }),
-    ]);
-    expect(c.areas.map((a) => [a.area, a.stars])).toEqual([
-      ['Beliefs', [3]],
-      ['World', [1, 4]],
-      [undefined, [2]],
     ]);
   });
 });

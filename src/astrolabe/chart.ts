@@ -3,9 +3,7 @@
  * for one locale. Pure data; the layouts in `sky.ts` and `tiers.ts` place it.
  */
 import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
-import { AREAS } from '../lib/areas';
 import {
-  type Area,
   isDuplicate,
   type Place,
   type Question,
@@ -13,6 +11,7 @@ import {
   type Role,
   type Thread,
 } from '../lib/questions';
+import { type Cluster, type Clustering, clusterList } from '../lib/questions/clusters';
 import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
@@ -48,8 +47,6 @@ export interface Star {
   undermines: number[];
   /** The open constellation holding this question, by milestone number. */
   constellation?: number;
-  /** For a settled question, the finished constellation it was settled in. */
-  finishedIn?: number;
 }
 
 /** An open constellation, as the map draws it. */
@@ -72,12 +69,6 @@ export interface ChartConstellation {
 /** A line between two stars, as the question graph gives it. */
 export type { Thread };
 
-export interface AreaGroup {
-  /** Undefined for questions with no area label. */
-  area?: Area;
-  stars: number[];
-}
-
 export type StarCounts = Record<StarStatus | 'open', number>;
 
 export interface StarChart {
@@ -85,12 +76,12 @@ export interface StarChart {
   /** Every star, by number. */
   stars: Star[];
   threads: Thread[];
-  /** Areas with stars, in the wiki's order, then questions of no area. */
-  areas: AreaGroup[];
+  /** The stars gathered each way, from the questions module's cluster list. */
+  clusters: Record<Clustering, Cluster[]>;
   counts: StarCounts;
   /** Open constellations, by milestone number; empty without constellation data. */
   constellations: ChartConstellation[];
-  /** Finished constellations with settled questions on the map, by milestone number. */
+  /** Finished constellations with a cluster of settled questions, by milestone number. */
   finished: ChartConstellation[];
   /** Open questions on the map that no open constellation holds, by number. */
   ungrouped: number[];
@@ -151,19 +142,26 @@ export function chartQuestions(
     };
   });
 
+  const clusters: Record<Clustering, Cluster[]> = {
+    areas: clusterList(sorted, constellations, 'areas', locale),
+    constellations: clusterList(sorted, constellations, 'constellations', locale),
+  };
+  const clusterOf = new Map(
+    clusters.constellations.flatMap((c) =>
+      c.constellation === undefined ? [] : [[c.constellation, c] as const],
+    ),
+  );
   const toGroup = (c: Constellation): ChartConstellation => {
+    const held = clusterOf.get(c.number);
     const name = inLocale(c.name, locale)!;
     const group: ChartConstellation = {
       number: c.number,
       url: c.url,
       name: name.text,
       nameLang: name.lang,
-      settled: c.questions.filter((q) => q.state === 'closed').length,
-      total: c.questions.length,
-      stars: c.questions
-        .map((q) => q.number)
-        .filter((n) => inChart.has(n))
-        .sort((a, b) => a - b),
+      settled: held ? held.total - held.open : 0,
+      total: held?.total ?? 0,
+      stars: held?.questions ?? [],
     };
     const reasoning = inLocale(c.reasoning, locale);
     if (reasoning) group.reasoning = reasoning;
@@ -172,38 +170,33 @@ export function chartQuestions(
     return group;
   };
   const groups = (constellations?.open() ?? []).map(toGroup);
-  for (const group of groups) {
-    for (const n of group.stars) {
-      const star = stars.find((s) => s.number === n)!;
-      star.constellation = group.number;
-    }
-  }
-  // A settled question keeps its finished constellation; a reopened one there is ungrouped.
   const finished = (constellations?.finished() ?? [])
-    .map(toGroup)
-    .map((group) => ({
-      ...group,
-      stars: group.stars.filter((n) => byNumber.get(n)!.status !== 'open'),
-    }))
-    .filter((group) => group.stars.length);
-  for (const group of finished) {
-    for (const n of group.stars) stars.find((s) => s.number === n)!.finishedIn = group.number;
+    .filter((c) => clusterOf.has(c.number))
+    .map(toGroup);
+  for (const star of stars) {
+    const held = clusters.constellations.find((c) => c.questions.includes(star.number));
+    if (held?.kind === 'constellation') star.constellation = held.constellation;
   }
-  const ungrouped = (constellations?.ungrouped() ?? [])
-    .map((q) => q.number)
-    .filter((n) => inChart.has(n))
-    .sort((a, b) => a - b);
+  const none = clusters.constellations.find((c) => c.kind === 'none');
+  const ungrouped = constellations
+    ? (none?.questions ?? []).filter((n) => byNumber.get(n)!.state === 'open')
+    : [];
 
-  const areas: AreaGroup[] = [...AREAS, undefined]
-    .map((area) => ({ area, stars: sorted.filter((q) => q.area === area).map((q) => q.number) }))
-    .filter((g) => g.stars.length)
-    .map((g) => (g.area ? g : { stars: g.stars }));
   const counts = Object.fromEntries(['open', ...STAR_STATUSES].map((k) => [k, 0])) as StarCounts;
   for (const s of stars) {
     counts[s.status]++;
     if (s.question.status === 'open') counts.open++;
   }
-  return { locale, stars, threads, areas, counts, constellations: groups, finished, ungrouped };
+  return {
+    locale,
+    stars,
+    threads,
+    clusters,
+    counts,
+    constellations: groups,
+    finished,
+    ungrouped,
+  };
 }
 
 /**

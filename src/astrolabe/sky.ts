@@ -5,13 +5,13 @@
  */
 import { useTranslations } from '../i18n/ui';
 import type { Area } from '../lib/questions';
+import type { Clustering } from '../lib/questions/clusters';
 import type { Star, StarChart, Thread } from './chart';
 import { curve, threadBend } from './curve';
 import { constellationFacts } from './facts';
 import { wrapText, textWidth } from './text';
 
-/** What gathers the stars: their areas, or their constellations. */
-export type Clustering = 'areas' | 'constellations';
+export type { Clustering };
 
 export interface Box {
   x1: number;
@@ -425,9 +425,16 @@ function placeConstellations(
   ];
   const t = useTranslations(chart.locale);
   const out: SkyConstellation[] = [];
+  const groupOf = new Map(
+    [...chart.constellations, ...chart.finished].map((g) => [g.number, g] as const),
+  );
   const finished = new Set(chart.finished.map((c) => c.number));
-  const named =
-    by === 'constellations' ? [...chart.constellations, ...chart.finished] : chart.constellations;
+  // Clustered by area, only the open constellations are named.
+  const named = chart.clusters.constellations.flatMap((cluster) =>
+    cluster.kind === 'constellation' || (cluster.kind === 'finished' && by === 'constellations')
+      ? [groupOf.get(cluster.constellation!)!]
+      : [],
+  );
   for (const c of named) {
     const points = c.stars.flatMap((n) => at.get(n) ?? []);
     if (!points.length) continue;
@@ -485,17 +492,14 @@ function placeConstellations(
   return out;
 }
 
-/** The stars of each cluster: areas in the chart's order, or open constellations then the rest. */
+/** The stars of each cluster, in the order of the chart's cluster list. */
 function groupsFor(chart: StarChart, by: Clustering): Group[] {
-  if (by === 'areas') return chart.areas;
-  const groups: Group[] = [...chart.constellations, ...chart.finished]
-    .filter((c) => c.stars.length)
-    .map((c) => ({ constellation: c.number, stars: c.stars }));
-  const rest = chart.stars
-    .filter((s) => s.constellation === undefined && s.finishedIn === undefined)
-    .map((s) => s.number);
-  if (rest.length) groups.push({ stars: rest });
-  return groups;
+  return chart.clusters[by].map((c) => {
+    const group: Group = { stars: c.questions };
+    if (c.area) group.area = c.area;
+    if (c.constellation !== undefined) group.constellation = c.constellation;
+    return group;
+  });
 }
 
 /** One clustering of the sky, before it is moved onto the shared canvas. */

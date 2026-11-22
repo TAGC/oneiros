@@ -20,20 +20,6 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
-const rowStars = (row: TiersLayout['rows'][number]) =>
-  layout.stars.filter((s) => {
-    const star = byNumber.get(s.number)!;
-    if (layout.by === 'areas') return star.question.area === row.area;
-    if (row.finished) return star.finishedIn === row.constellation;
-    return star.constellation === row.constellation && star.finishedIn === undefined;
-  });
-const countOf = (row: TiersLayout['rows'][number]) => {
-  const stars = rowStars(row);
-  return {
-    open: stars.filter((s) => byNumber.get(s.number)!.question.status === 'open').length,
-    all: stars.length,
-  };
-};
 const rowTint = (row: TiersLayout['rows'][number]) =>
   layout.by === 'areas'
     ? areaTint(row.area)
@@ -80,10 +66,9 @@ const quiet = new Set(quietSettled(chart));
   <g class="al-rows" aria-hidden="true">
     {
       layout.rows.map((row) => {
-        const count = countOf(row);
         // A finished constellation's row is dimmed and has no progress line; a row whose
         // stars are all hidden settled questions hides its name too.
-        const allQuiet = rowStars(row).every((s) => quiet.has(s.number));
+        const allQuiet = row.stars.every((n) => quiet.has(n));
         const rowClass = [row.finished && 'al-row-finished', allQuiet && 'al-quiet'];
         const lines = row.name?.lines ?? [
           layout.by === 'areas' ? areaName(row.area) : a.noConstellation,
@@ -115,7 +100,7 @@ const quiet = new Set(quietSettled(chart));
                 x="14"
                 y={row.y + 26 + lines.length * LINE}
               >
-                {a.areaOpen(count.open, count.all)}
+                {a.areaOpen(row.open, row.stars.length)}
               </text>
             )}
           </>

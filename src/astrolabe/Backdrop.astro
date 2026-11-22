@@ -71,7 +71,7 @@ const wisps = layout.stars.flatMap((s) => {
 
 <defs>
   {
-    chart.areas.map((g) => (
+    chart.clusters.areas.map((g) => (
       <radialGradient id={`al-neb-${areaKey(g.area)}`} style={`--tint:${areaTint(g.area)}`}>
         <stop offset="0" class="al-neb-0" />
         <stop offset="0.5" class="al-neb-1" />

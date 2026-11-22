@@ -29,6 +29,16 @@ function tiers(questions: Question[]) {
   return layoutTiers(chartQuestions(questions, questionGraph(questions), 'en'));
 }
 
+/** Every star's label sits inside the row that lists it. */
+function insideRows(layout: ReturnType<typeof layoutTiers>) {
+  for (const row of layout.rows) {
+    for (const s of layout.stars.filter((x) => row.stars.includes(x.number))) {
+      expect(s.label.box.y1).toBeGreaterThanOrEqual(row.y);
+      expect(s.label.box.y2).toBeLessThanOrEqual(row.y + row.height);
+    }
+  }
+}
+
 const tierOf = (layout: ReturnType<typeof tiers>) =>
   Object.fromEntries(layout.stars.map((s) => [s.number, s.tier]));
 
@@ -52,23 +62,20 @@ describe('the tiers layout', () => {
     expect(layout.columns.map((c) => c.tier)).toEqual([0, 1, 2]);
   });
 
-  test('gives each area a row, in the chart order, and keeps stars inside their row', () => {
+  test("gives each of the chart's area clusters a row, in order, and keeps stars inside their row", () => {
     const areas: (Area | undefined)[] = ['World', 'Beliefs', undefined, 'World'];
-    const layout = tiers(
-      areas.map((area, i) => {
-        const q = question(i + 1);
-        if (area) q.area = area;
-        else delete q.area;
-        return q;
-      }),
+    const qs = areas.map((area, i) => {
+      const q = question(i + 1);
+      if (area) q.area = area;
+      else delete q.area;
+      return q;
+    });
+    const chart = chartQuestions(qs, questionGraph(qs), 'en');
+    const layout = layoutTiers(chart);
+    expect(layout.rows.map((r) => [r.area, r.stars])).toEqual(
+      chart.clusters.areas.map((c) => [c.area, c.questions]),
     );
-    expect(layout.rows.map((r) => r.area)).toEqual(['Beliefs', 'World', undefined]);
-    const rowOf = { 1: 1, 2: 0, 3: 2, 4: 1 } as Record<number, number>;
-    for (const s of layout.stars) {
-      const row = layout.rows[rowOf[s.number]];
-      expect(s.label.box.y1).toBeGreaterThanOrEqual(row.y);
-      expect(s.label.box.y2).toBeLessThanOrEqual(row.y + row.height);
-    }
+    insideRows(layout);
   });
 
   test('stacks stars that share a cell without overlap and keeps them inside their column', () => {
@@ -125,16 +132,17 @@ function byConstellation(questions: Question[], members: Record<number, number[]
 }
 
 describe('the tiers layout by constellation', () => {
-  test('gives each constellation a row, then one row for the questions in none', () => {
+  test("gives each of the chart's constellation clusters a row, in order, finished ones marked", () => {
     const qs = [1, 2, 3, 4, 5].map((n) => question(n));
-    const layout = byConstellation(qs, { 7: [4, 2], 3: [5] });
-    expect(layout.rows.map((r) => r.constellation)).toEqual([3, 7, undefined]);
-    const rowOf = { 1: 2, 2: 1, 3: 2, 4: 1, 5: 0 } as Record<number, number>;
-    for (const s of layout.stars) {
-      const row = layout.rows[rowOf[s.number]];
-      expect(s.label.box.y1).toBeGreaterThanOrEqual(row.y);
-      expect(s.label.box.y2).toBeLessThanOrEqual(row.y + row.height);
-    }
+    qs[5] = question(6, { status: 'decided' });
+    const layout = byConstellation(qs, { 7: [4, 2], 3: [5], 8: [6] });
+    expect(layout.rows.map((r) => [r.constellation, r.finished ?? false, r.stars])).toEqual([
+      [3, false, [5]],
+      [7, false, [2, 4]],
+      [undefined, false, [1, 3]],
+      [8, true, [6]],
+    ]);
+    insideRows(layout);
   });
 
   test('wraps a long constellation name inside the name column and its row', () => {
@@ -143,16 +151,6 @@ describe('the tiers layout by constellation', () => {
     expect(row.name!.lines.length).toBeGreaterThan(1);
     expect(row.height).toBeGreaterThanOrEqual(row.name!.lines.length * 18 + 18);
     expect(layout.columns[0].x).toBe(layout.areaWidth);
-  });
-
-  test('puts finished constellations last, below the questions in none', () => {
-    const qs = [question(1), question(2, { status: 'decided' }), question(3)];
-    const layout = byConstellation(qs, { 4: [1], 5: [2] });
-    expect(layout.rows.map((r) => [r.constellation, r.finished ?? false])).toEqual([
-      [4, false],
-      [undefined, false],
-      [5, true],
-    ]);
   });
 
   test('keeps the same tiers as by area', () => {

@@ -136,18 +136,19 @@ describe('the sky layout', () => {
   test('joins each constellation with lines and names it clear of the star labels', () => {
     const qs = questions();
     const members = [qs[0], qs[6], qs[11], qs[12]];
+    const open = [
+      {
+        number: 3,
+        url: 'https://github.com/TAGC/oneiros/milestone/3',
+        state: 'open' as const,
+        name: { en: 'A fairly long constellation name' },
+        reasoning: {},
+        questions: members,
+      },
+    ];
     const fake = {
-      all: () => [],
-      open: () => [
-        {
-          number: 3,
-          url: 'https://github.com/TAGC/oneiros/milestone/3',
-          state: 'open' as const,
-          name: { en: 'A fairly long constellation name' },
-          reasoning: {},
-          questions: members,
-        },
-      ],
+      all: () => open,
+      open: () => open,
       of: () => undefined,
       finished: () => [],
       toClose: () => [],
@@ -286,9 +287,8 @@ describe('the sky clustered by constellation', () => {
     }
   });
 
-  test('keeps settled stars with their finished constellation, named but without facts', () => {
+  test('names a finished constellation, without facts', () => {
     const layout = skies('en', { ...MEMBERS, 9: [21] }).constellations!;
-    expect(layout.clusters.map((c) => c.constellation)).toEqual([1, 2, 9, undefined]);
     const named = layout.constellations.find((c) => c.number === 9)!;
     expect(named.finished).toBe(true);
     expect(layout.constellations.filter((c) => c.finished).map((c) => c.number)).toEqual([9]);
