@@ -66,4 +66,4 @@ See the open question on [[Renown#issue-95|Renown]].
 
 See the open question on [[Echo#issue-44|Echo]].
 
-> [!ISSUE 34]
+See the open question on [[Coherence status#issue-35|Coherence status]].
