@@ -35,6 +35,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
+    "@commitlint/cli": "^21",
+    "@commitlint/config-conventional": "^21",
     "@types/mdast": "^4.0.4",
     "@types/node": "^26.6.6",
     "cspell": "^10.5.2",
