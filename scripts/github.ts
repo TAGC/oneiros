@@ -22,7 +22,7 @@ export type Close = { reason: 'completed' | 'not_planned' } | { duplicateOf: num
 export interface GitHub {
   /** Every question issue (labelled `kind:open` or `kind:conflict`), open and closed. */
   questions(): PulledQuestion[];
-  /** One question issue; throws when the issue is not a question issue. */
+  /** One question issue; throws `NotAQuestion` when the issue is not a question issue. */
   question(number: number): PulledQuestion;
   /** Every milestone, open and closed. */
   milestones(): GithubMilestone[];
@@ -37,6 +37,13 @@ export interface GitHub {
   createMilestone(text: MilestoneText): number;
   editMilestone(milestone: number, text: Partial<MilestoneText>): void;
   closeMilestone(milestone: number): void;
+}
+
+/** Thrown by `question()` for a number that is no question issue. */
+export class NotAQuestion extends Error {
+  constructor(number: number) {
+    super(`#${number} is not a question issue`);
+  }
 }
 
 export const KIND_LABELS = ['kind:open', 'kind:conflict'];
@@ -208,7 +215,7 @@ export function liveGitHub(): GitHub {
       // A pull request matches no field of the Issue fragment, so it comes back empty.
       const question = issue?.number === number ? pulled(issue as GraphIssue) : undefined;
       if (!question || !isQuestionIssue(question)) {
-        throw new Error(`#${number} is not a question issue`);
+        throw new NotAQuestion(number);
       }
       return question;
     },

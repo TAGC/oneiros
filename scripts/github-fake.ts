@@ -5,7 +5,7 @@
  */
 import { REPO } from '../src/lib/site';
 import type { GithubMilestone } from '../src/lib/questions/constellations';
-import { type GitHub, isQuestionIssue, type PulledQuestion } from './github';
+import { type GitHub, isQuestionIssue, NotAQuestion, type PulledQuestion } from './github';
 
 export interface FakeIssue {
   number: number;
@@ -88,9 +88,8 @@ export function fakeGitHub(seed: {
         .map(pulled)
         .filter(isQuestionIssue),
     question(n) {
-      const found = pulled(n);
-      if (!isQuestionIssue(found)) throw new Error(`#${n} is not a question issue`);
-      return found;
+      if (!issues.has(n) || !isQuestionIssue(pulled(n))) throw new NotAQuestion(n);
+      return pulled(n);
     },
     milestones: () =>
       [...milestones.values()]

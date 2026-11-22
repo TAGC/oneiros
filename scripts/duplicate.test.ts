@@ -122,6 +122,23 @@ describe('the duplicate command, on the pages', () => {
     ]);
   });
 
+  test('a number that is not a question issue is refused', () => {
+    const github = fakeGitHub({
+      issues: [question(1, 'burning'), { number: 9, title: 'A bug', labels: ['bug'] }],
+    });
+    pull(github, cache);
+    for (const [keep, drop] of [
+      [1, 9],
+      [9, 1],
+      [1, 40],
+    ]) {
+      out = [];
+      expect(duplicatePages(keep, drop, { live: true, cache, root, log })).toBe(false);
+      const n = keep === 1 ? drop : keep;
+      expect(out).toEqual([`error: #${n} is not in the question cache; run bun run pull`]);
+    }
+  });
+
   test('a kept question that is closed is refused before any change', () => {
     seed({ state: 'closed', state_reason: 'completed' });
     expect(duplicatePages(1, 2, { live: true, cache, root, log })).toBe(false);
@@ -202,6 +219,29 @@ describe('the duplicate command, closing on GitHub', () => {
     });
     expect(closeDuplicate(github, 1, 2, { live: true, cache, root, log })).toBe(false);
     expect(out).toEqual(['error: #2 is already closed as a duplicate of #3']);
+    expect(github.writes).toEqual([]);
+  });
+
+  test('a number that is not a question issue is refused', () => {
+    merged();
+    const github = fakeGitHub({
+      issues: [
+        question(1, 'burning'),
+        question(2, 'ablaze'),
+        { number: 9, title: 'A bug', labels: ['bug'] },
+        { number: 10, title: 'A pull request', labels: ['kind:open'], pull_request: true },
+      ],
+    });
+    for (const [keep, drop, n] of [
+      [1, 9, 9],
+      [9, 2, 9],
+      [1, 10, 10],
+      [40, 2, 40],
+    ]) {
+      out = [];
+      expect(closeDuplicate(github, keep, drop, { live: true, cache, root, log })).toBe(false);
+      expect(out).toEqual([`error: #${n} is not a question issue`]);
+    }
     expect(github.writes).toEqual([]);
   });
 

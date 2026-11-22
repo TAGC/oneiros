@@ -17,7 +17,7 @@ import { loadQuestions, type Question, questionFrom } from '../src/lib/questions
 import { readMarkers } from '../src/lib/questions/markers';
 import { WIKI_DIRS } from '../src/lib/site';
 import { issueId } from '../src/lib/wiki';
-import { type GitHub, liveGitHub } from './github';
+import { type GitHub, liveGitHub, NotAQuestion, type PulledQuestion } from './github';
 import { CACHE, pull } from './pull';
 import type { RunOptions } from './question-links';
 
@@ -194,8 +194,15 @@ export function closeDuplicate(
     }
     return false;
   }
-  const kept = questionFrom(github.question(keep));
-  const droppedIssue = github.question(drop);
+  let keptIssue: PulledQuestion, droppedIssue: PulledQuestion;
+  try {
+    keptIssue = github.question(keep);
+    droppedIssue = github.question(drop);
+  } catch (error) {
+    if (error instanceof NotAQuestion) return fail(error.message);
+    throw error;
+  }
+  const kept = questionFrom(keptIssue);
   const dropped = questionFrom(droppedIssue);
   if (kept.status === 'duplicate') {
     const canonical =
