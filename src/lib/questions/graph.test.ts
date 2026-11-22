@@ -100,3 +100,37 @@ describe('independent', () => {
     expect(graph.independent).toEqual([1]);
   });
 });
+
+describe('central', () => {
+  const fixture = () =>
+    graphOf([
+      issue(1),
+      issue(2, { blockedBy: [1] }),
+      issue(3, { blockedBy: [1] }),
+      issue(4, { blockedBy: [1] }),
+      issue(5),
+      issue(6, { blockedBy: [5] }),
+      issue(7, { blockedBy: [5] }),
+      issue(8, { state: 'decided', blockedBy: [5] }),
+      issue(9, { state: 'decided' }),
+      issue(10, { blockedBy: [9] }),
+      issue(11, { blockedBy: [9] }),
+      issue(12, { blockedBy: [9] }),
+      issue(13, { blockedBy: [1] }),
+      issue(14, { blockedBy: [13] }),
+      issue(15, { blockedBy: [13] }),
+      issue(16, { blockedBy: [13] }),
+    ]);
+
+  test('holds open questions that directly block at least three open questions', () => {
+    expect(fixture().central).toEqual([1, 13]);
+  });
+
+  test('lists the open questions each question directly blocks', () => {
+    const { dependents } = fixture();
+    expect(dependents[1]).toEqual([2, 3, 4, 13]);
+    expect(dependents[5]).toEqual([6, 7]);
+    expect(dependents[9]).toEqual([10, 11, 12]);
+    expect(dependents[16]).toEqual([]);
+  });
+});

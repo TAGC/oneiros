@@ -367,4 +367,4 @@ export function getQuestions(): Questions {
   return cached.questions;
 }
 
-export { type QuestionGraph, questionGraph } from './graph';
+export { CENTRAL_MIN_DEPENDENTS, type QuestionGraph, questionGraph } from './graph';
