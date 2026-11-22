@@ -148,16 +148,16 @@ Five pillars hold it together:
   statusStagesLead: 'The five stages, from least to most settled:',
   /** The text before and after the link to the belief stages. */
   statusNote: [
-    'Status reuses the names of the ',
-    ', but it is about the wiki, not the game. It is not a game concept and has no Glossary term.',
+    'Status reuses the names of the four ',
+    ' and of the Musing state, but it is about the wiki, not the game. It is not a game concept and has no Glossary term.',
   ] as readonly [string, string],
   statusBeliefStages: 'belief stages',
   /** What each stage means for a page, keyed by the English stage name. */
   statusMeanings: {
-    Hearsay: 'mentioned only, nothing agreed.',
-    Notion: 'sketched, but the core is still open or in conflict.',
+    Notion: 'mentioned only, nothing agreed.',
+    Musing: 'sketched, but the core is still open or in conflict.',
     Tenet: 'core agreed, details still open.',
-    Creed: 'agreed and audited, nothing open.',
+    Certainty: 'agreed and audited, nothing open.',
     Dogma: 'locked by the designer; it will not change.',
   } as Record<string, string>,
   statusRule:
@@ -246,10 +246,10 @@ const zh: UI = {
   area: '领域',
   status: '状态',
   statusNames: {
-    Hearsay: '传闻',
     Notion: '念头',
+    Musing: '沉吟',
     Tenet: '信条',
-    Creed: '教义',
+    Certainty: '确信',
     Dogma: '教条',
   },
   areaNames: {
@@ -318,15 +318,15 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     '状态表示页面上的想法有多确定。页面有信息框时，状态显示在信息框中；没有信息框时，显示在标题旁。只有被赋予状态的页面才会显示它。',
   statusStagesLead: '五个阶段，从最不确定到最确定：',
   statusNote: [
-    '状态沿用了',
-    '的名称，但它说的是维基，而不是游戏。它不是游戏概念，也没有术语表词条。',
+    '状态沿用了四个',
+    '以及沉吟这一状态的名称，但它说的是维基，而不是游戏。它不是游戏概念，也没有术语表词条。',
   ],
   statusBeliefStages: '信念阶段',
   statusMeanings: {
-    Hearsay: '只是提及，尚无任何约定。',
-    Notion: '已有雏形，但核心仍未确定或存在冲突。',
+    Notion: '只是提及，尚无任何约定。',
+    Musing: '已有雏形，但核心仍未确定或存在冲突。',
     Tenet: '核心已约定，细节仍未确定。',
-    Creed: '已约定并经过审核，没有未决问题。',
+    Certainty: '已约定并经过审核，没有未决问题。',
     Dogma: '由设计者锁定，不会再变。',
   },
   statusRule: '只有设计者明确同意，页面才会高于信条。目前定下来的东西还很少。',
