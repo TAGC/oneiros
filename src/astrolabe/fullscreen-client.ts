@@ -1,14 +1,11 @@
 /**
  * The full screen button on the Astrolabe's map. The stage (the controls above the map and the
  * map's frame) goes full screen by the Fullscreen API, or fills the viewport where there is
- * none. The same button or Escape leaves it.
+ * none. The same button or Escape leaves it. Whether the stage is full is part of the state;
+ * Escape reaches it through the state, which closes an open panel first.
  */
 import { fullscreenWay } from './fullscreen';
-
-const fullRoot = document.querySelector<HTMLElement>('.astrolabe');
-const fullStage = fullRoot?.querySelector<HTMLElement>('.al-stage');
-const fullButton = fullStage?.querySelector<HTMLButtonElement>('.al-fullscreen');
-if (fullRoot && fullStage && fullButton) setUpFullscreen(fullRoot, fullStage, fullButton);
+import type { Store } from './state-client';
 
 interface WebkitDocument {
   webkitFullscreenEnabled?: boolean;
@@ -16,7 +13,10 @@ interface WebkitDocument {
   webkitExitFullscreen?: () => void;
 }
 
-function setUpFullscreen(root: HTMLElement, stage: HTMLElement, button: HTMLButtonElement) {
+export function setUpFullscreen(root: HTMLElement, store: Store): void {
+  const stage = root.querySelector<HTMLElement>('.al-stage');
+  const button = stage?.querySelector<HTMLButtonElement>('.al-fullscreen');
+  if (!stage || !button) return;
   const doc = document as Document & WebkitDocument;
   const el = stage as HTMLElement & { webkitRequestFullscreen?: () => void };
   const way = fullscreenWay(el, doc);
@@ -32,6 +32,7 @@ function setUpFullscreen(root: HTMLElement, stage: HTMLElement, button: HTMLButt
     const label = full ? button.dataset.exit! : button.dataset.enter!;
     button.setAttribute('aria-label', label);
     button.title = label;
+    store.dispatch({ type: 'fullScreen', on: full });
   };
   const isFull = () => stage.classList.contains('al-full');
   const overlay = (on: boolean) => {
@@ -76,15 +77,8 @@ function setUpFullscreen(root: HTMLElement, stage: HTMLElement, button: HTMLButt
   document.addEventListener('webkitfullscreenchange', changed);
 
   button.addEventListener('click', () => (isFull() ? exit() : enter()));
-  // The browser leaves its own full screen on Escape; the overlay leaves it here, but only
-  // once no panel is open, since Escape closes an open panel first.
-  document.addEventListener(
-    'keydown',
-    (e) => {
-      if (e.key !== 'Escape' || !overlaid) return;
-      if (root.querySelector('.al-open-panel')) return;
-      overlay(false);
-    },
-    { capture: true },
-  );
+  // Leaving by the state (Escape once no panel is open).
+  store.subscribe(({ state }) => {
+    if (!state.fullScreen && isFull()) exit();
+  });
 }
