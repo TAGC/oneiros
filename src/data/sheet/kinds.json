@@ -58,7 +58,7 @@
      "Blossoms, fruits, multiplies",
      "Droops, grows slowly, weeps sap",
      "Grows strong and upright, holds against wind",
-     "Curls closed, grows stunted",
+     "Trembles, curls closed, grows stunted",
      "Lifts and reaches towards something",
      "Wilts, drops, goes dormant",
      "Spreads and twines around what is near",
@@ -117,7 +117,7 @@
   {
    "type": "notes",
    "items": [
-    "Default reactions at tier 1. Every emotion in a composition pushes at once: the strongest gives the primary action, the others act on free degrees of freedom or colour how it is done. Individual things can override a cell with their own reaction."
+    "Default reactions at intensity 1. Every emotion in a composition pushes at once: the strongest gives the primary action, the others act on free degrees of freedom or colour how it is done. Individual things can override a cell with their own reaction."
    ]
   }
  ]
