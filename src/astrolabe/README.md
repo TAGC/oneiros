@@ -91,7 +91,7 @@ Each constellation is a GitHub milestone on this repo. Its title is `✦ ` follo
 - An issue's milestone is its constellation. Closed questions stay in it and count as settled.
 - A constellation is **finished** when its milestone is closed or every question in it is closed (`isFinished` in `src/lib/questions/constellations.ts`; agreed by the designer on 22 Nov 2026). It stops showing as an open constellation at once: no Dial mark, no card in the list, no open cluster or row. Clustered by constellation, a settled question in a finished constellation that shows at all (linked to an open question, or with Show settled on) sits in a cluster or row for it: drawn faint, its name dimmed, with no size, energy or progress line, and outside the time and energy filter. Finished rows sit last in the tiers, below "In no constellation". A reopened question in a finished constellation is ungrouped.
 
-The Astrolabe reads constellations only through `src/lib/questions/constellations.ts` (`getConstellations()`). The repo README's "Constellations" section is the full reference.
+The Astrolabe reads constellations only through `src/lib/questions/constellations.ts` (`getConstellations()`). The full reference is `docs/constellations.md`.
 
 ## How it is built
 

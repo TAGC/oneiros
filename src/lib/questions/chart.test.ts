@@ -104,7 +104,7 @@ describe('milestone descriptions', () => {
     expect(constellationProblems(constellations)).toEqual([]);
   });
 
-  test('follow the README format', () => {
+  test('follow the docs format', () => {
     expect(renderDescription(planned({ size: 'medium', energy: 'high' }))).toBe(
       `| Property | Value |
 |---|---|

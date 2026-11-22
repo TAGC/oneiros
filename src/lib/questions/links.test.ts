@@ -93,7 +93,7 @@ describe('editRow', () => {
     );
   });
 
-  test('inserts a missing row in the README order and leaves the rest alone', () => {
+  test('inserts a missing row in the docs order and leaves the rest alone', () => {
     const before = body(PAGE, RAISED, '| Undermined by | #208 |');
     expect(editRow(before, 'Related', { add: [139] })).toBe(
       body(PAGE, RAISED, '| Related | #139 |', '| Undermined by | #208 |'),
