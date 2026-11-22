@@ -1,7 +1,7 @@
 ---
 /** The key: what each glyph, line and glow means. */
 import { type Locale, useTranslations } from '../i18n/ui';
-import { CENTRAL_MIN_DEPENDENTS } from '../lib/questions';
+import { CENTRAL_MIN_DEPENDENTS, THREAD_KINDS } from '../lib/questions';
 import { STAR_STATUSES, type StarRole } from './chart';
 import Glyph from './Glyph.astro';
 
@@ -12,7 +12,6 @@ interface Props {
 const { locale } = Astro.props;
 const a = useTranslations(locale).astrolabe;
 const roles: StarRole[] = ['central', 'peripheral', 'independent'];
-const threads = ['open', 'settled', 'undermines'] as const;
 ---
 
 <details class="al-key" open>
@@ -52,7 +51,7 @@ const threads = ['open', 'settled', 'undermines'] as const;
         ))
       }
       {
-        threads.map((kind) => (
+        THREAD_KINDS.map((kind) => (
           <li>
             <svg class="al-key-mark" viewBox="0 -8 40 16" aria-hidden="true">
               <path

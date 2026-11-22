@@ -422,4 +422,7 @@ export {
   questionGraph,
   ROLES,
   type Role,
+  THREAD_KINDS,
+  type Thread,
+  type ThreadKind,
 } from './graph';

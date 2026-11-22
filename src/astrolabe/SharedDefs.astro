@@ -3,6 +3,7 @@
  * Gradients and arrowheads both views use. They live in their own SVG, which is never
  * hidden, because a hidden view's definitions stop rendering in the other view.
  */
+import { THREAD_KINDS } from '../lib/questions';
 ---
 
 <svg class="al-defs" width="0" height="0" aria-hidden="true" focusable="false">
@@ -16,7 +17,7 @@
       <stop offset="1" class="al-halo-c1"></stop>
     </radialGradient>
     {
-      (['open', 'settled', 'undermines'] as const).map((kind) => (
+      THREAD_KINDS.map((kind) => (
         <marker
           id={`al-arrow-${kind}`}
           viewBox="0 0 8 8"

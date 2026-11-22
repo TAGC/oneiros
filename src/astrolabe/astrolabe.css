@@ -186,7 +186,7 @@
   stroke-width: 1.3;
   stroke-linecap: round;
 }
-.al-thread-open {
+.al-thread-unsettled {
   stroke: color-mix(in srgb, var(--open) 75%, transparent);
 }
 .al-thread-settled {
@@ -199,7 +199,7 @@
   stroke-width: 1.2;
   stroke-dasharray: 0.5 3.5;
 }
-.al-arrow-open {
+.al-arrow-unsettled {
   fill: var(--open);
 }
 .al-arrow-settled {

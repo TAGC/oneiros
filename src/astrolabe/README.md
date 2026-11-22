@@ -17,8 +17,8 @@ It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-ma
 | Larger star | Central: blocks at least `CENTRAL_MIN_DEPENDENTS` open questions |
 | Small moon | Peripheral: on the frontier, and no open question waits on it |
 | Dotted orbit | Independent: no links at all, Related rows included (always peripheral too, so it shows the orbit only) |
-| Gold thread with an arrow | Blocked by an open question |
-| Faint dashed thread | Blocked by a closed question |
+| Gold thread with an arrow | Blocked by a question that is not settled: open or undermined |
+| Faint dashed thread | Blocked by a settled question: decided or ruled out |
 | Dotted violet thread | Broke the premise of a decision |
 | Thin lines between ringed stars | One constellation |
 | Small warning triangle | An open question in no constellation |

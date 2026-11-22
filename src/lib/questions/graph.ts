@@ -19,6 +19,22 @@ export type Role = 'central' | 'peripheral' | 'independent';
 
 export const ROLES: Role[] = ['central', 'peripheral', 'independent'];
 
+/**
+ * A blocked-by link runs from blocker to blocked: `settled` when the blocker is decided or
+ * ruled out, else `unsettled`. An `undermines` link runs from a question to the decision whose
+ * premise it broke.
+ */
+export type ThreadKind = 'unsettled' | 'settled' | 'undermines';
+
+export const THREAD_KINDS: ThreadKind[] = ['unsettled', 'settled', 'undermines'];
+
+/** A link between two questions in the graph. */
+export interface Thread {
+  from: number;
+  to: number;
+  kind: ThreadKind;
+}
+
 /** One question's facts. */
 export interface GraphQuestion {
   number: number;
@@ -41,6 +57,8 @@ export interface GraphQuestion {
 export interface QuestionGraph {
   /** Every question but duplicates, by number. */
   questions: Record<number, GraphQuestion>;
+  /** Every link between two questions in the graph, by `from` and then `to`. */
+  threads: Thread[];
   /** Each blocked-by cycle's questions, sorted, in order of their first; a check failure. */
   cycles: number[][];
 }
@@ -147,5 +165,17 @@ export function questionGraph(all: Question[]): QuestionGraph {
       roles: ROLES.filter((r) => has[r]),
     };
   }
-  return { questions: records, cycles };
+  const threads: Thread[] = [];
+  for (const q of questions) {
+    for (const b of blockersOf(q)) {
+      if (byNumber.has(b)) {
+        threads.push({ from: b, to: q.number, kind: settled(b) ? 'settled' : 'unsettled' });
+      }
+    }
+    for (const u of new Set(q.underminedBy)) {
+      if (byNumber.has(u)) threads.push({ from: u, to: q.number, kind: 'undermines' });
+    }
+  }
+  threads.sort((a, b) => a.from - b.from || a.to - b.to);
+  return { questions: records, threads, cycles };
 }

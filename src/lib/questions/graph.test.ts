@@ -158,6 +158,27 @@ describe('steps out', () => {
   });
 });
 
+describe('threads', () => {
+  test('run from blocker to blocked, settled only when the blocker is decided or ruled out', () => {
+    const graph = graphOf([
+      issue(1, { state: 'decided' }),
+      issue(2, { state: 'ruled-out' }),
+      issue(3, { state: 'undermined', underminedBy: [5] }),
+      issue(4, { blockedBy: [1, 2, 3, 404] }),
+      issue(5, { blockedBy: [4] }),
+      issue(6, { state: 'decided', blockedBy: [5] }),
+    ]);
+    expect(graph.threads).toEqual([
+      { from: 1, to: 4, kind: 'settled' },
+      { from: 2, to: 4, kind: 'settled' },
+      { from: 3, to: 4, kind: 'unsettled' },
+      { from: 4, to: 5, kind: 'unsettled' },
+      { from: 5, to: 3, kind: 'undermines' },
+      { from: 5, to: 6, kind: 'unsettled' },
+    ]);
+  });
+});
+
 describe('cycles', () => {
   test('lists each blocked-by cycle by its questions, whatever their state', () => {
     const graph = graphOf([
@@ -284,5 +305,6 @@ describe('duplicates', () => {
     const { questions } = graph();
     expect(questions[4]).toMatchObject({ place: 'blocked', blockedBy: [1] });
     expect(questions[1].dependents).toEqual([4]);
+    expect(graph().threads).toEqual([{ from: 1, to: 4, kind: 'unsettled' }]);
   });
 });

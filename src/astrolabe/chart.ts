@@ -11,6 +11,7 @@ import {
   type Question,
   type QuestionGraph,
   type Role,
+  type Thread,
 } from '../lib/questions';
 import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
 
@@ -68,15 +69,8 @@ export interface ChartConstellation {
   stars: number[];
 }
 
-/**
- * A line between two stars: blocker to blocked (`open` while the blocker is open, else
- * `settled`), or breaker to undermined decision.
- */
-export interface Thread {
-  from: number;
-  to: number;
-  kind: 'open' | 'settled' | 'undermines';
-}
+/** A line between two stars, as the question graph gives it. */
+export type { Thread };
 
 export interface AreaGroup {
   /** Undefined for questions with no area label. */
@@ -130,20 +124,7 @@ export function chartQuestions(
   const inChart = new Set(sorted.map((q) => q.number));
   const byNumber = new Map(sorted.map((q) => [q.number, q]));
 
-  const threads: Thread[] = [];
-  for (const q of sorted) {
-    for (const b of q.blockedBy) {
-      if (!inChart.has(b)) continue;
-      const open = byNumber.get(b)!.status === 'open';
-      threads.push({ from: b, to: q.number, kind: open ? 'open' : 'settled' });
-    }
-  }
-  for (const q of sorted) {
-    for (const u of q.underminedBy) {
-      if (inChart.has(u)) threads.push({ from: u, to: q.number, kind: 'undermines' });
-    }
-  }
-  threads.sort((a, b) => a.from - b.from || a.to - b.to);
+  const threads = graph.threads.filter((t) => inChart.has(t.from) && inChart.has(t.to));
   const ends = (kind: (t: Thread) => boolean, pick: 'from' | 'to', n: number) =>
     threads
       .filter((t) => kind(t) && (pick === 'from' ? t.to : t.from) === n)

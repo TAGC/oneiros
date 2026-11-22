@@ -105,17 +105,19 @@ describe('star roles', () => {
 });
 
 describe('threads', () => {
-  test('run from blocker to blocked, open while the blocker is open, and from breaker to undermined', () => {
+  test("are the graph's threads between stars on the chart, an undermined blocker's unsettled", () => {
     const c = chart([
       question(1, { status: 'decided' }),
       question(2, { blockedBy: [1] }),
       question(3, { blockedBy: [2, 99] }),
       question(4, { status: 'undermined', underminedBy: [2] }),
+      question(5, { blockedBy: [4] }),
     ]);
     expect(c.threads).toEqual([
       { from: 1, to: 2, kind: 'settled' },
-      { from: 2, to: 3, kind: 'open' },
+      { from: 2, to: 3, kind: 'unsettled' },
       { from: 2, to: 4, kind: 'undermines' },
+      { from: 4, to: 5, kind: 'unsettled' },
     ]);
   });
 

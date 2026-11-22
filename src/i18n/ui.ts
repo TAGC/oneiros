@@ -3,6 +3,7 @@
  */
 
 import type { StarRole, StarStatus } from '../astrolabe/chart';
+import type { ThreadKind } from '../lib/questions';
 import type { Energy, Size } from '../lib/questions/constellations';
 import type { Status } from '../lib/status';
 
@@ -221,10 +222,10 @@ Five pillars hold it together:
         'Open, with no links to any question, not even a related one. A dotted orbit.',
     } satisfies Record<StarRole, (n: number) => string>,
     threads: {
-      open: 'Blocked by an open question.',
-      settled: 'Blocked by a closed question.',
+      unsettled: 'Blocked by a question that is not settled: open or undermined.',
+      settled: 'Blocked by a settled question: decided or ruled out.',
       undermines: 'Broke the premise of a decision.',
-    } as Record<string, string>,
+    } satisfies Record<ThreadKind, string>,
     areaGlow: 'Each soft glow is one of the wiki’s areas.',
     tiers: ['Settled ground', 'Frontier', 'One step out', 'Two steps out', 'Further out'],
     tierHelp: [
@@ -531,8 +532,8 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
       independent: () => '待定，与任何问题都没有关联，连相关问题也没有。外绕虚线轨道。',
     },
     threads: {
-      open: '被一个待定问题阻挡。',
-      settled: '被一个已关闭的问题阻挡。',
+      unsettled: '被一个尚未定下的问题阻挡：待定或前提动摇。',
+      settled: '被一个已定下的问题阻挡：已定或不采纳。',
       undermines: '动摇了一项决定的前提。',
     },
     areaGlow: '每团柔光是维基的一个领域。',
