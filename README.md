@@ -22,6 +22,8 @@ In dev, a page's link colours are worked out when that page renders. If links lo
 ## Layout
 
 - `src/content/wiki/`: the pages, one Markdown (or MDX) file each.
+- `src/content/wiki-zh/`: Chinese versions of pages, named after the English page's file.
+- `src/i18n/ui.ts`: interface strings in English and Chinese.
 - `src/data/sheet/`: the reference sheet's tabs as JSON. Do not edit by hand.
 - `src/data/navboxes.json`: navboxes.
 - `src/data/icons.json`: 24×24 pixel icons for the Memory, Beliefs, Temenos and Magic areas.
@@ -126,3 +128,15 @@ Links are page titles and resolve like wiki links. Set `navbox: character` on ea
 ### Figures
 
 An infobox figure is an Astro component in `src/components/figures/` containing one SVG, named in PascalCase (`CoherenceRings.astro` is `figure: CoherenceRings`).
+
+### Chinese pages
+
+English is the default and keeps its URLs. Chinese lives under `/oneiros/zh/`, mirroring every English route, and the header switches between the two.
+
+- **Files.** A Chinese page goes in `src/content/wiki-zh/` with the same file name as the English page (`src/content/wiki-zh/coherence.md` pairs with `src/content/wiki/coherence.md`) and is served at `/oneiros/zh/wiki/coherence/`. The frontmatter is the same; write `title`, `summary`, `aliases`, infobox labels and values in Chinese, but keep `area`, `kind`, `categories` and `navbox` as the English values.
+- **Links.** `[[Target]]` matches Chinese titles and aliases first, then English ones, so `[[Echo|回响]]` always works and `[[回响]]` works once a Chinese page has that title or alias. A target with a Chinese page links there; one with only an English page links to the English page with a small "EN" mark; one with neither is red.
+- **Lists.** Chinese indexes, category pages and open questions list the Chinese version of each page where there is one, and the English page (marked "EN") where there is not. "What links here" counts Chinese pages only.
+- **Navboxes.** Add `titleZh` to a navbox or `labelZh` to a group to translate it; without them the English text is shown. Links follow the rules above.
+- **Sheet tables.** Chinese pages show the English data with an "English data" note. A translated tab in `src/data/sheet-zh/<tab>.json` (same shape as `src/data/sheet/`) is picked up automatically.
+- **Interface strings** are in `src/i18n/ui.ts`. Area names, "Vision" and the site name stay in English until the approved term list is in.
+- **Typography.** No italics in Chinese: `*emphasis*` shows dots under the characters, so prefer `**bold**` for strong emphasis. Put full-width punctuation outside the `**`, as in `**梦境世界**：`, or the bold will not close.
