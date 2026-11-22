@@ -84,6 +84,7 @@ The policy follows how the guides already handle Greek names:
 
 - **Page status** (a wiki property, not a game concept): **状态**. The four stages reuse the belief stage terms: Notion 念头, Tenet 信条, Certainty 确信, Dogma 教条. 状态 also appears inside 凝聚度状态; the context keeps the two apart.
 - **Canon audit** (a wiki process, the `canon-audit` skill): **正典审核**.
+- **Astrolabe** (a wiki tool, the star map of every question; not a game term): **星盘** (proposed; the Chinese name is still open). Its question statuses: frontier **前沿**, blocked **受阻**, decided **已定**, ruled out **不采纳**, undermined **前提动摇**. Its roles: central **核心**, peripheral **边缘**, independent **独立**. Open question stays **待定问题** and conflict **冲突**.
 
 ---
 
