@@ -1068,6 +1068,76 @@ body:lang(zh) {
   line-height: 1.75;
 }
 
+/* Background art: the Dreamlands at night behind the page. The body and the header paint the
+   same image at the same size and position, so the header reads as part of the scene. */
+:root {
+  --art: image-set(
+    url('/art/dreamlands-2000.avif') type('image/avif'),
+    url('/art/dreamlands-2000.webp') type('image/webp')
+  );
+  --art-w: max(100vw, 1800px);
+  --art-h: calc(var(--art-w) * 1440 / 3360);
+  /* Light: a pale mist over the night; dark: a thin veil. Both fade to the page background. */
+  --veil-top: light-dark(
+    color-mix(in srgb, var(--bg) 80%, transparent),
+    color-mix(in srgb, var(--bg) 38%, transparent)
+  );
+  --veil-mid: light-dark(
+    color-mix(in srgb, var(--bg) 88%, transparent),
+    color-mix(in srgb, var(--bg) 62%, transparent)
+  );
+}
+body {
+  background:
+    linear-gradient(180deg, var(--veil-top), var(--veil-mid) 55%, var(--bg)) top center /
+      var(--art-w) calc(var(--art-h) + 2px) no-repeat,
+    var(--art) top center / var(--art-w) var(--art-h) no-repeat,
+    var(--bg);
+}
+header.top {
+  background:
+    linear-gradient(180deg, #2b2b5eb8, #1f2048a0),
+    var(--art) top center / var(--art-w) var(--art-h) no-repeat,
+    var(--head);
+}
+nav.side {
+  background: color-mix(in srgb, var(--bg) 74%, transparent);
+}
+/* The main page opens with the scene itself, dissolving into the page. */
+.hero {
+  height: clamp(150px, 24vw, 290px);
+  margin: -28px calc(-1 * clamp(16px, 3.4vw, 44px)) -14px;
+  background: var(--art) center 62% / cover no-repeat;
+  mask-image: linear-gradient(180deg, #000 40%, transparent 94%);
+}
+@media (max-width: 900px) {
+  :root {
+    --art: image-set(
+      url('/art/dreamlands-1200.avif') type('image/avif'),
+      url('/art/dreamlands-1200.webp') type('image/webp')
+    );
+    --art-w: 100vw;
+  }
+  body {
+    background: var(--bg);
+  }
+  nav.side {
+    background: var(--page);
+  }
+}
+@media (max-width: 600px) {
+  :root {
+    --art: image-set(
+      url('/art/dreamlands-800.avif') type('image/avif'),
+      url('/art/dreamlands-800.webp') type('image/webp')
+    );
+    --art-w: 170vw;
+  }
+  .hero {
+    margin-top: -20px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .spin {
     animation: none;

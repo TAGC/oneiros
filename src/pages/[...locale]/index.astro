@@ -25,6 +25,7 @@ const welcome = renderMarkdown(t.welcome, undefined, locale);
 ---
 
 <Wiki title={t.siteName} description={t.mainDescription} locale={locale} path="/">
+  <div class="hero" aria-hidden="true"></div>
   <h1>{t.welcomeTitle}</h1>
   <p class="sub">{t.mainSub(pages.length, translatedCount)}</p>
   <div class="lede" set:html={welcome} />
