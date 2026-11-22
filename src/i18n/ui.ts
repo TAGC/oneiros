@@ -2,6 +2,7 @@
  * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
+import type { StarRole, StarStatus } from '../astrolabe/chart';
 import type { Energy, Size } from '../lib/questions/constellations';
 import type { Status } from '../lib/status';
 
@@ -197,14 +198,14 @@ Five pillars hold it together:
       decided: 'Decided',
       'ruled-out': 'Ruled out',
       undermined: 'Undermined',
-    } as Record<string, string>,
+    } satisfies Record<StarStatus, string>,
     statusHelp: {
       frontier: 'Open, and every blocker is settled. Ready to ask.',
       blocked: 'Open, but waiting on a question that is not settled.',
       decided: 'Closed as decided.',
       'ruled-out': 'Closed as not planned.',
       undermined: 'Decided, but a later question broke its premise.',
-    } as Record<string, string>,
+    } satisfies Record<StarStatus, string>,
     conflict: 'Conflict',
     withConflict: (status: string) => `${status}, conflict`,
     conflictHelp: 'Two sources disagree. Drawn in red.',
@@ -212,13 +213,13 @@ Five pillars hold it together:
       central: 'Central',
       peripheral: 'Peripheral',
       independent: 'Independent',
-    } as Record<string, string>,
+    } satisfies Record<StarRole, string>,
     roleHelp: {
       central: (n: number) => `Open, and blocks ${n} or more open questions. A larger star.`,
       peripheral: () => 'On the frontier, and no open question waits on it. A small moon.',
       independent: () =>
         'Open, with no links to any question, not even a related one. A dotted orbit.',
-    } as Record<string, (n: number) => string>,
+    } satisfies Record<StarRole, (n: number) => string>,
     threads: {
       open: 'Blocked by an open question.',
       settled: 'Blocked by a closed question.',
