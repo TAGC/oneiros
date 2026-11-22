@@ -9,7 +9,7 @@ A **constellation** is a GitHub milestone whose title starts with `✦ `: a cohe
 
 The chart is **stable**: a sound constellation stays exactly as it is, so a run with no new or newly closed questions changes nothing. Change a constellation only for one of the reasons in step 2.
 
-The helper `scripts/constellations.ts` does the GitHub side. It never touches milestones without the mark.
+The helper `scripts/constellations.ts` does the GitHub side. It never touches milestones without the mark. It writes and checks descriptions with the format module `src/lib/questions/constellation-format.ts`, the same rules `bun run check` uses, and sends text to GitHub as a JSON request body.
 
 ## 1. Read the state
 
@@ -60,7 +60,7 @@ On a first chart or a large backlog, fan out with the Agent tool: one subagent p
 
 ## 3. Dry run
 
-Run `bun run constellations apply <scratchpad>/constellations.yaml`. It prints the operations: creates, edits, assignments, closes. Fix every error and run it again. A warning means a size does not match the question count: change the size, or keep it when the reading load justifies it and say so in the report.
+Run `bun run constellations apply <scratchpad>/constellations.yaml`. It prints the operations: creates, edits, assignments, closes. Fix every error and run it again. Warnings are of two kinds. A size warning means a size does not match the question count: change the size, or keep it when the reading load justifies it and say so in the report. A counts warning means a reasoning looks like it states counts ("both", "all four", 两个): reword it to name the shared theme only, or keep it when the number is part of the design rather than a count of questions (for example "the four memory sources") and say so in the report. Neither fails `bun run check`.
 
 Check the operations against step 2: each one has a reason there. An edit to a constellation you meant to leave alone means the plan drifted; restore it.
 
