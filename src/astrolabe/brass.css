@@ -23,11 +23,8 @@
 .astrolabe[data-view='brass'] .al-cluster {
   display: none;
 }
-.astrolabe.astrolabe[data-view='brass'] .al-scale {
-  display: inline-flex;
-}
-.astrolabe.astrolabe[data-view='brass'] .al-fit {
-  display: block;
+.astrolabe.astrolabe[data-view='brass'] :is(.al-scale, .al-fit) {
+  visibility: visible;
 }
 
 /* The frame: as tall as it is wide, up to most of the screen. */

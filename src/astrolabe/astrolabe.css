@@ -604,11 +604,15 @@
   --al-const: light-dark(#3a3660, #d9d5ff);
 }
 /* Clustered by area (the default, and without JavaScript), the map shows no constellation
-   marks and the time and energy filter hides; clustered by constellation, the tiers swap too. */
-.astrolabe:not([data-cluster='constellations']) :is(.al-warn, .al-scale, .al-fit),
+   marks and the time and energy filter hides; clustered by constellation, the tiers swap too.
+   The filter keeps its space, so switching never moves the map below it. */
+.astrolabe:not([data-cluster='constellations']) .al-warn,
 .astrolabe:not([data-cluster='constellations']) .al-tiers[data-by='constellations'],
 .astrolabe[data-cluster='constellations'] .al-tiers[data-by='areas'] {
   display: none;
+}
+.astrolabe:not([data-cluster='constellations']) :is(.al-scale, .al-fit) {
+  visibility: hidden;
 }
 /* What belongs to one clustering fades out as the stars set off, and in as they arrive. */
 .al-constellations,
