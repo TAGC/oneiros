@@ -53,11 +53,7 @@ function textOf(q: Question): { markdown: string; lang: Locale } {
           <div class={`note note-${c.kind}`}>
             <p class="note-h">
               <strong>
-                {calloutHeading(
-                  c.kind,
-                  locale,
-                  c.issue === undefined ? undefined : questions.get(c.issue),
-                )}
+                {calloutHeading(c.kind, locale, questions.get(c.issue))}
               </strong> ·{' '}
               <a href={wikiUrl(p.slug, c.id, p.locale)}>{t.onThePage}</a>
             </p>

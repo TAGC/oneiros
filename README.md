@@ -162,7 +162,7 @@ The issue title is the English title. The body has an English property table, an
 
 - **Page:** the page that holds the marker. Required when the question has a marker; every other row is optional.
 - **Section:** the section of that page.
-- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row, or only one source, is headed "Conflict". Old inline `[!CONFLICT]` callouts keep the fixed header.
+- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row, or only one source, is headed "Conflict".
 - **Raised:** when and where the question was raised.
 - **Related:** issues worth reading alongside, not blockers.
 - **Undermined by:** on a decided issue, the later issue that broke its premise.
