@@ -178,7 +178,7 @@ export function tableRows(text: string): Record<string, string> {
 }
 
 function labelNames(issue: GithubIssue): string[] {
-  return issue.labels.map((l) => (typeof l === 'string' ? l : l.name));
+  return issue.labels.map((l) => (typeof l === 'string' ? l : l.name)).sort();
 }
 
 /** The last comment that opens with an `## Answer` heading, without that heading. */

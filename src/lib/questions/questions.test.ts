@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
-import { mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { isDuplicate, loadQuestions, type PulledIssue, writeQuestionCache } from '.';
@@ -115,6 +115,14 @@ describe('question cache', () => {
     writeQuestionCache(dir, [issue({ number: 1 }), issue({ number: 2 })]);
     expect(readdirSync(dir).sort()).toEqual(['1.md', '2.md']);
     expect(loadQuestions(dir).get(99)).toBeUndefined();
+  });
+
+  test('does not depend on the order GitHub gives the labels in', () => {
+    const labels = ['kind:open', 'area:memory', 'needs-designer'];
+    writeQuestionCache(dir, [issue({ number: 1, labels })]);
+    const first = readFileSync(join(dir, '1.md'), 'utf8');
+    writeQuestionCache(dir, [issue({ number: 1, labels: labels.toReversed() })]);
+    expect(readFileSync(join(dir, '1.md'), 'utf8')).toBe(first);
   });
 
   test('a missing cache loads as no questions', () => {
