@@ -1,0 +1,38 @@
+---
+title: Mood capacity
+kind: term
+area: Character
+summary: How far your mood can pinch towards one emotion, that emotion's material across everything you hold.
+infobox:
+  rows:
+    - label: Per
+      value: Emotion
+    - label: Equals
+      value: That emotion's [[material]] across every [[memory]] and [[belief]] you hold
+    - label: At the cap
+      value: Nothing makes you feel more of it
+    - label: Not to be confused with
+      value: Spell intensity, which qualities cap
+navbox: character
+---
+
+**Mood capacity** is how far your [[mood]] can pinch towards one emotion. Each emotion's mood capacity is that emotion's [[material]] across everything you hold, whatever the tier: every [[memory]] and every [[belief]], though a belief counts only its own material, never its [[weight]].
+
+<p class="formula">Mood capacity of an emotion = Σ that emotion's material, over everything you hold</p>
+
+## At the cap
+
+Your mood is capped per emotion by its mood capacity. You can only spend what you hold, and at an emotion's mood capacity nothing makes you feel more of it: once you are as afraid as you can be, a wolf's snarl makes you no more afraid (see [[Stimulus]]). In the pinched circle, each emotion pinches your mood only as far as its mood capacity (see [[Mood]]).
+
+Qualities cap how intense a spell can be; mood capacity caps how much of an emotion you have to spend.
+
+## What changes it
+
+- **A memory out in a bead.** While a memory is out, its mood capacity leaves with it (see [[Bead]]).
+- **Burning.** Burning a memory pours its material into your mood, at the cost of the mood capacity it gave (see [[Burning]]).
+- **Collapse.** A collapsed room keeps its mood capacity (see [[Cracking and collapse]]).
+- **Scars.** A [[scar]] costs its mood capacity.
+
+## Above the cap
+
+Burning lets you hold more of an emotion than your mood capacity allows, and is the only way to pay for the top [[Intensity|intensities]], which cost more than a developed character's mood capacity. When the burn ends, anything above your mood capacity escapes through your body as an [[outburst]]. The designer has not confirmed describing burning this way (see [[Burning]]).
