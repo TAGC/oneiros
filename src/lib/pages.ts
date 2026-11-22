@@ -4,7 +4,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 import { AREAS } from './areas';
 import { getQuestions } from './questions';
-import { readMarkers } from './questions/markers';
+import { readBodyMarkers } from './questions/markers';
 import { slugify, WIKI_DIRS } from './site';
 import { CALLOUTS, type MarkerBox, markerBox, sourceBySlug } from './wiki';
 
@@ -34,7 +34,7 @@ function fileName(entry: Entry, locale: Locale): string {
 
 function toPage(entry: Entry, locale: Locale): Page {
   const questions = getQuestions();
-  const markers = readMarkers(entry.body ?? '').markers.map((m) =>
+  const markers = readBodyMarkers(entry.body ?? '').markers.map((m) =>
     markerBox(m.issue, locale, questions),
   );
   const auto = (['open', 'conflict'] as const)

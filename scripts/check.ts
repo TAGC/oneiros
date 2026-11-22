@@ -4,8 +4,8 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parse as parseYaml } from 'yaml';
 import { LOCALES } from '../src/i18n/locale';
+import { splitFrontmatter } from '../src/lib/frontmatter';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
 import type { MarkedPage, Problem } from '../src/lib/questions/problems';
 
@@ -39,13 +39,6 @@ function files(dir: string, test: (name: string) => boolean): string[] {
 
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
 const isPage = (f: string) => /\.mdx?$/.test(f);
-
-function frontmatter(raw: string): { data: Record<string, unknown>; bodyLine: number } {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(raw);
-  if (!match) return { data: {}, bodyLine: 1 };
-  const data = (parseYaml(match[1]) ?? {}) as Record<string, unknown>;
-  return { data, bodyLine: match[0].split('\n').length };
-}
 
 function lineOf(raw: string, pattern: RegExp): number | undefined {
   const at = raw.split('\n').findIndex((l) => pattern.test(l));
@@ -294,17 +287,12 @@ function markedPages(): MarkedPage[] {
   return LOCALES.flatMap((locale) =>
     files(WIKI_DIRS[locale], isPage).map((file) => {
       const raw = read(file);
-      const { data, bodyLine } = frontmatter(raw);
-      const body = raw
-        .split('\n')
-        .slice(bodyLine - 1)
-        .join('\n');
       return {
         file,
         locale,
         slug: file.replace(/^.*\/|\.mdx?$/g, ''),
-        status: data.status,
-        ...readMarkers(body, bodyLine),
+        status: splitFrontmatter(raw).data.status,
+        ...readMarkers(raw),
       };
     }),
   );
@@ -322,7 +310,7 @@ function checkStatus(): Problem[] {
   for (const locale of LOCALES) {
     for (const file of files(WIKI_DIRS[locale], isPage)) {
       const raw = read(file);
-      const { status } = frontmatter(raw).data;
+      const { status } = splitFrontmatter(raw).data;
       const slug = file.replace(/^.*\//, '').replace(/\.mdx?$/, '');
       if (locale === 'en') english.set(slug, status);
       else if (english.has(slug) && english.get(slug) !== status)
@@ -353,8 +341,8 @@ function checkPageParity(): Problem[] {
     }
     const enRaw = read(enFile);
     const zhRaw = read(zhFile);
-    const enData = frontmatter(enRaw).data;
-    const zhData = frontmatter(zhRaw).data;
+    const enData = splitFrontmatter(enRaw).data;
+    const zhData = splitFrontmatter(zhRaw).data;
     for (const key of ['kind', 'area', 'navbox']) {
       const want = enData[key];
       const got = zhData[key];

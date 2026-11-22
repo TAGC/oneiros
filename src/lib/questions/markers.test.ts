@@ -10,8 +10,14 @@ describe('markers on a page', () => {
     ]);
   });
 
-  test('count lines from where the body starts in its file', () => {
-    expect(readMarkers('\n> [!ISSUE 3]\n', 6).markers).toEqual([{ issue: 3, line: 7 }]);
+  test('count file lines, past the frontmatter', () => {
+    const raw = '---\ntitle: Burning\nkind: term\n---\n\n> [!ISSUE 3]\n';
+    expect(readMarkers(raw).markers).toEqual([{ issue: 3, line: 6 }]);
+  });
+
+  test('ignore the frontmatter, even text in it that reads like a marker', () => {
+    const raw = '---\nsummary: |\n  > [!ISSUE 9]\n---\n\n> [!ISSUE 3]\n';
+    expect(readMarkers(raw).markers).toEqual([{ issue: 3, line: 6 }]);
   });
 
   test('ignore a marker inside a code block', () => {
@@ -28,7 +34,7 @@ describe('markers on a page', () => {
 
   test('flag old inline callouts with their lines, not as markers', () => {
     const body = '> [!OPEN]\n> Inline text.\n\n> [!ISSUE 142]\n\n- > [!conflict] In a list.\n';
-    expect(readMarkers(body, 4)).toEqual({
+    expect(readMarkers(`---\ntitle: Burning\n---\n${body}`)).toEqual({
       markers: [{ issue: 142, line: 7 }],
       callouts: [
         { kind: 'open', line: 4 },

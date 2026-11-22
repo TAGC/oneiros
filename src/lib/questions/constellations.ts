@@ -6,8 +6,9 @@
  */
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import { stringify as stringifyYaml } from 'yaml';
 import type { Locale } from '../../i18n/locale';
+import { splitFrontmatter } from '../frontmatter';
 import {
   type GithubIssue,
   getQuestions,
@@ -137,12 +138,8 @@ export function writeMilestoneCache(
 }
 
 function toConstellation(raw: string, questions: Questions): Constellation | undefined {
-  const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
-  const front = parseYaml(match?.[1] ?? '') as MilestoneFrontmatter;
-  const milestone = {
-    title: String(front.title),
-    description: raw.slice(match?.[0].length ?? 0).trim(),
-  };
+  const { data: front, body } = splitFrontmatter<MilestoneFrontmatter>(raw);
+  const milestone = { title: String(front.title), description: body.trim() };
   const text = readConstellation(milestone);
   if (!text) return undefined;
   const constellation: Constellation = {

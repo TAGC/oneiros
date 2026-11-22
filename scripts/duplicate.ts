@@ -11,8 +11,8 @@
  */
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parse as parseYaml } from 'yaml';
 import { LOCALES, type Locale } from '../src/i18n/locale';
+import { splitFrontmatter } from '../src/lib/frontmatter';
 import { loadQuestions, type Question, questionFrom } from '../src/lib/questions';
 import { readMarkers } from '../src/lib/questions/markers';
 import { WIKI_DIRS } from '../src/lib/site';
@@ -20,8 +20,6 @@ import { issueId } from '../src/lib/wiki';
 import { type GitHub, liveGitHub, NotAQuestion, type PulledQuestion } from './github';
 import { CACHE, pull } from './pull';
 import type { RunOptions } from './question-links';
-
-const FRONTMATTER = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/;
 
 /** The line that stands in for a duplicate's marker, linking to the kept question's box. */
 function linkLine(locale: Locale, title: string, keep: Question): string {
@@ -40,9 +38,7 @@ function pageFile(root: string, locale: Locale, slug: string): string | undefine
 
 /** The file lines of a page's markers for one issue. */
 function markerLines(raw: string, issue: number): number[] {
-  const front = FRONTMATTER.exec(raw)?.[0] ?? '';
-  const firstLine = front.split('\n').length;
-  return readMarkers(raw.slice(front.length), firstLine)
+  return readMarkers(raw)
     .markers.filter((m) => m.issue === issue)
     .map((m) => m.line);
 }
@@ -126,8 +122,7 @@ export function duplicatePages(
     if (slug !== home) {
       const homeFile = pageFile(root, locale, home);
       if (!homeFile) return fail(`#${keep}’s page ${home} has no file in ${WIKI_DIRS[locale]}`);
-      const front = FRONTMATTER.exec(readFileSync(join(root, homeFile), 'utf8'))?.[1] ?? '';
-      const title = (parseYaml(front) as { title?: unknown } | null)?.title;
+      const { title } = splitFrontmatter(readFileSync(join(root, homeFile), 'utf8')).data;
       if (typeof title !== 'string') return fail(`${homeFile} has no title`);
       link = linkLine(locale, title, kept!);
     }

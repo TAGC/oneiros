@@ -7,9 +7,10 @@
  */
 import { mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
+import { stringify as stringifyYaml } from 'yaml';
 import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
 import { AREAS } from '../areas';
+import { splitFrontmatter } from '../frontmatter';
 import { slugify } from '../site';
 import type { CalloutKind } from '../wiki';
 
@@ -306,9 +307,8 @@ function deriveStatus(question: Omit<Question, 'status'>): QuestionStatus {
 }
 
 function toQuestion(raw: string): Question {
-  const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
-  const front = parseYaml(match?.[1] ?? '') as CacheFrontmatter;
-  const { sections } = splitSections(raw.slice(match?.[0].length ?? 0), 2, CACHE_SECTIONS);
+  const { data: front, body } = splitFrontmatter<CacheFrontmatter>(raw);
+  const { sections } = splitSections(body, 2, CACHE_SECTIONS);
   const rows = front.properties ?? {};
   const labels = front.labels ?? [];
   const kind = labels.map((l) => KIND_LABEL.exec(l)?.[1]).find(Boolean) as CalloutKind | undefined;

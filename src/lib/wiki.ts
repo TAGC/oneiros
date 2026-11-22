@@ -1,8 +1,8 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
-import { parse as parseYaml } from 'yaml';
 import { inLocale, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
+import { splitFrontmatter } from './frontmatter';
 import type { Question, Questions } from './questions';
 import { slugify, WIKI_DIRS } from './site';
 import type { Status } from './status';
@@ -100,13 +100,6 @@ const BUILD = process.env.NODE_ENV === 'production';
 
 function wikiDir(locale: Locale): string {
   return join(process.cwd(), WIKI_DIRS[locale]);
-}
-
-function splitFrontmatter(raw: string): { data: Record<string, unknown>; body: string } {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(raw);
-  if (!match) return { data: {}, body: raw };
-  const data = (parseYaml(match[1]) ?? {}) as Record<string, unknown>;
-  return { data, body: raw.slice(match[0].length) };
 }
 
 function nameKey(name: string): string {

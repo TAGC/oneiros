@@ -7,6 +7,7 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
+import { splitFrontmatter } from '../frontmatter';
 import type { CalloutKind } from '../wiki';
 
 /** A `> [!ISSUE N]` marker and the line it starts on. */
@@ -68,8 +69,17 @@ export function markerBlocks(tree: Root): { issue: number; node: Blockquote }[] 
   });
 }
 
-/** A page body's markers; `firstLine` is the file line the body starts on. */
-export function readMarkers(body: string, firstLine = 1): PageMarkers {
+/** A page file's markers, at their file lines; the frontmatter holds none. */
+export function readMarkers(raw: string): PageMarkers {
+  const { body, bodyLine } = splitFrontmatter(raw);
+  return readBodyMarkers(body, bodyLine);
+}
+
+/**
+ * A page body's markers, for a body already parted from its frontmatter; `firstLine` is the
+ * file line the body starts on.
+ */
+export function readBodyMarkers(body: string, firstLine = 1): PageMarkers {
   const tree = parser.parse(body) as Root;
   const lines = body.split('\n');
   const start = (node: Blockquote) => node.position?.start.line ?? 1;
