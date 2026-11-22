@@ -19,6 +19,7 @@ bun run check          # spelling and content checks (run after a build)
 bun run test           # unit tests (bun test)
 bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
 bun run constellations # the constellations from .questions/; `apply <plan> --live` charts them
+bun run links <plan>   # the links a plan adds or removes between questions; `--live` makes them
 bun run verify         # build, test, lint, format:check and check
 ```
 
@@ -175,6 +176,16 @@ The issue title is the English title. The body has an English property table, an
 - **Locale sections:** `## en` holds the question as the box shows it. `## zh` starts with a `### ` line holding the Chinese title, then the Chinese text. Wiki links work in both.
 
 One question blocks another through GitHub's own "blocked by" link (the issue's Relationships menu), not a property row. From the command line, `gh api -X POST repos/TAGC/oneiros/issues/<blocked>/dependencies/blocked_by -F issue_id=<id>` takes the blocking issue's `id` from `gh api repos/TAGC/oneiros/issues/<number> --jq .id`, not its number.
+
+To change many links at once, write a plan and run `bun run links <plan>`. Each line adds or removes one link, with an optional reason after a colon:
+
+```question-links
+add #145 blocked-by #142: #145 asks how fast vividness fades, so #142 must first say whether it fades.
+add #139 related #142: both ask about fading on Memory.
+remove #142 undermined-by #208: #208 left its premise standing.
+```
+
+A Related link goes on both issues' rows; an Undermined by row only on the first issue. In a Markdown file, only `question-links` code blocks count. The helper prints the changes and makes them only with `--live`. The `link-questions` skill proposes such plans.
 
 #### Answers and status
 
