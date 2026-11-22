@@ -202,3 +202,22 @@ export function chartQuestions(
   }
   return { locale, stars, threads, areas, counts, constellations: groups, ungrouped };
 }
+
+/**
+ * Settled questions (decided, ruled out, undermined) that the night sky and tiers hide unless
+ * "Show settled" is on: those with no thread to an open question. Agreed with the designer on
+ * 22 Nov 2026. They keep their place in every layout, so showing them moves nothing.
+ */
+export function quietSettled(chart: StarChart): number[] {
+  const open = new Set(
+    chart.stars.filter((s) => s.question.status === 'open').map((s) => s.number),
+  );
+  const linked = new Set<number>();
+  for (const t of chart.threads) {
+    if (open.has(t.to)) linked.add(t.from);
+    if (open.has(t.from)) linked.add(t.to);
+  }
+  return chart.stars
+    .filter((s) => !open.has(s.number) && !linked.has(s.number))
+    .map((s) => s.number);
+}

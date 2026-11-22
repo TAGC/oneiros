@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { type Question, questionGraph } from '../lib/questions';
 import type { Constellation, Constellations } from '../lib/questions/constellations';
-import { chartQuestions } from './chart';
+import { chartQuestions, quietSettled } from './chart';
 
 type Fixture = Partial<Question> & { status?: Question['status'] };
 
@@ -238,5 +238,27 @@ describe('labels and areas', () => {
       ['World', [1, 4]],
       [undefined, [2]],
     ]);
+  });
+});
+
+describe('which settled questions show by default', () => {
+  test('keeps a settled question linked by a thread to an open one, and quiets the rest', () => {
+    const c = chart([
+      question(1, { status: 'decided' }),
+      question(2, { blockedBy: [1] }),
+      question(3, { status: 'ruled-out' }),
+      question(4, { status: 'decided' }),
+      question(5, { status: 'decided', blockedBy: [4] }),
+      question(6, { status: 'undermined', underminedBy: [7] }),
+      question(7),
+      question(8, { status: 'decided', blockedBy: [9] }),
+      question(9),
+    ]);
+    expect(quietSettled(c)).toEqual([3, 4, 5]);
+  });
+
+  test('never quiets an open question, linked or not', () => {
+    const c = chart([question(1), question(2, { status: 'decided' })]);
+    expect(quietSettled(c)).toEqual([2]);
   });
 });
