@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { LOCALES } from '../i18n/ui';
+import { LOCALES } from '../i18n/locale';
 import { allSources } from './wiki';
 
 /** Code and data, other than a page's own file, that its rendered Markdown depends on. */

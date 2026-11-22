@@ -3,7 +3,8 @@
  * One panel per open constellation, for the constellations view: its name, reasoning, size,
  * energy, progress and questions. Without JavaScript, `:target` shows the panel a mark links to.
  */
-import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { wikiUrl } from '../lib/site';
 import { issueId } from '../lib/wiki';
 import type { DialLayout } from './brass';

@@ -6,13 +6,7 @@ import type { StarRole, StarStatus } from '../astrolabe/chart';
 import type { ThreadKind } from '../lib/questions';
 import type { Energy, Size } from '../lib/questions/constellations';
 import type { Status } from '../lib/status';
-
-export const LOCALES = ['en', 'zh'] as const;
-export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = 'en';
-
-/** The `<html lang>` value; Pagefind builds one search index per value. */
-export const HTML_LANG: Record<Locale, string> = { en: 'en-GB', zh: 'zh-Hans' };
+import { DEFAULT_LOCALE, LOCALES, type Locale } from './locale';
 
 /** Noto Serif SC for titles and Noto Sans SC for body text, loaded on zh pages only. */
 export const CJK_FONTS =

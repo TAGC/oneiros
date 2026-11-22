@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import type { Question, Questions } from './questions';
 import { slugify, WIKI_DIRS } from './site';
 import type { Status } from './status';

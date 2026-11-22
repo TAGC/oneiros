@@ -1,6 +1,7 @@
 ---
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { renderInline } from '../lib/markdown';
 import { categoryUrl } from '../lib/site';
 import type { Status } from '../lib/status';

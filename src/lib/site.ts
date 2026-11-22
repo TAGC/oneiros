@@ -1,4 +1,4 @@
-import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 
 export const SITE = 'https://tagc.github.io';
 export const BASE = '/oneiros';

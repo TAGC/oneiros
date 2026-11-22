@@ -8,7 +8,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { LOCALES, type Locale } from '../src/i18n/ui';
+import { LOCALES, type Locale } from '../src/i18n/locale';
 import { type Question, questionFrom } from '../src/lib/questions';
 import { readMarkers } from '../src/lib/questions/markers';
 import { WIKI_DIRS } from '../src/lib/site';

@@ -2,7 +2,8 @@
  * Checks over question data, run by `bun run check`: markers on pages against their issues,
  * and each issue's own format. Kept here so they can be tested without a build.
  */
-import { DEFAULT_LOCALE, LOCALES, type Locale, useTranslations } from '../../i18n/ui';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
+import { useTranslations } from '../../i18n/ui';
 import { sourceName } from '../wiki';
 import { QUESTION_CACHE, questionGraph, type Questions } from '.';
 import type { Marker, Misspelt, OldCallout } from './markers';

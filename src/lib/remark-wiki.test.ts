@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-import type { Locale } from '../i18n/ui';
+import type { Locale } from '../i18n/locale';
 import type { Question, Questions } from './questions';
 import remarkWiki from './remark-wiki';
 import { markerBox } from './wiki';

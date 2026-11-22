@@ -2,7 +2,7 @@
  * The Astrolabe's star chart: every question as a star, shaped from the questions module
  * for one locale. Pure data; the layouts in `sky.ts` and `tiers.ts` place it.
  */
-import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 import {
   isDuplicate,
   type Place,

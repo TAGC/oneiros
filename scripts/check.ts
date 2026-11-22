@@ -5,7 +5,7 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { LOCALES } from '../src/i18n/ui';
+import { LOCALES } from '../src/i18n/locale';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
 import type { MarkedPage, Problem } from '../src/lib/questions/problems';
 

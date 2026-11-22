@@ -3,7 +3,7 @@
  * GitHub operations that make the milestones match it. Used by `scripts/constellations.ts`
  * and the chart-constellations skill. Pure: works from the loaded constellations, never GitHub.
  */
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
 import { type Question, type QuestionGraph, type Questions, questionGraph } from '.';
 import {
   CONSTELLATION_MARK,
