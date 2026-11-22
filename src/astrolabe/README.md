@@ -95,6 +95,16 @@ Each constellation is a GitHub milestone on this repo. Its title is `✦ ` follo
 
 The Astrolabe reads constellations only through `src/lib/questions/constellations.ts` (`getConstellations()`). The full reference is `docs/constellations.md`.
 
+## Page state
+
+One module owns the page state, agreed by the designer on 22 Nov 2026: the view, the Cluster by choice, Show settled, the time and energy filter, the open panel and full screen. Its changes are plain functions in `state.ts` (state and action to new state), tested in `state.test.ts`; `state-client.ts` is the thin layer that reads and writes the page. It saves what is remembered, writes the address, mirrors the state onto the root element for CSS (`data-view`, `data-cluster`, `data-settled`, the pressed buttons) and tells the views, which only subscribe. One start-up script, `start.ts`, starts the state, then each view, then draws the state once.
+
+- **Saved entry.** One localStorage entry, `astrolabe`, holds the view, the clustering and Show settled as JSON. Reads and writes are wrapped, so the page works without storage; an unreadable entry, or a choice the page does not offer, is ignored. Only a choice made on the page is saved, not one an address made on load.
+- **Not saved.** The time and energy filter resets on every visit. Full screen is state but cannot be restored, since browsers allow it only right after a click or keypress.
+- **Addresses.** `#star-N` opens a star's panel, in the tiers if they were saved and otherwise in the night sky. `#constellation-panel-N` opens a constellation's panel on the Dial, and `#dial` the Dial. On load an address beats the saved choice. Opening a panel writes its address; closing clears it.
+- **One panel.** At most one panel is open, a star's or a constellation's, in any view: opening one closes the other. A star opened from the Dial leads to the night sky; a constellation opens on the Dial. Switching the view keeps the panel.
+- **Escape** closes an open panel first, then leaves full screen.
+
 ## How it is built
 
 Everything is laid out at build time and written as static SVG, so positions are the same on every visit and the map shows without JavaScript. Client code only adds interaction.
@@ -119,17 +129,18 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `StarLink.astro`, `facts.ts` | A link that opens a star's panel; a constellation's facts on one line. |
 | `Legend.astro` | The key under the map. |
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
-| `client.ts`, `viewbox.ts` | The view switch, the Cluster by choice, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
+| `state.ts`, `state-client.ts`, `start.ts` | The page state (see Page state): its pure core, the page layer, and the one start-up script. |
+| `client.ts`, `viewbox.ts` | The night sky and the tiers for the state: the tiers' scroll, the flight between clusterings, the filter, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
 | `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings, writing the map once per frame. |
-| `fullscreen.ts`, `fullscreen-client.ts` | The full screen button: which way the browser allows, and the button itself. |
-| `brass-client.ts` | The constellations view: its panel, the filter on its marks, and star links that lead to the night sky. |
-| `client-common.ts` | What both clients share: remembered settings, the filter's test, and opening and closing a panel. |
+| `fullscreen.ts`, `fullscreen-client.ts` | The full screen button: which way the browser allows, and the button itself, which reports to the state. |
+| `brass-client.ts` | The constellations view for the state: its panel, the filter on its marks, and starting at its middle. |
+| `client-common.ts` | What both views share: the filter's test, and a kind of panel that shows whichever panel the state holds. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
 The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Every graph fact (a star's place, steps out and roles, and the threads with their kinds) comes from `questionGraph()`, whose terms `docs/open-questions.md` defines. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Which cluster a question sits in, and the clusters' order, are decided in one place too, `clusterList` in `src/lib/questions/clusters.ts`, which the open questions page also reads. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The graph facts are tested in `src/lib/questions/graph.test.ts`, and cluster membership and order in `src/lib/questions/clusters.test.ts`. The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
+The graph facts are tested in `src/lib/questions/graph.test.ts`, and cluster membership and order in `src/lib/questions/clusters.test.ts`. The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`, `state.test.ts`); the page itself is checked by eye in the dev server.
 
 ## Keeping it fast
 
