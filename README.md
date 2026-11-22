@@ -36,33 +36,9 @@ The authoring guide and the rest of the reference, by topic:
 - [Open questions](docs/open-questions.md): question issues and their labels, issue format, links, answers and status, markers, the pull and resolving questions.
 - [Duplicates](docs/duplicates.md): closing a duplicate question issue and replacing its marker.
 - [Constellations](docs/constellations.md): the milestone format, the Size and Energy scales, membership and when one is finished.
+- [Sheet tables and navboxes](docs/sheet-tables-and-navboxes.md): `<SheetTable>` in MDX pages and the navbox file.
 
 ## Authoring guide
-
-### Sheet tables (MDX only)
-
-In a `.mdx` page, render a block of a sheet tab:
-
-```mdx
-<SheetTable tab="emotions" block={0} />
-```
-
-`tab` is a file name in `src/data/sheet/` without `.json`; `block` is the block's index (default 0). Every tab is also browsable at `/oneiros/tables/`.
-
-### Navboxes
-
-`src/data/navboxes.json`:
-
-```json
-{
-  "character": {
-    "title": "Character",
-    "groups": [{ "label": "Health", "links": ["Coherence", "Echo", "Renown"] }]
-  }
-}
-```
-
-Links are page titles and resolve like wiki links. Set `navbox: character` on each page in the group.
 
 ### Area icons
 
