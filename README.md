@@ -49,7 +49,7 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `src/data/navboxes.json`: navboxes.
 - `src/data/icons.json`: 24×24 pixel icons, one per area.
 - `src/components/figures/`: SVG figures for infoboxes.
-- `public/art/`: the background art, a night scene of the Dreamlands that the designer generated with Midjourney, graded darker and bluer for the site. The ungraded original stays outside the repo.
+- `public/art/`: the background art the designer generated. Dark mode uses a night scene of the Dreamlands (made with Midjourney), graded darker and bluer for the site. Light mode uses a day scene (`dreamlands-day-*`), graded slightly softer and less saturated. The ungraded originals stay outside the repo.
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
 
 ## Authoring guide
