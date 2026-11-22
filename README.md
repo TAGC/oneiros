@@ -42,9 +42,9 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - Every `[!ISSUE N]` marker names an open question issue.
   - An issue's Page row matches the page that holds its marker.
   - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
-  - Every Undermined by row and blocked-by link names an existing issue.
-  - Every source in a conflict's Source row is a wiki link or a listed non-page source.
-  - Every answer comment has a section for each site locale.
+  - Every Undermined by row names a question issue, and so does every blocked-by link: an issue with neither `kind:` label is not a question.
+  - A conflict's Source row names at least two sources, each a wiki link or a listed non-page source.
+  - Every closed issue has an answer comment, with a section for each site locale.
   - A Certainty or Dogma page holds no marker.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
@@ -161,7 +161,7 @@ The issue title is the English title. The body has an English property table, an
 
 - **Page:** the page that holds the marker. Required when the question has a marker; every other row is optional.
 - **Section:** the section of that page.
-- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict with no Source row, or only one source, is headed "Conflict". Old inline `[!CONFLICT]` callouts keep the fixed header.
+- **Source:** where the question comes from, as a comma-separated list. On a conflict, each source must be a wiki link to a page, such as `[[Memory]]`, or a name from the fixed list of non-page sources kept in code with both languages (`vision`, `sheet`). The box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree", and three sources read "A, B and C disagree". A page source shows its title in the page's language. A conflict needs at least two sources (a check fails otherwise). Old inline `[!CONFLICT]` callouts keep the fixed header.
 - **Raised:** when and where the question was raised.
 - **Related:** issues worth reading alongside, not blockers.
 - **Undermined by:** on a decided issue, the later issue that broke its premise.
