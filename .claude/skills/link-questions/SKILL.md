@@ -5,7 +5,7 @@ description: "Propose links between question issues for the designer to approve:
 
 # Link questions
 
-Question issues link in three ways (README, "Open questions"):
+Question issues link in three ways (`docs/open-questions.md`):
 
 - **Blocked by**: B cannot be settled until A is. B's answer depends on A's: B asks for a detail of a mechanic whose existence or shape A still asks about, or B's options presuppose one of A's outcomes. Sharing a topic is not enough.
 - **Related**: worth reading together when settling either one, with no order. Two questions on one page about different rules are not related by that alone.
@@ -66,7 +66,7 @@ Done when every item has a grounded reason and every check passes.
 
 - Run `bun run links <scratchpad>/links-plan.md` (a dry run). Check that every change it prints is an approved line, and show the designer the output.
 - On the designer's go-ahead, run it again with `--live`, then `bun run pull`.
-- Duplicates follow the README's duplicate flow through `resolve-open-questions`: the designer picks the canonical issue and the page that keeps its marker, and a pull request replaces the other marker before the duplicate is closed. Closing it also removes its milestone (`gh issue edit N --remove-milestone`): a duplicate leaves its constellation. List each approved pair, with the designer's pick, in the hand-over.
+- Duplicates follow the duplicate flow in `docs/duplicates.md` through `resolve-open-questions`: the designer picks the canonical issue and the page that keeps its marker, and a pull request replaces the other marker before the duplicate is closed. Closing it also removes its milestone (`gh issue edit N --remove-milestone`): a duplicate leaves its constellation. List each approved pair, with the designer's pick, in the hand-over.
 
 ## 5. Report
 

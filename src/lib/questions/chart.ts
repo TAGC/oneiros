@@ -63,7 +63,7 @@ export interface ChartResult {
 
 const LANGUAGE: Record<Locale, string> = { en: 'English', zh: 'Chinese' };
 
-/** Which sizes fit how many questions, from the README's scale. */
+/** Which sizes fit how many questions, from the scale in docs/constellations.md. */
 const SIZE_FIT: Record<Size, { fits: (n: number) => boolean; means: string }> = {
   small: { fits: (n) => n <= 2, means: '1 or 2' },
   medium: { fits: (n) => n >= 3 && n <= 5, means: '3 to 5' },
@@ -72,7 +72,7 @@ const SIZE_FIT: Record<Size, { fits: (n: number) => boolean; means: string }> = 
 
 const label = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
-/** The milestone description in the README format. */
+/** The milestone description in the format of docs/constellations.md. */
 export function renderDescription(c: PlannedConstellation): string {
   const sections = LOCALES.map((locale) => {
     const name = locale === DEFAULT_LOCALE ? '' : `### ${c.name[locale].trim()}\n\n`;

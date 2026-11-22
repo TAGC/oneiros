@@ -6,7 +6,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 
 ## Repo map
 
-- `src/content/wiki/`: English pages, one per Glossary term (`kind: term`) plus overview pages (`kind: system`). `README.md` (repo root) is the authoring guide (frontmatter, `[[wiki links]]`, callouts, `<SheetTable>`, navboxes, icons, Chinese pages, checks): follow it.
+- `src/content/wiki/`: English pages, one per Glossary term (`kind: term`) plus overview pages (`kind: system`). `docs/` (indexed in `README.md`) is the authoring guide (frontmatter, `[[wiki links]]`, callouts, `<SheetTable>`, navboxes, icons, Chinese pages, checks): follow it.
 - `src/content/wiki-zh/`: Chinese pages, paired with the English page by file name.
 - `src/data/sheet/` and `src/data/sheet-zh/`: tabular data (the old reference sheet's tabs), rendered with `<SheetTable>`.
 - `src/data/navboxes.json`, `src/data/icons.json`: navboxes per area; 24×24 pixel icons, now only the fallback. Painted area icons: masters in `art-src/icons/`, built into `public/icons/` by `bun run icons`.
@@ -21,7 +21,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 ## Content rules
 
 - **Never invent design.** Only what the designer explicitly agreed is a decision. Claude's suggestions are suggestions: say so, and never write them into a page as settled.
-- **Flag, don't settle.** Anything unconfirmed, ambiguous or open becomes a question issue (`kind:open`); contradictions between sources become `kind:conflict` issues. Put its `[!ISSUE N]` marker on the owner page; format in `README.md` under "Open questions". The `/open-questions/` page and the Astrolabe collect them. Settle a question only when the designer decides it: post the answer on its issue and write the rule into the page itself.
+- **Flag, don't settle.** Anything unconfirmed, ambiguous or open becomes a question issue (`kind:open`); contradictions between sources become `kind:conflict` issues. Put its `[!ISSUE N]` marker on the owner page; format in `docs/open-questions.md`. The `/open-questions/` page and the Astrolabe collect them. Settle a question only when the designer decides it: post the answer on its issue and write the rule into the page itself.
 - **Record decisions only when the designer asks**, and only in the wiki and its question issues (never in handoff notes or memory). Every recorded decision gets an issue with an answer comment, even with no question behind it.
 - **Page status** (`status:` frontmatter; rules on the `/status/` page): never raise a page's status yourself, only propose. Tenet means the premise is accepted, to keep and refine, so Tenet pages change freely as decisions land. Ask whether a Tenet status still holds only when a change or an open question or conflict challenges the page's premise itself.
 - **One owner page per rule.** State a rule fully on its owner page; elsewhere one line plus a link. Each sheet table renders on one page.
@@ -45,7 +45,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 - A player's offered dream journal entry becomes a Reverie: a smaller setting inside the one shared world, not a separate world.
 - Lovecraft is limited to the shared-dream concept, the world name and occasional Easter eggs. For all inspirations: borrow ideas, not names.
 - Art direction: isometric 2.5D like Hades, not top-down tiles.
-- Art: new art is never drawn as code. The designer generates it (Midjourney); Claude cuts it out, cleans it up and checks it in place. Kept as code by the designer's choice: the Coherence rings figure, the logo and favicon, the Lucide icons on Quality styles, the 24×24 pixel icons as the fallback for painted area icons, the Astrolabe star map, and interface glyphs and decoration (menu and theme buttons, starfield, frame). Area icons follow the recipe in `README.md` under "Area icons" (moodboards, angle, prompts, fixes, checks).
+- Art: new art is never drawn as code. The designer generates it (Midjourney); Claude cuts it out, cleans it up and checks it in place. Kept as code by the designer's choice: the Coherence rings figure, the logo and favicon, the Lucide icons on Quality styles, the 24×24 pixel icons as the fallback for painted area icons, the Astrolabe star map, and interface glyphs and decoration (menu and theme buttons, starfield, frame). Area icons follow the recipe in `docs/area-icons.md` (moodboards, angle, prompts, fixes, checks).
 
 ## Working style
 

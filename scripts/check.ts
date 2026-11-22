@@ -270,6 +270,7 @@ function checkEnglishStyle(): Problem[] {
     ...files(WIKI_DIRS.en, isPage),
     ...files(SHEET.en, (f) => f.endsWith('.json')),
     'README.md',
+    ...files('docs', isPage),
   ];
   const problems: Problem[] = [];
   for (const file of targets) {

@@ -5,7 +5,7 @@ description: "Keep the constellations (the ✦ milestones that group open questi
 
 # Chart constellations
 
-A **constellation** is a GitHub milestone whose title starts with `✦ `: a cohesive group of open questions sized for one session. The format, the Size and Energy scales and the membership rules are in `README.md` under "Constellations"; read that section first and follow it exactly.
+A **constellation** is a GitHub milestone whose title starts with `✦ `: a cohesive group of open questions sized for one session. The format, the Size and Energy scales and the membership rules are in `docs/constellations.md`; read that section first and follow it exactly.
 
 The chart is **stable**: a sound constellation stays exactly as it is, so a run with no new or newly closed questions changes nothing. Change a constellation only for one of the reasons in step 2.
 
@@ -50,7 +50,7 @@ For every new or changed constellation, write:
 
 - **Name:** a short noun phrase in Glossary terms, spelt and capitalised as the wiki does (CLAUDE.md, "Ubiquitous language"). The Chinese name uses `src/i18n/zh-terms.md` exactly.
 - **Reasoning:** one to three sentences on why the questions belong together: the rule, page or decision they share. Name the shared theme only: never counts ("all four", "both", "two are conflicts") or a roll call of which question asks what, because questions close and move and those go stale. Describe the questions, never an answer or a lean: the reasoning is not a place for design. The Chinese reasoning says the same, with the term list's words. A term missing from the list goes into the list first, as CLAUDE.md says.
-- **Size and Energy:** from the README scales, judged from the questions. The graph facts feed Energy: independent and peripheral questions pull it down; central questions, conflicts, foundations and Philosophy pull it up. The two scales are independent. Judge both from the questions alone; the designer's time and energy are theirs to match against the scales, never a question to ask.
+- **Size and Energy:** from the scales in `docs/constellations.md`, judged from the questions. The graph facts feed Energy: independent and peripheral questions pull it down; central questions, conflicts, foundations and Philosophy pull it up. The two scales are independent. Judge both from the questions alone; the designer's time and energy are theirs to match against the scales, never a question to ask.
 
 Leave an unchanged constellation's name, reasoning, size and energy as they are.
 

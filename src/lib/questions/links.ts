@@ -67,7 +67,7 @@ export function parsePlan(plan: string): LinkChange[] {
   return changes;
 }
 
-/** The property rows an issue's table holds, in the README's order. */
+/** The property rows an issue's table holds, in the order of docs/open-questions.md. */
 const ROW_ORDER = ['page', 'section', 'source', 'raised', 'related', 'undermined by'];
 export type LinkRow = 'Related' | 'Undermined by';
 
@@ -78,7 +78,7 @@ function rowName(line: string): string {
 /**
  * Adds and removes issue numbers in one row of an issue body's property table, which comes
  * before the first `## ` section. Writes the row as `#a, #b` in number order, inserts a missing
- * row in the README's order and drops a row left empty. Nothing else in the body changes.
+ * row in the order of docs/open-questions.md and drops a row left empty. Nothing else in the body changes.
  */
 export function editRow(
   body: string,
