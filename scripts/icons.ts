@@ -1,14 +1,19 @@
 // Builds the painted area icons in public/icons/ from the masters in art-src/icons/.
-// Each master has a solid dark background: it is keyed out by colour distance from
-// the border's median colour, cropped to a padded square, then written at 512 and
-// 128 px as WebP and AVIF. Run with `bun scripts/icons.ts` after changing a master.
+// Each master has a solid dark background. Only background connected to the image edge
+// is keyed out, so dark parts inside the icon (outlines, shadows, a cypress) stay opaque.
+// The icon is then cropped to a padded square and written at 512 and 128 px as WebP and
+// AVIF. Run with `bun run icons` after changing a master.
 import { readdir, mkdir } from 'node:fs/promises';
 import sharp from 'sharp';
 
 const SRC = 'art-src/icons';
 const OUT = 'public/icons';
 const SIZES = [512, 128];
-// Pixels closer than SOLID to the background colour are faded out over a FEATHER-wide band.
+// Background: pixels within FLOOD of the border's median colour, connected to the edge.
+const FLOOD = 16;
+// Within EDGE px of the background, pixels closer than SOLID to its colour are faded out
+// over a FEATHER-wide band, to soften the anti-aliased rim.
+const EDGE = 2;
 const SOLID = 28;
 const FEATHER = 18;
 
@@ -32,14 +37,58 @@ async function cutOut(path: string): Promise<Buffer> {
     for (const x of [0, w - 1]) for (let c = 0; c < 3; c++) border[c].push(data[at(x, y) + c]);
   const bg = border.map(median);
 
+  const dist = new Float32Array(w * h);
+  for (let p = 0; p < w * h; p++)
+    dist[p] = Math.hypot(data[p * 3] - bg[0], data[p * 3 + 1] - bg[1], data[p * 3 + 2] - bg[2]);
+
+  // Steps from the edge-connected background: 0 inside it, then 1..EDGE, else -1.
+  const steps = new Int8Array(w * h).fill(-1);
+  let queue: number[] = [];
+  const seed = (p: number) => {
+    if (steps[p] === -1 && dist[p] < FLOOD) {
+      steps[p] = 0;
+      queue.push(p);
+    }
+  };
+  for (let x = 0; x < w; x++) {
+    seed(x);
+    seed((h - 1) * w + x);
+  }
+  for (let y = 0; y < h; y++) {
+    seed(y * w);
+    seed(y * w + w - 1);
+  }
+  const neighbours = (p: number) => {
+    const x = p % w;
+    return [x > 0 ? p - 1 : -1, x < w - 1 ? p + 1 : -1, p - w, p + w].filter(
+      (q) => q >= 0 && q < w * h,
+    );
+  };
+  for (let k = 0; k < queue.length; k++) for (const q of neighbours(queue[k])) seed(q);
+  for (let step = 1; step <= EDGE; step++) {
+    const next: number[] = [];
+    for (const p of queue)
+      for (const q of neighbours(p))
+        if (steps[q] === -1) {
+          steps[q] = step;
+          next.push(q);
+        }
+    queue = next;
+  }
+
   const rgba = Buffer.alloc(w * h * 4);
   let [x0, y0, x1, y1] = [w, h, -1, -1];
   for (let y = 0; y < h; y++)
     for (let x = 0; x < w; x++) {
       const i = at(x, y);
-      const d = Math.hypot(data[i] - bg[0], data[i + 1] - bg[1], data[i + 2] - bg[2]);
+      const p = y * w + x;
+      const d = dist[p];
       const alpha =
-        d < SOLID ? Math.min(1, Math.max(0, (d - (SOLID - FEATHER)) / FEATHER)) * 255 : 255;
+        steps[p] === 0
+          ? 0
+          : steps[p] > 0 && d < SOLID
+            ? Math.min(1, Math.max(0, (d - (SOLID - FEATHER)) / FEATHER)) * 255
+            : 255;
       const o = (y * w + x) * 4;
       rgba[o] = data[i];
       rgba[o + 1] = data[i + 1];
