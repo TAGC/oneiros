@@ -5,6 +5,7 @@ import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
 import { getPages } from '../../lib/pages';
 import { categoryUrl } from '../../lib/site';
+import { categoryLabel } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
 
@@ -33,7 +34,7 @@ for (const term of terms) {
       areas.map((a) => (
         <button type="button" data-area={a} aria-pressed="false">
           <IconFrame name={a} size="sm" />
-          {a}
+          {categoryLabel(a, locale)}
         </button>
       ))
     }
@@ -51,7 +52,11 @@ for (const term of terms) {
                     {term.title}
                   </WikiLink>{' '}
                   <small>
-                    (<a href={categoryUrl(term.entry.data.area, locale)}>{term.entry.data.area}</a>)
+                    (
+                    <a href={categoryUrl(term.entry.data.area, locale)}>
+                      {categoryLabel(term.entry.data.area, locale)}
+                    </a>
+                    )
                   </small>
                 </dt>
                 <dd lang={term.locale === locale ? undefined : term.locale}>

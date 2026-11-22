@@ -1,11 +1,5 @@
 /*
- * Interface strings for every locale.
- *
- * The Chinese strings are best-effort drafts. Domain terms are placeholders pending the
- * designer's approved term list: area names, "Vision" and the site name "Oneiros Wiki"
- * stay in English in the zh dictionary for now. Terms from the designer's earlier
- * Chinese guide are used where they exist (梦境之地 the Dreamlands, 做梦者 the Dreamer,
- * 遐梦 Reverie).
+ * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
 export const LOCALES = ['en', 'zh'] as const;
@@ -85,6 +79,8 @@ const en = {
     'Oneiros is a just-for-fun game design project. Text drawn from the vision doc and Glossary.',
   infoboxLabel: (title: string) => `${title} summary`,
   area: 'Area',
+  /** Display names of areas; URLs and frontmatter keep the English name. */
+  areaNames: {} as Record<string, string>,
   all: 'All',
   pageCount: (n: number) => (n === 1 ? '1 page' : `${n} pages`),
 
@@ -158,7 +154,7 @@ Five pillars hold it together:
 export type UI = typeof en;
 
 const zh: UI = {
-  siteName: 'Oneiros Wiki',
+  siteName: 'Oneiros 维基',
   languageName: '中文',
   readIn: '阅读本页的中文版',
   noTranslation: '本页尚无英文版',
@@ -179,7 +175,7 @@ const zh: UI = {
   mainPage: '首页',
   randomPage: '随机页面',
   glossaryIndex: '术语索引',
-  vision: 'Vision',
+  vision: '愿景',
   sheetTables: '参考表格',
   areas: '领域',
   tools: '工具',
@@ -193,22 +189,40 @@ const zh: UI = {
   contents: '目录',
   categories: '分类',
   colon: '：',
-  fromWiki: '来自 Oneiros Wiki',
+  fromWiki: '来自 Oneiros 维基',
   openQuestion: '待定问题',
-  conflict: '冲突：Vision 与参考表不一致',
+  conflict: '冲突：愿景与参考表不一致',
   englishOnly: '仅有英文版（English only）',
   englishData: '英文数据',
   englishDataNote: '此表尚未翻译，以下为英文原文。',
   pageMissing: (name) => `${name}（页面不存在）`,
   lastEdited: (date) => `本页最后编辑于${date}。`,
-  footer: 'Oneiros 是一个出于兴趣的游戏设计项目。文字取自 Vision 文档与术语表。',
+  footer: 'Oneiros 是一个出于兴趣的游戏设计项目。文字取自愿景文档与术语表。',
   infoboxLabel: (title) => `${title}概要`,
   area: '领域',
+  areaNames: {
+    Beliefs: '信念',
+    Body: '身体与形态',
+    Character: '角色',
+    Dreams: '你的梦',
+    Economy: '经济',
+    Emotion: '情感',
+    Items: '物品',
+    Library: '藏书室',
+    Lore: '典故',
+    Lucidity: '清明',
+    Magic: '魔法',
+    Memory: '记忆',
+    Philosophy: '哲学',
+    Rest: '休息',
+    Temenos: '圣域',
+    World: '世界',
+  },
   all: '全部',
   pageCount: (n) => `${n} 个页面`,
 
-  mainDescription: 'Oneiros 游戏设计 wiki：一款以梦境之地为舞台的系统驱动角色扮演游戏。',
-  welcomeTitle: '欢迎来到 Oneiros Wiki',
+  mainDescription: 'Oneiros 游戏设计维基：一款以梦境之地为舞台的系统驱动角色扮演游戏。',
+  welcomeTitle: '欢迎来到 Oneiros 维基',
   mainSub: (pages, translated) =>
     `一个出于兴趣的游戏设计项目。目前共有 ${pages} 个页面，其中 ${translated} 个已有中文版。`,
   welcome: `
@@ -231,7 +245,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   openCard: (n) => `${n} 个待定问题与冲突，等待定夺。`,
   randomCard: '随意漂流到一个新地方。',
 
-  glossaryDescription: 'wiki 中的所有术语，按字母排序。',
+  glossaryDescription: '维基中的所有术语，按字母排序。',
   glossarySub: (n) => `所有已有页面的术语，按英文字母排序。目前共 ${n} 个。`,
 
   categoryTitle: (name) => `分类：${name}`,
@@ -241,8 +255,8 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   categoryOpen: '含待定问题的页面',
   categoryConflict: '含冲突的页面',
 
-  openDescription: '整个 wiki 中的所有待定问题与冲突。',
-  openSub: (n) => `逐页列出所有待定问题，以及 Vision 与参考表之间的所有冲突：共 ${n} 处。`,
+  openDescription: '整个维基中的所有待定问题与冲突。',
+  openSub: (n) => `逐页列出所有待定问题，以及愿景与参考表之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
   onThePage: '查看原处',
 

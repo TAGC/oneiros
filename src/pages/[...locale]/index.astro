@@ -7,6 +7,7 @@ import { renderMarkdown } from '../../lib/markdown';
 import { getCategories, getPages } from '../../lib/pages';
 import { categoryUrl, url } from '../../lib/site';
 import { TABS } from '../../lib/sheet';
+import { categoryLabel } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
 
@@ -37,7 +38,7 @@ const welcome = renderMarkdown(t.welcome, undefined, locale);
           <li>
             <a class="tile" href={categoryUrl(area, locale)}>
               <IconFrame name={area} />
-              <span class="lab">{area}</span>
+              <span class="lab">{categoryLabel(area, locale)}</span>
               <span class="desc">{t.pageCount(n)}</span>
             </a>
           </li>

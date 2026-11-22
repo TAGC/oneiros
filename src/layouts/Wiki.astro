@@ -13,7 +13,7 @@ import {
 } from '../i18n/ui';
 import { SIDEBAR_AREAS } from '../lib/areas';
 import { categoryUrl, SITE, url } from '../lib/site';
-import { resolve } from '../lib/wiki';
+import { categoryLabel, resolve } from '../lib/wiki';
 
 interface Tab {
   label: string;
@@ -186,7 +186,7 @@ const alternates = path
                 <li>
                   <a class="area-link" href={categoryUrl(area, locale)}>
                     <IconFrame name={area} size="sm" />
-                    {area}
+                    {categoryLabel(area, locale)}
                   </a>
                 </li>
               ))

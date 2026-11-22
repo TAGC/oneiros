@@ -57,7 +57,7 @@ const tabs = [
       <h1>{page.title}</h1>
     </div>
     <p class="sub" data-pagefind-ignore>
-      {t.fromWiki} · <a href={categoryUrl(entry.data.area, locale)}>{entry.data.area}</a>
+      {t.fromWiki} · <a href={categoryUrl(entry.data.area, locale)}>{categoryLabel(entry.data.area, locale)}</a>
     </p>
     {
       entry.data.infobox && (

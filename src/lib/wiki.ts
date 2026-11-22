@@ -53,12 +53,12 @@ export function calloutHeading(kind: CalloutKind, locale: Locale): string {
   return kind === 'open' ? t.openQuestion : t.conflict;
 }
 
-/** A category's display name: the automatic categories are translated, others are names. */
+/** A category's display name: automatic categories and areas are translated, others are names. */
 export function categoryLabel(name: string, locale: Locale): string {
   const t = useTranslations(locale);
   if (name === CALLOUTS.open.category) return t.categoryOpen;
   if (name === CALLOUTS.conflict.category) return t.categoryConflict;
-  return name;
+  return t.areaNames[name] ?? name;
 }
 
 export const WIKI_LINK = /\[\[([^[\]\n]+?)\]\]/g;

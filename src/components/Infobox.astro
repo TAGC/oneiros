@@ -3,6 +3,7 @@ import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
 import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
 import { renderInline } from '../lib/markdown';
 import { categoryUrl } from '../lib/site';
+import { categoryLabel } from '../lib/wiki';
 
 interface Props {
   title: string;
@@ -35,7 +36,7 @@ if (figure && !Figure) throw new Error(`Infobox figure "${figure}" not found in 
   <table>
     <tr data-pagefind-ignore>
       <th scope="row">{t.area}</th>
-      <td><a href={categoryUrl(area, locale)}>{area}</a></td>
+      <td><a href={categoryUrl(area, locale)}>{categoryLabel(area, locale)}</a></td>
     </tr>
     {
       rows.map((row) => (
