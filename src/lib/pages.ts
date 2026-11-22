@@ -30,7 +30,7 @@ function fileName(entry: Entry, locale: Locale): string {
 }
 
 function toPage(entry: Entry, locale: Locale): Page {
-  const callouts = extractCallouts(entry.body ?? '');
+  const callouts = extractCallouts(entry.body ?? '', locale);
   const auto = (['open', 'conflict'] as const)
     .filter((kind) => callouts.some((c) => c.kind === kind))
     .map((kind) => CALLOUTS[kind].category);

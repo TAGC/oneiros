@@ -146,6 +146,8 @@ Five pillars hold it together:
     `Every open question and every conflict between the vision and the sheet, page by page: ${n} in all.`,
   openNone: 'No open questions yet.',
   onThePage: 'on the page',
+  questionMissing: (n: number) =>
+    `Question #${n} is not in the question cache. Run \`bun run pull\`.`,
 
   /* Status */
   statusDescription: "How settled a page's design idea is.",
@@ -326,6 +328,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   openSub: (n) => `逐页列出所有待定问题，以及愿景与参考表之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
   onThePage: '查看原处',
+  questionMissing: (n) => `问题缓存中没有问题 #${n}。请运行 \`bun run pull\`。`,
 
   statusDescription: '页面所述设计想法的确定程度。',
   statusIntro:

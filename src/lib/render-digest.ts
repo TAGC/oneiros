@@ -5,7 +5,7 @@ import { LOCALES } from '../i18n/ui';
 import { allSources } from './wiki';
 
 /** Code and data, other than a page's own file, that its rendered Markdown depends on. */
-const INPUTS = ['src/lib', 'src/i18n', 'bun.lock'];
+const INPUTS = ['src/lib', 'src/i18n', 'bun.lock', '.questions'];
 
 function files(root: string, path: string): string[] {
   try {
@@ -19,9 +19,10 @@ function files(root: string, path: string): string[] {
 
 /**
  * A hash of every page's link target (slug, title, aliases, summary) and of the code that
- * renders wiki links. Astro reuses a Markdown file's rendered HTML until the file or the
- * Astro config changes, so the config carries this to re-render every page when a link
- * would resolve differently, without `--force`.
+ * renders wiki links, and of the question cache that fills question markers. Astro reuses a
+ * Markdown file's rendered HTML until the file or the Astro config changes, so the config
+ * carries this to re-render every page when a link or a question would render differently,
+ * without `--force`.
  */
 export function renderDigest(root = process.cwd()): string {
   const hash = createHash('sha256');

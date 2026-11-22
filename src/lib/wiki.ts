@@ -6,7 +6,8 @@ import remarkParse from 'remark-parse';
 import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
-import { type Locale, useTranslations } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { getQuestions, type Questions } from './questions';
 import { slugify, WIKI_DIRS } from './site';
 import type { Status } from './status';
 
@@ -41,6 +42,8 @@ export interface Callout {
   kind: CalloutKind;
   id: string;
   markdown: string;
+  /** The question issue behind a `[!ISSUE N]` marker; inline callouts have none. */
+  issue?: number;
 }
 
 /** Callout kinds and the automatic category each adds (an English name, as are all categories). */
@@ -69,6 +72,7 @@ export function statusLabel(status: Status, locale: Locale): string {
 
 export const WIKI_LINK = /\[\[([^[\]\n]+?)\]\]/g;
 const MARKER = /^\s*\[!(OPEN|CONFLICT)\]\s*/i;
+const ISSUE_MARKER = /^\s*\[!ISSUE\s+#?(\d+)\]/i;
 
 interface Index {
   sources: WikiSource[];
@@ -224,6 +228,16 @@ export function calloutKind(node: Blockquote): CalloutKind | undefined {
   return match ? (match[1].toLowerCase() as CalloutKind) : undefined;
 }
 
+/** The issue number of a blockquote opening with `[!ISSUE 142]`, a question marker, if any. */
+export function issueMarker(node: Blockquote): number | undefined {
+  const first = node.children[0];
+  if (first?.type !== 'paragraph') return undefined;
+  const text = (first as Paragraph).children[0];
+  if (text?.type !== 'text') return undefined;
+  const match = ISSUE_MARKER.exec(text.value);
+  return match ? Number(match[1]) : undefined;
+}
+
 /** Removes the `[!KIND]` marker, dropping the opening paragraph if nothing else is in it. */
 export function stripCalloutMarker(node: Blockquote): void {
   const first = node.children[0] as Paragraph;
@@ -238,14 +252,40 @@ export function calloutId(kind: CalloutKind, n: number): string {
   return `${kind}-${n}`;
 }
 
+/** The anchor id of a question marker's box. */
+export function issueId(n: number): string {
+  return `issue-${n}`;
+}
+
+/** The callout a `[!ISSUE N]` marker stands for; a missing question says so in its text. */
+export function markerCallout(issue: number, locale: Locale, questions: Questions): Callout {
+  const question = questions.get(issue);
+  const markdown = question
+    ? (question.text[locale] ?? question.text[DEFAULT_LOCALE] ?? '')
+    : useTranslations(locale).questionMissing(issue);
+  return { kind: question?.kind ?? 'open', id: issueId(issue), markdown, issue };
+}
+
 const calloutParser = unified().use(remarkParse).use(remarkGfm);
 
-/** Every callout in a body, in document order, with its Markdown and anchor id. */
-export function extractCallouts(body: string): Callout[] {
+/**
+ * Every callout in a body, in document order, with its Markdown and anchor id. A question
+ * marker takes its kind and text (in the page's locale) from its question.
+ */
+export function extractCallouts(
+  body: string,
+  locale: Locale = DEFAULT_LOCALE,
+  questions: Questions = getQuestions(),
+): Callout[] {
   const tree = calloutParser.parse(body) as Root;
   const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
   const callouts: Callout[] = [];
   visit(tree, 'blockquote', (node: Blockquote) => {
+    const issue = issueMarker(node);
+    if (issue !== undefined) {
+      callouts.push(markerCallout(issue, locale, questions));
+      return;
+    }
     const kind = calloutKind(node);
     if (!kind) return;
     const start = node.position?.start.offset ?? 0;
