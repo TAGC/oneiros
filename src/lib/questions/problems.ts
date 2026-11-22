@@ -3,8 +3,9 @@
  * and each issue's own format. Kept here so they can be tested without a build.
  */
 import { DEFAULT_LOCALE, LOCALES, type Locale, useTranslations } from '../../i18n/ui';
-import { type CalloutKind, sourceName } from '../wiki';
+import { sourceName } from '../wiki';
 import { QUESTION_CACHE, questionGraph, type Questions } from '.';
+import type { Marker, Misspelt, OldCallout } from './markers';
 
 export interface Problem {
   where: string;
@@ -19,9 +20,11 @@ export interface MarkedPage {
   locale: Locale;
   slug: string;
   status?: unknown;
-  markers: { issue: number; line: number }[];
+  markers: Marker[];
   /** Old inline `[!OPEN]` and `[!CONFLICT]` callouts, which fail the checks. */
-  callouts?: { kind: CalloutKind; line: number }[];
+  callouts?: OldCallout[];
+  /** Other spellings of a marker, which fail the checks. */
+  misspelt?: Misspelt[];
 }
 
 const LOCKED = new Set(['Certainty', 'Dogma']);
@@ -32,7 +35,7 @@ const numbers = (list: number[]) => list.map((n) => `#${n}`).join(', ') || 'none
  * Every marker names an open question issue (a duplicate's failure names its canonical issue
  * and that issue's page); an English marker's issue has a Page row naming its page; English
  * and Chinese pages carry the same markers; Certainty and Dogma pages hold none; no page holds
- * an inline callout.
+ * an inline callout or another spelling of a marker.
  */
 export function markerProblems(questions: Questions, pages: MarkedPage[]): Problem[] {
   const problems: Problem[] = [];
@@ -41,6 +44,12 @@ export function markerProblems(questions: Questions, pages: MarkedPage[]): Probl
       problems.push({
         where: `${page.file}:${line}`,
         message: `inline [!${kind.toUpperCase()}] callout; make it a question issue and put a \`> [!ISSUE N]\` marker here`,
+      });
+    }
+    for (const { found, issue, line } of page.misspelt ?? []) {
+      problems.push({
+        where: `${page.file}:${line}`,
+        message: `\`${found}\` is not a marker; write \`> [!ISSUE ${issue ?? 'N'}]\`, alone in a quote of its own`,
       });
     }
     for (const { issue, line } of page.markers) {

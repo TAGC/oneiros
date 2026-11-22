@@ -19,7 +19,7 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const pages = await getPages(locale);
 const categories = await getCategories(locale);
-const openCount = pages.reduce((n, p) => n + p.callouts.length, 0);
+const openCount = pages.reduce((n, p) => n + p.markers.length, 0);
 const translatedCount = pages.filter((p) => p.locale === 'zh').length;
 const welcome = renderMarkdown(t.welcome, undefined, locale);
 ---

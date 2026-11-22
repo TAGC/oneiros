@@ -19,19 +19,19 @@ import { unified } from 'unified';
 import { SKIP, visit } from 'unist-util-visit';
 import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
 import { getQuestions, type Questions } from './questions';
+import { markerBlocks } from './questions/markers';
 import { WIKI_DIRS, wikiUrl } from './site';
 import {
   calloutHeading,
   type CalloutKind,
-  issueMarker,
-  markerCallout,
+  markerBox,
   parseWikiLink,
   resolve,
   WIKI_LINK,
 } from './wiki';
 
 export interface RemarkWikiOptions {
-  /** Also add heading ids, the contents box, callouts and table classes (full articles). */
+  /** Also add heading ids, the contents box, marker boxes and table classes (full articles). */
   article?: boolean;
   /** The page slug that `[[#Section]]` links point into, when rendered off that page. */
   page?: string;
@@ -155,14 +155,11 @@ function parseFragment(markdown: string): RootContent[] {
 
 /** Fills each `[!ISSUE N]` marker with its question's text for the page's locale. */
 function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
-  visit(tree, 'blockquote', (node: Blockquote) => {
-    const n = issueMarker(node);
-    if (n === undefined) return;
-    const callout = markerCallout(n, locale, questions);
-    node.children = parseFragment(callout.markdown) as Blockquote['children'];
-    toNote(node, callout.kind, callout.id, calloutHeading(callout.kind, locale, questions.get(n)));
-    return SKIP;
-  });
+  for (const { issue, node } of markerBlocks(tree)) {
+    const box = markerBox(issue, locale, questions);
+    node.children = parseFragment(box.markdown) as Blockquote['children'];
+    toNote(node, box.kind, box.id, calloutHeading(box.kind, locale, questions.get(issue)));
+  }
 }
 
 function transformTables(tree: Root): void {
