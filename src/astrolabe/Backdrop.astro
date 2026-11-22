@@ -4,6 +4,7 @@
  * soft glow per area. The designer ruled the Astrolabe interface decoration, so it may be
  * drawn as code; it stays in this one file all the same, so painted art could replace it.
  */
+import { scatterSpecks, speckPaths } from './backdrop';
 import type { StarChart } from './chart';
 import { mulberry32, type SkyLayout } from './sky';
 import { areaKey, areaTint } from './tints';
@@ -20,13 +21,7 @@ const H = layout.height;
 /** The client lets the sky zoom out to about 1.6 times the fitted view. */
 const pad = Math.max(W, H) * 0.35;
 
-const speckRandom = mulberry32(7);
-const specks = Array.from({ length: Math.round(((W + 2 * pad) * (H + 2 * pad)) / 4500) }, () => ({
-  x: f(-pad + speckRandom() * (W + 2 * pad)),
-  y: f(-pad + speckRandom() * (H + 2 * pad)),
-  r: Number((0.35 + speckRandom() * speckRandom() * 1.3).toFixed(2)),
-  o: Number((0.25 + speckRandom() * 0.75).toFixed(2)),
-}));
+const specks = speckPaths(scatterSpecks(W, H, pad));
 
 const cx = W / 2;
 const cy = H / 2;
@@ -87,14 +82,12 @@ const wisps = layout.stars.flatMap((s) => {
 </defs>
 <g class="al-specks" aria-hidden="true">
   {
-    specks.map((s, i) => (
-      <circle
-        cx={s.x}
-        cy={s.y}
-        r={s.r}
-        opacity={s.o}
-        class={i % 9 === 0 ? 'al-tw' : undefined}
-        style={i % 9 === 0 ? `--tw:${3 + (i % 5)}s;--tw-delay:-${i % 7}s` : undefined}
+    specks.map((p) => (
+      <path
+        d={p.d}
+        opacity={p.opacity}
+        class={p.tw ? 'al-tw' : undefined}
+        style={p.tw ? `--tw:${p.tw.period}s;--tw-delay:-${p.tw.delay}s` : undefined}
       />
     ))
   }

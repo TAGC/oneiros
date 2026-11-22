@@ -384,12 +384,14 @@
   fill: var(--ink);
 }
 
-/* Twinkle: frontier halos and a few specks. */
-.al-halo,
-.al-tw {
+/* Twinkle: frontier halos and a few specks. Speck paths hold many specks, so they only fade. */
+.al-halo {
   animation: al-twinkle var(--tw, 4s) ease-in-out var(--tw-delay, 0s) infinite alternate;
   transform-box: fill-box;
   transform-origin: center;
+}
+.al-tw {
+  animation: al-twinkle-fade var(--tw, 4s) ease-in-out var(--tw-delay, 0s) infinite alternate;
 }
 @keyframes al-twinkle {
   from {
@@ -399,6 +401,14 @@
   to {
     opacity: 1;
     transform: scale(1.05);
+  }
+}
+@keyframes al-twinkle-fade {
+  from {
+    opacity: 0.45;
+  }
+  to {
+    opacity: 1;
   }
 }
 @media (prefers-reduced-motion: reduce) {
