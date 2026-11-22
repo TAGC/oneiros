@@ -48,5 +48,4 @@ Apeiron can't be harvested, traded, crafted or turned into memories. For what el
 
 [[Attention]] stays dangerous for everyone. Apeiron only decides whether what the Dreamer brings is new or familiar.
 
-> [!OPEN]
-> What should a month's subscription cost, in kyathoi and in money?
+> [!ISSUE 23]
