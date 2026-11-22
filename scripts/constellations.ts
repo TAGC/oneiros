@@ -1,16 +1,15 @@
 /**
  * Constellations from the question cache (run `bun run pull` first), for the
- * chart-constellations skill.
+ * chart-constellations skill. A live apply ends by pulling, so the cache matches GitHub.
  * Usage:
  *   bun run constellations                     the state: constellations, ungrouped, to close
  *   bun run constellations plan                the current chart as a plan file (YAML)
  *   bun run constellations apply <plan>        dry run: the operations the plan needs
- *   bun run constellations apply <plan> --live carry them out on GitHub with `gh api`
+ *   bun run constellations apply <plan> --live carry them out on GitHub
  */
 import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { loadQuestions, QUESTION_CACHE } from '../src/lib/questions';
+import { loadQuestions } from '../src/lib/questions';
 import {
   chartOperations,
   currentChart,
@@ -19,13 +18,9 @@ import {
   stateReport,
 } from '../src/lib/questions/chart';
 import { loadConstellations } from '../src/lib/questions/constellations';
-import { gh, SLUG } from './gh';
-
-const CACHE = join(import.meta.dirname, '..', QUESTION_CACHE);
-
-const questions = loadQuestions(CACHE);
-const constellations = loadConstellations(CACHE, questions);
-const [command = 'state', file, flag] = process.argv.slice(2);
+import { type GitHub, liveGitHub } from './github';
+import { CACHE, pull } from './pull';
+import type { RunOptions } from './question-links';
 
 function describe(op: Operation): string {
   switch (op.kind) {
@@ -42,55 +37,70 @@ function describe(op: Operation): string {
   }
 }
 
-/** Sends a JSON request body on stdin, so text of any language reaches GitHub intact. */
-function send(method: string, path: string, body: object, ...args: string[]): string {
-  return gh(['-X', method, `repos/${SLUG}/${path}`, '--input', '-', ...args], JSON.stringify(body));
-}
-
-function run(operations: Operation[]): void {
+function run(github: GitHub, operations: Operation[], log: (line: string) => void): void {
   const created = new Map<string, number>();
   for (const op of operations) {
     if (op.kind === 'create') {
-      const { title, description } = op;
-      const number = send('POST', 'milestones', { title, description }, '--jq', '.number');
-      created.set(op.ref, Number(number));
-      console.log(`${describe(op)}: milestone ${number}`);
+      const number = github.createMilestone({ title: op.title, description: op.description });
+      created.set(op.ref, number);
+      log(`${describe(op)}: milestone ${number}`);
       continue;
     }
     if (op.kind === 'edit') {
-      const { title, description } = op;
-      send('PATCH', `milestones/${op.number}`, { title, description }, '--silent');
+      github.editMilestone(op.number, { title: op.title, description: op.description });
     } else if (op.kind === 'assign') {
       const number = typeof op.milestone === 'number' ? op.milestone : created.get(op.milestone);
       if (number === undefined) throw new Error(`no milestone created for "${op.milestone}"`);
-      send('PATCH', `issues/${op.issue}`, { milestone: number }, '--silent');
+      github.assignMilestone(op.issue, number);
     } else {
-      send('PATCH', `milestones/${op.number}`, { state: 'closed' }, '--silent');
+      github.closeMilestone(op.number);
     }
-    console.log(describe(op));
+    log(describe(op));
   }
 }
 
-if (command === 'state') {
-  console.log(stateReport(questions, constellations));
-} else if (command === 'plan') {
-  const ungrouped = constellations.ungrouped().map((q) => q.number);
-  console.log(stringifyYaml({ ...currentChart(constellations), ungrouped }).trim());
-} else if (command === 'apply' && file) {
-  const plan = parseYaml(readFileSync(file, 'utf8')) as Plan;
-  const result = chartOperations(plan, questions, constellations);
-  for (const w of result.warnings) console.warn(`warning: ${w}`);
+/**
+ * Applies a plan's YAML to the constellations in the cache: prints the operations, and
+ * carries them out when live. False when the plan has errors; nothing is written then.
+ */
+export function applyChart(
+  github: GitHub,
+  planText: string,
+  { live, cache, log, warn = log }: RunOptions,
+): boolean {
+  const questions = loadQuestions(cache);
+  const plan = parseYaml(planText) as Plan;
+  const result = chartOperations(plan, questions, loadConstellations(cache, questions));
+  for (const w of result.warnings) warn(`warning: ${w}`);
   if (result.errors.length) {
-    for (const e of result.errors) console.error(`error: ${e}`);
+    for (const e of result.errors) warn(`error: ${e}`);
+    return false;
+  }
+  if (!result.operations.length) log('Nothing to change.');
+  else if (live) run(github, result.operations, log);
+  else {
+    for (const op of result.operations) log(describe(op));
+    log('');
+    log(`Dry run: ${result.operations.length} operation(s). Add --live to apply them.`);
+  }
+  if (live) log(pull(github, cache));
+  return true;
+}
+
+if (import.meta.main) {
+  const [command = 'state', file, flag] = process.argv.slice(2);
+  const questions = loadQuestions(CACHE);
+  const constellations = loadConstellations(CACHE, questions);
+  if (command === 'state') {
+    console.log(stateReport(questions, constellations));
+  } else if (command === 'plan') {
+    const ungrouped = constellations.ungrouped().map((q) => q.number);
+    console.log(stringifyYaml({ ...currentChart(constellations), ungrouped }).trim());
+  } else if (command === 'apply' && file) {
+    const options = { live: flag === '--live', cache: CACHE, log: console.log, warn: console.warn };
+    if (!applyChart(liveGitHub(), readFileSync(file, 'utf8'), options)) process.exit(1);
+  } else {
+    console.error('Usage: bun run constellations [state | plan | apply <plan> [--live]]');
     process.exit(1);
   }
-  if (!result.operations.length) console.log('Nothing to change.');
-  else if (flag === '--live') run(result.operations);
-  else {
-    for (const op of result.operations) console.log(describe(op));
-    console.log(`\nDry run: ${result.operations.length} operation(s). Add --live to apply them.`);
-  }
-} else {
-  console.error('Usage: bun run constellations [state | plan | apply <plan> [--live]]');
-  process.exit(1);
 }

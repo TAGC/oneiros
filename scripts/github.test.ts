@@ -2,10 +2,13 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { stringify as stringifyYaml } from 'yaml';
 import { loadQuestions } from '../src/lib/questions';
+import { currentChart } from '../src/lib/questions/chart';
 import { writeConstellation } from '../src/lib/questions/constellation-format';
 import { loadConstellations } from '../src/lib/questions/constellations';
 import { type FakeIssue, fakeGitHub } from './github-fake';
+import { applyChart } from './constellations';
 import { pull } from './pull';
 import { applyLinks } from './question-links';
 
@@ -143,6 +146,124 @@ add #4 undermined-by #2: #2 broke its premise.
     expect(() => applyLinks(github, 'add #1 related #9', { live: true, cache, log })).toThrow(
       '#9 is not a question issue',
     );
+    expect(github.writes).toEqual([]);
+  });
+});
+
+describe('a constellations plan', () => {
+  const OLD = writeConstellation({
+    name: { en: 'Old group', zh: '旧组' },
+    reasoning: { en: 'An old theme.', zh: '旧主题。' },
+    size: 'small',
+    energy: 'low',
+  });
+  const PLAN = `constellations:
+  - number: 1
+    name:
+      en: Fading memories
+      zh: 褪色的记忆
+    size: small
+    energy: low
+    reasoning:
+      en: How memories fade and what it costs.
+      zh: 记忆如何褪色以及代价为何。
+    questions: [1, 3]
+  - name:
+      en: Beads and obols
+      zh: 珠子与奥波
+    size: small
+    energy: medium
+    reasoning:
+      en: What a bead holds.
+      zh: 珠子承载什么。
+    questions: [2, 4]
+`;
+
+  function seed() {
+    const github = fakeGitHub({
+      issues: [
+        question(1, { milestone: 1 }),
+        question(2, { milestone: 1 }),
+        question(3),
+        question(4),
+        question(5, { milestone: 2, state: 'closed', state_reason: 'completed' }),
+      ],
+      milestones: [
+        { number: 1, ...FADING },
+        { number: 2, ...OLD },
+        { number: 3, title: 'Release 1', description: 'Not a constellation.' },
+      ],
+    });
+    pull(github, cache);
+    return github;
+  }
+
+  test('a dry run prints the operations and writes nothing', () => {
+    const github = seed();
+    expect(applyChart(github, PLAN, { live: false, cache, log })).toBe(true);
+    expect(github.writes).toEqual([]);
+    expect(out).toEqual([
+      'edit milestone 1: description',
+      'create milestone "✦ Beads and obols"',
+      'assign #2 to milestone "Beads and obols"',
+      'assign #3 to milestone 1',
+      'assign #4 to milestone "Beads and obols"',
+      'close milestone 2',
+      '',
+      'Dry run: 6 operation(s). Add --live to apply them.',
+    ]);
+  });
+
+  test('a live run leaves GitHub holding the plan and refreshes the cache', () => {
+    const github = seed();
+    expect(applyChart(github, PLAN, { live: true, cache, log })).toBe(true);
+    const milestones = github.milestones();
+    expect(milestones.map((m) => [m.number, m.title, m.state])).toEqual([
+      [1, '✦ Fading memories', 'open'],
+      [2, '✦ Old group', 'closed'],
+      [3, 'Release 1', 'open'],
+      [4, '✦ Beads and obols', 'open'],
+    ]);
+    expect(milestones[0].description).toContain('How memories fade and what it costs.');
+    expect(milestones[2].description).toBe('Not a constellation.');
+    expect(milestones[3].description).toContain('### 珠子与奥波');
+    expect(github.questions().map((q) => [q.number, q.milestone?.number])).toEqual([
+      [1, 1],
+      [2, 4],
+      [3, 1],
+      [4, 4],
+      [5, 2],
+    ]);
+
+    const constellations = loadConstellations(cache, loadQuestions(cache));
+    expect(constellations.open().map((c) => [c.name.en, c.questions.map((q) => q.number)])).toEqual(
+      [
+        ['Fading memories', [1, 3]],
+        ['Beads and obols', [2, 4]],
+      ],
+    );
+    expect(constellations.ungrouped()).toEqual([]);
+  });
+
+  test('applying the chart it leaves says nothing to change', () => {
+    const github = seed();
+    applyChart(github, PLAN, { live: true, cache, log });
+    const before = github.writes.length;
+    out = [];
+    const chart = stringifyYaml(currentChart(loadConstellations(cache, loadQuestions(cache))));
+    expect(applyChart(github, chart, { live: true, cache, log })).toBe(true);
+    expect(github.writes.length).toBe(before);
+    expect(out).toEqual([
+      'Nothing to change.',
+      'Wrote 5 question(s) and 4 milestone(s) to .questions/',
+    ]);
+  });
+
+  test('a plan with errors writes nothing', () => {
+    const github = seed();
+    const missing = PLAN.replace('questions: [2, 4]', 'questions: [2]');
+    expect(applyChart(github, missing, { live: true, cache, log })).toBe(false);
+    expect(out).toContain('error: #4 is open but in no planned constellation');
     expect(github.writes).toEqual([]);
   });
 });
