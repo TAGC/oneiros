@@ -462,6 +462,7 @@ Notes on the intensity words:
 | Generation | 内容生成 | | guide (old) | |
 | Inspirations | 灵感来源 | | guide (new, old) | |
 | Other ideas | 其他想法 | | guide (old) | |
+| Parked topics | 待议话题 | | proposed | Ideas the designer flagged to discuss later. |
 | Navbox group: Overview / Places / Time / Force and memory / People and lore / About the game | 概览 / 地点 / 时间 / 力与记忆 / 人与典故 / 关于游戏 | | proposed | |
 
 ---

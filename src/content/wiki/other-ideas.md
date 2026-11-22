@@ -8,7 +8,7 @@ navbox: world
 
 <div class="note"><p class="note-h"><strong>Not decisions</strong></p><p>These ideas are liked but not yet worked through. Nothing on this page is canon.</p></div>
 
-**Other ideas** collects what the vision keeps for later: liked, but not yet worked through.
+**Other ideas** collects what the vision keeps for later: liked, but not yet worked through. For ideas the designer has flagged to discuss, see [[Parked topics]].
 
 ## Magic
 

@@ -8,7 +8,7 @@ navbox: world
 
 <div class="note"><p class="note-h"><strong>并非定论</strong></p><p>这些想法设计者很喜欢，但尚未深入推敲。本页的任何内容都不是正式设定。</p></div>
 
-**其他想法**(other ideas)收录了愿景留待以后的内容：设计者喜欢，但尚未深入推敲。
+**其他想法**(other ideas)收录了愿景留待以后的内容：设计者喜欢，但尚未深入推敲。设计者标记为日后再议的想法见[[Parked topics|待议话题]]。
 
 ## 魔法
 
