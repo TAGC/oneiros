@@ -6,29 +6,7 @@ import type { StarRole, StarStatus } from '../astrolabe/chart';
 import type { ThreadKind } from '../lib/questions';
 import type { Energy, Size } from '../lib/questions/constellations';
 import type { Status } from '../lib/status';
-import { DEFAULT_LOCALE, LOCALES, type Locale } from './locale';
-
-/** Noto Serif SC for titles and Noto Sans SC for body text, loaded on zh pages only. */
-export const CJK_FONTS =
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap';
-
-export function toLocale(value: unknown): Locale {
-  return value === 'zh' ? 'zh' : 'en';
-}
-
-export function otherLocale(locale: Locale): Locale {
-  return locale === 'zh' ? 'en' : 'zh';
-}
-
-/** The `[...locale]` route param: undefined for English, so its URLs keep no prefix. */
-export function localeParam(locale: Locale): string | undefined {
-  return locale === DEFAULT_LOCALE ? undefined : locale;
-}
-
-/** `getStaticPaths` entries for a page under `src/pages/[...locale]/`, one per locale. */
-export function localePaths() {
-  return LOCALES.map((locale) => ({ params: { locale: localeParam(locale) }, props: { locale } }));
-}
+import type { Locale } from './locale';
 
 const en = {
   siteName: 'Oneiros Wiki',
