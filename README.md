@@ -242,8 +242,9 @@ The description holds an English property table, then one section per site local
 <the reasoning in Chinese>
 ```
 
-- **Size:** `small`, `medium` or `large`, ignoring case.
-- **Energy:** `low`, `medium` or `high`, ignoring case.
+- **Size:** `small`, `medium` or `large`, ignoring case. Size is time: how many questions and how much reading. Small is one or two questions, under 30 minutes; large is six or more, a long session.
+- **Energy:** `low`, `medium` or `high`, ignoring case. Energy is weight: how hard and far-reaching the decisions are. Low is peripheral or independent questions, mostly confirming wording; high is central questions, foundations, conflicts or philosophy.
+- The two are independent: eight wording fixes are large but low energy; one central question about a premise is small but high energy.
 - Both scales' labels are in `src/i18n/ui.ts`, in both languages.
 
 An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.
