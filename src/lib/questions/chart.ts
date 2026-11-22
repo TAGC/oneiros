@@ -10,6 +10,7 @@ import {
   formatProblems,
   onScale,
   SIZES,
+  statedCounts,
   writeConstellation,
 } from './constellation-format';
 import type { Constellations, Energy, Size } from './constellations';
@@ -46,6 +47,8 @@ export interface ChartResult {
   warnings: string[];
   operations: Operation[];
 }
+
+const LANGUAGE: Record<Locale, string> = { en: 'English', zh: 'Chinese' };
 
 /** Which sizes fit how many questions, from the scale in docs/constellations.md. */
 const SIZE_FIT: Record<Size, { fits: (n: number) => boolean; means: string }> = {
@@ -185,6 +188,13 @@ export function chartOperations(
     else if (size && !SIZE_FIT[size].fits(c.questions.length)) {
       warnings.push(
         `"${en}" holds ${c.questions.length} questions; its size ${size} usually means ${SIZE_FIT[size].means}`,
+      );
+    }
+    for (const locale of LOCALES) {
+      const counts = statedCounts(c.reasoning?.[locale] ?? '');
+      if (!counts.length) continue;
+      warnings.push(
+        `"${en}": the ${LANGUAGE[locale]} reasoning may state counts (${counts.map((p) => `"${p}"`).join(', ')}); name the shared theme only`,
       );
     }
   }

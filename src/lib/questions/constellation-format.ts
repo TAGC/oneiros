@@ -108,3 +108,25 @@ export function formatProblems(c: ConstellationText): string[] {
   }
   return problems;
 }
+
+const NUMBER = String.raw`(?:two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|\d+)`;
+const COUNTS = [
+  new RegExp(String.raw`\bboth\b`, 'gi'),
+  new RegExp(String.raw`\ball (?:of )?(?:the )?${NUMBER}\b`, 'gi'),
+  new RegExp(
+    String.raw`\b${NUMBER} (?:questions?|conflicts?|issues?|of them|of these|are|ask)\b`,
+    'gi',
+  ),
+  /[两二三四五六七八九十]+[个项道者]|\d+\s*[个项道]/g,
+];
+
+/**
+ * Phrases in a reasoning that look like counts ("both", "all four", 两个), which go stale as
+ * questions close and move. A hint for the plan helper's warnings, not a format rule.
+ */
+export function statedCounts(text: string): string[] {
+  const found = COUNTS.flatMap((pattern) =>
+    [...text.matchAll(pattern)].map((m) => ({ at: m.index, phrase: m[0] })),
+  );
+  return [...new Set(found.sort((a, b) => a.at - b.at).map((f) => f.phrase))];
+}

@@ -37,7 +37,7 @@ function planned(fields: Partial<PlannedConstellation> = {}): PlannedConstellati
     name: { en: 'Fading memories', zh: '褪色的记忆' },
     size: 'small',
     energy: 'low',
-    reasoning: { en: 'Both ask how memories fade.', zh: '两者都问记忆如何褪色。' },
+    reasoning: { en: 'How memories fade.', zh: '记忆如何褪色。' },
     questions: [142, 145],
     ...fields,
   };
@@ -89,8 +89,8 @@ describe('milestone descriptions', () => {
     const [c] = constellations.all();
     expect(c.name).toEqual({ en: 'Fading memories', zh: '褪色的记忆' });
     expect(c.reasoning).toEqual({
-      en: 'Both ask how memories fade.',
-      zh: '两者都问记忆如何褪色。',
+      en: 'How memories fade.',
+      zh: '记忆如何褪色。',
     });
     expect([c.size, c.energy]).toEqual(['small', 'low']);
     expect(constellationProblems(constellations)).toEqual([]);
@@ -182,6 +182,19 @@ describe('charting operations', () => {
     expect(result.errors).toEqual([]);
     expect(result.warnings).toEqual([
       '"Fading memories" holds 2 questions; its size large usually means 6 or more',
+    ]);
+  });
+
+  test('warn when the reasoning looks like it states counts', () => {
+    const counted = planned({
+      reasoning: { en: 'Both ask how memories fade.', zh: '两个问题都问记忆如何褪色。' },
+    });
+    const result = chart([issue(142), issue(145)], [], [counted]);
+    expect(result.errors).toEqual([]);
+    expect(result.operations).not.toEqual([]);
+    expect(result.warnings).toEqual([
+      '"Fading memories": the English reasoning may state counts ("Both"); name the shared theme only',
+      '"Fading memories": the Chinese reasoning may state counts ("两个"); name the shared theme only',
     ]);
   });
 });

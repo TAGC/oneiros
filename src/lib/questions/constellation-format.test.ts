@@ -3,6 +3,7 @@ import {
   type ConstellationText,
   formatProblems,
   readConstellation,
+  statedCounts,
   writeConstellation,
 } from './constellation-format';
 
@@ -125,5 +126,26 @@ describe('format problems', () => {
 
   test('none after a round trip of a well-formed constellation', () => {
     expect(formatProblems(readConstellation(writeConstellation(fading))!)).toEqual([]);
+  });
+});
+
+describe('stated counts in reasoning', () => {
+  test('finds counts in English', () => {
+    expect(statedCounts('Both ask how memories fade.')).toEqual(['Both']);
+    expect(statedCounts('All four turn on one rule, and two are conflicts.')).toEqual([
+      'All four',
+      'two are',
+    ]);
+    expect(statedCounts('The 3 questions share a page.')).toEqual(['3 questions']);
+  });
+
+  test('finds counts in Chinese', () => {
+    expect(statedCounts('两者都问记忆如何褪色。')).toEqual(['两者']);
+    expect(statedCounts('这四个问题共用一页，两个是冲突。')).toEqual(['四个', '两个']);
+  });
+
+  test('passes reasoning that names the shared theme only', () => {
+    expect(statedCounts('How memories fade, by one rule, and what that costs.')).toEqual([]);
+    expect(statedCounts('记忆如何按一个规则褪色，十分重要。')).toEqual([]);
   });
 });
