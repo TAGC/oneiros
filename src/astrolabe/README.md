@@ -71,7 +71,7 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `text.ts` | Rough text widths and line wrapping for English and Chinese, since no fonts are measured at build time. |
 | `Astrolabe.astro` | The page, inside the wiki layout. The route in `src/pages/[...locale]/astrolabe.astro` only renders it. |
 | `Sky.astro`, `Tiers.astro` | The two views. |
-| `Backdrop.astro` | The night sky's decoration: specks, the engraved dial and the area glows. |
+| `Backdrop.astro`, `backdrop.ts` | The night sky's decoration: specks, the engraved dial and the area glows, in their own SVG layer behind the map. The specks are merged into a few paths (`backdrop.ts`). |
 | `Glyph.astro` | A star's glyph, shared by the views, the panel and the key. |
 | `Panels.astro` | One panel per star. Without JavaScript, `:target` shows the panel a star links to. |
 | `ConstellationFilter.astro` | The constellations switch and the time and energy filter, in the bar above the map. |
@@ -79,13 +79,23 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `StarLink.astro`, `facts.ts` | A link that opens a star's panel; a constellation's facts on one line. |
 | `Legend.astro` | The key under the map. |
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
-| `client.ts` | The view switch, the star panel, thread highlighting, and pan and zoom on the sky. |
+| `client.ts`, `viewbox.ts` | The view switch, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css` | Styles, on the wiki's tokens, for light and dark. |
 
 The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`); the page itself is checked by eye in the dev server.
+The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`); the page itself is checked by eye in the dev server.
+
+## Keeping it fast
+
+The night sky is one large SVG, so every repaint redraws all of it. A few rules keep pan, zoom and the idle twinkle cheap:
+
+- Draw many small decorative marks as a few paths, not one element each.
+- Animate the decoration only in its own layer (`.al-sky-back`), never in the map above it.
+- Fade paths that span the sky with `fill-opacity`, not `opacity`: opacity composites a layer as large as the path.
+- Pan and zoom write the view box at most once per frame and never read the SVG's screen matrix in an event handler.
+- The twinkle pauses while the sky is dragged or zoomed.
 
 ## Art
 
