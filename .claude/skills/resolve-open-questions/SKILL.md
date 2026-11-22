@@ -15,7 +15,8 @@ Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marke
 - A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (README, "Constellations"). List them with `gh api 'repos/TAGC/oneiros/milestones?state=open' --jq '.[] | select(.title | startswith("✦ ")) | "\(.number) \(.title)"'` and offer one first. Its questions are `gh issue list --state open --milestone "<title>"`.
 - Without a fitting constellation: conflicts before opens. Then opens area by area.
 - Prefer questions whose blockers are all settled: an open question blocked by another open question waits for it.
-- A group is a set of related, interdependent questions, such as burning, recounting and beads. Keep it small enough for one session. Duplicates of one conflict across pages are one question.
+- A group is a set of related, interdependent questions, such as burning, recounting and beads. Keep it small enough for one session.
+- Two issues asking the same question are one question with a **duplicate**. Ask the designer which issue is canonical and which page keeps its marker; the other issue becomes the duplicate.
 - Tell the designer the group and how many questions it holds, then start.
 
 ## 2. Find the facts first
@@ -54,22 +55,22 @@ Once every question in the group is settled, ask the designer whether to open th
 1. Work on a branch off `main`, never on `main` itself.
 2. Make sure every decision has an issue. Every decision the designer asked to record gets one, even with no question behind it: a knock-on rule, a decision taken along the way. Open it in the README format with `gh issue create --title "<English title>" --label kind:open --label area:<area> --body-file <file>`.
 3. Open a question issue for each new open question, and put its marker on the English and Chinese pages.
-4. Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Replace each decided marker with its outcome as plain rule. Remove the marker of each ruled-out question.
+4. Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Replace each decided marker with its outcome as plain rule. Remove the marker of each ruled-out question. Replace each duplicate's marker with the one-line link to its canonical question (README, "Duplicates"), or, when the canonical question is decided in this group, with a link to its settled rule. A duplicate gets no answer comment.
 5. When a decision is hard to reverse, surprising to a later reader and the result of a real trade-off (for example "burn only from a bead"), add a short "why" to the owner page's prose, using only reasons the designer gave. Other decisions need no reason on the page; the answer comment holds the provenance.
 6. Changing a Tenet page's rules needs no status question; ask only if a change challenges the page's premise itself.
 7. Add new blocked-by links and Undermined by rows on GitHub.
 8. Run `bun run pull`, then `bun run verify`.
 9. Make **one commit per cohesive set of decisions**: usually one for the group, and a separate one for any unrelated decision the session settled along the way. Each commit body says which issues it closes, for example `Closes #142, #145.`, and holds no provenance.
-10. Push the branch and open one pull request for the group. Its body lists each decision in a line, says `Closes #N` once per decided issue, and names each ruled-out issue without a closing keyword.
+10. Push the branch and open one pull request for the group. Its body lists each decision in a line, says `Closes #N` once per decided issue, and names each ruled-out issue and each duplicate without a closing keyword.
 11. While the pull request is open, post one answer comment on every issue it settles, decided or ruled out, with `gh issue comment N --body-file <file>`. The provenance line names the designer's confidence and who supplied the decision (from step 3), and the pull request that lands it.
 
 The issues and their answer comments are the decision record. Do not keep a separate log or write provenance into commit bodies.
 
 The designer merges the pull request; merging deploys. Once it is merged:
 
-1. Close each ruled-out issue with `gh issue close N --reason "not planned"`. Closing it earlier fails the deploy's checks, since its marker still names a closed issue.
+1. Close each ruled-out issue with `gh issue close N --reason "not planned"`, and each duplicate with `gh issue close N --reason duplicate --duplicate-of M`, where M is the canonical issue (README, "Duplicates", has the API call for a `gh` without `--duplicate-of`). Closing either earlier fails the deploy's checks, since its marker still names a closed issue.
 2. For each constellation the group drew from, check `gh issue list --state open --milestone "<title>"`. When it lists nothing, close the milestone: `gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`.
 
 ## 5. Hand over
 
-Report the pull request, the issues it closes, any ruled-out issues and milestones still to close, new question issues and loose ends, then stop. The designer starts a fresh agent for the next group.
+Report the pull request, the issues it closes, any ruled-out issues, duplicates and milestones still to close, new question issues and loose ends, then stop. The designer starts a fresh agent for the next group.
