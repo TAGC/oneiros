@@ -47,8 +47,7 @@ A collapsed room counts ×0.5 whatever its tier (see [[Cracking and collapse|cra
 
 Your [[Temenos]] grows physically with your Coherence. As memories and beliefs root into rooms the house grows, and losing, trading or renouncing them shrinks both.
 
-> [!CONFLICT]
-> The vision says the Temenos "grows physically" with Coherence, while the Glossary says its size "is" your Coherence. The vision wins until this is settled.
+The Glossary words this differently ("its size is your Coherence"); the conflict is flagged on the [[Temenos]] page.
 
 ## Coherence status
 
