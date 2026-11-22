@@ -1,128 +1,67 @@
 /**
- * The Astrolabe's interaction: the view switch, clustering by area or by constellation, the
- * star panel, highlighting a star's threads, and pan and zoom on the night sky. The map itself
- * is static SVG from the build.
+ * The night sky and the tiers: what they show for the state (the view, the clustering, the
+ * time and energy filter), the star panel, highlighting a star's threads, and pan and zoom on
+ * the night sky. The map itself is static SVG from the build; the state is `state-client.ts`.
  */
-import { fitsFilter, readFilter, readSetting, setUpPanel, writeSetting } from './client-common';
+import { fitsFilter, setUpPanel } from './client-common';
 import type { SkyMotionData } from './motion';
-import type { Clustering } from './sky';
 import { skyMotion } from './sky-motion';
+import type { Store } from './state-client';
 import { type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
 
-const astrolabe = document.querySelector<HTMLElement>('.astrolabe');
-if (astrolabe?.querySelector('.al-frame')) setUp(astrolabe);
-
-function setUp(root: HTMLElement): void {
-  root.classList.add('al-js');
-  const views = root.querySelector<HTMLElement>('.al-views')!;
+export function setUpSky(root: HTMLElement, store: Store): void {
   const zoom = root.querySelector<HTMLElement>('.al-zoom')!;
-  views.hidden = false;
   zoom.hidden = false;
   const maps = [...root.querySelectorAll<SVGSVGElement>('.al-sky, .al-tiers')];
   const sky = root.querySelector<SVGSVGElement>('.al-sky')!;
   /** The sky and its decoration layer, which pan and zoom together. */
   const layers = [...root.querySelectorAll<SVGSVGElement>('.al-sky-back, .al-sky')];
   const skyView = root.querySelector<HTMLElement>('.al-view-sky')!;
+  const tiersView = root.querySelector<HTMLElement>('.al-view-tiers')!;
 
-  /* Views. */
-  const showView = (view: string) => {
-    root.dataset.view = view;
-    for (const b of views.querySelectorAll('button')) {
-      b.setAttribute('aria-pressed', String(b.dataset.view === view));
-    }
-    writeSetting('astrolabe-view', view);
-    // On a narrow screen, open the tiers at the frontier rather than at settled ground.
-    const tiersView = root.querySelector<HTMLElement>('.al-view-tiers')!;
-    const shown = root.querySelector<SVGElement>(`.al-tiers[data-by="${root.dataset.cluster}"]`);
+  /* On a narrow screen, open the tiers at the frontier rather than at settled ground. */
+  store.subscribe(({ state, prev }) => {
+    if (state.view !== 'tiers' || prev.view === 'tiers') return;
+    const shown = root.querySelector<SVGElement>(`.al-tiers[data-by="${state.clustering}"]`);
     const frontierX = Number(shown?.dataset.frontierX);
-    if (view === 'tiers' && tiersView.scrollLeft === 0 && tiersView.clientWidth < 700) {
+    if (tiersView.scrollLeft === 0 && tiersView.clientWidth < 700) {
       tiersView.scrollLeft = frontierX - 8;
     }
-  };
-  const saved = readSetting('astrolabe-view');
-  if (saved === 'tiers') showView('tiers');
-  views.addEventListener('click', (e) => {
-    const button = (e.target as Element).closest<HTMLButtonElement>('button[data-view]');
-    if (button) showView(button.dataset.view!);
   });
 
-  /* Settled questions with no thread to an open one: hidden unless asked for. */
-  const settled = root.querySelector<HTMLButtonElement>('.al-settled');
-  if (settled) {
-    settled.hidden = false;
-    const showSettled = (all: boolean) => {
-      root.dataset.settled = all ? 'all' : 'linked';
-      settled.setAttribute('aria-pressed', String(all));
-      writeSetting('astrolabe-settled', all ? 'all' : 'linked');
-    };
-    if (readSetting('astrolabe-settled') === 'all') showSettled(true);
-    settled.addEventListener('click', () => showSettled(root.dataset.settled !== 'all'));
-  }
-
-  /* Constellations: clustering by area or by constellation, and the time and energy filter. */
-  const cfilter = root.querySelector<HTMLElement>('.al-cfilter');
+  /* Clustering by area or by constellation: the sky's stars fly between the two. */
   const motionData = root.querySelector('.al-sky-motion')?.textContent;
-  if (cfilter && Number(cfilter.dataset.total)) {
-    cfilter.hidden = false;
-    const choice = cfilter.querySelector<HTMLElement>('.al-cluster')!;
-    if (motionData) {
-      const motion = skyMotion(sky, JSON.parse(motionData) as SkyMotionData);
-      const cluster = (by: Clustering, animate: boolean) => {
-        if (root.dataset.cluster === by) return;
-        root.dataset.cluster = by;
-        for (const b of choice.querySelectorAll('button')) {
-          b.setAttribute('aria-pressed', String(b.dataset.cluster === by));
-        }
-        writeSetting('astrolabe-cluster', by);
-        const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
-        motion.show(by, animate && !still && root.dataset.view === 'sky');
-      };
-      if (readSetting('astrolabe-cluster') === 'constellations') {
-        // Arrive already clustered: nothing fades or flies on load.
-        root.classList.add('al-instant');
-        cluster('constellations', false);
-        requestAnimationFrame(() =>
-          requestAnimationFrame(() => root.classList.remove('al-instant')),
-        );
-      }
-      choice.addEventListener('click', (e) => {
-        const button = (e.target as Element).closest<HTMLButtonElement>('button[data-cluster]');
-        if (button) cluster(button.dataset.cluster as Clustering, true);
-      });
-    } else {
-      choice.hidden = true;
-    }
-
-    const fitText = cfilter.querySelector<HTMLElement>('.al-fit');
-    const fitTexts = JSON.parse(fitText?.dataset.texts ?? '[]') as string[];
-    const applyFilter = () => {
-      const chosen = readFilter(cfilter);
-      const fits = (el: Element) => fitsFilter(el, chosen);
-      const unfit = new Set<string>();
-      let fitting = 0;
-      for (const group of root.querySelectorAll('.al-cgroup:not(.al-cfinished)')) {
-        const ok = fits(group);
-        group.classList.toggle('al-unfit', !ok);
-        if (ok) fitting++;
-        else unfit.add(group.getAttribute('data-c')!);
-      }
-      for (const card of root.querySelectorAll('.al-card')) {
-        card.classList.toggle('al-unfit', !fits(card));
-      }
-      for (const star of root.querySelectorAll('.al-star[data-c]')) {
-        star.classList.toggle('al-unfit', unfit.has(star.getAttribute('data-c')!));
-      }
-      if (fitText) fitText.textContent = fitTexts[fitting];
-    };
-    cfilter.addEventListener('click', (e) => {
-      const button = (e.target as Element).closest<HTMLButtonElement>('.al-scale button');
-      if (!button) return;
-      for (const b of button.parentElement!.querySelectorAll('button')) {
-        b.setAttribute('aria-pressed', String(b === button));
-      }
-      applyFilter();
+  if (motionData) {
+    const motion = skyMotion(sky, JSON.parse(motionData) as SkyMotionData);
+    store.subscribe(({ state, prev, action }) => {
+      if (state.clustering === prev.clustering) return;
+      const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
+      motion.show(state.clustering, !!action && !still && state.view === 'sky');
     });
   }
+
+  /* The time and energy filter: constellations that do not fit dim, and their stars. */
+  const fitText = root.querySelector<HTMLElement>('.al-cfilter .al-fit');
+  const fitTexts = JSON.parse(fitText?.dataset.texts ?? '[]') as string[];
+  store.subscribe(({ state, prev }) => {
+    if (state.filter === prev.filter) return;
+    const fits = (el: Element) => fitsFilter(el, state.filter);
+    const unfit = new Set<string>();
+    let fitting = 0;
+    for (const group of root.querySelectorAll('.al-cgroup:not(.al-cfinished)')) {
+      const ok = fits(group);
+      group.classList.toggle('al-unfit', !ok);
+      if (ok) fitting++;
+      else unfit.add(group.getAttribute('data-c')!);
+    }
+    for (const card of root.querySelectorAll('.al-card')) {
+      card.classList.toggle('al-unfit', !fits(card));
+    }
+    for (const star of root.querySelectorAll('.al-star[data-c]')) {
+      star.classList.toggle('al-unfit', unfit.has(star.getAttribute('data-c')!));
+    }
+    if (fitText) fitText.textContent = fitTexts[fitting];
+  });
 
   /* Selection and the panel. A drag on the sky is not a click on a star. */
   let dragged = false;
@@ -135,7 +74,7 @@ function setUp(root: HTMLElement): void {
     if (n === undefined) return;
     for (const t of threadsOf(n)) t.classList.add(cls);
   };
-  const star = setUpPanel(root, {
+  setUpPanel(root, store, 'star', {
     prefix: 'star-',
     mark: '.al-star',
     marksOf: starsOf,
@@ -152,7 +91,7 @@ function setUp(root: HTMLElement): void {
         const other = t.getAttribute('data-from') === String(n) ? 'data-to' : 'data-from';
         for (const s of starsOf(Number(t.getAttribute(other)))) s.classList.add('al-near');
       }
-      if (root.dataset.view === 'sky') ensureVisible(n);
+      if (store.get().view === 'sky') ensureVisible(n);
     },
     onClose: () => {
       for (const el of root.querySelectorAll('.al-near')) el.classList.remove('al-near');
@@ -163,13 +102,13 @@ function setUp(root: HTMLElement): void {
   for (const m of maps) {
     m.addEventListener('pointerover', (e) => {
       const mark = (e.target as Element).closest<Element>('.al-star');
-      if (mark && star.current() === undefined) {
+      if (mark && !store.get().panel) {
         highlight(Number(mark.getAttribute('data-n')), 'al-lit');
       }
     });
     m.addEventListener('pointerout', (e) => {
       const mark = (e.target as Element).closest('.al-star');
-      if (mark && star.current() === undefined) highlight(undefined, 'al-lit');
+      if (mark && !store.get().panel) highlight(undefined, 'al-lit');
     });
   }
 
@@ -307,8 +246,4 @@ function setUp(root: HTMLElement): void {
     box.y += at.y - target.y;
     apply();
   }
-
-  /* Open the star a link points to. */
-  const fromHash = /^#star-(\d+)$/.exec(location.hash);
-  if (fromHash) star.open(Number(fromHash[1]), false);
 }
