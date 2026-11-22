@@ -191,6 +191,27 @@ describe('issue context, edges and answer', () => {
     expect(q?.answer).toEqual({ en: 'It fades.', zh: '会消退。' });
   });
 
+  test("the answer comment's last line is its provenance, not part of an answer", () => {
+    const body = [
+      '## Answer',
+      '',
+      '### en',
+      '',
+      'It fades.',
+      '',
+      'Slowly.',
+      '',
+      '### zh',
+      '',
+      '会消退。',
+      '',
+      'Decided by the designer, 22 Nov 2026, in a chat. Lands in #210.',
+    ].join('\n');
+    const q = roundTrip([issue({ number: 1, issueComments: [{ body }] })]).get(1);
+    expect(q?.answer).toEqual({ en: 'It fades.\n\nSlowly.', zh: '会消退。' });
+    expect(q?.provenance).toBe('Decided by the designer, 22 Nov 2026, in a chat. Lands in #210.');
+  });
+
   test('an answer comment missing a locale keeps the locales it has', () => {
     const comments = [{ body: '## Answer\n\n### en\n\nEnglish only.' }];
     expect(roundTrip([issue({ number: 1, issueComments: comments })]).get(1)?.answer).toEqual({

@@ -80,6 +80,8 @@ export interface Question {
   underminedBy: number[];
   /** The answer comment's text per locale; absent when there is no answer comment. */
   answer?: Partial<Record<Locale, string>>;
+  /** The answer comment's last line: who decided, when, where, and the PR that lands it. */
+  provenance?: string;
 }
 
 export interface Questions {
@@ -99,6 +101,7 @@ interface CacheFrontmatter {
   /** The property table's rows as written, keyed by property name. */
   properties?: Record<string, string>;
   blockedBy?: number[];
+  provenance?: string;
 }
 
 const KIND_LABEL = /^kind:(open|conflict)$/;
@@ -198,6 +201,13 @@ function cacheFile(issue: PulledIssue): string {
   const answer = answerComment(issue);
   if (answer !== undefined) {
     const { sections: locales } = splitSections(answer, 3, LOCALE_CODES);
+    const last = Object.keys(locales).at(-1) as Locale | undefined;
+    const paragraphs = last ? locales[last]!.split(/\n\s*\n/) : [];
+    const final = paragraphs.at(-1)?.trim();
+    if (last && paragraphs.length > 1 && final && !final.includes('\n')) {
+      front.provenance = final;
+      locales[last] = paragraphs.slice(0, -1).join('\n\n').trim();
+    }
     const text = LOCALES.filter((l) => locales[l] !== undefined)
       .map((l) => `### ${l}\n\n${locales[l]}\n`)
       .join('\n');
@@ -313,6 +323,7 @@ function toQuestion(raw: string): Question {
   if (area) question.area = area;
   if (front.closeReason) question.closeReason = front.closeReason;
   if (sections[CONTEXT]) question.context = sections[CONTEXT];
+  if (front.provenance) question.provenance = front.provenance;
   if (sections[ANSWER] !== undefined) {
     const { sections: locales } = splitSections(sections[ANSWER], 3, LOCALE_CODES);
     question.answer = Object.fromEntries(
