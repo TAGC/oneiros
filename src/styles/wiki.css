@@ -1074,11 +1074,14 @@ footer.foot p {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  vertical-align: top;
   font-size: 14px;
   white-space: nowrap;
 }
 /* The badge shows the painted icon bare: its own outline is enough at this size. */
-.stage-badge .frame {
+.stage-badge .frame.sm {
+  width: 22px;
+  margin-block: -4px;
   background: none;
   border: none;
   clip-path: none;
