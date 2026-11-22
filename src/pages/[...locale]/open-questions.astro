@@ -7,7 +7,7 @@ import { AREAS } from '../../lib/areas';
 import { getPages, type Page } from '../../lib/pages';
 import { getQuestions, type Question } from '../../lib/questions';
 import { getConstellations } from '../../lib/questions/constellations';
-import { wikiUrl } from '../../lib/site';
+import { url, wikiUrl } from '../../lib/site';
 import { type Callout, calloutHeading } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
@@ -79,6 +79,7 @@ function issueBox(q: Question) {
 >
   <h1>{t.openQuestions}</h1>
   <p class="sub">{t.openSub(count)}</p>
+  <p><a href={url('/astrolabe/', locale)}>{t.astrolabe.seeMap}</a></p>
   {count === 0 && <p>{t.openNone}</p>}
   {
     constellations.open().map((c) => {

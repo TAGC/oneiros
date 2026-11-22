@@ -1,0 +1,22 @@
+---
+/** A link that opens a star's panel: its glyph, number and title. */
+import { HTML_LANG } from '../i18n/ui';
+import type { Star } from './chart';
+import Glyph from './Glyph.astro';
+
+interface Props {
+  star: Star;
+}
+
+const { star } = Astro.props;
+---
+
+<li>
+  <a class="al-star-link" href={`#star-${star.number}`} data-star={star.number}>
+    <svg class="al-mini" viewBox="-13 -13 26 26" aria-hidden="true">
+      <Glyph status={star.status} conflict={star.question.kind === 'conflict'} />
+    </svg>
+    <span class="al-link-n">#{star.number}</span>
+    <span lang={HTML_LANG[star.labelLang]}>{star.label}</span>
+  </a>
+</li>
