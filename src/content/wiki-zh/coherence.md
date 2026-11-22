@@ -64,6 +64,6 @@ navbox: character
 
 见[[声名#issue-95|声名]]上的待定问题。
 
-> [!ISSUE 33]
+见[[回响#issue-44|回响]]上的待定问题。
 
 > [!ISSUE 34]
