@@ -46,6 +46,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - Every source in a conflict's Source row is a wiki link or a listed non-page source.
   - Every answer comment has a section for each site locale.
   - A Certainty or Dogma page holds no marker.
+  - Every open constellation's milestone has a Size and an Energy on their scales, the `## en` reasoning, and a `## zh` section with its Chinese name and reasoning.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
 To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
@@ -69,7 +70,7 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `src/components/LICENSE-lucide.txt`: the licence for the three Lucide icons on the Quality styles page.
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
 - `src/lib/questions/`: the questions module, the only way into question data. It writes and reads the question cache.
-- `.questions/`: the question cache, one Markdown file per question issue. `bun run pull` wipes and rewrites it; it is gitignored.
+- `.questions/`: the question cache, one Markdown file per question issue, and one per milestone under `.questions/milestones/`. `bun run pull` wipes and rewrites it; it is gitignored.
 
 ## Authoring guide
 
@@ -211,11 +212,42 @@ The build fills in the box from the question cache: the header from the `kind:` 
 
 Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form. They still render, and count like markers, until the migration turns them into issues. Write new questions as issues with markers.
 
-The open questions page also lists open question issues that no page marks, such as decision issues, under "Not on a page", by area.
+The open questions page groups the questions by constellation. Open questions in no open constellation come last, under "Not in a constellation": page by page, then those that no page marks, such as decision issues, under "Not on a page", by area.
 
 #### The pull
 
-`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. The cache is gitignored. The deploy pulls before every build, and editing, labelling, linking or closing an issue redeploys the site. Locally, pull again after changing issues.
+`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments, and every milestone. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. Each milestone goes to `.questions/milestones/<number>.md`, with the question issues in it in frontmatter and its description below. The cache is gitignored. The deploy pulls before every build. Editing, labelling, linking or closing an issue, setting or removing its milestone, and creating, editing, closing, reopening or deleting a milestone all redeploy the site. Locally, pull again after changing issues or milestones.
+
+#### Constellations
+
+A constellation is a group of related open questions sized for one session. Each one is a GitHub milestone on this repo whose title is `✦ ` followed by the English name. Milestones without the mark are not constellations and are ignored. Due dates are not used.
+
+The description holds an English property table, then one section per site locale:
+
+```md
+| Property | Value |
+|---|---|
+| Size | Small |
+| Energy | Low |
+
+## en
+
+<why these questions belong together>
+
+## zh
+
+### <Chinese name>
+
+<the reasoning in Chinese>
+```
+
+- **Size:** `small`, `medium` or `large`, ignoring case.
+- **Energy:** `low`, `medium` or `high`, ignoring case.
+- Both scales' labels are in `src/i18n/ui.ts`, in both languages.
+
+An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.
+
+Code reads constellations only through `src/lib/questions/constellations.ts`. `bun run check` checks each open constellation's description (see Checks).
 
 #### Resolving questions
 
@@ -224,6 +256,7 @@ The open questions page also lists open question issues that no page marks, such
 - Every decision the designer asks to record gets an issue, even with no question behind it: open it, answer it and close it in the same pull request.
 - A ruled-out question gets its answer comment, and the pull request removes its marker. Close the issue as not planned (`gh issue close N --reason "not planned"`) once the pull request is merged: a marker naming a closed issue fails the checks.
 - Commit bodies say which issues they close; the answer comments hold the provenance.
+- Once every question in a constellation is closed, close its milestone (`gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`).
 
 The `resolve-open-questions` skill walks through a session.
 
