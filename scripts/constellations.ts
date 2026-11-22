@@ -14,7 +14,6 @@ import { loadQuestions, QUESTION_CACHE } from '../src/lib/questions';
 import {
   chartOperations,
   currentChart,
-  loadMilestones,
   type Operation,
   type Plan,
   stateReport,
@@ -100,7 +99,7 @@ if (command === 'state') {
   console.log(stringifyYaml({ ...currentChart(constellations), ungrouped }).trim());
 } else if (command === 'apply' && file) {
   const plan = parseYaml(readFileSync(file, 'utf8')) as Plan;
-  const result = chartOperations(plan, questions, loadMilestones(CACHE));
+  const result = chartOperations(plan, questions, constellations);
   for (const w of result.warnings) console.warn(`warning: ${w}`);
   if (result.errors.length) {
     for (const e of result.errors) console.error(`error: ${e}`);

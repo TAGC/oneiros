@@ -3,14 +3,8 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadQuestions, type PulledIssue, writeQuestionCache } from '.';
-import {
-  chartOperations,
-  currentChart,
-  loadMilestones,
-  type PlannedConstellation,
-  renderDescription,
-  stateReport,
-} from './chart';
+import { chartOperations, currentChart, type PlannedConstellation, stateReport } from './chart';
+import { writeConstellation } from './constellation-format';
 import {
   constellationProblems,
   type GithubMilestone,
@@ -56,8 +50,7 @@ function milestone(
 ): GithubMilestone {
   return {
     number,
-    title: `✦ ${from.name.en}`,
-    description: renderDescription(from),
+    ...writeConstellation(from),
     state: 'open',
     html_url: `https://github.com/TAGC/oneiros/milestone/${number}`,
     ...fields,
@@ -82,13 +75,12 @@ function state(issues: Fixture[], milestones: GithubMilestone[]) {
   return {
     questions,
     constellations: loadConstellations(dir, questions),
-    milestones: loadMilestones(dir),
   };
 }
 
 function chart(issues: Fixture[], milestones: GithubMilestone[], plan: PlannedConstellation[]) {
   const s = state(issues, milestones);
-  return chartOperations({ constellations: plan }, s.questions, s.milestones);
+  return chartOperations({ constellations: plan }, s.questions, s.constellations);
 }
 
 describe('milestone descriptions', () => {
@@ -103,25 +95,6 @@ describe('milestone descriptions', () => {
     expect([c.size, c.energy]).toEqual(['small', 'low']);
     expect(constellationProblems(constellations)).toEqual([]);
   });
-
-  test('follow the docs format', () => {
-    expect(renderDescription(planned({ size: 'medium', energy: 'high' }))).toBe(
-      `| Property | Value |
-|---|---|
-| Size | Medium |
-| Energy | High |
-
-## en
-
-Both ask how memories fade.
-
-## zh
-
-### 褪色的记忆
-
-两者都问记忆如何褪色。`,
-    );
-  });
 });
 
 describe('charting operations', () => {
@@ -133,7 +106,7 @@ describe('charting operations', () => {
         kind: 'create',
         ref: 'Fading memories',
         title: '✦ Fading memories',
-        description: renderDescription(planned()),
+        description: writeConstellation(planned()).description,
       },
       { kind: 'assign', issue: 142, milestone: 'Fading memories' },
       { kind: 'assign', issue: 145, milestone: 'Fading memories' },
@@ -150,7 +123,7 @@ describe('charting operations', () => {
       [3, [142, 145]],
       [4, [7]],
     ]);
-    expect(chartOperations(plan, s.questions, s.milestones)).toEqual({
+    expect(chartOperations(plan, s.questions, s.constellations)).toEqual({
       errors: [],
       warnings: [],
       operations: [],
@@ -169,7 +142,7 @@ describe('charting operations', () => {
       {
         kind: 'edit',
         number: 3,
-        description: renderDescription(planned({ size: 'medium' })),
+        description: writeConstellation(planned({ size: 'medium' })).description,
       },
       { kind: 'assign', issue: 7, milestone: 3 },
       { kind: 'close', number: 4 },
@@ -257,10 +230,10 @@ describe('plan errors', () => {
     } as unknown as PlannedConstellation;
     expect(errors([issue(142), issue(145)], [], [bad])).toEqual([
       '"✦ Fading memories": write the English name without the ✦ mark',
+      '"✦ Fading memories": Size "huge" is not one of small, medium, large',
+      '"✦ Fading memories": no Energy; use one of low, medium, high',
       '"✦ Fading memories": no Chinese name',
       '"✦ Fading memories": no Chinese reasoning',
-      '"✦ Fading memories": size "huge" is not one of small, medium, large',
-      '"✦ Fading memories": no energy; use one of low, medium, high',
     ]);
   });
 
