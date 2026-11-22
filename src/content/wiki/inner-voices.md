@@ -53,5 +53,4 @@ Empty of feeling, you go quiet and hollow. The Calm qualities never urge: after 
 
 Lines are written in two parts, what each quality wants and how each emotion sounds, with rhythm partly applied by rule.
 
-> [!OPEN]
-> The vision writes "Inner voices" in lowercase (as does the Glossary), but also "your Voices" and "Voices are emotions", capitalised. Which form is the term is unsettled; this wiki uses lowercase in prose.
+> [!ISSUE 60]

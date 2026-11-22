@@ -80,6 +80,19 @@ describe('marker checks', () => {
       'src/content/wiki-zh/ablaze.md:10: Dogma page holds question #1; resolve it or lower the status',
     ]);
   });
+
+  test('an inline open or conflict callout fails in either language', () => {
+    const callouts = [
+      { kind: 'open' as const, line: 4 },
+      { kind: 'conflict' as const, line: 8 },
+    ];
+    const pages = [page('en', [], { callouts }), page('zh', [], { callouts: callouts.slice(1) })];
+    expect(messages(markerProblems(questions(), pages))).toEqual([
+      'src/content/wiki/ablaze.md:4: inline [!OPEN] callout; make it a question issue and put a `> [!ISSUE N]` marker here',
+      'src/content/wiki/ablaze.md:8: inline [!CONFLICT] callout; make it a question issue and put a `> [!ISSUE N]` marker here',
+      'src/content/wiki-zh/ablaze.md:8: inline [!CONFLICT] callout; make it a question issue and put a `> [!ISSUE N]` marker here',
+    ]);
+  });
 });
 
 describe('issue checks', () => {

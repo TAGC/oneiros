@@ -33,8 +33,6 @@ The more material you feed, the more coherent the conjuration: what you feed set
 
 Healing and repair need a match.
 
-> [!OPEN]
-> That healing and repair need a match was accepted only in a bulk agreement. The designer has not confirmed it, and the vision does not say what must match.
+> [!ISSUE 96]
 
-> [!OPEN]
-> Whether heavy use should wear a bead down is not settled; the designer is unsure. The old reference sheet had one form of it: feeding against a memory's feeling "twists the result and wears faster".
+> [!ISSUE 97]

@@ -31,11 +31,9 @@ Time is world-time, and how long you stay Ablaze scales with the memory's [[vivi
 
 Spells using the memory's emotions take on its sensory details. The memory also shows effects it would have at a higher tier: a [[flicker]], its [[waking boon]] and, for vivid enough memories, its [[eidolon]], the brief form of its [[mutation]], drawback in full.
 
-> [!OPEN]
-> The vision lists the flicker, waking boon and eidolon as settled. The designer agreed only the principle that a burning memory shows higher-tier effects, and has not confirmed this list.
+> [!ISSUE 15]
 
-> [!OPEN]
-> While Ablaze, which higher tier's effects does a memory show, and with what multiplier (perhaps from [[vividness]])?
+> [!ISSUE 16]
 
 ## When it ends
 

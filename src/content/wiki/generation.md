@@ -25,8 +25,7 @@ navbox: world
 
 As in Dwarf Fortress, [[the Dreamer]] dreams a whole world into existence and its history is simulated. There is no set story; each world is a new dream of the Dreamer, and its history follows from that dream. The generated world is built first, [[Reverie|Reveries]] after (see [[Dream journal]]).
 
-> [!OPEN]
-> How is a world generated: what does the dream start from, what primitives does the generator use, and how is its history simulated?
+> [!ISSUE 54]
 
 ## Within the rules
 

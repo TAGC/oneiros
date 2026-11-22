@@ -128,7 +128,7 @@ const ANSWER_HEADING = /^##\s+Answer\s*$/;
  * Splits Markdown at headings of one level whose text is in `names`, outside code fences.
  * Returns the text before the first such heading and each section, trimmed.
  */
-function splitSections(
+export function splitSections(
   markdown: string,
   level: number,
   names: readonly string[],
@@ -160,7 +160,7 @@ function splitSections(
 }
 
 /** The rows of the first Markdown table in `text`, header and delimiter rows skipped. */
-function tableRows(text: string): Record<string, string> {
+export function tableRows(text: string): Record<string, string> {
   const rows: Record<string, string> = {};
   const lines = text.split('\n').filter((l) => l.trim().startsWith('|'));
   for (const line of lines.slice(2)) {

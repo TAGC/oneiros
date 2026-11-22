@@ -84,6 +84,7 @@ The policy follows how the guides already handle Greek names:
 
 - **Page status** (a wiki property, not a game concept): **状态**. The four stages reuse the belief stage terms: Notion 念头, Tenet 信条, Certainty 确信, Dogma 教条. 状态 also appears inside 凝聚度状态; the context keeps the two apart.
 - **Canon audit** (a wiki process, the `canon-audit` skill): **正典审核**.
+- **Constellation** (wiki tooling, a group of open questions settled in one session; not a game concept): **星座**. Its two scales: **规模** (size): 小 / 中 / 大 (small / medium / large); **精力** (energy): 低 / 中 / 高 (low / medium / high). Proposed.
 
 ---
 

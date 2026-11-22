@@ -31,5 +31,4 @@ Among its effects it steadies your form, raising your [[stability]], so [[lucidi
 
 Holding it is not overt in itself: knowing the world is a dream does not visibly bend the dream, so a Lucid who acts like everyone else shows the Dreamer nothing (see [[Attention]]).
 
-> [!OPEN]
-> Does the spinning top stay beside the pool or move to the [[library]]?
+> [!ISSUE 107]

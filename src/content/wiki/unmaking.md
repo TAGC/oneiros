@@ -45,5 +45,4 @@ The vision says memories can't be forged, "since Unmaking only takes away". The 
 
 ## Open questions
 
-> [!OPEN]
-> Is Unmaking, paid in Coherence, the right home for the old Sleep magic? (Provisional.) The old Sleep essence is kept on [[Archived ideas]].
+> [!ISSUE 123]

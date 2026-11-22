@@ -41,5 +41,4 @@ Otherwise nothing is lost.
 
 A Fixture recounted into a bead loses all its Hold, like dismantling a fireplace. For a Fixture, and only a Fixture, you set the rate yourself. Too slow, and you may be interrupted before you finish. Too fast, and you may be [[scar|scarred]]: marks on the wall, where the Fixture was torn out.
 
-> [!OPEN]
-> How the scar risk scales with the recount rate is not settled.
+> [!ISSUE 93]

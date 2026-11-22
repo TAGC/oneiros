@@ -19,5 +19,4 @@ navbox: character
 
 It adds to the maximum [[Coherence]] of anyone or anything: you, a person, a city, a place.
 
-> [!OPEN]
-> The multiplier on renown is not yet set.
+> [!ISSUE 95]

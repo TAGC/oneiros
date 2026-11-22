@@ -49,5 +49,4 @@ Your mood is capped per emotion by its [[mood capacity]]. At an emotion's mood c
 
 Qualities cap how intense a spell can be; mood capacity caps how much of an emotion you have to spend (see [[Intensity]]). [[Burning]] a memory pours its material straight into your mood.
 
-> [!OPEN]
-> What lowers a mood, apart from spending, is open.
+> [!ISSUE 71]

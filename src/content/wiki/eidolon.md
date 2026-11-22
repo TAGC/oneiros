@@ -27,5 +27,4 @@ It is one of the higher-tier effects a burning memory shows, beside a [[flicker]
 
 An eidolon follows the flicker rules for [[stability]] and gear: gear reshapes, slips off or binds the change by its own stability and grain (see [[flicker]]).
 
-> [!OPEN]
-> What vividness threshold lets a burning memory raise an eidolon?
+> [!ISSUE 50]

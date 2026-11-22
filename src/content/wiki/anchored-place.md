@@ -25,5 +25,4 @@ An **anchored place** is a place you can fast-travel to from your [[Temenos]], t
 
 [[Stability]], how much an entity's form shifts with its feelings, is high for anchored places and old beings.
 
-> [!OPEN]
-> Planting is one way to anchor a place; other ways are open. [[Crafting]] lists anchors, but what they do is not yet set.
+> [!ISSUE 22]
