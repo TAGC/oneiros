@@ -46,3 +46,11 @@ Tell the sub-agent, in full:
 - Take items one at a time with the user. For each: keep, cut or reword, in the user's own words.
 - Only then edit the page (both languages) and remove or rewrite its callout.
 - Never re-record a claim as agreed because the user didn't object to it during review.
+
+## 6. Page status
+Each wiki page has a `status:` (Notion, Tenet, Certainty, Dogma; rules on the `/status/` page). An audit also checks it:
+- After recording findings, list each audited page whose status no longer fits: a Tenet page whose core claims came back unconfirmed, changed or contradictory should drop to Notion. Propose the demotion; the designer decides.
+- A page whose claims all came back agreed, with no open or conflict callouts left, may be proposed for Certainty. Only the designer raises a status.
+- For a status-only sweep without chat tracing, run read-only sub-agents per area. Each reads its pages and proposes Notion or Tenet with a one-line reason citing the deciding callout, never higher. When unsure, propose the lower one. Merge their tables for the designer to approve page by page.
+- `bun run check` fails if a Certainty or Dogma page holds an open or conflict callout, so resolve callouts before proposing either.
+
