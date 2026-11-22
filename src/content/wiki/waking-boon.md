@@ -25,5 +25,4 @@ A memory or belief gains a waking boon when it reaches [[Rootedness ladder#Room|
 
 While a memory is [[Ablaze]], it shows effects it would have at a higher tier, which the vision lists as including its waking boon; the designer has not confirmed that list (see [[Ablaze]]).
 
-> [!OPEN]
-> The vision does not yet say what a waking boon does, or how the tended room is chosen.
+> [!ISSUE 125]
