@@ -11,6 +11,11 @@ export interface QuestionGraph {
   frontier: number[];
   /** Frontier questions that no open question depends on: quick, self-contained picks. */
   peripheral: number[];
+  /**
+   * Open questions with no links at all: no blocked-by or Undermined by edge in either
+   * direction, to questions in any state. Every independent question is also peripheral.
+   */
+  independent: number[];
 }
 
 export function questionGraph(questions: Question[]): QuestionGraph {
@@ -27,5 +32,11 @@ export function questionGraph(questions: Question[]): QuestionGraph {
   }
   const frontier = open.filter((q) => q.blockedBy.every(settled)).map((q) => q.number);
   const peripheral = frontier.filter((n) => !openDependents.has(n));
-  return { frontier, peripheral };
+  const linked = new Set<number>();
+  for (const q of questions) {
+    for (const n of [...q.blockedBy, ...q.underminedBy]) linked.add(n);
+    if (q.blockedBy.length || q.underminedBy.length) linked.add(q.number);
+  }
+  const independent = open.map((q) => q.number).filter((n) => !linked.has(n));
+  return { frontier, peripheral, independent };
 }

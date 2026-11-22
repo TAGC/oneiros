@@ -6,15 +6,20 @@ import { loadQuestions, type PulledIssue, questionGraph, writeQuestionCache } fr
 
 const LOCALES_BODY = '## en\n\nEnglish text.\n\n## zh\n\n### 中文标题\n\n中文。';
 
-type Fixture = { blockedBy?: number[]; state?: 'decided' | 'ruled-out' | 'undermined' };
+type Fixture = {
+  blockedBy?: number[];
+  underminedBy?: number[];
+  state?: 'decided' | 'ruled-out' | 'undermined';
+};
 
-function issue(number: number, { blockedBy = [], state }: Fixture = {}): PulledIssue {
-  const undermined = state === 'undermined';
+function issue(number: number, { blockedBy = [], underminedBy, state }: Fixture = {}): PulledIssue {
+  const breakers = underminedBy ?? (state === 'undermined' ? [999] : []);
+  const row = breakers.map((n) => `#${n}`).join(', ');
   return {
     number,
     title: `Question ${number}`,
-    body: undermined
-      ? `| Property | Value |\n|---|---|\n| Undermined by | #999 |\n\n${LOCALES_BODY}`
+    body: breakers.length
+      ? `| Property | Value |\n|---|---|\n| Undermined by | ${row} |\n\n${LOCALES_BODY}`
       : LOCALES_BODY,
     state: state ? 'closed' : 'open',
     state_reason: state === 'ruled-out' ? 'not_planned' : state ? 'completed' : null,
@@ -76,5 +81,22 @@ describe('peripheral', () => {
       issue(9, { blockedBy: [8] }),
     ]);
     expect(graph.peripheral).toEqual([1, 5, 6]);
+  });
+});
+
+describe('independent', () => {
+  test('holds open questions with no blocked-by or Undermined by links at all', () => {
+    const graph = graphOf([
+      issue(1),
+      issue(2, { blockedBy: [3] }),
+      issue(3, { state: 'decided' }),
+      issue(4),
+      issue(5, { state: 'ruled-out', blockedBy: [4] }),
+      issue(6),
+      issue(7, { state: 'decided', underminedBy: [6] }),
+      issue(8, { underminedBy: [404] }),
+      issue(9, { blockedBy: [404] }),
+    ]);
+    expect(graph.independent).toEqual([1]);
   });
 });
