@@ -31,6 +31,8 @@ No source wins by default. The sheet was ruled authoritative for the qualities o
 - One question per message, in the caveman style: what the sources say, the options, Claude's pick marked ➡️, worded so "yes" accepts the pick.
 - Wait for the answer. Answers reshape later questions, so never batch them, even when they look independent.
 - When an answer adds a new rule, note it back in a line, then ask about its knock-on effects before moving on.
+- When the designer states a rule, check it against the pages, the data and the reference sheet before the next question. Surface any contradiction or existing answer at once, with its source.
+- Stress-test each settled answer with one concrete edge-case scenario before moving on, for example "you are knocked out mid-recount while rushing a Fixture: is the memory lost, scarred, or both?". The designer's answer may settle a detail or become a new `[!OPEN]`.
 - Picks are suggestions. A pick becomes a decision only when the designer accepts it.
 - If a detail of an agreed rule stays undecided, it becomes a new `[!OPEN]`.
 
@@ -39,6 +41,7 @@ No source wins by default. The sheet was ruled authoritative for the qualities o
 Once every question in the group is settled:
 
 - Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Resolve each settled callout and write its outcome into the page as plain rule.
+- When a decision is hard to reverse, surprising to a later reader and the result of a real trade-off (for example "burn only from a bead"), add a short "why" to the owner page's prose, using only reasons the designer gave. Other decisions need no reason on the page; the commit body holds the provenance.
 - Changing a Tenet page's rules needs no status question; ask only if a change challenges the page's premise itself.
 - Run `bun run verify`.
 - Make **one commit per cohesive set of decisions**: usually one for the group, and a separate one for any unrelated decision the session settled along the way.
