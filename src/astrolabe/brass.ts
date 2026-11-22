@@ -231,6 +231,28 @@ function share(total: number, weights: number[], least: number[]): number[] {
   }
 }
 
+/**
+ * A name in lines no wider than a label. Chinese splits into lines of nearly equal length, a
+ * line ending after punctuation when that keeps them within a character of even.
+ */
+function wrapName(name: string): string[] {
+  if (!isCjk(name)) return wrapText(name, LABEL_SIZE, LABEL_WIDTH);
+  const chars = [...name];
+  const count = Math.ceil(textWidth(name, LABEL_SIZE) / LABEL_WIDTH);
+  const lines: string[] = [];
+  let at = 0;
+  for (let left = count; left > 0; left--) {
+    let end = left === 1 ? chars.length : at + Math.ceil((chars.length - at) / left);
+    if (left > 1) {
+      if (/[，、？：；。！]/.test(chars[end - 2] ?? '')) end--;
+      else if (/[，、？：；。！）]/.test(chars[end] ?? '')) end++;
+    }
+    lines.push(chars.slice(at, end).join(''));
+    at = end;
+  }
+  return lines.filter(Boolean);
+}
+
 /** Names keep a little air between them. */
 const padded = (b: Box): Box => ({ x1: b.x1 - 3, y1: b.y1 - 2, x2: b.x2 + 3, y2: b.y2 + 2 });
 
@@ -318,7 +340,7 @@ function placeLabels(
   // Each spot's clash with the marks is fixed, so it is counted once.
   const options = new Map(
     marks.map((m) => {
-      const lines = wrapText(names.get(m.number)!, LABEL_SIZE, LABEL_WIDTH);
+      const lines = wrapName(names.get(m.number)!);
       const every = spots(m, lines);
       const on = every.filter((l) => !offDial(l.box));
       const list = on.length ? on : every;

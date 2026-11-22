@@ -288,6 +288,21 @@ describe('the constellations dial', () => {
       }
     });
 
+    test('wraps a long Chinese name into even lines', () => {
+      const layout = dial(
+        [
+          constellation(1, [question(1, 'Magic')], {
+            name: { en: 'Crack', zh: '开裂、枯与晦暗减益' },
+          }),
+        ],
+        'zh',
+      );
+      const lines = markOf(layout, 1).label.lines;
+      expect(lines).toHaveLength(2);
+      expect(lines.join('')).toBe('开裂、枯与晦暗减益');
+      expect(Math.abs([...lines[0]].length - [...lines[1]].length)).toBeLessThanOrEqual(1);
+    });
+
     test('wraps a long name onto more than one line', () => {
       const layout = dial([
         constellation(1, [question(1, 'Magic')], {
