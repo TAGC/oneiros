@@ -90,7 +90,7 @@ navbox: character # optional; an id in src/data/navboxes.json
 - `summary` feeds hover previews, the Glossary index, category pages and search. Keep it to one plain sentence.
 - `area` is also a category. The infobox's Area row is added automatically.
 - `icon: Lore` (optional) shows that key of `src/data/icons.json` beside the title instead of the area's icon.
-- `status: Tenet` (optional) shows how settled the page's design idea is: one of Notion, Musing, Tenet, Certainty or Dogma, from least to most settled. It reuses the four belief stage names and the name of the Musing state, but is about the wiki, not the game. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. That page defines each stage. Claude may propose Notion, Musing or Tenet; a page goes above Tenet only when the designer says so.
+- `status: Tenet` (optional) shows how settled the page's design idea is: one of Notion, Tenet, Certainty or Dogma, from least to most settled. It uses the belief stages' rootedness ladder for the wiki's own beliefs about how the game should play; it is not a game concept. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. That page defines each stage. Claude may propose Notion or Tenet; a page goes above Tenet only when the designer says so.
 - Quote YAML values that start with `[[` or contain `: `.
 
 ### Wiki links
@@ -186,7 +186,7 @@ The area icons are painted to match the background art. The designer generates t
 | World      | Floating shard of land with a tiny temple and a cypress    | Green and grey              |
 | Character  | Theatre mask with a calm, neutral face                     | Porcelain white, blue       |
 
-**Status icons.** The five page-status icons are not area icons but follow this recipe. Their masters sit in `art-src/icons/` and `bun run icons` builds them the same way. `status:` in a page's frontmatter picks one by name.
+**Belief icons.** Five icons show the four belief stages and the Musing state. They are not area icons but follow this recipe. Their masters sit in `art-src/icons/` and `bun run icons` builds them the same way. `status:` in a page's frontmatter uses the four stage icons; Belief stages shows all five.
 
 | Stage     | Subject                                          | Main colour     |
 | --------- | ------------------------------------------------ | --------------- |

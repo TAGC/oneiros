@@ -145,17 +145,16 @@ Five pillars hold it together:
   statusSub: "How settled a page's design idea is.",
   statusIntro:
     "Status shows how settled the idea on a page is. It sits in the page's infobox, or beside the title when the page has no infobox. A page shows a Status only once it has been given one.",
-  statusStagesLead: 'The five stages, from least to most settled:',
+  statusStagesLead: 'The four stages, from least to most settled:',
   /** The text before and after the link to the belief stages. */
   statusNote: [
-    'Status reuses the names of the four ',
-    ' and of the Musing state, but it is about the wiki, not the game. It is not a game concept and has no Glossary term.',
+    'Status uses the same ladder as the four ',
+    ": it shows the wiki's own beliefs about how the game should play. It is not a game concept and has no Glossary term.",
   ] as readonly [string, string],
   statusBeliefStages: 'belief stages',
   /** What each stage means for a page, keyed by the English stage name. */
   statusMeanings: {
-    Notion: 'mentioned only, nothing agreed.',
-    Musing: 'sketched, but the core is still open or in conflict.',
+    Notion: 'mentioned or sketched; the core is still open or in conflict.',
     Tenet: 'core agreed, details still open.',
     Certainty: 'agreed and audited, nothing open.',
     Dogma: 'locked by the designer; it will not change.',
@@ -247,7 +246,6 @@ const zh: UI = {
   status: '状态',
   statusNames: {
     Notion: '念头',
-    Musing: '沉吟',
     Tenet: '信条',
     Certainty: '确信',
     Dogma: '教条',
@@ -316,15 +314,14 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   statusSub: '页面所述设计想法的确定程度。',
   statusIntro:
     '状态表示页面上的想法有多确定。页面有信息框时，状态显示在信息框中；没有信息框时，显示在标题旁。只有被赋予状态的页面才会显示它。',
-  statusStagesLead: '五个阶段，从最不确定到最确定：',
+  statusStagesLead: '四个阶段，从最不确定到最确定：',
   statusNote: [
-    '状态沿用了四个',
-    '以及沉吟这一状态的名称，但它说的是维基，而不是游戏。它不是游戏概念，也没有术语表词条。',
+    '状态沿用四个',
+    '的同一阶梯：它表示维基自身对游戏应如何运作的信念。它不是游戏概念，也没有术语表词条。',
   ],
   statusBeliefStages: '信念阶段',
   statusMeanings: {
-    Notion: '只是提及，尚无任何约定。',
-    Musing: '已有雏形，但核心仍未确定或存在冲突。',
+    Notion: '只是提及或已有雏形；核心仍未确定或存在冲突。',
     Tenet: '核心已约定，细节仍未确定。',
     Certainty: '已约定并经过审核，没有未决问题。',
     Dogma: '由设计者锁定，不会再变。',
