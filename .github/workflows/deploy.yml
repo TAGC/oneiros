@@ -6,10 +6,12 @@ on:
   # Question text lives in GitHub issues, so edits made only on GitHub redeploy.
   # GitHub Actions has no trigger for issue dependency (blocked-by) changes: the
   # `issues` event has no activity type for them and `issue_dependencies` is not
-  # a workflow event. Link changes show on the next deploy; run this workflow by
-  # hand (workflow_dispatch) to publish them sooner.
+  # a workflow event. The daily schedule picks link changes up; run this workflow
+  # by hand (workflow_dispatch) to publish them sooner.
   issues:
     types: [opened, edited, labeled, unlabeled, closed, reopened]
+  schedule:
+    - cron: '17 4 * * *'
   workflow_dispatch:
 
 permissions:
