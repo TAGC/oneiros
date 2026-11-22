@@ -36,7 +36,7 @@ Like any form that dissolves, an uprooted form keeps its force, which hangs wher
 
 ## Practitioners
 
-Practitioners enter others' houses with permission as a trade, to uproot memories and tend scars, and some turn intruder (see [[Other minds]]). In someone else's house, taking anything rooted would mean uprooting it in place, so [[extraction]] deals only in Loose memories and Hearsay beliefs.
+Practitioners enter others' houses with permission as a trade, to uproot memories and tend scars, and some turn intruder (see [[Other minds]]). In someone else's house, taking anything rooted would mean uprooting it in place, so [[extraction]] deals only in Loose memories and beliefs at Notion.
 
 > [!OPEN]
 > Who uproots and who heals scars in the world: quests, factions, companions?

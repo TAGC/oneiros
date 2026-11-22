@@ -28,7 +28,7 @@ If Conviction slips below its tier's line, the room cracks (see [[Cracking and c
 
 ## It cannot be traded
 
-Books in the world carry ideas, not Conviction: reading one gives a Notion, and Conviction can't be traded. [[Keepsake|Keepsakes]] carry no Hold or Conviction.
+Books in the world carry ideas, not Conviction: reading one gives a Musing, and Conviction can't be traded. [[Keepsake|Keepsakes]] carry no Hold or Conviction.
 
 ## Shared Conviction
 

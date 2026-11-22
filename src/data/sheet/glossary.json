@@ -91,7 +91,7 @@
     [
      "Belief stages",
      "Beliefs",
-     "The tiers a belief climbs as its Conviction grows, matching the rootedness ladder: Hearsay (Loose: a loose leaf on a shelf; no side effect), Tenet (Fixture: binds and becomes active; a bookcase built into the room), Creed (Room: a room of its own) and Dogma (Megaron: its rule and side effect become permanent; a great hall around a sealed shrine). Notion is a state, not a stage: pages on a reading-room desk while you dwell on it, with a side effect only. \"Hearsay\" is a working name.",
+     "The tiers a belief climbs as its Conviction grows, matching the rootedness ladder: Notion (Loose: a loose leaf on a shelf; no side effect), Tenet (Fixture: binds and becomes active; a bookcase built into the room), Certainty (Room: a room of its own) and Dogma (Megaron: its rule and side effect become permanent; a great hall around a sealed shrine). Musing is a state, not a stage: pages on a reading-room desk while you dwell on it, with a side effect only. \"Hearsay\" is a working name.",
      "Beliefs"
     ],
     [
@@ -391,7 +391,7 @@
     [
      "Library",
      "Temenos",
-     "The annular gallery on the Temenos centre's upper floor, ringing the opening above the apeiron pool, with doors onto the four wings' upper floors. The colourless counterpart of the wings: colourless beliefs and memories, a desk for colourless Notions, and your threads.",
+     "The annular gallery on the Temenos centre's upper floor, ringing the opening above the apeiron pool, with doors onto the four wings' upper floors. The colourless counterpart of the wings: colourless beliefs and memories, a desk for colourless Musings, and your threads.",
      "Temenos"
     ],
     [
@@ -577,7 +577,7 @@
     [
      "Rumour",
      "World",
-     "Something that happened, warped by each teller's emotion. Each version you hear becomes a belief at Hearsay. Can become a quest (a thread), and becomes real in the Vivid if enough people believe a version.",
+     "Something that happened, warped by each teller's emotion. Each version you hear becomes a belief at Notion. Can become a quest (a thread), and becomes real in the Vivid if enough people believe a version.",
      "Rumours"
     ],
     [

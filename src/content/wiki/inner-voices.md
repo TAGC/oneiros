@@ -35,7 +35,7 @@ Your strongest feeling's inner voice points out what it could do here: Hate noti
 
 ## When a quality finds its own voice
 
-At its greatest depth a quality finds its own voice. It arrives with its unique feature in the house (see [[Quality styles]]) and a one-time log note. It may then speak under its own name once per scene, recognising its own shape rather than urging, and can propose a [[Belief stages|Notion]].
+At its greatest depth a quality finds its own voice. It arrives with its unique feature in the house (see [[Quality styles]]) and a one-time log note. It may then speak under its own name once per scene, recognising its own shape rather than urging, and can propose a [[Belief stages|Musing]].
 
 When a quality's opposite deepens to nearly match it, the two emotions they feed argue: Hope through Greed against Despair through Obduracy.
 
@@ -45,7 +45,7 @@ Empty of feeling, you go quiet and hollow. The Calm qualities never urge: after 
 
 ## Elsewhere
 
-- Notions come from, among other things, your Voices (see [[Belief stages]]).
+- Musings come from, among other things, your Voices (see [[Belief stages]]).
 - The Ache [[scar]] malus is that emotion's inner voice speaking of the loss and tugging your mood.
 
 ## Writing the lines

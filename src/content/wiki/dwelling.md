@@ -26,7 +26,7 @@ Dwelling raises a belief's [[Conviction]], and you steer beliefs by dwelling or 
 
 ## When you dwell
 
-You choose what to dwell on only in your [[Temenos]] during [[rest]], a limited number of beliefs at once, and dwelling runs over long spans (days or longer). While you dwell on a belief, it is a Notion: pages on a reading-room desk, bringing a side effect (see [[Belief stages#Notion|Notion]]).
+You choose what to dwell on only in your [[Temenos]] during [[rest]], a limited number of beliefs at once, and dwelling runs over long spans (days or longer). While you dwell on a belief, it is a Musing: pages on a reading-room desk, bringing a side effect (see [[Belief stages#Musing|Musing]]).
 
 ## What it changes
 

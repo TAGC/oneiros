@@ -10,7 +10,7 @@ infobox:
     - label: When
       value: During the target's [[Rest|long rest]]
     - label: Deals in
-      value: Loose [[Memory|memories]] and Hearsay [[Belief|beliefs]]
+      value: Loose [[Memory|memories]] and [[Belief|beliefs]] at Notion
     - label: Watched by
       value: The target's own [[Attention]]
     - label: Risks
@@ -32,7 +32,7 @@ Inside, the target plays [[the Dreamer]]'s role in their own world, and acts tha
 
 Lit areas are where the target's memories shine. There you are seen, so you must play a part; suspicious actions belong in the dark. You arrive dark, carrying no light of your own, and the target's [[Forgetting]] cannot touch you, since you are not their dream.
 
-Memories are lamps: you take or leave one by carrying it, as you would a real lamp, and you can hood it to mask its light. Beliefs give no light, so a Hearsay belief, a loose leaf on a shelf, can be taken or left entirely in the dark.
+Memories are lamps: you take or leave one by carrying it, as you would a real lamp, and you can hood it to mask its light. Beliefs give no light, so a belief at Notion, a loose leaf on a shelf, can be taken or left entirely in the dark.
 
 ## Guises
 
@@ -50,7 +50,7 @@ A heist builds in stages:
 
 ## What moves
 
-Extraction and inception deal only in Loose memories and Hearsay beliefs; taking anything rooted would mean uprooting it in place. An incepted memory arrives Loose and an incepted belief at Hearsay, and they root or fade through the target's long rests like anything else they hold. (See the [[rootedness ladder]] for the tiers.)
+Extraction and inception deal only in Loose memories and beliefs at Notion; taking anything rooted would mean uprooting it in place. An incepted memory arrives Loose and an incepted belief at Notion, and they root or fade through the target's long rests like anything else they hold. (See the [[rootedness ladder]] for the tiers.)
 
 ## When you go in
 

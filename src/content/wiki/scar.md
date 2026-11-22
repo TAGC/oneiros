@@ -33,7 +33,7 @@ Each tier leaves its own ruin:
 | [[Rootedness ladder#Room\|Room]]        | A burnt-out room                        |
 | [[Megaron]]                            | A collapsed hall with sagging neighbours |
 
-For a memory Megaron, there is a mark on the body too. Loose items and [[Belief stages|Notions]] leave none.
+For a memory Megaron, there is a mark on the body too. Loose items and [[Belief stages|Musings]] leave none.
 
 - **[[Uprooting]]** below Megaron scars only when botched; a Megaron always scars, even when cleanly uprooted.
 - **[[Igniting]]** a Fixture in a rush risks a scar; done carefully, it takes time and keeps its Hold.
