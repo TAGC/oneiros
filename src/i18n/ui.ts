@@ -149,7 +149,6 @@ Five pillars hold it together:
 
   /* Status */
   statusDescription: "How settled a page's design idea is.",
-  statusSub: "How settled a page's design idea is.",
   statusIntro:
     "Status shows how settled the idea on a page is. It sits in the page's infobox, or beside the title when the page has no infobox. A page shows a Status only once it has been given one.",
   statusStagesLead: 'The four stages, from least to most settled:',
@@ -329,7 +328,6 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   onThePage: '查看原处',
 
   statusDescription: '页面所述设计想法的确定程度。',
-  statusSub: '页面所述设计想法的确定程度。',
   statusIntro:
     '状态表示页面上的想法有多确定。页面有信息框时，状态显示在信息框中；没有信息框时，显示在标题旁。只有被赋予状态的页面才会显示它。',
   statusStagesLead: '四个阶段，从最不确定到最确定：',
