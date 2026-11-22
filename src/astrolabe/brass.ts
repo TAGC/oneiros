@@ -6,9 +6,10 @@
 import { AREAS } from '../lib/areas';
 import type { Area } from '../lib/questions';
 import { ENERGIES, type Energy, type Size } from '../lib/questions/constellations';
+import { useTranslations } from '../i18n/ui';
 import type { ChartConstellation, StarChart } from './chart';
 import { mulberry32 } from './sky';
-import { textWidth, wrapText } from './text';
+import { isCjk, textWidth, wrapText } from './text';
 
 export interface DialSector {
   /** Undefined for the sector of questions with no area, drawn only when needed. */
@@ -78,11 +79,11 @@ export interface DialLayout {
 
 const SIZE = 1000;
 const CENTRE = SIZE / 2;
-const HUB = 92;
-const PLATE = 432;
-const BAND = 472;
-const LIMB = 496;
-const RING_RADIUS = { none: 120, low: 176, medium: 264, high: 352 };
+const HUB = 88;
+const PLATE = 444;
+const BAND = 476;
+const LIMB = 498;
+const RING_RADIUS = { none: 116, low: 178, medium: 270, high: 362 };
 const MARK_RADIUS: Record<Size, number> = { small: 8, medium: 11, large: 14 };
 export const LABEL_SIZE = 16;
 export const LABEL_LINE = 19;
@@ -91,6 +92,17 @@ const LABEL_GAP = 5;
 /** The energy names on the rule: how far along it each reaches, and how wide it is. */
 const RING_LABEL_REACH = 30;
 const RING_LABEL_HALF = 10;
+/** Area names on the band: capitals with wide letter spacing, as `brass.css` sets them. */
+export const BAND_NAME_SIZE = 13;
+export const BAND_NAME_SPACING = { latin: 0.14, cjk: 0.3 };
+
+/** How long an area's name runs along the band, with a little room either side. */
+export function bandNameWidth(name: string): number {
+  const cjk = isCjk(name);
+  const spacing = (cjk ? BAND_NAME_SPACING.cjk : BAND_NAME_SPACING.latin) * BAND_NAME_SIZE;
+  return textWidth(name.toUpperCase(), BAND_NAME_SIZE) + [...name].length * spacing + 18;
+}
+
 /** The narrowest sector, for an area with no constellations, in constellations' worth. */
 const EMPTY_WEIGHT = 0.55;
 
@@ -136,11 +148,16 @@ export function layoutBrass(chart: StarChart): DialLayout {
   // The rule is wide enough that a mark on the innermost ring keeps clear of its names.
   const inner = noEnergy ? RING_RADIUS.none : RING_RADIUS.low;
   const rule = (Math.atan((RING_LABEL_HALF + MARK_RADIUS.large + 4) / inner) * 180) / Math.PI;
-  const unit = (360 - 2 * rule) / weights.reduce((s, w) => s + w, 0);
+  const t = useTranslations(chart.locale);
+  const middle = (PLATE + BAND) / 2;
+  const least = areas.map(
+    (a) => (bandNameWidth(a ? (t.areaNames[a] ?? a) : t.noArea) / middle) * (180 / Math.PI),
+  );
+  const angles = share(360 - 2 * rule, weights, least);
   const sectors: DialSector[] = [];
   let start = rule;
   for (const [i, area] of areas.entries()) {
-    const end = i === areas.length - 1 ? 360 - rule : start + weights[i] * unit;
+    const end = i === areas.length - 1 ? 360 - rule : start + angles[i];
     const sector: DialSector = { start, end, count: inArea.get(area)!.length };
     if (area) sector.area = area;
     sectors.push(sector);
@@ -201,6 +218,19 @@ export function layoutBrass(chart: StarChart): DialLayout {
   };
 }
 
+/** Splits a total in proportion to the weights, giving each part at least its least. */
+function share(total: number, weights: number[], least: number[]): number[] {
+  const fixed = new Set<number>();
+  for (;;) {
+    const room = total - [...fixed].reduce((s, i) => s + least[i], 0);
+    const free = weights.reduce((s, w, i) => (fixed.has(i) ? s : s + w), 0);
+    const parts = weights.map((w, i) => (fixed.has(i) ? least[i] : (w * room) / free));
+    const short = parts.findIndex((p, i) => !fixed.has(i) && p < least[i]);
+    if (short < 0) return parts;
+    fixed.add(short);
+  }
+}
+
 /** Names keep a little air between them. */
 const padded = (b: Box): Box => ({ x1: b.x1 - 3, y1: b.y1 - 2, x2: b.x2 + 3, y2: b.y2 + 2 });
 
@@ -237,7 +267,7 @@ function spots(m: Omit<DialMark, 'label'>, lines: string[]): DialLabel[] {
     });
   };
   const reach = m.r + LABEL_GAP;
-  for (const push of [0, 8, 16, 26, 38, 52]) {
+  for (const push of [0, 8, 16, 26, 38, 52, 68]) {
     const far = push > 16;
     for (const shift of [0, -0.2, 0.2, -0.4, 0.4, -0.6, 0.6, -0.8, 0.8, -1, 1]) {
       const top = m.y - h / 2 + shift * (h / 2 + m.r);

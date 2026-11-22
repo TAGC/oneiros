@@ -91,6 +91,23 @@ describe('the constellations dial', () => {
     }
   });
 
+  test("gives every sector room for its area's name on the band, even with none in it", () => {
+    for (const locale of ['en', 'zh'] as const) {
+      const layout = dial(
+        Array.from({ length: 40 }, (_, i) => constellation(i + 1, [question(i + 1, 'Memory')])),
+        locale,
+      );
+      const middle = (layout.plate + layout.band) / 2;
+      const arc = (area: Area) => {
+        const s = sectorOf(layout, area);
+        return ((s.end - s.start) * Math.PI * middle) / 180;
+      };
+      // Roughly the width of PHILOSOPHY and 哲学 in capitals on the band.
+      expect(arc('Philosophy')).toBeGreaterThan(locale === 'en' ? 100 : 40);
+      if (locale === 'en') expect(arc('Lore')).toBeLessThan(arc('Philosophy'));
+    }
+  });
+
   test('places a constellation in the sector of the area holding most of its questions', () => {
     const layout = dial([
       constellation(1, [question(1, 'Memory'), question(2, 'Temenos'), question(3, 'Temenos')]),
@@ -267,7 +284,7 @@ describe('the constellations dial', () => {
           Math.max(b.x1 - m.x, 0, m.x - b.x2),
           Math.max(b.y1 - m.y, 0, m.y - b.y2),
         );
-        expect(gap).toBeLessThan(m.r + (m.label.leader ? 64 : 24));
+        expect(gap).toBeLessThan(m.r + (m.label.leader ? 80 : 24));
       }
     });
 
