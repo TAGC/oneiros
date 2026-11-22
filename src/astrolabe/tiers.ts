@@ -1,7 +1,7 @@
 /**
  * The tiers view: a working map. Columns run from settled ground through the frontier to
- * one, two, and three or more steps out; rows are the areas, or the constellations. A step
- * out is the longest chain of unsettled blockers in front of a question.
+ * one, two, and three or more steps out; rows are the areas, or the constellations. Steps
+ * out come from the question graph.
  */
 import type { Locale } from '../i18n/ui';
 import type { Area } from '../lib/questions';
@@ -70,35 +70,10 @@ const LINE = 18;
 const CELL_GAP = 12;
 const ROW_PAD = 14;
 
-/** How many unsettled blockers stand in a row in front of each open question. */
-function stepsOut(chart: StarChart): Map<number, number> {
-  const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
-  const memo = new Map<number, number>();
-  const visiting = new Set<number>();
-  const depth = (star: Star): number => {
-    if (star.status === 'frontier') return 0;
-    const known = memo.get(star.number);
-    if (known !== undefined) return known;
-    if (visiting.has(star.number)) return 1;
-    visiting.add(star.number);
-    let d = 1;
-    for (const n of star.blockedBy) {
-      const blocker = byNumber.get(n)!;
-      if (blocker.status === 'decided' || blocker.status === 'ruled-out') continue;
-      d = Math.max(d, blocker.question.status === 'open' ? depth(blocker) + 1 : 1);
-    }
-    visiting.delete(star.number);
-    memo.set(star.number, d);
-    return d;
-  };
-  const out = new Map<number, number>();
-  for (const s of chart.stars) if (s.question.status === 'open') out.set(s.number, depth(s));
-  return out;
-}
-
-function tierOf(star: Star, steps: Map<number, number>): Tier {
+/** Settled ground, then the frontier, then a column per step out, the last for three or more. */
+function tierOf(star: Star): Tier {
   if (star.question.status !== 'open') return 0;
-  return Math.min(4, 1 + (steps.get(star.number) ?? 0)) as Tier;
+  return Math.min(4, 1 + star.stepsOut) as Tier;
 }
 
 function path(a: TierStar, b: TierStar, aLabelEnd: number, kind: Thread['kind']): string {
@@ -126,8 +101,7 @@ function constellationRow(c: ChartConstellation, finished: boolean) {
 
 export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLayout {
   const nameWidth = by === 'areas' ? AREA_WIDTH : CONSTELLATION_WIDTH;
-  const steps = stepsOut(chart);
-  const tiers = new Map(chart.stars.map((s) => [s.number, tierOf(s, steps)]));
+  const tiers = new Map(chart.stars.map((s) => [s.number, tierOf(s)]));
   const deepest = Math.max(1, ...tiers.values());
   const columns: TierColumn[] = [];
   for (let t = 0; t <= deepest; t++) {

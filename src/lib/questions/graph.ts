@@ -23,6 +23,12 @@ export const ROLES: Role[] = ['central', 'peripheral', 'independent'];
 export interface GraphQuestion {
   number: number;
   place: Place;
+  /**
+   * The longest chain of unsettled blockers in front of an open question; 0 on the frontier
+   * and for a settled question. A closed or missing unsettled blocker counts as one step. In
+   * a blocked-by cycle, or waiting on one, it is capped at the number of open questions.
+   */
+  stepsOut: number;
   /** Its blockers, canonical and sorted, whether or not they are in the graph. */
   blockedBy: number[];
   /** The open questions it directly blocks, sorted. */
@@ -35,6 +41,44 @@ export interface GraphQuestion {
 export interface QuestionGraph {
   /** Every question but duplicates, by number. */
   questions: Record<number, GraphQuestion>;
+}
+
+/**
+ * The blocked-by cycles among `questions`: each strongly connected group of two or more, or a
+ * question that blocks itself, as sorted numbers, in order of their first.
+ */
+function blockedByCycles(questions: Question[], byNumber: Map<number, Question>): number[][] {
+  const index = new Map<number, number>();
+  const low = new Map<number, number>();
+  const stack: number[] = [];
+  const onStack = new Set<number>();
+  const cycles: number[][] = [];
+  const visit = (n: number) => {
+    index.set(n, index.size);
+    low.set(n, index.get(n)!);
+    stack.push(n);
+    onStack.add(n);
+    for (const b of byNumber.get(n)!.blockedBy) {
+      if (!byNumber.has(b)) continue;
+      if (!index.has(b)) {
+        visit(b);
+        low.set(n, Math.min(low.get(n)!, low.get(b)!));
+      } else if (onStack.has(b)) low.set(n, Math.min(low.get(n)!, index.get(b)!));
+    }
+    if (low.get(n) !== index.get(n)) return;
+    const group: number[] = [];
+    let m: number;
+    do {
+      m = stack.pop()!;
+      onStack.delete(m);
+      group.push(m);
+    } while (m !== n);
+    if (group.length > 1 || byNumber.get(n)!.blockedBy.includes(n)) {
+      cycles.push(group.sort((a, b) => a - b));
+    }
+  };
+  for (const q of questions) if (!index.has(q.number)) visit(q.number);
+  return cycles.sort((a, b) => a[0] - b[0]);
 }
 
 export function questionGraph(all: Question[]): QuestionGraph {
@@ -61,11 +105,30 @@ export function questionGraph(all: Question[]): QuestionGraph {
     }
   }
 
+  const inCycle = new Set(blockedByCycles(questions, byNumber).flat());
+  const cap = questions.filter((q) => q.status === 'open').length;
+  const steps = new Map<number, number>();
+  const stepsOut = (q: Question): number => {
+    if (q.status !== 'open') return 0;
+    if (inCycle.has(q.number)) return cap;
+    const known = steps.get(q.number);
+    if (known !== undefined) return known;
+    let longest = 0;
+    for (const b of blockersOf(q)) {
+      if (settled(b)) continue;
+      const blocker = byNumber.get(b);
+      longest = Math.max(longest, blocker?.status === 'open' ? stepsOut(blocker) + 1 : 1);
+    }
+    steps.set(q.number, Math.min(cap, longest));
+    return steps.get(q.number)!;
+  };
+
   const records: Record<number, GraphQuestion> = {};
   for (const q of questions) {
     const open = q.status === 'open';
     const blockedBy = blockersOf(q);
-    const place: Place = !open ? 'settled' : blockedBy.every(settled) ? 'frontier' : 'blocked';
+    const ready = blockedBy.every(settled) && !inCycle.has(q.number);
+    const place: Place = !open ? 'settled' : ready ? 'frontier' : 'blocked';
     const mine = dependents.get(q.number)!;
     const has: Record<Role, boolean> = {
       central: open && mine.length >= CENTRAL_MIN_DEPENDENTS,
@@ -75,6 +138,7 @@ export function questionGraph(all: Question[]): QuestionGraph {
     records[q.number] = {
       number: q.number,
       place,
+      stepsOut: stepsOut(q),
       blockedBy,
       dependents: mine,
       roles: ROLES.filter((r) => has[r]),

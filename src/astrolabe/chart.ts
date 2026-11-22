@@ -33,6 +33,8 @@ export interface Star {
   question: Question;
   status: StarStatus;
   roles: StarRole[];
+  /** From the question graph: 0 on the frontier and for a settled question. */
+  stepsOut: number;
   /** The title in the chart's locale, or English when it has none. */
   label: string;
   labelLang: Locale;
@@ -158,6 +160,7 @@ export function chartQuestions(
       question: q,
       status: starStatus(q, facts.place),
       roles: starRoles(facts.roles),
+      stepsOut: facts.stepsOut,
       label: own ?? q.title[DEFAULT_LOCALE] ?? `#${q.number}`,
       labelLang: own === undefined ? DEFAULT_LOCALE : locale,
       blockedBy: ends(blocking, 'from', q.number),

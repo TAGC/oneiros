@@ -33,7 +33,7 @@ const tierOf = (layout: ReturnType<typeof tiers>) =>
   Object.fromEntries(layout.stars.map((s) => [s.number, s.tier]));
 
 describe('the tiers layout', () => {
-  test('puts settled ground first, then the frontier, then each step out', () => {
+  test('puts settled ground first, then the frontier, then each step out, three or more last', () => {
     const layout = tiers([
       question(1, { status: 'decided' }),
       question(2, { blockedBy: [1] }),
@@ -50,20 +50,6 @@ describe('the tiers layout', () => {
   test('shows only the steps out that hold a question', () => {
     const layout = tiers([question(1), question(2, { blockedBy: [1] })]);
     expect(layout.columns.map((c) => c.tier)).toEqual([0, 1, 2]);
-  });
-
-  test('puts a question waiting only on an undermined decision one step out', () => {
-    const layout = tiers([
-      question(1, { status: 'undermined', underminedBy: [3] }),
-      question(2, { blockedBy: [1] }),
-      question(3),
-    ]);
-    expect(tierOf(layout)).toEqual({ 1: 0, 2: 2, 3: 1 });
-  });
-
-  test('survives a cycle of blockers', () => {
-    const layout = tiers([question(1, { blockedBy: [2] }), question(2, { blockedBy: [1] })]);
-    expect(Object.values(tierOf(layout)).every((t) => t >= 2)).toBe(true);
   });
 
   test('gives each area a row, in the chart order, and keeps stars inside their row', () => {

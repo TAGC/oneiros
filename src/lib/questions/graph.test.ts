@@ -109,6 +109,55 @@ describe('places', () => {
   });
 });
 
+describe('steps out', () => {
+  const steps = (graph: Graph) =>
+    Object.fromEntries(Object.values(graph.questions).map((q) => [q.number, q.stepsOut]));
+
+  test('counts the longest chain of unsettled blockers in front of an open question', () => {
+    const graph = graphOf([
+      issue(1, { state: 'decided' }),
+      issue(2, { blockedBy: [1] }),
+      issue(3, { blockedBy: [2] }),
+      issue(4, { blockedBy: [3] }),
+      issue(5, { blockedBy: [2, 4] }),
+      issue(6, { state: 'ruled-out', blockedBy: [5] }),
+    ]);
+    expect(steps(graph)).toEqual({ 1: 0, 2: 0, 3: 1, 4: 2, 5: 3, 6: 0 });
+  });
+
+  test('an undermined or missing blocker counts as one step', () => {
+    const graph = graphOf([
+      issue(1, { state: 'undermined' }),
+      issue(2, { blockedBy: [1] }),
+      issue(3, { blockedBy: [404] }),
+      issue(4, { blockedBy: [2] }),
+    ]);
+    expect(steps(graph)).toEqual({ 1: 0, 2: 1, 3: 1, 4: 2 });
+  });
+
+  test('a question in a blocked-by cycle, or waiting on one, is blocked at the cap', () => {
+    const graph = graphOf([
+      issue(1, { blockedBy: [2] }),
+      issue(2, { blockedBy: [1] }),
+      issue(3, { blockedBy: [2] }),
+      issue(4, { state: 'decided', blockedBy: [5] }),
+      issue(5, { blockedBy: [4] }),
+      issue(6),
+      issue(7, { blockedBy: [7] }),
+    ]);
+    expect(places(graph)).toEqual({
+      1: 'blocked',
+      2: 'blocked',
+      3: 'blocked',
+      4: 'settled',
+      5: 'blocked',
+      6: 'frontier',
+      7: 'blocked',
+    });
+    expect(steps(graph)).toEqual({ 1: 6, 2: 6, 3: 6, 4: 0, 5: 6, 6: 0, 7: 6 });
+  });
+});
+
 describe('peripheral', () => {
   test('holds frontier questions that no open question depends on', () => {
     const graph = graphOf([
