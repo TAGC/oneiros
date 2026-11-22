@@ -114,27 +114,99 @@ Targets match titles and aliases, ignoring case. A link to a page that does not 
 
 Links inside raw HTML (such as `<p class="formula">`) are not processed.
 
-### Callouts
+### Open questions
+
+Open questions and conflicts live in GitHub issues on this repo, one issue per question. The issues hold the question text, the links between questions and the answers. The wiki holds the settled rules and a marker where each open question's box goes. `/oneiros/open-questions/` lists them all.
+
+#### Labels
+
+- `kind:open` or `kind:conflict`: the question's kind. It is stored only here.
+- `area:<area>`: exactly one per issue, the lowercase name of one of the 16 areas in `src/lib/areas.ts`, such as `area:memory`.
+
+#### Issue format
+
+The issue title is the English title. The body has an English property table, an English Context section and one section per site locale, keyed by locale code:
 
 ```md
-> [!OPEN]
-> The multiplier on [[renown]] is not yet set.
+| Property | Value |
+|---|---|
+| Page | [Ablaze](https://tagc.github.io/oneiros/ablaze/) |
+| Section | While Ablaze |
+| Source | Vision |
+| Raised | 21 Nov 2026, <session or chat link> |
+| Related | #139, #145 |
+| Undermined by | #208 |
 
-> [!CONFLICT]
-> The vision says X; the Glossary says Y. The vision wins until this is settled.
+## Context
+
+<free-form English prose>
+
+## en
+
+<question text, as the callout reads today>
+
+## zh
+
+### <Chinese title>
+
+<question text in Chinese>
 ```
 
-`[!OPEN]` renders as an "Open question" note and adds the page to "Pages with open questions". `[!CONFLICT]` renders as "Conflict: vision and sheet disagree" and adds "Pages with conflicts". Every callout is listed on `/oneiros/open-questions/`. Use one callout per question so each can be linked.
+- **Page:** the page that holds the marker. Required when the question has a marker; every other row is optional.
+- **Section:** the section of that page.
+- **Source:** where the question comes from. Each source is a wiki link to a page, such as `[[Memory]]`, or one of `vision` and `sheet`, separated by commas. On a conflict, the box header is built from it: `vision, sheet` gives "Conflict: vision and sheet disagree". A conflict with no Source row is headed "Conflict".
+- **Raised:** when and where the question was raised.
+- **Related:** issues worth reading alongside, not blockers.
+- **Undermined by:** on a decided issue, the later issue that broke its premise.
+- **Context:** the discussion that led to the question, in any form.
+- **Locale sections:** `## en` holds the question as the box shows it. `## zh` starts with a `### ` line holding the Chinese title, then the Chinese text. Wiki links work in both.
 
-### Question markers
+One question blocks another through GitHub's own "blocked by" link (the issue's Relationships menu), not a property row. From the command line, `gh api -X POST repos/TAGC/oneiros/issues/<blocked>/dependencies/blocked_by -F issue_id=<id>` takes the blocking issue's `id` from `gh api repos/TAGC/oneiros/issues/<number> --jq .id`, not its number.
 
-Open questions are moving to GitHub issues labelled `kind:open` or `kind:conflict` and one `area:<area>`. A page marks where a question's box goes:
+#### Answers and status
+
+The answer is one comment on the issue, posted while the pull request that lands it is open:
+
+```md
+## Answer
+
+### en
+
+<the decision in English>
+
+### zh
+
+<the decision in Chinese>
+
+Decided by the designer, 22 Nov 2026, in <session or chat link>. Confidence: Tenet (bare yes). Accepted Claude's proposal. Lands in #210.
+```
+
+The last line is the provenance: who decided, when, in which session, and the pull request that lands it. Other comments are discussion and are ignored.
+
+Status is derived from GitHub, never stored:
+
+| Status      | On GitHub                                                 |
+| ----------- | --------------------------------------------------------- |
+| Open        | Open                                                      |
+| Decided     | Closed as completed, with an answer comment               |
+| Ruled out   | Closed as not planned, with an answer comment             |
+| Undermined  | Decided, with an Undermined by row                        |
+
+#### Markers
+
+A page marks where an open question's box goes:
 
 ```md
 > [!ISSUE 142]
 ```
 
-The build fills in the box from the question cache: the header from the `kind:` label, the body from the issue's `## en` or `## zh` section for the page's language, with wiki links resolved as on pages. The `## zh` section starts with a `### ` line holding the Chinese title. Markers count like callouts on the open questions page and in the automatic categories, and inline callouts keep working beside them. Run `bun run pull` first, or the box says the question is missing.
+The build fills in the box from the question cache: the header from the `kind:` label (and the Source row for a conflict), the body from the section for the page's language, with wiki links resolved as on pages. The English and Chinese pages carry the same markers. Run `bun run pull` first, or the box says the question is missing.
+
+Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form. They still render, and count like markers, until the migration turns them into issues. Write new questions as issues with markers.
+
+#### The pull
+
+`bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. The cache is gitignored. The deploy pulls before every build, and editing, labelling, linking or closing an issue redeploys the site. Locally, pull again after changing issues.
 
 ### Contents box and backlinks
 
