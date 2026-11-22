@@ -83,25 +83,19 @@ function setUpBrass(root: HTMLElement): void {
     if (e.key === 'Escape' && open !== undefined) dismiss();
   });
 
-  /* The time and energy filter: a mark fits when its size and energy are at most the ones
-     chosen, as in `client.ts`. */
-  const SCALES: Record<string, string[]> = {
-    size: ['small', 'medium', 'large'],
-    energy: ['low', 'medium', 'high'],
-  };
+  /* The time and energy filter: a mark fits when its size and energy are the ones chosen, as
+     in `client.ts`. */
   const applyFilter = () => {
     const chosen = [...root.querySelectorAll<HTMLElement>('.al-scale')].map((scale) => ({
       name: scale.dataset.scale!,
-      max:
+      value:
         scale.querySelector<HTMLButtonElement>('button[aria-pressed="true"]')?.dataset.value ??
         'any',
     }));
     for (const mark of root.querySelectorAll('.al-cmark')) {
-      const fits = chosen.every(({ name, max }) => {
-        if (max === 'any') return true;
-        const value = mark.getAttribute(`data-${name}`);
-        return value !== null && SCALES[name].indexOf(value) <= SCALES[name].indexOf(max);
-      });
+      const fits = chosen.every(
+        ({ name, value }) => value === 'any' || mark.getAttribute(`data-${name}`) === value,
+      );
       mark.classList.toggle('al-unfit', !fits);
     }
   };

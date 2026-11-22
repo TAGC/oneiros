@@ -33,7 +33,7 @@ Three views, switched by buttons above the map; the choice is remembered in the 
 
 A constellation is a group of related open questions sized for one session. The night sky joins its stars with lines and writes its name, size, energy and progress (how many of its questions are settled) beside them; a **Constellations** switch above the map shows or hides them. Under the map, a list gives every open constellation with its reasoning and questions, then the open questions that no constellation holds yet. Those ungrouped questions also carry a small warning mark in both views while constellations are shown. A star's panel names its constellation.
 
-The time and energy filter keeps lit only the constellations that fit: a constellation fits when its size is at most the time chosen and its energy at most the energy chosen. One without a size or energy fits only "Any". Reading the filter as "the most I have" is Claude's suggestion, not a decision.
+The time and energy filter keeps lit only the constellations that fit: a constellation fits when its size is the time chosen and its energy the energy chosen. One without a size or energy fits only "Any". The designer chose exact matches on 22 Nov 2026.
 
 ### The constellations view
 

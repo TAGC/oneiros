@@ -63,17 +63,11 @@ function setUp(root: HTMLElement): void {
       showConstellations(root.dataset.constellations !== 'on'),
     );
 
-    const SCALES: Record<string, string[]> = {
-      size: ['small', 'medium', 'large'],
-      energy: ['low', 'medium', 'high'],
-    };
     const chosen: Record<string, string> = { size: 'any', energy: 'any' };
     const fits = (el: Element) =>
-      Object.entries(chosen).every(([scale, max]) => {
-        if (max === 'any') return true;
-        const value = el.getAttribute(`data-${scale}`);
-        return value !== null && SCALES[scale].indexOf(value) <= SCALES[scale].indexOf(max);
-      });
+      Object.entries(chosen).every(
+        ([scale, value]) => value === 'any' || el.getAttribute(`data-${scale}`) === value,
+      );
     const fitText = cfilter.querySelector<HTMLElement>('.al-fit');
     const applyFilter = () => {
       const unfit = new Set<string>();
