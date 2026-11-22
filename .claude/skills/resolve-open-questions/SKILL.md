@@ -32,6 +32,7 @@ Between unsettled sources, no source wins by default. The sheet was ruled author
 
 - One question per message, in the caveman style: what the sources say, the options, Claude's pick marked ➡️, worded so "yes" accepts the pick.
 - Wait for the answer. Answers reshape later questions, so never batch them, even when they look independent.
+- Record the designer's confidence in each decision on the page-status scale: Notion (tentative, may flip, "yes, tentatively"), Tenet (keep and refine; a bare "yes"), Certainty (sure, "yes, definitely"), Dogma (locked, never revisit, "absolutely"). If the designer's wording is ambiguous, ask.
 - When an answer adds a new rule, note it back in a line, then ask about its knock-on effects before moving on.
 - When the designer states a rule, check it against the pages, the data and the reference sheet before the next question. Surface any contradiction or existing answer at once, with its source.
 - Stress-test each settled answer with one concrete edge-case scenario before moving on, for example "you are knocked out mid-recount while rushing a Fixture: is the memory lost, scarred, or both?". The designer's answer may settle a detail or become a new `[!OPEN]`.
@@ -54,12 +55,14 @@ Once every question in the group is settled:
 
   - Q: Does burning shatter the bead?
   - Decided: Yes. The memory is destroyed and the glass shatters.
+  - Confidence: Tenet (bare yes).
   - Designer: "should the gem break too?" Accepted Claude's proposal.
   - Resolves: [!OPEN] on burning.md (from bead, within or both).
   ```
 
   - **Q:** the question that was settled.
   - **Decided:** the outcome.
+  - **Confidence:** the designer's confidence on the status scale, then `(bare yes)` or their qualifying words in quotes, for example `Notion ("yes, tentatively")`.
   - **Designer:** the designer's exact words when they add content or reasoning. When the designer only said yes, or chose Claude's recommended option, write `Accepted Claude's proposal.` This line is what a canon audit checks, so never credit the designer with Claude's idea.
   - **Resolves:** the callouts it closes, if any.
 
