@@ -814,9 +814,10 @@ footer.foot p {
   cursor: pointer;
 }
 .filter button[aria-pressed='true'] {
-  background: var(--head);
-  border-color: var(--head);
-  color: #fff;
+  --on: light-dark(var(--head), var(--link));
+  background: var(--on);
+  border-color: var(--on);
+  color: light-dark(#fff, var(--head));
 }
 .page-list {
   padding-inline-start: 20px;
