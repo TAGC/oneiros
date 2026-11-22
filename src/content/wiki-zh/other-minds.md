@@ -54,7 +54,7 @@ navbox: memory
 
 ## 何时进入
 
-何时进入很重要。宅邸的各个阶段与世界的[[Sleep cycle|睡眠周期]]相对应：[[Sleep cycle#Light|浅眠]]、[[Deep|深眠]]与[[Sleep cycle#Vivid|鲜梦]]。
+何时进入很重要。宅邸的各个阶段与世界的[[Sleep cycle|睡眠周期]]相对应：[[Sleep cycle#浅眠|浅眠]]、[[Deep|深眠]]与[[Sleep cycle#鲜梦|鲜梦]]。
 
 | 阶段 | 宅邸中 | 进入 | 进入之后 |
 | ---- | ------ | ---- | -------- |
