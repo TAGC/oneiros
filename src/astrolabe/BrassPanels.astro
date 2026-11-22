@@ -8,7 +8,7 @@ import { useTranslations } from '../i18n/ui';
 import { wikiUrl } from '../lib/site';
 import { issueId } from '../lib/wiki';
 import type { DialLayout } from './brass';
-import type { StarChart } from './chart';
+import { openConstellations, type StarChart, starsOf } from './chart';
 import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
 import { areaTint } from './tints';
@@ -29,7 +29,7 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
 
 <div class="al-panels al-cpanels">
   {
-    chart.constellations.map((c) => {
+    openConstellations(chart).map((c) => {
       const mark = markOf.get(c.number)!;
       return (
         <section
@@ -65,7 +65,7 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
           {c.reasoning && <p lang={lang(c.reasoning.lang)}>{c.reasoning.text}</p>}
           <h3>{a.members}</h3>
           <ul class="al-cpanel-stars">
-            {c.stars.map((n) => {
+            {starsOf(c).map((n) => {
               const star = byNumber.get(n)!;
               const page = star.question.properties.page;
               return (

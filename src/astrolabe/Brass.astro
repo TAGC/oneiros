@@ -6,7 +6,7 @@
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
 import { type DialLayout, BAND_NAME_SIZE, LABEL_LINE, polar } from './brass';
-import type { StarChart } from './chart';
+import { openConstellations, progressOf, type StarChart, ungroupedStars } from './chart';
 import { constellationFacts } from './facts';
 import { isCjk } from './text';
 import { areaTint } from './tints';
@@ -21,7 +21,9 @@ const { chart, layout, locale } = Astro.props;
 const t = useTranslations(locale);
 const a = t.astrolabe;
 const { centre: C, hub, plate, band, limb } = layout;
-const byNumber = new Map(chart.constellations.map((c) => [c.number, c]));
+const open = openConstellations(chart);
+const ungrouped = ungroupedStars(chart);
+const byNumber = new Map(open.map((c) => [c.number, c]));
 const f = (v: number) => Number(v.toFixed(2));
 const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
 
@@ -204,12 +206,12 @@ const viewBox = `0 ${top} ${layout.size} ${layout.size - top}`;
     <circle class="al-hub" cx={C} cy={C} r={hub} />
     <circle class="al-hub-in" cx={C} cy={C} r={hub - 6} />
     <text class="al-hub-count" x={C} y={C - 14}>
-      {a.dialCount(chart.constellations.length)}
+      {a.dialCount(open.length)}
     </text>
     {
-      chart.ungrouped.length > 0 && (
+      ungrouped.length > 0 && (
         <text class="al-hub-note" x={C} y={C + 10}>
-          {a.dialUngrouped(chart.ungrouped.length)}
+          {a.dialUngrouped(ungrouped.length)}
         </text>
       )
     }
@@ -254,7 +256,7 @@ const viewBox = `0 ${top} ${layout.size} ${layout.size - top}`;
             )}
             <g transform={`translate(${f(m.x)} ${f(m.y)})`}>
               <circle class="al-cmark-focus" r={m.r + 10} />
-              {notches(m.r + 4.5, c.settled, c.total).map((n) => (
+              {notches(m.r + 4.5, progressOf(c).settled, progressOf(c).total).map((n) => (
                 <path class:list={['al-notch', n.settled && 'al-notch-settled']} d={n.d} />
               ))}
               <circle class="al-boss" r={m.r} />

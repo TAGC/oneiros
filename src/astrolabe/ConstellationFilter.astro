@@ -7,7 +7,7 @@
 import { type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
 import { ENERGIES, SIZES } from '../lib/questions/constellations';
-import type { StarChart } from './chart';
+import { openConstellations, type StarChart } from './chart';
 
 interface Props {
   chart: StarChart;
@@ -21,12 +21,12 @@ const scales = [
   { name: 'size', label: a.time, values: SIZES, labels: t.constellationSizes },
   { name: 'energy', label: t.constellationEnergy, values: ENERGIES, labels: t.constellationEnergies },
 ] as const;
-const all = chart.constellations.length;
+const all = openConstellations(chart).length;
 /** The line under the filter for each number of constellations that fit, from none to all. */
 const fitTexts = Array.from({ length: all + 1 }, (_, fit) => a.fit(fit, all));
 ---
 
-<div class="al-cfilter" hidden data-total={chart.constellations.length}>
+<div class="al-cfilter" hidden data-total={all}>
   <div class="al-cluster" role="group" aria-label={a.clusterBy}>
     <span class="al-scale-name">{a.clusterBy}</span>
     <button type="button" data-cluster="areas" aria-pressed="true">
@@ -50,7 +50,7 @@ const fitTexts = Array.from({ length: all + 1 }, (_, fit) => a.fit(fit, all));
     </button>
   </div>
   {
-    chart.constellations.length > 0 &&
+    all > 0 &&
       scales.map((scale) => (
         <div class="al-scale" role="group" aria-label={scale.label} data-scale={scale.name}>
           <span class="al-scale-name">{scale.label}</span>
@@ -66,7 +66,7 @@ const fitTexts = Array.from({ length: all + 1 }, (_, fit) => a.fit(fit, all));
       ))
   }
   {
-    chart.constellations.length > 0 && (
+    all > 0 && (
       <p class="al-fit" aria-live="polite" data-texts={JSON.stringify(fitTexts)}>
         {fitTexts[all]}
       </p>

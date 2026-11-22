@@ -6,7 +6,7 @@
 import { useTranslations } from '../i18n/ui';
 import type { Area } from '../lib/questions';
 import type { Clustering } from '../lib/questions/clusters';
-import type { Star, StarChart, Thread } from './chart';
+import { openConstellations, type Star, type StarChart, starsOf, type Thread } from './chart';
 import { curve, threadBend } from './curve';
 import { constellationFacts } from './facts';
 import { wrapText, textWidth } from './text';
@@ -425,10 +425,7 @@ function placeConstellations(
   ];
   const t = useTranslations(chart.locale);
   const out: SkyConstellation[] = [];
-  const groupOf = new Map(
-    [...chart.constellations, ...chart.finished].map((g) => [g.number, g] as const),
-  );
-  const finished = new Set(chart.finished.map((c) => c.number));
+  const groupOf = new Map(chart.constellations.map((g) => [g.number, g] as const));
   // Clustered by area, only the open constellations are named.
   const named = chart.clusters.constellations.flatMap((cluster) =>
     cluster.kind === 'constellation' || (cluster.kind === 'finished' && by === 'constellations')
@@ -436,7 +433,7 @@ function placeConstellations(
       : [],
   );
   for (const c of named) {
-    const points = c.stars.flatMap((n) => at.get(n) ?? []);
+    const points = starsOf(c).flatMap((n) => at.get(n) ?? []);
     if (!points.length) continue;
     const boxes = points.flatMap((p) => [
       p.label.box,
@@ -448,7 +445,7 @@ function placeConstellations(
     const y2 = Math.max(...boxes.map((b) => b.y2));
     const w = Math.max(
       textWidth(c.name, NAME_SIZE) * 0.95,
-      finished.has(c.number) ? 0 : textWidth(constellationFacts(c, t), FACTS_SIZE),
+      c.finished ? 0 : textWidth(constellationFacts(c, t), FACTS_SIZE),
       160,
     );
     const cx = (x1 + x2) / 2;
@@ -486,7 +483,7 @@ function placeConstellations(
       segments: shortestTree(points),
       label: best!,
     };
-    if (finished.has(c.number)) placed.finished = true;
+    if (c.finished) placed.finished = true;
     out.push(placed);
   }
   return out;
@@ -633,7 +630,7 @@ function finish(chart: StarChart, p: Placed, width: number, height: number): Sky
  */
 export function layoutSkies(chart: StarChart): { areas: SkyLayout; constellations?: SkyLayout } {
   const byArea = place(chart, 'areas');
-  const byConstellation = chart.constellations.some((c) => c.stars.length)
+  const byConstellation = openConstellations(chart).some((c) => starsOf(c).length)
     ? place(chart, 'constellations')
     : undefined;
   const extents = [byArea, byConstellation].flatMap((p) => (p ? [extent(p)] : []));

@@ -5,7 +5,7 @@
  */
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
-import { quietSettled, type StarChart } from './chart';
+import { quietSettled, type StarChart, ungroupedStars } from './chart';
 import Glyph from './Glyph.astro';
 import type { TiersLayout } from './tiers';
 import { areaTint } from './tints';
@@ -28,7 +28,7 @@ const rowTint = (row: TiersLayout['rows'][number]) =>
       ? 'var(--mute)'
       : 'var(--al-const)';
 const LINE = 18;
-const ungrouped = new Set(chart.ungrouped);
+const ungrouped = new Set(ungroupedStars(chart));
 /* Settled questions with no thread to an open one hide unless "Show settled" is on. */
 const quiet = new Set(quietSettled(chart));
 ---

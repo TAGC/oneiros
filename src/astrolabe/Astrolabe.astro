@@ -15,7 +15,7 @@ import { layoutBrass } from './brass';
 import Brass from './Brass.astro';
 import BrassKey from './BrassKey.astro';
 import BrassPanels from './BrassPanels.astro';
-import { chartQuestions, quietSettled } from './chart';
+import { chartQuestions, openConstellations, quietSettled } from './chart';
 import ConstellationFilter from './ConstellationFilter.astro';
 import ConstellationList from './ConstellationList.astro';
 import Legend from './Legend.astro';
@@ -42,7 +42,7 @@ const sky = skies?.areas;
 const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
 const tiersByConstellation = skies?.constellations && layoutTiers(chart, 'constellations');
 const quietCount = quietSettled(chart).length;
-const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
+const dial = openConstellations(chart).length ? layoutBrass(chart) : undefined;
 ---
 
 <Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">

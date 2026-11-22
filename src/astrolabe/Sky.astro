@@ -8,7 +8,7 @@
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
-import { quietSettled, type StarChart } from './chart';
+import { quietSettled, type StarChart, starsOf, ungroupedStars } from './chart';
 import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
 import type { SkyMotionData, SkySpot } from './motion';
@@ -28,10 +28,10 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
-const ungrouped = new Set(chart.ungrouped);
+const ungrouped = new Set(ungroupedStars(chart));
 /* Settled questions with no thread to an open one hide unless "Show settled" is on. */
 const quiet = new Set(quietSettled(chart));
-const groupOf = new Map([...chart.constellations, ...chart.finished].map((c) => [c.number, c]));
+const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 /* Constellation lines, rings and names show only when clustered by constellation. */
 const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
 const motion = (l: SkyLayout): Record<string, SkySpot> =>
@@ -122,7 +122,7 @@ const motionData: SkyMotionData | undefined = byConstellation && {
         {byConstellation.constellations.map((placed) => {
           const c = groupOf.get(placed.number)!;
           // A finished constellation is faint, has no facts line and ignores the filter.
-          const allQuiet = c.stars.every((n) => quiet.has(n));
+          const allQuiet = starsOf(c).every((n) => quiet.has(n));
           return (
             <g
               class:list={[
@@ -152,7 +152,7 @@ const motionData: SkyMotionData | undefined = byConstellation && {
                   />
                 );
               })}
-              {c.stars.map((n) => {
+              {starsOf(c).map((n) => {
                 const p = linedAt.get(n)!;
                 return (
                   <circle

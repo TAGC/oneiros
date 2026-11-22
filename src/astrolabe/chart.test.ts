@@ -5,7 +5,14 @@ import {
   type Constellations,
   isFinished,
 } from '../lib/questions/constellations';
-import { chartQuestions, quietSettled } from './chart';
+import {
+  chartQuestions,
+  openConstellations,
+  progressOf,
+  quietSettled,
+  starsOf,
+  ungroupedStars,
+} from './chart';
 
 type Fixture = Partial<Question> & { status?: Question['status'] };
 
@@ -179,14 +186,14 @@ describe('constellations', () => {
       'zh',
     );
     expect(
-      c.constellations.map((k) => ({
+      openConstellations(c).map((k) => ({
         number: k.number,
         name: k.name,
         nameLang: k.nameLang,
         size: k.size,
         energy: k.energy,
-        settled: k.settled,
-        stars: k.stars,
+        settled: progressOf(k).settled,
+        stars: starsOf(k),
       })),
     ).toEqual([
       {
@@ -210,40 +217,20 @@ describe('constellations', () => {
     ]);
   });
 
-  test('marks open questions that no open constellation holds', () => {
-    const qs = [question(1), question(2), question(3, { status: 'decided' })];
+  test('gives each star its open constellation, and none in a finished one', () => {
+    const qs = [question(1), question(2, { status: 'decided' }), question(3)];
     const c = sky(qs, [constellation(7, [qs[0]]), constellation(9, [qs[1]], { state: 'closed' })]);
-    expect(c.ungrouped).toEqual([2]);
-    expect(c.stars.find((s) => s.number === 1)!.constellation).toBe(7);
-    expect(c.stars.find((s) => s.number === 2)!.constellation).toBeUndefined();
-  });
-
-  test('keeps settled questions with their finished constellation, and a reopened one ungrouped', () => {
-    const qs = [
-      question(1, { status: 'decided' }),
-      question(2, { status: 'ruled-out' }),
-      question(3),
-      question(4, { status: 'decided' }),
-      question(5),
-    ];
-    const c = sky(qs, [
-      constellation(7, [qs[0], qs[1]], { size: 'small', energy: 'low' }),
-      constellation(8, [qs[2], qs[3]], { state: 'closed' }),
-      constellation(9, [qs[4]]),
+    expect(c.stars.map((s) => s.constellation)).toEqual([7, undefined, undefined]);
+    expect(c.constellations.map((k) => [k.number, k.finished])).toEqual([
+      [7, false],
+      [9, true],
     ]);
-    expect(c.constellations.map((k) => k.number)).toEqual([9]);
-    expect(c.finished.map((k) => [k.number, k.stars])).toEqual([
-      [7, [1, 2]],
-      [8, [4]],
-    ]);
-    expect(c.stars.find((s) => s.number === 3)!.constellation).toBeUndefined();
-    expect(c.ungrouped).toEqual([3]);
   });
 
   test('has no constellations and no warnings without constellation data', () => {
     const c = chart([question(1)]);
     expect(c.constellations).toEqual([]);
-    expect(c.ungrouped).toEqual([]);
+    expect(ungroupedStars(c)).toEqual([]);
   });
 });
 

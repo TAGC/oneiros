@@ -49,7 +49,7 @@ export interface Star {
   constellation?: number;
 }
 
-/** An open constellation, as the map draws it. */
+/** A constellation the map draws: an open one, or a finished one with a cluster. */
 export interface ChartConstellation {
   number: number;
   url: string;
@@ -59,11 +59,13 @@ export interface ChartConstellation {
   reasoning?: { text: string; lang: Locale };
   size?: Size;
   energy?: Energy;
-  /** How many of its questions are closed, of how many. */
-  settled: number;
-  total: number;
-  /** Its questions on the map, open and closed, by number. */
-  stars: number[];
+  finished: boolean;
+  /**
+   * Its cluster in the chart's Constellations clustering, the same object, so membership has
+   * one source: its questions on the map, open and closed, and its counts. Absent when none
+   * of its questions is on the map.
+   */
+  cluster?: Cluster;
 }
 
 /** A line between two stars, as the question graph gives it. */
@@ -79,12 +81,11 @@ export interface StarChart {
   /** The stars gathered each way, from the questions module's cluster list. */
   clusters: Record<Clustering, Cluster[]>;
   counts: StarCounts;
-  /** Open constellations, by milestone number; empty without constellation data. */
+  /**
+   * The constellations the map draws: the open ones, then the finished ones with a cluster,
+   * each by milestone number; empty without constellation data.
+   */
   constellations: ChartConstellation[];
-  /** Finished constellations with a cluster of settled questions, by milestone number. */
-  finished: ChartConstellation[];
-  /** Open questions on the map that no open constellation holds, by number. */
-  ungrouped: number[];
 }
 
 function starStatus(q: Question, place: Place): StarStatus {
@@ -106,7 +107,6 @@ export function chartQuestions(
   // their canonical issue and stay off it.
   const sorted = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
   const inChart = new Set(sorted.map((q) => q.number));
-  const byNumber = new Map(sorted.map((q) => [q.number, q]));
 
   const threads = graph.threads.filter((t) => inChart.has(t.from) && inChart.has(t.to));
   const ends = (kind: (t: Thread) => boolean, pick: 'from' | 'to', n: number) =>
@@ -137,7 +137,9 @@ export function chartQuestions(
 
   const clusters: Record<Clustering, Cluster[]> = {
     areas: clusterList(sorted, constellations, 'areas', locale),
-    constellations: clusterList(sorted, constellations, 'constellations', locale),
+    constellations: constellations
+      ? clusterList(sorted, constellations, 'constellations', locale)
+      : [],
   };
   const clusterOf = new Map(
     clusters.constellations.flatMap((c) =>
@@ -152,28 +154,23 @@ export function chartQuestions(
       url: c.url,
       name: name.text,
       nameLang: name.lang,
-      settled: held ? held.total - held.open : 0,
-      total: held?.total ?? 0,
-      stars: held?.questions ?? [],
+      finished: held?.kind === 'finished',
     };
+    if (held) group.cluster = held;
     const reasoning = inLocale(c.reasoning, locale);
     if (reasoning) group.reasoning = reasoning;
     if (c.size) group.size = c.size;
     if (c.energy) group.energy = c.energy;
     return group;
   };
-  const groups = (constellations?.open() ?? []).map(toGroup);
-  const finished = (constellations?.finished() ?? [])
-    .filter((c) => clusterOf.has(c.number))
-    .map(toGroup);
+  const groups = [
+    ...(constellations?.open() ?? []),
+    ...(constellations?.finished() ?? []).filter((c) => clusterOf.has(c.number)),
+  ].map(toGroup);
   for (const star of stars) {
     const held = clusters.constellations.find((c) => c.questions.includes(star.number));
     if (held?.kind === 'constellation') star.constellation = held.constellation;
   }
-  const none = clusters.constellations.find((c) => c.kind === 'none');
-  const ungrouped = constellations
-    ? (none?.questions ?? []).filter((n) => byNumber.get(n)!.state === 'open')
-    : [];
 
   const counts = Object.fromEntries(['open', ...STAR_STATUSES].map((k) => [k, 0])) as StarCounts;
   for (const s of stars) {
@@ -187,9 +184,31 @@ export function chartQuestions(
     clusters,
     counts,
     constellations: groups,
-    finished,
-    ungrouped,
   };
+}
+
+/** The open constellations the map draws, by milestone number. */
+export function openConstellations(chart: StarChart): ChartConstellation[] {
+  return chart.constellations.filter((c) => !c.finished);
+}
+
+/** A constellation's questions on the map, open and closed, by number. */
+export function starsOf(c: ChartConstellation): number[] {
+  return c.cluster?.questions ?? [];
+}
+
+/** How many of a constellation's questions on the map are settled, of how many. */
+export function progressOf(c: ChartConstellation): { settled: number; total: number } {
+  return c.cluster
+    ? { settled: c.cluster.total - c.cluster.open, total: c.cluster.total }
+    : { settled: 0, total: 0 };
+}
+
+/** Open questions on the map that no open constellation holds, by number. */
+export function ungroupedStars(chart: StarChart): number[] {
+  const open = new Set(chart.stars.filter((s) => s.question.state === 'open').map((s) => s.number));
+  const none = chart.clusters.constellations.find((c) => c.kind === 'none');
+  return (none?.questions ?? []).filter((n) => open.has(n));
 }
 
 /**

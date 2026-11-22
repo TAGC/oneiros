@@ -7,7 +7,7 @@ import { AREAS } from '../lib/areas';
 import type { Area } from '../lib/questions';
 import { ENERGIES, type Energy, type Size } from '../lib/questions/constellations';
 import { useTranslations } from '../i18n/ui';
-import type { ChartConstellation, StarChart } from './chart';
+import { type ChartConstellation, openConstellations, type StarChart, starsOf } from './chart';
 import { type Box, mulberry32, overlapArea } from './sky';
 import { isCjk, textWidth, wrapText } from './text';
 
@@ -109,7 +109,7 @@ export function polar(r: number, angle: number): { x: number; y: number } {
 function areasOf(c: ChartConstellation, chart: StarChart): (Area | undefined)[] {
   const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
   const counts = new Map<Area | undefined, number>();
-  for (const n of c.stars) {
+  for (const n of starsOf(c)) {
     const area = byNumber.get(n)!.question.area;
     counts.set(area, (counts.get(area) ?? 0) + 1);
   }
@@ -118,7 +118,7 @@ function areasOf(c: ChartConstellation, chart: StarChart): (Area | undefined)[] 
 }
 
 export function layoutBrass(chart: StarChart): DialLayout {
-  const placed = chart.constellations.map((c) => ({
+  const placed = openConstellations(chart).map((c) => ({
     c,
     areas: areasOf(c, chart),
   }));
@@ -171,7 +171,7 @@ export function layoutBrass(chart: StarChart): DialLayout {
   }));
 
   const marks: Omit<DialMark, 'label'>[] = [];
-  const names = new Map(chart.constellations.map((c) => [c.number, c.name]));
+  const names = new Map(openConstellations(chart).map((c) => [c.number, c.name]));
   for (const [i, area] of areas.entries()) {
     const sector = sectors[i];
     for (const ring of rings) {
