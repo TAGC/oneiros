@@ -2,7 +2,7 @@ import { describe, expect, test } from 'bun:test';
 import type { Area, Question } from '../lib/questions';
 import { questionGraph } from '../lib/questions';
 import { chartQuestions } from './chart';
-import { type Box, layoutSky } from './sky';
+import { type Box, layoutSkies, layoutSky } from './sky';
 
 function question(
   number: number,
@@ -71,7 +71,7 @@ describe('the sky layout', () => {
     const layout = sky();
     const area = new Map(questions().map((q) => [q.number, q.area]));
     for (const s of layout.stars) {
-      const distances = layout.areas.map((a) => ({
+      const distances = layout.clusters.map((a) => ({
         area: a.area,
         d: Math.hypot(s.x - a.x, s.y - a.y),
       }));
@@ -85,7 +85,7 @@ describe('the sky layout', () => {
       const layout = sky(locale);
       const boxes = [
         ...layout.stars.map((s) => s.label.box),
-        ...layout.areas.map((a) => a.label.box),
+        ...layout.clusters.flatMap((a) => a.label?.box ?? []),
       ];
       for (const s of layout.stars) {
         boxes.push({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r });
@@ -117,9 +117,9 @@ describe('the sky layout', () => {
     qs[22].blockedBy = [3];
     qs[23].blockedBy = [4];
     const layout = layoutSky(chartQuestions(qs, questionGraph(qs), 'en'));
-    const centre = (area: Area | undefined) => layout.areas.find((a) => a.area === area)!;
+    const centre = (area: Area | undefined) => layout.clusters.find((a) => a.area === area)!;
     const beliefs = centre('Beliefs');
-    const others = layout.areas
+    const others = layout.clusters
       .filter((a) => a !== beliefs)
       .sort(
         (a, b) =>
@@ -172,5 +172,98 @@ describe('the sky layout', () => {
     const one = layout.stars.find((s) => s.number === 1)!;
     const start = /^M([\d.-]+),([\d.-]+)/.exec(layout.threads[0].d)!;
     expect(Math.hypot(Number(start[1]) - one.x, Number(start[2]) - one.y)).toBeLessThan(one.r + 12);
+  });
+});
+
+/** Constellation 1 holds questions 1, 6, 11 and 12, across three areas; 2 holds 2, 3 and 4. */
+const MEMBERS: Record<number, number[]> = { 1: [1, 6, 11, 12], 2: [2, 3, 4] };
+
+function fakeConstellations(qs: Question[], members = MEMBERS) {
+  const held = new Set(Object.values(members).flat());
+  const open = Object.entries(members).map(([number, ns]) => ({
+    number: Number(number),
+    url: `https://github.com/TAGC/oneiros/milestone/${number}`,
+    state: 'open' as const,
+    name: { en: `The constellation numbered ${number}`, zh: `第 ${number} 个星座` },
+    reasoning: {},
+    questions: qs.filter((q) => ns.includes(q.number)),
+  }));
+  return {
+    all: () => open,
+    open: () => open,
+    of: () => undefined,
+    ungrouped: () => qs.filter((q) => !held.has(q.number) && q.status === 'open'),
+  };
+}
+
+function skies(locale: 'en' | 'zh' = 'en', members = MEMBERS) {
+  const qs = questions();
+  return layoutSkies(
+    chartQuestions(qs, questionGraph(qs), locale, fakeConstellations(qs, members)),
+  );
+}
+
+describe('the sky clustered by constellation', () => {
+  test('shares one canvas with the sky clustered by area', () => {
+    const { areas, constellations } = skies();
+    expect(constellations).toBeDefined();
+    expect(constellations!.width).toBe(areas.width);
+    expect(constellations!.height).toBe(areas.height);
+    expect(areas.by).toBe('areas');
+    expect(constellations!.by).toBe('constellations');
+  });
+
+  test('gathers each constellation into its own patch of sky, the rest into one more', () => {
+    const layout = skies().constellations!;
+    expect(layout.clusters.map((c) => c.constellation)).toEqual([1, 2, undefined]);
+    const patch = (ns: number[]) => {
+      const points = layout.stars.filter((s) => ns.includes(s.number));
+      return {
+        x1: Math.min(...points.map((p) => p.x)),
+        y1: Math.min(...points.map((p) => p.y)),
+        x2: Math.max(...points.map((p) => p.x)),
+        y2: Math.max(...points.map((p) => p.y)),
+      };
+    };
+    const held = Object.values(MEMBERS).flat();
+    const rest = layout.stars.map((s) => s.number).filter((n) => !held.includes(n));
+    const patches = [...Object.values(MEMBERS), rest].map(patch);
+    for (const a of patches) {
+      for (const b of patches) if (a !== b) expect(overlap(a, b)).toBe(false);
+    }
+  });
+
+  test('keeps stars apart and every label and name clear of each other, on the canvas', () => {
+    for (const locale of ['en', 'zh'] as const) {
+      const layout = skies(locale).constellations!;
+      expect(skies(locale).constellations).toEqual(layout);
+      for (const a of layout.stars) {
+        for (const b of layout.stars) {
+          if (a !== b) expect(Math.hypot(a.x - b.x, a.y - b.y)).toBeGreaterThanOrEqual(a.r + b.r);
+        }
+      }
+      const texts = [
+        ...layout.stars.map((s) => s.label.box),
+        ...layout.constellations.map((c) => c.label.box),
+        ...layout.clusters.flatMap((c) => c.label?.box ?? []),
+      ];
+      for (const a of texts) {
+        for (const b of texts) if (a !== b) expect(overlap(a, b)).toBe(false);
+        expect(a.x1).toBeGreaterThanOrEqual(0);
+        expect(a.y1).toBeGreaterThanOrEqual(0);
+        expect(a.x2).toBeLessThanOrEqual(layout.width);
+        expect(a.y2).toBeLessThanOrEqual(layout.height);
+      }
+    }
+  });
+
+  test('names only the cluster of stars in no constellation, as constellations name the rest', () => {
+    const layout = skies().constellations!;
+    expect(layout.clusters.filter((c) => c.label).map((c) => c.constellation)).toEqual([undefined]);
+    expect(layout.constellations.map((c) => c.number)).toEqual([1, 2]);
+  });
+
+  test('has no clustering by constellation without constellations', () => {
+    expect(skies('en', {}).constellations).toBeUndefined();
   });
 });

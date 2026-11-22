@@ -36,16 +36,19 @@ const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
   <Backdrop chart={chart} layout={layout} />
   <g class="al-area-names" aria-hidden="true">
     {
-      layout.areas.map((area) => (
-        <text
-          x={area.label.x}
-          y={area.label.y}
-          text-anchor="middle"
-          style={`--tint:${areaTint(area.area)}`}
-        >
-          {areaName(area.area)}
-        </text>
-      ))
+      layout.clusters.map(
+        (area) =>
+          area.label && (
+            <text
+              x={area.label.x}
+              y={area.label.y}
+              text-anchor="middle"
+              style={`--tint:${areaTint(area.area)}`}
+            >
+              {areaName(area.area)}
+            </text>
+          ),
+      )
     }
   </g>
   <g class="al-threads" aria-hidden="true">

@@ -1,11 +1,15 @@
 /**
- * The night sky view: a seeded force layout that pulls each area into its own patch of sky,
- * settled entirely at build time, then greedy label placement around each star. The same
- * chart always gives the same sky.
+ * The night sky view: a seeded force layout that pulls each cluster (an area, or a
+ * constellation) into its own patch of sky, settled entirely at build time, then greedy label
+ * placement around each star. The same chart always gives the same sky.
  */
 import type { Area } from '../lib/questions';
 import type { Star, StarChart, Thread } from './chart';
+import { curve, threadBend } from './curve';
 import { wrapText, textWidth } from './text';
+
+/** What gathers the stars: their areas, or their constellations. */
+export type Clustering = 'areas' | 'constellations';
 
 export interface Box {
   x1: number;
@@ -34,14 +38,23 @@ export interface SkyStar {
   label: SkyLabel;
 }
 
-export interface SkyArea {
+/**
+ * One cluster of stars: an area, or a constellation. Clustered by constellation, the stars in
+ * none share a cluster with neither set.
+ */
+export interface SkyCluster {
   area?: Area;
-  /** The centre of the area's stars, and how far they spread. */
+  constellation?: number;
+  /** The centre of the cluster's stars, and how far they spread. */
   x: number;
   y: number;
   rx: number;
   ry: number;
-  label: { x: number; y: number; box: Box };
+  /**
+   * Where its name's baseline is centred. A constellation's cluster has none here: its name is
+   * the constellation's, in `SkyLayout.constellations`.
+   */
+  label?: { x: number; y: number; box: Box };
 }
 
 export interface SkyThread extends Thread {
@@ -59,10 +72,11 @@ export interface SkyConstellation {
 }
 
 export interface SkyLayout {
+  by: Clustering;
   width: number;
   height: number;
   stars: SkyStar[];
-  areas: SkyArea[];
+  clusters: SkyCluster[];
   threads: SkyThread[];
   constellations: SkyConstellation[];
 }
@@ -93,6 +107,13 @@ const LINE_HEIGHT = 15;
 const AREA_SIZE = 17;
 const MARGIN = 24;
 const TICKS = 480;
+
+/** The stars of one cluster, before they are placed. */
+interface Group {
+  area?: Area;
+  constellation?: number;
+  stars: number[];
+}
 
 interface Node {
   star: Star;
@@ -210,13 +231,13 @@ function collide(nodes: Node[]): void {
 }
 
 /**
- * Seats each area in a grid cell so areas with many threads between them sit side by side:
- * a deterministic swap search that shortens the total length of the threads between areas.
+ * Seats each cluster in a grid cell so clusters with many threads between them sit side by
+ * side: a deterministic swap search that shortens the total length of the threads between them.
  */
-function seatAreas(chart: StarChart, cols: number, cells: number): number[] {
-  const groups = chart.areas.length;
+function seatClusters(chart: StarChart, clusters: Group[], cols: number, cells: number): number[] {
+  const groups = clusters.length;
   const groupOf = new Map<number, number>();
-  chart.areas.forEach((g, i) => g.stars.forEach((n) => groupOf.set(n, i)));
+  clusters.forEach((g, i) => g.stars.forEach((n) => groupOf.set(n, i)));
   const weight = Array.from({ length: groups }, () => Array<number>(groups).fill(0));
   for (const t of chart.threads) {
     const a = groupOf.get(t.from)!;
@@ -260,13 +281,13 @@ function seatAreas(chart: StarChart, cols: number, cells: number): number[] {
   return seat;
 }
 
-function anchorsFor(chart: StarChart): { x: number; y: number }[] {
+function anchorsFor(chart: StarChart, clusters: Group[]): { x: number; y: number }[] {
   const rnd = mulberry32(5);
-  const groups = chart.areas.length;
+  const groups = clusters.length;
   const cols = Math.ceil(Math.sqrt(groups));
   const rows = Math.ceil(groups / cols);
-  const seat = seatAreas(chart, cols, cols * rows);
-  const cell = Math.max(250, Math.sqrt(Math.max(...chart.areas.map((a) => a.stars.length))) * 92);
+  const seat = seatClusters(chart, clusters, cols, cols * rows);
+  const cell = Math.max(250, Math.sqrt(Math.max(...clusters.map((a) => a.stars.length))) * 92);
   return seat.map((i) => {
     const row = Math.floor(i / cols);
     const col = i % cols;
@@ -286,7 +307,7 @@ function labelSize(star: Star): { lines: string[]; size: number; w: number; h: n
   return { lines, size, w, h: lines.length * LINE_HEIGHT };
 }
 
-function placeLabels(nodes: Node[], areas: SkyArea[]): Map<number, SkyLabel> {
+function placeLabels(nodes: Node[], clusters: SkyCluster[]): Map<number, SkyLabel> {
   const starBoxes = nodes.map((n) => ({
     x1: n.x - n.r - 2,
     y1: n.y - n.r - 2,
@@ -294,7 +315,7 @@ function placeLabels(nodes: Node[], areas: SkyArea[]): Map<number, SkyLabel> {
     y2: n.y + n.r + 2,
   }));
   const placed: Box[] = [];
-  const areaBoxes = areas.map((a) => a.label.box);
+  const areaBoxes = clusters.flatMap((c) => c.label?.box ?? []);
   const order = [...nodes].sort(
     (a, b) =>
       Number(b.star.roles.includes('central')) - Number(a.star.roles.includes('central')) ||
@@ -308,7 +329,10 @@ function placeLabels(nodes: Node[], areas: SkyArea[]): Map<number, SkyLabel> {
       starBoxes.forEach((o, i) => {
         if (nodes[i] !== n) cost += overlapArea(box, o) * 40;
       });
-      for (const o of placed) cost += overlapArea(box, o) * 1000;
+      for (const o of placed) {
+        const area = overlapArea(box, o);
+        if (area > 0) cost += 1000 + area * 1000;
+      }
       for (const o of areaBoxes) cost += overlapArea(box, o) * 6;
       return cost;
     });
@@ -352,21 +376,6 @@ function bestLabelSpot(
   return best!;
 }
 
-function curve(a: SkyStar, b: SkyStar, bend: number): string {
-  const dx = b.x - a.x;
-  const dy = b.y - a.y;
-  const cx = (a.x + b.x) / 2 - dy * bend;
-  const cy = (a.y + b.y) / 2 + dx * bend;
-  const toward = (p: SkyStar, r: number): [number, number] => {
-    const l = Math.hypot(cx - p.x, cy - p.y) || 1;
-    return [p.x + ((cx - p.x) / l) * r, p.y + ((cy - p.y) / l) * r];
-  };
-  const [sx, sy] = toward(a, a.r + 3);
-  const [ex, ey] = toward(b, b.r + 6);
-  const f = (v: number) => v.toFixed(1);
-  return `M${f(sx)},${f(sy)}Q${f(cx)},${f(cy)} ${f(ex)},${f(ey)}`;
-}
-
 function moved(box: Box, dx: number, dy: number): Box {
   return { x1: box.x1 + dx, y1: box.y1 + dy, x2: box.x2 + dx, y2: box.y2 + dy };
 }
@@ -395,16 +404,18 @@ function shortestTree(points: SkyStar[]): [number, number][] {
 const NAME_SIZE = 16;
 const NAME_HEIGHT = 36;
 
+/** Names each constellation clear of everything placed; clustered by one, above it first. */
 function placeConstellations(
   chart: StarChart,
   stars: SkyStar[],
-  areas: SkyArea[],
+  clusters: SkyCluster[],
+  by: Clustering,
 ): SkyConstellation[] {
   const at = new Map(stars.map((s) => [s.number, s]));
   const taken: Box[] = [
     ...stars.map((s) => s.label.box),
     ...stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
-    ...areas.map((a) => a.label.box),
+    ...clusters.flatMap((c) => c.label?.box ?? []),
   ];
   const out: SkyConstellation[] = [];
   for (const c of chart.constellations) {
@@ -425,9 +436,10 @@ function placeConstellations(
     let bestCost = Infinity;
     for (let ring = 0; ring < 10; ring++) {
       const gap = 8 + ring * 22;
+      const below = { x: cx, y: y2 + gap };
+      const above = { x: cx, y: y1 - gap - NAME_HEIGHT };
       const spots = [
-        { x: cx, y: y2 + gap },
-        { x: cx, y: y1 - gap - NAME_HEIGHT },
+        ...(by === 'constellations' ? [above, below] : [below, above]),
         { x: x2 + gap + w / 2, y: cy - NAME_HEIGHT / 2 },
         { x: x1 - gap - w / 2, y: cy - NAME_HEIGHT / 2 },
       ];
@@ -453,11 +465,31 @@ function placeConstellations(
   return out;
 }
 
-export function layoutSky(chart: StarChart): SkyLayout {
+/** The stars of each cluster: areas in the chart's order, or open constellations then the rest. */
+function groupsFor(chart: StarChart, by: Clustering): Group[] {
+  if (by === 'areas') return chart.areas;
+  const groups: Group[] = chart.constellations
+    .filter((c) => c.stars.length)
+    .map((c) => ({ constellation: c.number, stars: c.stars }));
+  const rest = chart.stars.filter((s) => s.constellation === undefined).map((s) => s.number);
+  if (rest.length) groups.push({ stars: rest });
+  return groups;
+}
+
+/** One clustering of the sky, before it is moved onto the shared canvas. */
+interface Placed {
+  by: Clustering;
+  stars: SkyStar[];
+  clusters: SkyCluster[];
+  constellations: SkyConstellation[];
+}
+
+function place(chart: StarChart, by: Clustering): Placed {
+  const groups = groupsFor(chart, by);
+  const anchors = anchorsFor(chart, groups);
   const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
-  const anchors = anchorsFor(chart);
   const rnd = mulberry32(7);
-  const nodes: Node[] = chart.areas.flatMap((group, g) =>
+  const nodes: Node[] = groups.flatMap((group, g) =>
     group.stars.map((number, k) => {
       const star = byNumber.get(number)!;
       const angle = k * 2.39996 + rnd() * 0.4;
@@ -479,7 +511,7 @@ export function layoutSky(chart: StarChart): SkyLayout {
   );
   settle(chart, nodes, anchors);
 
-  const areas: SkyArea[] = chart.areas.map((group, g) => {
+  const clusters: SkyCluster[] = groups.map((group, g) => {
     const members = nodes.filter((n) => n.group === g);
     const xs = members.map((n) => n.x);
     const ys = members.map((n) => n.y);
@@ -487,13 +519,15 @@ export function layoutSky(chart: StarChart): SkyLayout {
     const y = ys.reduce((s, v) => s + v, 0) / ys.length;
     const rx = Math.max(...xs) - Math.min(...xs);
     const ry = Math.max(...ys) - Math.min(...ys);
-    const area: SkyArea = { x, y, rx: rx / 2 + 70, ry: ry / 2 + 60, label: labelSpot() };
-    if (group.area) area.area = group.area;
-    return area;
+    const cluster: SkyCluster = { x, y, rx: rx / 2 + 70, ry: ry / 2 + 60 };
+    if (group.area) cluster.area = group.area;
+    if (group.constellation !== undefined) cluster.constellation = group.constellation;
+    else cluster.label = labelSpot();
+    return cluster;
 
     function labelSpot() {
       const name = group.area ?? '';
-      const w = Math.max(textWidth(name, AREA_SIZE) * 1.1, 40);
+      const w = Math.max(textWidth(name, AREA_SIZE) * 1.1, by === 'areas' ? 40 : 150);
       const top = Math.min(...ys) - 38;
       return {
         x,
@@ -503,7 +537,7 @@ export function layoutSky(chart: StarChart): SkyLayout {
     }
   });
 
-  const labels = placeLabels(nodes, areas);
+  const labels = placeLabels(nodes, clusters);
   const stars: SkyStar[] = nodes
     .map((n) => ({
       number: n.star.number,
@@ -513,59 +547,80 @@ export function layoutSky(chart: StarChart): SkyLayout {
       label: labels.get(n.star.number)!,
     }))
     .sort((a, b) => a.number - b.number);
-  const constellations = placeConstellations(chart, stars, areas);
+  return { by, stars, clusters, constellations: placeConstellations(chart, stars, clusters, by) };
+}
 
-  const boxes = [
-    ...constellations.map((c) => c.label.box),
-    ...stars.map((s) => s.label.box),
-    ...stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
-    ...areas.map((a) => a.label.box),
+function boxesOf(p: Placed): Box[] {
+  return [
+    ...p.constellations.map((c) => c.label.box),
+    ...p.stars.map((s) => s.label.box),
+    ...p.stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
+    ...p.clusters.flatMap((c) => c.label?.box ?? []),
   ];
-  const minX = Math.min(...boxes.map((b) => b.x1)) - MARGIN;
-  const minY = Math.min(...boxes.map((b) => b.y1)) - MARGIN;
-  const maxX = Math.max(...boxes.map((b) => b.x2)) + MARGIN;
-  const maxY = Math.max(...boxes.map((b) => b.y2)) + MARGIN;
-  const round = (v: number) => Math.round(v * 10) / 10;
-  for (const s of stars) {
-    s.x = round(s.x - minX);
-    s.y = round(s.y - minY);
-    s.label = {
-      ...s.label,
-      x: round(s.label.x - minX),
-      y: round(s.label.y - minY),
-      box: moved(s.label.box, -minX, -minY),
-    };
-  }
-  for (const a of areas) {
-    a.x = round(a.x - minX);
-    a.y = round(a.y - minY);
-    a.label = {
-      x: round(a.label.x - minX),
-      y: round(a.label.y - minY),
-      box: moved(a.label.box, -minX, -minY),
-    };
-  }
-  for (const c of constellations) {
-    c.label = {
-      x: round(c.label.x - minX),
-      y: round(c.label.y - minY),
-      box: moved(c.label.box, -minX, -minY),
-    };
-  }
-  const placed = new Map(stars.map((s) => [s.number, s]));
-  const threads = chart.threads.map((t) => {
-    const bend = (t.from + t.to) % 2 ? 0.12 : -0.12;
-    return {
-      ...t,
-      d: curve(placed.get(t.from)!, placed.get(t.to)!, t.kind === 'undermines' ? 0.22 : bend),
-    };
-  });
+}
+
+function extent(p: Placed): Box {
+  const boxes = boxesOf(p);
   return {
-    width: Math.ceil(maxX - minX),
-    height: Math.ceil(maxY - minY),
-    stars,
-    areas,
-    threads,
-    constellations,
+    x1: Math.min(...boxes.map((b) => b.x1)),
+    y1: Math.min(...boxes.map((b) => b.y1)),
+    x2: Math.max(...boxes.map((b) => b.x2)),
+    y2: Math.max(...boxes.map((b) => b.y2)),
   };
+}
+
+/** Moves a clustering onto the shared canvas, centred on it, and draws its threads. */
+function finish(chart: StarChart, p: Placed, width: number, height: number): SkyLayout {
+  const e = extent(p);
+  const dx = (width - (e.x2 - e.x1)) / 2 - e.x1;
+  const dy = (height - (e.y2 - e.y1)) / 2 - e.y1;
+  const round = (v: number) => Math.round(v * 10) / 10;
+  const spot = <T extends { x: number; y: number; box: Box }>(l: T): T => ({
+    ...l,
+    x: round(l.x + dx),
+    y: round(l.y + dy),
+    box: moved(l.box, dx, dy),
+  });
+  const stars = p.stars.map((s) => ({
+    ...s,
+    x: round(s.x + dx),
+    y: round(s.y + dy),
+    label: spot(s.label),
+  }));
+  const clusters = p.clusters.map((c) => {
+    const out: SkyCluster = { ...c, x: round(c.x + dx), y: round(c.y + dy) };
+    if (c.label) out.label = spot(c.label);
+    return out;
+  });
+  const constellations = p.constellations.map((c) => ({ ...c, label: spot(c.label) }));
+  const placed = new Map(stars.map((s) => [s.number, s]));
+  const threads = chart.threads.map((t) => ({
+    ...t,
+    d: curve(placed.get(t.from)!, placed.get(t.to)!, threadBend(t)),
+  }));
+  return { by: p.by, width, height, stars, clusters, threads, constellations };
+}
+
+/**
+ * The night sky clustered by area and, when there are constellations, by constellation, on
+ * one canvas so that the stars can fly from one to the other.
+ */
+export function layoutSkies(chart: StarChart): { areas: SkyLayout; constellations?: SkyLayout } {
+  const byArea = place(chart, 'areas');
+  const byConstellation = chart.constellations.some((c) => c.stars.length)
+    ? place(chart, 'constellations')
+    : undefined;
+  const extents = [byArea, byConstellation].flatMap((p) => (p ? [extent(p)] : []));
+  const width = Math.ceil(Math.max(...extents.map((e) => e.x2 - e.x1)) + 2 * MARGIN);
+  const height = Math.ceil(Math.max(...extents.map((e) => e.y2 - e.y1)) + 2 * MARGIN);
+  const out: { areas: SkyLayout; constellations?: SkyLayout } = {
+    areas: finish(chart, byArea, width, height),
+  };
+  if (byConstellation) out.constellations = finish(chart, byConstellation, width, height);
+  return out;
+}
+
+/** The night sky clustered by area. */
+export function layoutSky(chart: StarChart): SkyLayout {
+  return layoutSkies(chart).areas;
 }
