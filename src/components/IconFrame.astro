@@ -1,5 +1,5 @@
 ---
-import { hasIcon, PAINTED } from '../lib/icons';
+import { hasIcon, isPainted } from '../lib/icons';
 import { BASE } from '../lib/site';
 import PixelIcon from './PixelIcon.astro';
 
@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { name, size = 'lg' } = Astro.props;
-const painted = PAINTED.has(name);
+const painted = isPainted(name);
 const file = `${BASE}/icons/${name.toLowerCase()}`;
 const srcset = (ext: string) => `${file}-128.${ext} 128w, ${file}-512.${ext} 512w`;
 const sizes = { lg: '200px', md: '64px', sm: '26px' }[size];
