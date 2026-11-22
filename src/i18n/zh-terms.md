@@ -88,6 +88,7 @@ The policy follows how the guides already handle Greek names:
 - **Astrolabe** (a wiki tool, the star map of every question; not a game term): **星盘** (proposed; the Chinese name is still open). Its question statuses: frontier **前沿**, blocked **受阻**, decided **已定**, ruled out **不采纳**, undermined **前提动摇**. Its roles: central **核心**, peripheral **边缘**, independent **独立**. Open question stays **待定问题** and conflict **冲突**.
 - **Constellation** (wiki tooling, a group of open questions settled in one session; not a game concept): **星座**. Its two scales: **规模** (size): 小 / 中 / 大 (small / medium / large); **精力** (energy): 低 / 中 / 高 (low / medium / high). Proposed.
 - **The Astrolabe's Dial** (the constellations view, a brass dial; wiki tooling, not game terms): the view is the Dial, **表盘**. Its parts: sector **扇区** (one per area), ring **圆环** (one per energy), hub **中心**, rim **外缘**, mark **标记** (one per constellation), notch **刻痕** (one per question round a mark). A constellation's GitHub milestone is its **里程碑**. Proposed.
+- **The Astrolabe's cluster choice** (how the night sky and the tiers gather their stars; wiki tooling, not game terms): cluster by **聚集方式**, by Areas **领域** or by Constellations **星座**. The cluster of stars in no constellation is **不在任何星座中**. Proposed.
 
 ---
 
