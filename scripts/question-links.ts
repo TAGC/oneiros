@@ -6,26 +6,16 @@
  * file only `question-links` code blocks count. Needs the `gh` CLI, signed in.
  * Usage: bun run links <plan file> [--live]
  */
-import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { type LinkedIssue, parsePlan, planChanges } from '../src/lib/questions/links';
-import { REPO } from '../src/lib/site';
+import { gh, SLUG } from './gh';
 
-const SLUG = new URL(REPO).pathname.slice(1);
 const args = process.argv.slice(2);
 const live = args.includes('--live');
 const file = args.find((a) => !a.startsWith('--'));
 if (!file) {
   console.error('Usage: bun run links <plan file> [--live]');
   process.exit(1);
-}
-
-function gh(apiArgs: string[], input?: string): string {
-  return execFileSync('gh', ['api', ...apiArgs], {
-    encoding: 'utf8',
-    input,
-    maxBuffer: 64 * 1024 * 1024,
-  });
 }
 
 interface RestIssue {

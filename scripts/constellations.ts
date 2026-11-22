@@ -7,7 +7,6 @@
  *   bun run constellations apply <plan>        dry run: the operations the plan needs
  *   bun run constellations apply <plan> --live carry them out on GitHub with `gh api`
  */
-import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
@@ -21,10 +20,9 @@ import {
   stateReport,
 } from '../src/lib/questions/chart';
 import { loadConstellations } from '../src/lib/questions/constellations';
-import { REPO } from '../src/lib/site';
+import { gh, SLUG } from './gh';
 
 const CACHE = join(import.meta.dirname, '..', QUESTION_CACHE);
-const SLUG = new URL(REPO).pathname.slice(1);
 
 const questions = loadQuestions(CACHE);
 const constellations = loadConstellations(CACHE, questions);
@@ -43,10 +41,6 @@ function describe(op: Operation): string {
     case 'close':
       return `close milestone ${op.number}`;
   }
-}
-
-function gh(args: string[]): string {
-  return execFileSync('gh', ['api', ...args], { encoding: 'utf8' }).trim();
 }
 
 function run(operations: Operation[]): void {

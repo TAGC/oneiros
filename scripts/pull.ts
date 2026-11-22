@@ -6,7 +6,6 @@
  * signed in.
  * Usage: bun run pull
  */
-import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import {
   type GithubIssue,
@@ -19,19 +18,14 @@ import {
   type MilestonedIssue,
   writeMilestoneCache,
 } from '../src/lib/questions/constellations';
-import { REPO } from '../src/lib/site';
+import { gh, SLUG } from './gh';
 
 const ROOT = join(import.meta.dirname, '..');
-const SLUG = new URL(REPO).pathname.slice(1);
 const KIND_LABELS = ['kind:open', 'kind:conflict'];
 
 /** Every item of a paginated list endpoint. */
 function list<T>(path: string): T[] {
-  const out = execFileSync('gh', ['api', '--paginate', '--jq', '.[]', path], {
-    encoding: 'utf8',
-    maxBuffer: 64 * 1024 * 1024,
-  });
-  return out
+  return gh(['--paginate', '--jq', '.[]', path])
     .split('\n')
     .filter(Boolean)
     .map((line) => JSON.parse(line) as T);
@@ -51,22 +45,17 @@ const DUPLICATE_OF = `query($owner: String!, $name: String!, $number: Int!) {
  */
 function duplicateOf(number: number): number | undefined {
   const [owner, name] = SLUG.split('/');
-  const out = execFileSync(
-    'gh',
-    [
-      'api',
-      'graphql',
-      '-f',
-      `query=${DUPLICATE_OF}`,
-      '-f',
-      `owner=${owner}`,
-      '-f',
-      `name=${name}`,
-      '-F',
-      `number=${number}`,
-    ],
-    { encoding: 'utf8' },
-  );
+  const out = gh([
+    'graphql',
+    '-f',
+    `query=${DUPLICATE_OF}`,
+    '-f',
+    `owner=${owner}`,
+    '-f',
+    `name=${name}`,
+    '-F',
+    `number=${number}`,
+  ]);
   type Target = { number: number; repository: { nameWithOwner: string } } | null;
   const target = (JSON.parse(out) as { data: { repository: { issue: { duplicateOf: Target } } } })
     .data.repository.issue.duplicateOf;
