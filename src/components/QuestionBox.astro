@@ -7,7 +7,8 @@ interface Props {
   heading: string;
   /** Shown after the heading, each after a dot; a link when it has an `href`. */
   links: { href?: string; text: string }[];
-  title?: string;
+  /** The question's title, with the language it is in. */
+  title?: { text: string; lang: Locale };
   markdown: string;
   /** The page the text belongs to, for resolving its wiki links. */
   page?: string;
@@ -35,8 +36,8 @@ const html = renderMarkdown(markdown, page, lang);
   </p>
   {
     title && (
-      <p>
-        <strong>{title}</strong>
+      <p lang={title.lang === locale ? undefined : title.lang}>
+        <strong>{title.text}</strong>
       </p>
     )
   }

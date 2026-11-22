@@ -67,7 +67,7 @@ function issueBox(q: Question) {
         : { text: t.openUnmarked },
       { href: q.url, text: t.onGithub(q.number) },
     ],
-    title: q.title[locale] ?? q.title.en,
+    title: inLocale(q.title, locale),
     markdown: marked ? marked.marker.markdown : text,
     page: marked?.page.slug ?? q.properties.page,
     lang: marked ? marked.page.locale : lang,

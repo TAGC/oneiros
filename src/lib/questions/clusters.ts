@@ -4,7 +4,7 @@
  * and tiers and the Open questions page lay out this list; none of them decides membership.
  * Terms in `docs/constellations.md`.
  */
-import { DEFAULT_LOCALE, type Locale } from '../../i18n/locale';
+import { DEFAULT_LOCALE, inLocale, type Locale } from '../../i18n/locale';
 import { useTranslations } from '../../i18n/ui';
 import { AREAS } from '../areas';
 import { type Area, isDuplicate, type Question } from '.';
@@ -42,12 +42,13 @@ function cluster(fields: Omit<Cluster, 'questions' | 'open' | 'total'>, held: Qu
 }
 
 function nameOf(c: Constellation, locale: Locale): Cluster['name'] {
-  const own = c.name[locale];
-  if (own !== undefined) return { text: own, lang: locale };
-  return {
-    text: c.name[DEFAULT_LOCALE] ?? `#${c.number}`,
-    lang: DEFAULT_LOCALE,
-  };
+  return inLocale(c.name, locale) ?? { text: `#${c.number}`, lang: DEFAULT_LOCALE };
+}
+
+/** An area's name in the locale, else its English name. */
+function areaName(area: Area, locale: Locale): Cluster['name'] {
+  const own = useTranslations(locale).areaNames[area];
+  return inLocale({ [DEFAULT_LOCALE]: area, ...(own !== undefined && { [locale]: own }) }, locale);
 }
 
 /**
@@ -65,14 +66,13 @@ export function clusterList(
 ): Cluster[] {
   const listed = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
   if (by === 'areas') {
-    const names = useTranslations(locale).areaNames;
     return [
       ...AREAS.map((area) =>
         cluster(
           {
             kind: 'area',
             area,
-            name: { text: names[area] ?? area, lang: locale },
+            name: areaName(area, locale),
           },
           listed.filter((q) => q.area === area),
         ),
