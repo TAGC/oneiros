@@ -4,7 +4,7 @@
  */
 import { DEFAULT_LOCALE, LOCALES, type Locale, useTranslations } from '../../i18n/ui';
 import { type CalloutKind, sourceName } from '../wiki';
-import { QUESTION_CACHE, type Questions } from '.';
+import { QUESTION_CACHE, questionGraph, type Questions } from '.';
 
 export interface Problem {
   where: string;
@@ -163,4 +163,12 @@ export function issueProblems(questions: Questions): Problem[] {
     }
   }
   return problems;
+}
+
+/** Every blocked-by cycle fails once, at its first question, naming all of its questions. */
+export function cycleProblems(questions: Questions): Problem[] {
+  return questionGraph(questions.all()).cycles.map((cycle) => ({
+    where: questions.get(cycle[0])?.url ?? `#${cycle[0]}`,
+    message: `blocked-by cycle through ${numbers(cycle)}; remove one of its blocked-by links`,
+  }));
 }

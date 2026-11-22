@@ -19,6 +19,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
   - An issue's Page row matches the page that holds its marker.
   - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
   - Every Undermined by row names a question issue, and so does every blocked-by link: an issue with neither `kind:` label is not a question.
+  - No blocked-by links form a cycle, whatever the state of its questions; the failure names every question in the cycle.
   - A conflict's Source row names at least two sources, each a wiki link or a listed non-page source.
   - Every closed issue has an answer comment, with a section for each site locale. Duplicates need none.
   - No marker names a duplicate; the failure names the canonical issue and its page.

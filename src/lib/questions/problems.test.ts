@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import type { Question, Questions } from '.';
-import { issueProblems, type MarkedPage, markerProblems } from './problems';
+import { cycleProblems, issueProblems, type MarkedPage, markerProblems } from './problems';
 
 function question(fields: Partial<Question> & { number: number }): Question {
   return {
@@ -251,5 +251,29 @@ describe('duplicate checks', () => {
         /issues\/7: closed as a duplicate, but GitHub names no canonical issue in this repo/,
       ),
     ]);
+  });
+});
+
+describe('cycle checks', () => {
+  test('each blocked-by cycle fails once, naming its questions', () => {
+    const qs = questions(
+      question({ number: 1, blockedBy: [2] }),
+      question({ number: 2, blockedBy: [1] }),
+      question({ number: 3, blockedBy: [1] }),
+      question({ number: 4, blockedBy: [4] }),
+    );
+    expect(messages(cycleProblems(qs))).toEqual([
+      expect.stringMatching(
+        /issues\/1: blocked-by cycle through #1, #2; remove one of its blocked-by links$/,
+      ),
+      expect.stringMatching(
+        /issues\/4: blocked-by cycle through #4; remove one of its blocked-by links$/,
+      ),
+    ]);
+  });
+
+  test('questions without a cycle pass', () => {
+    const qs = questions(question({ number: 1 }), question({ number: 2, blockedBy: [1] }));
+    expect(cycleProblems(qs)).toEqual([]);
   });
 });
