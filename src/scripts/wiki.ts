@@ -121,6 +121,18 @@ const list = document.querySelector<HTMLUListElement>('#results');
 let pagefind: Promise<Pagefind | undefined> | undefined;
 let active = -1;
 
+// Phones get the short placeholder ("Search") so it isn't cut off.
+if (input?.dataset.shortPlaceholder) {
+  const long = input.placeholder;
+  const short = input.dataset.shortPlaceholder;
+  const narrow = window.matchMedia('(max-width: 600px)');
+  const apply = (): void => {
+    input.placeholder = narrow.matches ? short : long;
+  };
+  apply();
+  narrow.addEventListener('change', apply);
+}
+
 function loadPagefind(): Promise<Pagefind | undefined> {
   const src = `${base}pagefind/pagefind.js`;
   pagefind ??= import(/* @vite-ignore */ src)
