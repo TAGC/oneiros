@@ -545,6 +545,236 @@ table.wt {
   font-variant-numeric: tabular-nums;
 }
 
+/* Quality styles page: one section per quality. */
+.qs-index {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  margin: 12px 0 20px;
+  padding: 0;
+  list-style: none;
+  font-size: 15px;
+}
+.qs-index li {
+  padding: 3px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+}
+article h3:has(+ .quality-style) {
+  margin-top: 2.4em;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--serif, 'Crimson Pro', Georgia, serif);
+  font-size: 23px;
+  font-weight: 600;
+}
+.qs-top {
+  display: contents;
+}
+.qs-card {
+  float: right;
+  width: 15em;
+  margin: 18px 0 16px 28px;
+  padding: 4px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--soft);
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.quality-style {
+  display: flow-root;
+}
+.qs-card > div {
+  padding: 8px 0;
+}
+.qs-card > div + div {
+  border-top: 1px solid var(--line);
+}
+.qs-card dt {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.qs-card dd {
+  margin: 2px 0 0;
+}
+.quality-style .wt-wrap {
+  margin: 10px 0 6px;
+}
+.qs-label {
+  margin: 18px 0 4px;
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mute);
+}
+.qs-epigraph {
+  margin: 22px 0 0;
+}
+.qs-epigraph blockquote {
+  margin: 0;
+  padding: 0 0 0 0.45em;
+  text-indent: -0.45em;
+  font-family: var(--serif, 'Crimson Pro', Georgia, serif);
+  font-size: 22px;
+  font-style: italic;
+  line-height: 1.4;
+  quotes: '\201C' '\201D';
+}
+.qs-epigraph blockquote::before {
+  content: open-quote;
+  color: var(--mute);
+}
+.qs-epigraph blockquote::after {
+  content: close-quote;
+  color: var(--mute);
+}
+.qs-epigraph figcaption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  font-size: 13.5px;
+  color: var(--mute);
+}
+.qs-epigraph figcaption::before {
+  content: '';
+  width: 24px;
+  border-top: 1px solid var(--mute);
+}
+:lang(zh) .qs-epigraph blockquote {
+  padding: 0;
+  text-indent: 0;
+  font-size: 20px;
+  font-style: normal;
+}
+:lang(zh) .qs-epigraph blockquote::before,
+:lang(zh) .qs-epigraph blockquote::after {
+  content: none;
+}
+.qs-signature {
+  display: flow-root;
+  margin: 26px 0 0;
+  padding: 12px 16px 14px;
+  border: 1px solid color-mix(in srgb, var(--link) 30%, var(--line));
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--link) 7%, var(--page));
+}
+.qs-signature .qs-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  color: var(--link);
+}
+.qs-signature .qs-label::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  background: currentColor;
+  transform: rotate(45deg);
+}
+:is(.qs-sig, .qs-item, .qs-how)::first-letter {
+  text-transform: uppercase;
+}
+.qs-sig {
+  margin: 0;
+}
+.qs-stage {
+  display: grid;
+  grid-template-columns: 6.5em 1fr;
+  gap: 0 14px;
+  padding: 8px 0;
+}
+.qs-stage + .qs-stage {
+  border-top: 1px dotted var(--line);
+}
+.qs-stage-name {
+  font-weight: 600;
+}
+.qs-stage ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.qs-stage li + li {
+  margin-top: 8px;
+}
+.qs-stage li {
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 0 10px;
+}
+.qs-codes {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 5px;
+}
+.qs-codes svg {
+  width: 17px;
+  height: 17px;
+}
+.qs-cont {
+  color: light-dark(var(--grief), var(--fear));
+}
+.qs-key {
+  color: var(--open);
+}
+.qs-body {
+  grid-column: 2;
+}
+.qs-body,
+.qs-item {
+  display: block;
+}
+.qs-cond {
+  display: block;
+  font-size: 13.5px;
+  color: var(--mute);
+}
+.qs-claims tbody th {
+  background: none;
+  white-space: nowrap;
+}
+.qs-claims tbody tr:nth-child(even) {
+  background: none;
+}
+.qs-dots {
+  white-space: nowrap;
+  letter-spacing: 1px;
+  color: var(--open);
+}
+.qs-dots .off {
+  color: var(--line);
+}
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+@media (max-width: 760px) {
+  .qs-card {
+    float: none;
+    width: auto;
+    margin: 14px 0 0;
+  }
+}
+@media (max-width: 600px) {
+  .qs-stage {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+}
+
 /* Named states as pills. */
 .status {
   display: flex;

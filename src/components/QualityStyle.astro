@@ -1,0 +1,250 @@
+---
+/* One quality's section on the Quality styles page: its row of the quality-styles tab
+   and its row of the feature-claims tab. */
+import GithubSlugger from 'github-slugger';
+import { type Locale, toLocale, useTranslations } from '../i18n/ui';
+import { cellText, localTab } from '../lib/sheet';
+import { resolve } from '../lib/wiki';
+import WikiLink from './WikiLink.astro';
+
+interface Props {
+  /** The quality's English name, as in the English quality-styles tab. */
+  quality: string;
+  locale?: Locale;
+}
+
+const { quality } = Astro.props;
+const locale = Astro.props.locale ?? toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+
+const english = localTab('quality-styles').tab.blocks[0];
+const index = english.type === 'table' ? english.rows.findIndex((r) => r[1] === quality) : -1;
+if (index < 0) throw new Error(`Quality "${quality}" not found in the quality-styles tab`);
+
+function table(slug: string): { header: string[]; rows: string[][] } {
+  const block = localTab(slug, locale).tab.blocks[0];
+  if (block.type !== 'table') throw new Error(`Sheet tab "${slug}" has no table`);
+  return {
+    header: block.header,
+    rows: block.rows.map((r) => block.header.map((_, i) => cellText(r[i]))),
+  };
+}
+
+const styles = table('quality-styles');
+const claims = table('feature-claims');
+const h = styles.header;
+const [pair, , feeds, symbols, only, signature, early, growing, deep, gone, notes] =
+  styles.rows[index];
+
+/* The other quality of the pair, linked to its section on this page. */
+const partner = styles.rows.find((r, i) => i !== index && r[0] === pair)?.[1] ?? '';
+/* Emotions without their own page stay plain text rather than red links. */
+const feedsPage = resolve(feeds, locale);
+
+/* "(U then C, pervasive: crossing into Deep…) Daylight falls…" splits into its codes,
+   the condition, and the text. C: continuous; U: unlocked at a given stage. */
+interface Item {
+  unlock: boolean;
+  continuous: boolean;
+  pervasive: boolean;
+  condition: string;
+  text: string;
+}
+function items(cell: string): Item[] {
+  return cell
+    .split(/\s+•\s+/)
+    .filter(Boolean)
+    .map((raw) => {
+      const m = /^[(（]([^)）]*)[)）]\s*(.*)$/s.exec(raw);
+      if (!m) return { unlock: false, continuous: false, pervasive: false, condition: '', text: raw };
+      const [codes, ...rest] = m[1].split(/[:：]/);
+      return {
+        unlock: /U/.test(codes),
+        continuous: /C/.test(codes),
+        pervasive: /pervasive|遍及/.test(codes),
+        condition: rest.join(':').trim(),
+        text: m[2],
+      };
+    });
+}
+const stages = [
+  [h[6], early],
+  [h[7], growing],
+  [h[8], deep],
+  [h[9], gone],
+]
+  .filter(([, v]) => v.trim())
+  .map(([label, v]) => ({ label, items: items(v) }));
+
+/* "Strong: many and oversized…" splits into the claim and how it shows. */
+/* Icons from Lucide (ISC licence; see LICENSE-lucide.txt). */
+const ICON = {
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  'stroke-width': 2,
+  'stroke-linecap': 'round',
+  'stroke-linejoin': 'round',
+} as const;
+
+const STRENGTH: Record<string, number> = { Strong: 3, Medium: 2, Weak: 1, 强: 3, 中: 2, 弱: 1 };
+const aspects = claims.header
+  .map((aspect, i) => ({ aspect, cell: claims.rows[index][i] }))
+  .slice(1)
+  .filter((a) => a.cell.trim())
+  .map(({ aspect, cell }) => {
+    const m = /^([^:：]{1,10})[:：]\s*(.*)$/s.exec(cell);
+    const claim = m?.[1] ?? '';
+    return { aspect, claim, dots: STRENGTH[claim] ?? 0, how: m?.[2] ?? cell };
+  });
+---
+
+<div class="quality-style">
+  <div class="qs-top">
+    <dl class="qs-card">
+      {
+        partner && (
+          <div>
+            <dt>{t.pairedWith}</dt>
+            <dd>
+              <a href={`#${new GithubSlugger().slug(partner)}`}>{partner}</a>
+            </dd>
+          </div>
+        )
+      }
+      <div>
+        <dt>{h[2]}</dt>
+        <dd>
+          {
+            feedsPage.exists ? (
+              <WikiLink to={feedsPage} locale={locale}>
+                {feeds}
+              </WikiLink>
+            ) : (
+              feeds
+            )
+          }
+        </dd>
+      </div>
+      {
+        symbols && (
+          <div>
+            <dt>{h[3]}</dt>
+            <dd>{symbols}</dd>
+          </div>
+        )
+      }
+    </dl>
+    <div class="qs-top-main">
+      {
+        only && (
+          <figure class="qs-epigraph">
+            <blockquote>{only.charAt(0).toUpperCase() + only.slice(1)}</blockquote>
+            <figcaption>{h[4]}</figcaption>
+          </figure>
+        )
+      }
+      {
+        signature && (
+          <div class="qs-signature">
+            <p class="qs-label">{h[5]}</p>
+            <p class="qs-sig">{signature}</p>
+          </div>
+        )
+      }
+    </div>
+  </div>
+
+  {
+    stages.length > 0 && (
+      <>
+        <p class="qs-label">{t.asItDeepens}</p>
+        <div class="qs-stages">
+          {stages.map((s) => (
+            <div class="qs-stage">
+              <span class="qs-stage-name" title={s.label}>
+                {s.label.replace(/\s*[(（].*$/, '')}
+              </span>
+              <ul>
+                {s.items.map((it) => (
+                  <li>
+                    {(it.unlock || it.continuous) && (
+                      <span class="qs-codes">
+                        {it.unlock && (
+                          <svg class="qs-key" {...ICON} role="img" aria-label={t.codeUnlock}>
+                            <title>{t.codeUnlock}</title>
+                            <path d="M2.586 17.414A2 2 0 0 0 2 18.828V21a1 1 0 0 0 1 1h3a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h1a1 1 0 0 0 1-1v-1a1 1 0 0 1 1-1h.172a2 2 0 0 0 1.414-.586l.814-.814a6.5 6.5 0 1 0-4-4z" />
+                            <circle cx="16.5" cy="7.5" r=".5" fill="currentColor" />
+                          </svg>
+                        )}
+                        {it.continuous && !it.pervasive && (
+                          <svg class="qs-cont" {...ICON} role="img" aria-label={t.codeContinuous}>
+                            <title>{t.codeContinuous}</title>
+                            <path d="M16 7h6v6" />
+                            <path d="m22 7-8.5 8.5-5-5L2 17" />
+                          </svg>
+                        )}
+                        {it.pervasive && (
+                          <svg class="qs-cont" {...ICON} role="img" aria-label={t.codePervasive}>
+                            <title>{t.codePervasive}</title>
+                            <path d="m15 15 6 6M15 9l6-6M21 16v5h-5M21 8V3h-5M3 16v5h5M3 21l6-6M3 8V3h5M9 9 3 3" />
+                          </svg>
+                        )}
+                      </span>
+                    )}
+                    <span class="qs-body">
+                      {it.condition && <span class="qs-cond">{it.condition}</span>}
+                      <span class="qs-item">{it.text}</span>
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </>
+    )
+  }
+
+  {
+    notes && (
+      <>
+        <p class="qs-label">{h[10]}</p>
+        <p class="qs-sig">{notes}</p>
+      </>
+    )
+  }
+
+  {
+    aspects.length > 0 && (
+      <>
+        <p class="qs-label">{t.featureClaims}</p>
+        <div class="wt-wrap">
+          <table class="wt qs-claims">
+            <tbody>
+              {aspects.map((a) => (
+                <tr>
+                  <th scope="row">{a.aspect}</th>
+                  <td class="qs-dots" title={a.claim}>
+                    {a.dots ? (
+                      <>
+                        <span aria-hidden="true">
+                          {'●'.repeat(a.dots)}
+                          <span class="off">{'●'.repeat(3 - a.dots)}</span>
+                        </span>
+                        <span class="sr">{a.claim}</span>
+                      </>
+                    ) : (
+                      a.claim
+                    )}
+                  </td>
+                  <td class="qs-how">{a.how}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </>
+    )
+  }
+</div>

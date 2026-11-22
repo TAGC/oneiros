@@ -1,0 +1,36 @@
+---
+/* Jump links to each quality's section on the Quality styles page, by pair. */
+import GithubSlugger from 'github-slugger';
+import { type Locale, toLocale } from '../i18n/ui';
+import { cellText, localTab } from '../lib/sheet';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = Astro.props.locale ?? toLocale(Astro.currentLocale);
+const block = localTab('quality-styles', locale).tab.blocks[0];
+const pairs = new Map<string, string[]>();
+if (block.type === 'table') {
+  for (const r of block.rows) {
+    const pair = cellText(r[0]);
+    pairs.set(pair, [...(pairs.get(pair) ?? []), cellText(r[1])]);
+  }
+}
+const slug = (name: string): string => new GithubSlugger().slug(name);
+---
+
+<ul class="qs-index">
+  {
+    [...pairs.values()].map((names) => (
+      <li>
+        {names.map((name, i) => (
+          <>
+            {i > 0 && ' / '}
+            <a href={`#${slug(name)}`}>{name}</a>
+          </>
+        ))}
+      </li>
+    ))
+  }
+</ul>

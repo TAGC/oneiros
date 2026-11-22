@@ -3,6 +3,8 @@ import { render } from 'astro:content';
 import IconFrame from '../../../components/IconFrame.astro';
 import Infobox from '../../../components/Infobox.astro';
 import Navbox from '../../../components/Navbox.astro';
+import QualityIndex from '../../../components/QualityIndex.astro';
+import QualityStyle from '../../../components/QualityStyle.astro';
 import SheetTable from '../../../components/SheetTable.astro';
 import WikiLink from '../../../components/WikiLink.astro';
 import { type Locale, LOCALES, localeParam, useTranslations } from '../../../i18n/ui';
@@ -71,7 +73,7 @@ const tabs = [
         />
       )
     }
-    <Content components={{ SheetTable }} />
+    <Content components={{ QualityIndex, QualityStyle, SheetTable }} />
   </div>
   <h2 id="links">{t.whatLinksHere}</h2>
   {
