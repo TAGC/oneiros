@@ -3,9 +3,11 @@
  * constellation) into its own patch of sky, settled entirely at build time, then greedy label
  * placement around each star. The same chart always gives the same sky.
  */
+import { useTranslations } from '../i18n/ui';
 import type { Area } from '../lib/questions';
 import type { Star, StarChart, Thread } from './chart';
 import { curve, threadBend } from './curve';
+import { constellationFacts } from './facts';
 import { wrapText, textWidth } from './text';
 
 /** What gathers the stars: their areas, or their constellations. */
@@ -402,6 +404,7 @@ function shortestTree(points: SkyStar[]): [number, number][] {
 }
 
 const NAME_SIZE = 16;
+const FACTS_SIZE = 12;
 const NAME_HEIGHT = 36;
 
 /** Names each constellation clear of everything placed; clustered by one, above it first. */
@@ -417,6 +420,7 @@ function placeConstellations(
     ...stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
     ...clusters.flatMap((c) => c.label?.box ?? []),
   ];
+  const t = useTranslations(chart.locale);
   const out: SkyConstellation[] = [];
   for (const c of chart.constellations) {
     const points = c.stars.flatMap((n) => at.get(n) ?? []);
@@ -429,7 +433,11 @@ function placeConstellations(
     const x2 = Math.max(...boxes.map((b) => b.x2));
     const y1 = Math.min(...boxes.map((b) => b.y1));
     const y2 = Math.max(...boxes.map((b) => b.y2));
-    const w = Math.max(textWidth(c.name, NAME_SIZE) * 0.95, 160);
+    const w = Math.max(
+      textWidth(c.name, NAME_SIZE) * 0.95,
+      textWidth(constellationFacts(c, t), FACTS_SIZE),
+      160,
+    );
     const cx = (x1 + x2) / 2;
     const cy = (y1 + y2) / 2;
     let best: SkyConstellation['label'] | undefined;

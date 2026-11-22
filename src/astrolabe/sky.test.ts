@@ -1,8 +1,11 @@
 import { describe, expect, test } from 'bun:test';
 import type { Area, Question } from '../lib/questions';
 import { questionGraph } from '../lib/questions';
+import { useTranslations } from '../i18n/ui';
 import { chartQuestions } from './chart';
+import { constellationFacts } from './facts';
 import { type Box, layoutSkies, layoutSky } from './sky';
+import { textWidth } from './text';
 
 function question(
   number: number,
@@ -186,6 +189,8 @@ function fakeConstellations(qs: Question[], members = MEMBERS) {
     state: 'open' as const,
     name: { en: `The constellation numbered ${number}`, zh: `第 ${number} 个星座` },
     reasoning: {},
+    size: 'medium' as const,
+    energy: 'medium' as const,
     questions: qs.filter((q) => ns.includes(q.number)),
   }));
   return {
@@ -261,6 +266,19 @@ describe('the sky clustered by constellation', () => {
     const layout = skies().constellations!;
     expect(layout.clusters.filter((c) => c.label).map((c) => c.constellation)).toEqual([undefined]);
     expect(layout.constellations.map((c) => c.number)).toEqual([1, 2]);
+  });
+
+  test('gives each constellation’s name room for its facts line beneath', () => {
+    for (const locale of ['en', 'zh'] as const) {
+      const qs = questions();
+      const chart = chartQuestions(qs, questionGraph(qs), locale, fakeConstellations(qs));
+      const t = useTranslations(locale);
+      for (const placed of layoutSkies(chart).constellations!.constellations) {
+        const c = chart.constellations.find((x) => x.number === placed.number)!;
+        const box = placed.label.box;
+        expect(box.x2 - box.x1).toBeGreaterThanOrEqual(textWidth(constellationFacts(c, t), 12));
+      }
+    }
   });
 
   test('has no clustering by constellation without constellations', () => {
