@@ -33,6 +33,8 @@ export interface RemarkWikiOptions {
   page?: string;
   /** The locale links resolve in; by default worked out from the file's folder. */
   locale?: Locale;
+  /** Unused here: puts `renderDigest()` into Astro's config so cached pages re-render. */
+  digest?: string;
 }
 
 const NUMERIC = /^[-−+]?(?:×\s?)?[\d.,]+\s?(?:%|×)?$/;
