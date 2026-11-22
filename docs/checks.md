@@ -16,6 +16,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
 - **Questions:** checked against the question cache.
   - Every `[!ISSUE N]` marker names an open question issue.
   - No page holds an inline `[!OPEN]` or `[!CONFLICT]` callout.
+  - No page spells a marker any other way than `> [!ISSUE N]` alone in a top-level quote, such as `> [!issue #12]` or a marker in a nested quote; the failure shows the right spelling. Code blocks are skipped.
   - An issue's Page row matches the page that holds its marker.
   - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
   - Every Undermined by row names a question issue, and so does every blocked-by link: an issue with neither `kind:` label is not a question.

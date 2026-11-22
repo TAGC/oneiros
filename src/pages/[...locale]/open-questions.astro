@@ -9,7 +9,7 @@ import { getQuestions, type Question } from '../../lib/questions';
 import { clusterList } from '../../lib/questions/clusters';
 import { getConstellations } from '../../lib/questions/constellations';
 import { url, wikiUrl } from '../../lib/site';
-import { type Callout, calloutHeading } from '../../lib/wiki';
+import { calloutHeading, type MarkerBox } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
 
@@ -21,16 +21,16 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const questions = getQuestions();
 const constellations = getConstellations(questions);
-const pages = (await getPages(locale)).filter((p) => p.callouts.length);
+const pages = (await getPages(locale)).filter((p) => p.markers.length);
 /** Where each question issue is marked: its page and its box there. */
-const markedOn = new Map<number, { page: Page; callout: Callout }>();
+const markedOn = new Map<number, { page: Page; marker: MarkerBox }>();
 for (const page of pages) {
-  for (const callout of page.callouts) {
-    markedOn.set(callout.issue, { page, callout });
+  for (const marker of page.markers) {
+    markedOn.set(marker.issue, { page, marker });
   }
 }
 const unmarked = questions.all().filter((q) => q.state === 'open' && !markedOn.has(q.number));
-const count = pages.reduce((n, p) => n + p.callouts.length, 0) + unmarked.length;
+const count = pages.reduce((n, p) => n + p.markers.length, 0) + unmarked.length;
 
 /** The Constellations clustering's open questions; finished constellations hold none. */
 const clusters = clusterList(questions.all(), constellations, 'constellations', locale)
@@ -43,8 +43,8 @@ const grouped = clusters.filter((c) => c.kind === 'constellation');
 const none = clusters.find((c) => c.kind === 'none');
 const ungrouped = new Set(none?.questions.map((q) => q.number));
 const ungroupedPages = pages
-  .map((p) => ({ ...p, callouts: p.callouts.filter((c) => ungrouped.has(c.issue)) }))
-  .filter((p) => p.callouts.length);
+  .map((p) => ({ ...p, markers: p.markers.filter((m) => ungrouped.has(m.issue)) }))
+  .filter((p) => p.markers.length);
 const ungroupedUnmarked = unmarked.filter((q) => ungrouped.has(q.number));
 const areas = [...AREAS, undefined]
   .map((area) => ({ area, list: ungroupedUnmarked.filter((q) => q.area === area) }))
@@ -66,14 +66,14 @@ function issueBox(q: Question) {
     links: [
       marked
         ? {
-            href: wikiUrl(marked.page.slug, marked.callout.id, marked.page.locale),
+            href: wikiUrl(marked.page.slug, marked.marker.id, marked.page.locale),
             text: marked.page.title,
           }
         : { text: t.openUnmarked },
       { href: q.url, text: t.onGithub(q.number) },
     ],
     title: q.title[locale] ?? q.title.en,
-    markdown: marked ? marked.callout.markdown : text,
+    markdown: marked ? marked.marker.markdown : text,
     page: marked?.page.slug ?? q.properties.page,
     lang: marked ? marked.page.locale : lang,
     locale,
@@ -127,12 +127,12 @@ function issueBox(q: Question) {
                 {p.title}
               </WikiLink>
             </h3>
-            {p.callouts.map((c) => (
+            {p.markers.map((m) => (
               <QuestionBox
-                kind={c.kind}
-                heading={calloutHeading(c.kind, locale, questions.get(c.issue))}
-                links={[{ href: wikiUrl(p.slug, c.id, p.locale), text: t.onThePage }]}
-                markdown={c.markdown}
+                kind={m.kind}
+                heading={calloutHeading(m.kind, locale, questions.get(m.issue))}
+                links={[{ href: wikiUrl(p.slug, m.id, p.locale), text: t.onThePage }]}
+                markdown={m.markdown}
                 page={p.slug}
                 lang={p.locale}
                 locale={locale}

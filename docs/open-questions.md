@@ -111,6 +111,10 @@ A page marks where an open question's box goes:
 
 The build fills in the box from the question cache: the header from the `kind:` label (and the Source row for a conflict), the body from the section for the page's language, with wiki links resolved as on pages. The English and Chinese pages carry the same markers. Run `bun run pull` first, or the box says the question is missing.
 
+Only this spelling counts: `> [!ISSUE N]`, alone in a quote of its own at the top level of the page. `bun run check` fails on any other spelling, such as `> [!issue #12]`, on a marker with more text in its quote, and on a marker inside another quote or a list, and it shows the right spelling. A marker inside a code block is only code.
+
+`src/lib/questions/markers.ts` finds the markers. It reads the parsed Markdown, not the raw text, and takes each line number from there. Rendering, the page list, the Open questions page and the checks all use it.
+
 Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form, and `bun run check` fails on them. Write every question as an issue with a marker.
 
 ## The pull
