@@ -1,6 +1,6 @@
 # The Astrolabe
 
-The Astrolabe is the wiki's star map of every question, at `/astrolabe/` and `/zh/astrolabe/`. Each question issue is a star, labelled with its title in the page's language and clustered by area. Threads run from blocker to blocked question, and from a question to the decision whose premise it broke. Selecting a star opens a panel with its question, context, answer and links.
+The Astrolabe is the wiki's star map of every question, at `/astrolabe/` and `/zh/astrolabe/`. Each question issue is a star, labelled with its title in the page's language and clustered by area or by constellation. Threads run from blocker to blocked question, and from a question to the decision whose premise it broke. Selecting a star opens a panel with its question, context, answer and links.
 
 It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-maps) (MIT): questions as tickets, blocked-by edges, derived status, the frontier and undermined decisions. Ideas are borrowed, not code. The page footer carries the same credit.
 
@@ -25,15 +25,29 @@ It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-ma
 
 Three views, switched by buttons above the map; the choice is remembered in the browser:
 
-- **Night sky** (the main view): a free sky in which each area gathers into its own soft glow.
-- **Tiers**: columns from settled ground through the frontier to one, two, and three or more steps out; rows are the areas. A step out is the longest chain of unsettled blockers in front of a question.
+- **Night sky** (the main view): a free sky in which each area gathers into its own soft glow, or each constellation into its own patch.
+- **Tiers**: columns from settled ground through the frontier to one, two, and three or more steps out; rows are the areas, or the constellations. A step out is the longest chain of unsettled blockers in front of a question.
 - **Constellations**: a brass dial of the open constellations, not of single questions (see below). It shows only when there are constellations.
 
 ## Constellations
 
-A constellation is a group of related open questions sized for one session. The night sky joins its stars with lines and writes its name, size, energy and progress (how many of its questions are settled) beside them; a **Constellations** switch above the map shows or hides them. Under the map, a list gives every open constellation with its reasoning and questions, then the open questions that no constellation holds yet. Those ungrouped questions also carry a small warning mark in both views while constellations are shown. A star's panel names its constellation.
+A constellation is a group of related open questions sized for one session. Under the map, a list gives every open constellation with its reasoning and questions, then the open questions that no constellation holds yet. A star's panel names its constellation.
+
+### Cluster by Areas or Constellations
+
+A **Cluster by** choice above the map, asked for by the designer on 22 Nov 2026, gathers the night sky and the tiers by **Areas** or by **Constellations**:
+
+- **Areas:** the sky's clusters are the areas, each in its own glow; the tiers' rows are the areas.
+- **Constellations:** the sky's stars gather by constellation, joined by lines, with the constellation's name, size, energy and progress (how many of its questions are settled) beside them. The questions in no constellation gather in one more cluster, "In no constellation". The tiers' rows are the constellations, then that one.
+
+Both sky layouts are computed at build time on one canvas, so they are the same on every visit. Switching in the night sky animates: each star flies from its old place to its new one, setting off a moment after its neighbours, and its label, threads and constellation lines follow. With reduced motion the stars jump instead. Without JavaScript the sky and tiers show by area. The choice is remembered in the browser. The Dial is unaffected.
 
 The time and energy filter keeps lit only the constellations that fit: a constellation fits when its size is the time chosen and its energy the energy chosen. One without a size or energy fits only "Any". The designer chose exact matches on 22 Nov 2026.
+
+Claude's suggestions, not decisions; the designer has not ruled on them:
+
+- **Areas is the default.** It is today's sky, and the view without JavaScript.
+- **Constellation marks show only by constellation.** Constellation lines, rings and names, the warning mark on a question in no constellation, and the time and energy filter all show only in Constellations mode (and the filter in the Dial). Areas mode shows no constellation marks, so it is the plain sky by area. Area names and glows fade out in Constellations mode, since the stars leave them.
 
 ### The Dial
 
@@ -45,7 +59,7 @@ A brass dial, agreed with the designer on 22 November 2026. Sectors are the 16 a
 
 A sector widens with the constellations it holds and never gets narrower than its area's name on the band, so an area with none keeps a short, named sector. A narrow rule at the top carries the energy scale. Both are Claude's choices for legibility. A constellation with no energy gets a dashed ring inside the low one, and one with no area a "No area" sector at the end; both appear only when needed.
 
-Selecting a mark opens its panel: name, size, energy and progress, areas, reasoning, and its questions. A question opens its star in the night sky, or its box on its wiki page. Without JavaScript, `:target` shows the panel, as for stars. The time and energy filter dims the marks that do not fit; the constellations switch has nothing to do in this view and hides. On a phone the dial keeps a readable size and scrolls inside the frame. A link to `/astrolabe/#dial` opens this view. It is named the Dial (表盘), not Constellations, because the Constellations switch already has that name.
+Selecting a mark opens its panel: name, size, energy and progress, areas, reasoning, and its questions. A question opens its star in the night sky, or its box on its wiki page. Without JavaScript, `:target` shows the panel, as for stars. The time and energy filter dims the marks that do not fit; the Cluster by choice has nothing to do in this view and hides. On a phone the dial keeps a readable size and scrolls inside the frame. A link to `/astrolabe/#dial` opens this view. It is named the Dial (表盘), not Constellations, because Constellations already names a way to cluster.
 
 ### Milestone format
 
@@ -81,29 +95,32 @@ Everything is laid out at build time and written as static SVG, so positions are
 | File | Role |
 | --- | --- |
 | `chart.ts` | Shapes questions from the questions module into stars, threads and area groups for one locale. |
-| `sky.ts` | The night sky layout: areas seated so linked areas sit side by side, a seeded force layout settled before the page is written, and label placement. |
-| `tiers.ts` | The tiers layout. |
+| `sky.ts` | The night sky layouts, by area and by constellation on one canvas: clusters seated so linked clusters sit side by side, a seeded force layout settled before the page is written, and label placement. |
+| `tiers.ts` | The tiers layout, by area or by constellation. |
+| `curve.ts` | A thread's path in the sky, shared by the build and the client. |
+| `motion.ts` | The data the build hands the client for the flight between clusterings, and each star's progress along it. |
 | `brass.ts` | The constellations dial layout: sectors, rings, marks and name placement. |
 | `text.ts` | Rough text widths and line wrapping for English and Chinese, since no fonts are measured at build time. |
 | `Astrolabe.astro` | The page, inside the wiki layout. The route in `src/pages/[...locale]/astrolabe.astro` only renders it. |
-| `Sky.astro`, `Tiers.astro`, `Brass.astro` | The three views. |
+| `Sky.astro`, `Tiers.astro`, `Brass.astro` | The three views. The sky is drawn by area, with the layout by constellation as data; the tiers are drawn once each way. |
 | `Backdrop.astro` | The night sky's decoration: specks, the engraved dial and the area glows. |
 | `Glyph.astro` | A star's glyph, shared by the views, the panel and the key. |
 | `Panels.astro` | One panel per star. Without JavaScript, `:target` shows the panel a star links to. |
 | `BrassPanels.astro`, `BrassKey.astro` | One panel per constellation, and how to read the dial, for the constellations view. |
-| `ConstellationFilter.astro` | The constellations switch and the time and energy filter, in the bar above the map. |
+| `ConstellationFilter.astro` | The Cluster by choice and the time and energy filter, in the bar above the map. |
 | `ConstellationList.astro` | The constellations and ungrouped questions under the map. |
 | `StarLink.astro`, `facts.ts` | A link that opens a star's panel; a constellation's facts on one line. |
 | `Legend.astro` | The key under the map. |
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
-| `client.ts` | The view switch, the star panel, thread highlighting, and pan and zoom on the sky. |
+| `client.ts` | The view switch, the Cluster by choice, the star panel, thread highlighting, and pan and zoom on the sky. |
+| `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings. |
 | `brass-client.ts` | The constellations view: its panel, the filter on its marks, and star links that lead to the night sky. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
 The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`); the page itself is checked by eye in the dev server.
+The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `motion.test.ts`); the page itself is checked by eye in the dev server.
 
 ## Art
 
