@@ -4,7 +4,14 @@
  */
 import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
 import { AREAS } from '../lib/areas';
-import { type Area, isDuplicate, type Question, type QuestionGraph } from '../lib/questions';
+import {
+  type Area,
+  isDuplicate,
+  type Place,
+  type Question,
+  type QuestionGraph,
+  type Role,
+} from '../lib/questions';
 import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
@@ -19,7 +26,7 @@ export const STAR_STATUSES: StarStatus[] = [
 ];
 
 /** Independent questions are always peripheral too; a star shows only the stronger mark. */
-export type StarRole = 'central' | 'peripheral' | 'independent';
+export type StarRole = Role;
 
 export interface Star {
   number: number;
@@ -100,17 +107,13 @@ function inLocale(texts: Partial<Record<Locale, string>>, locale: Locale) {
   return fallback === undefined ? undefined : { text: fallback, lang: DEFAULT_LOCALE };
 }
 
-function starStatus(q: Question, frontier: Set<number>): StarStatus {
-  if (q.status === 'open') return frontier.has(q.number) ? 'frontier' : 'blocked';
+function starStatus(q: Question, place: Place): StarStatus {
+  if (q.status === 'open') return place === 'frontier' ? 'frontier' : 'blocked';
   return q.status === 'duplicate' ? 'decided' : q.status;
 }
 
-function starRoles(n: number, graph: QuestionGraph): StarRole[] {
-  const roles: StarRole[] = [];
-  if (graph.central.includes(n)) roles.push('central');
-  if (graph.independent.includes(n)) roles.push('independent');
-  else if (graph.peripheral.includes(n)) roles.push('peripheral');
-  return roles;
+function starRoles(roles: Role[]): StarRole[] {
+  return roles.includes('independent') ? roles.filter((r) => r !== 'peripheral') : roles;
 }
 
 export function chartQuestions(
@@ -123,7 +126,6 @@ export function chartQuestions(
   // their canonical issue and stay off it.
   const sorted = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
   const inChart = new Set(sorted.map((q) => q.number));
-  const frontier = new Set(graph.frontier);
   const byNumber = new Map(sorted.map((q) => [q.number, q]));
 
   const threads: Thread[] = [];
@@ -150,11 +152,12 @@ export function chartQuestions(
 
   const stars: Star[] = sorted.map((q) => {
     const own = q.title[locale];
+    const facts = graph.questions[q.number]!;
     return {
       number: q.number,
       question: q,
-      status: starStatus(q, frontier),
-      roles: starRoles(q.number, graph),
+      status: starStatus(q, facts.place),
+      roles: starRoles(facts.roles),
       label: own ?? q.title[DEFAULT_LOCALE] ?? `#${q.number}`,
       labelLang: own === undefined ? DEFAULT_LOCALE : locale,
       blockedBy: ends(blocking, 'from', q.number),

@@ -414,4 +414,12 @@ export function getQuestions(): Questions {
   return cached.questions;
 }
 
-export { CENTRAL_MIN_DEPENDENTS, type QuestionGraph, questionGraph } from './graph';
+export {
+  CENTRAL_MIN_DEPENDENTS,
+  type GraphQuestion,
+  type Place,
+  type QuestionGraph,
+  questionGraph,
+  ROLES,
+  type Role,
+} from './graph';

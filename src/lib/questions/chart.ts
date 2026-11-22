@@ -126,13 +126,13 @@ export function currentChart(constellations: Constellations): Plan {
 
 /** One line per question: kind, area, page, title and its place in the question graph. */
 function questionLine(q: Question, graph: QuestionGraph): string {
+  const { place, roles, blockedBy, dependents } = graph.questions[q.number]!;
   const facts: string[] = [];
-  if (graph.independent.includes(q.number)) facts.push('independent');
-  else if (graph.peripheral.includes(q.number)) facts.push('peripheral');
-  else if (graph.frontier.includes(q.number)) facts.push('frontier');
-  if (graph.central.includes(q.number)) facts.push('central');
-  if (q.blockedBy.length) facts.push(`blocked by ${q.blockedBy.map((n) => `#${n}`).join(', ')}`);
-  const dependents = graph.dependents[q.number] ?? [];
+  if (roles.includes('independent')) facts.push('independent');
+  else if (roles.includes('peripheral')) facts.push('peripheral');
+  else if (place === 'frontier') facts.push('frontier');
+  if (roles.includes('central')) facts.push('central');
+  if (blockedBy.length) facts.push(`blocked by ${blockedBy.map((n) => `#${n}`).join(', ')}`);
   if (dependents.length) facts.push(`blocks ${dependents.map((n) => `#${n}`).join(', ')}`);
   const page = q.properties.page ? [`page ${q.properties.page}`] : [];
   return ['- #' + q.number + ' ' + q.kind, q.area ?? 'No area', ...page, q.title.en, ...facts].join(

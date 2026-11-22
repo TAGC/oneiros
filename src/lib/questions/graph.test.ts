@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { loadQuestions, type PulledIssue, questionGraph, writeQuestionCache } from '.';
+import { loadQuestions, type PulledIssue, questionGraph, type Role, writeQuestionCache } from '.';
 
 const LOCALES_BODY = '## en\n\nEnglish text.\n\n## zh\n\n### 中文标题\n\n中文。';
 
@@ -61,8 +61,20 @@ function graphOf(issues: PulledIssue[]) {
   return questionGraph(loadQuestions(dir).all());
 }
 
-describe('frontier', () => {
-  test('holds open questions whose blockers are all decided or ruled out', () => {
+type Graph = ReturnType<typeof graphOf>;
+
+/** Each question's place, by number. */
+const places = (graph: Graph) =>
+  Object.fromEntries(Object.values(graph.questions).map((q) => [q.number, q.place]));
+
+/** The questions that hold a role, by number. */
+const withRole = (graph: Graph, role: Role) =>
+  Object.values(graph.questions)
+    .filter((q) => q.roles.includes(role))
+    .map((q) => q.number);
+
+describe('places', () => {
+  test('an open question whose blockers are all decided or ruled out is on the frontier', () => {
     const graph = graphOf([
       issue(1, { state: 'decided' }),
       issue(2, { state: 'ruled-out' }),
@@ -71,16 +83,29 @@ describe('frontier', () => {
       issue(5, { blockedBy: [4] }),
       issue(6, { state: 'decided', blockedBy: [4] }),
     ]);
-    expect(graph.frontier).toEqual([3, 4]);
+    expect(places(graph)).toEqual({
+      1: 'settled',
+      2: 'settled',
+      3: 'frontier',
+      4: 'frontier',
+      5: 'blocked',
+      6: 'settled',
+    });
   });
 
-  test('an undermined or missing blocker keeps a question off the frontier', () => {
+  test('an undermined or missing blocker is unsettled and keeps a question blocked', () => {
     const graph = graphOf([
       issue(1, { state: 'undermined' }),
       issue(2, { blockedBy: [1] }),
       issue(3, { blockedBy: [404] }),
     ]);
-    expect(graph.frontier).toEqual([]);
+    expect(places(graph)).toEqual({ 1: 'settled', 2: 'blocked', 3: 'blocked' });
+  });
+
+  test('every question has one plain record, safe to hand to client code as JSON', () => {
+    const graph = graphOf([issue(1), issue(2, { blockedBy: [1, 404] })]);
+    expect(JSON.parse(JSON.stringify(graph))).toEqual(graph);
+    expect(graph.questions[2]).toMatchObject({ number: 2, blockedBy: [1, 404], dependents: [] });
   });
 });
 
@@ -97,7 +122,7 @@ describe('peripheral', () => {
       issue(8, { state: 'undermined' }),
       issue(9, { blockedBy: [8] }),
     ]);
-    expect(graph.peripheral).toEqual([1, 5, 6]);
+    expect(withRole(graph, 'peripheral')).toEqual([1, 5, 6]);
   });
 });
 
@@ -114,7 +139,7 @@ describe('independent', () => {
       issue(8, { underminedBy: [404] }),
       issue(9, { blockedBy: [404] }),
     ]);
-    expect(graph.independent).toEqual([1]);
+    expect(withRole(graph, 'independent')).toEqual([1]);
   });
 
   test('a Related row to a question in the graph links both questions', () => {
@@ -126,7 +151,11 @@ describe('independent', () => {
       issue(5, { state: 'decided' }),
       issue(6, { related: [404] }),
     ]);
-    expect(graph.independent).toEqual([1, 6]);
+    expect(withRole(graph, 'independent')).toEqual([1, 6]);
+  });
+
+  test('an independent question is peripheral too', () => {
+    expect(graphOf([issue(1)]).questions[1].roles).toEqual(['peripheral', 'independent']);
   });
 });
 
@@ -152,15 +181,15 @@ describe('central', () => {
     ]);
 
   test('holds open questions that directly block at least three open questions', () => {
-    expect(fixture().central).toEqual([1, 13]);
+    expect(withRole(fixture(), 'central')).toEqual([1, 13]);
   });
 
   test('lists the open questions each question directly blocks', () => {
-    const { dependents } = fixture();
-    expect(dependents[1]).toEqual([2, 3, 4, 13]);
-    expect(dependents[5]).toEqual([6, 7]);
-    expect(dependents[9]).toEqual([10, 11, 12]);
-    expect(dependents[16]).toEqual([]);
+    const { questions } = fixture();
+    expect(questions[1].dependents).toEqual([2, 3, 4, 13]);
+    expect(questions[5].dependents).toEqual([6, 7]);
+    expect(questions[9].dependents).toEqual([10, 11, 12]);
+    expect(questions[16].dependents).toEqual([]);
   });
 });
 
@@ -175,15 +204,16 @@ describe('duplicates', () => {
     ]);
 
   test('are left out of the graph', () => {
-    expect(Object.keys(graph().dependents)).toEqual(['1', '3', '4', '5']);
+    expect(Object.keys(graph().questions)).toEqual(['1', '3', '4', '5']);
   });
 
   test('carry no links of their own, so what only a duplicate links to stays independent', () => {
-    expect(graph().independent).toEqual([3]);
+    expect(withRole(graph(), 'independent')).toEqual([3]);
   });
 
   test('a link to a duplicate counts as a link to its canonical question', () => {
-    expect(graph().frontier).toEqual([1, 3, 5]);
-    expect(graph().dependents[1]).toEqual([4]);
+    const { questions } = graph();
+    expect(questions[4]).toMatchObject({ place: 'blocked', blockedBy: [1] });
+    expect(questions[1].dependents).toEqual([4]);
   });
 });
