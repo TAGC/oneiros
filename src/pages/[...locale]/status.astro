@@ -22,18 +22,30 @@ const stages = resolve('Belief stages', locale);
   <p class="sub">{t.statusSub}</p>
   <p>{t.statusIntro}</p>
   <p>{t.statusStagesLead}</p>
-  <ol class="stages">
-    {
-      STATUSES.map((s) => (
-        <li>
-          <IconFrame name={s} size="sm" />
-          <span>
-            <strong>{t.statusNames[s] ?? s}</strong>: {t.statusMeanings[s]}
-          </span>
-        </li>
-      ))
-    }
-  </ol>
+  <table class="wt stages-table">
+    <thead>
+      <tr>
+        <th scope="col" aria-label={t.statusIcon}></th>
+        <th scope="col">{t.statusStage}</th>
+        <th scope="col">{t.statusMeaning}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        STATUSES.map((s) => (
+          <tr>
+            <td class="stage-icon">
+              <IconFrame name={s} size="md" />
+            </td>
+            <td>
+              <strong>{t.statusNames[s] ?? s}</strong>
+            </td>
+            <td>{t.statusMeanings[s]}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
   <p>
     {t.statusNote[0]}<WikiLink to={stages} locale={locale}>{t.statusBeliefStages}</WikiLink>{t.statusNote[1]}
   </p>

@@ -1071,11 +1071,6 @@ footer.foot p {
 
 /* A page's Status: the small painted icon and the stage name, linking to the explainer. */
 .stage-badge,
-.stages li {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
 .stage-badge {
   font-size: 14px;
   white-space: nowrap;
@@ -1087,14 +1082,14 @@ footer.foot p {
 .cat-head:has(.stage-badge) {
   flex-wrap: wrap;
 }
-.stages {
-  list-style: none;
+.stages-table {
   margin: 8px 0 16px;
-  padding: 0;
 }
-.stages li {
-  display: flex;
-  margin: 6px 0;
+.stages-table td {
+  vertical-align: middle;
+}
+.stages-table .stage-icon {
+  width: 64px;
 }
 
 /* Pixel icon frame, from the approved icon mockup */
