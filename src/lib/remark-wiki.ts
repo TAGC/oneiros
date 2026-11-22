@@ -159,6 +159,11 @@ function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
   for (const { issue, node } of markerBlocks(tree)) {
     const box = markerBox(issue, locale, questions);
     node.children = parseFragment(box.markdown) as Blockquote['children'];
+    if (box.lang !== locale) {
+      for (const child of node.children) {
+        child.data = { ...child.data, hProperties: { ...child.data?.hProperties, lang: box.lang } };
+      }
+    }
     toNote(node, box.kind, box.id, calloutHeading(box.kind, locale, questions.get(issue)));
   }
 }
