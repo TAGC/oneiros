@@ -51,6 +51,9 @@ Lethe
 Phlegethon
 
 # People, works and games
+Alcaeus
+Amitabha
+Amoghasiddhi
 Blumberg
 Brogue
 Jost
@@ -64,6 +67,7 @@ Schopenhauer
 Spiritfarer
 Stormlight
 Superhot
+Vairocana
 Wildermyth
 
 # Descriptive words the British dictionary lacks
