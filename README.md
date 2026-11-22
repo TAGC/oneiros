@@ -18,6 +18,7 @@ bun run format         # oxfmt (format:check to verify)
 bun run check          # spelling and content checks (run after a build)
 bun run test           # unit tests (bun test)
 bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
+bun run constellations # the constellations from .questions/; `apply <plan> --live` charts them
 bun run verify         # build, test, lint, format:check and check
 ```
 
@@ -250,6 +251,8 @@ The description holds an English property table, then one section per site local
 An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.
 
 Code reads constellations only through `src/lib/questions/constellations.ts`. `bun run check` checks each open constellation's description (see Checks).
+
+The `chart-constellations` skill keeps the constellations sound: it assigns new questions, splits or merges groups and closes finished ones. `bun run constellations` prints the current chart; `bun run constellations apply <plan>` shows the milestone changes a plan file needs, and `--live` makes them with `gh api`.
 
 #### Resolving questions
 
