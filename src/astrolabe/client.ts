@@ -5,6 +5,7 @@
  */
 import { fitsFilter, readFilter, readSetting, setUpPanel, writeSetting } from './client-common';
 import type { SkyMotionData } from './motion';
+import type { Clustering } from './sky';
 import { skyMotion } from './sky-motion';
 import { type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
 
@@ -66,7 +67,7 @@ function setUp(root: HTMLElement): void {
     const choice = cfilter.querySelector<HTMLElement>('.al-cluster')!;
     if (motionData) {
       const motion = skyMotion(sky, JSON.parse(motionData) as SkyMotionData);
-      const cluster = (by: 'areas' | 'constellations', animate: boolean) => {
+      const cluster = (by: Clustering, animate: boolean) => {
         if (root.dataset.cluster === by) return;
         root.dataset.cluster = by;
         for (const b of choice.querySelectorAll('button')) {
@@ -86,7 +87,7 @@ function setUp(root: HTMLElement): void {
       }
       choice.addEventListener('click', (e) => {
         const button = (e.target as Element).closest<HTMLButtonElement>('button[data-cluster]');
-        if (button) cluster(button.dataset.cluster as 'areas' | 'constellations', true);
+        if (button) cluster(button.dataset.cluster as Clustering, true);
       });
     } else {
       choice.hidden = true;

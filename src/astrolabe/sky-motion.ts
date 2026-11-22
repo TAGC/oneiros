@@ -6,8 +6,7 @@
 import type { Thread } from './chart';
 import { curve, threadBend } from './curve';
 import { flight, FLIGHT_MS, type SkyMotionData, type SkySpot } from './motion';
-
-type By = 'areas' | 'constellations';
+import type { Clustering } from './sky';
 
 interface Placed {
   glyph: SVGGElement;
@@ -87,7 +86,7 @@ export function skyMotion(sky: SVGSVGElement, data: SkyMotionData) {
   };
 
   /** Moves the sky to a clustering: in flight, or at once. */
-  const show = (by: By, animate: boolean) => {
+  const show = (by: Clustering, animate: boolean) => {
     cancelAnimationFrame(frame);
     const target = data[by];
     if (!animate) {
