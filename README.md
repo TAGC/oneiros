@@ -45,7 +45,7 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `src/content/wiki/`: the pages, one Markdown (or MDX) file each.
 - `src/content/wiki-zh/`: Chinese versions of pages, named after the English page's file.
 - `src/i18n/ui.ts`: interface strings in English and Chinese.
-- `src/data/sheet/`: the reference sheet's tabs as JSON. Do not edit by hand.
+- `src/data/sheet/`: the data tables, imported once from the old reference sheet. Edit them here; the spreadsheet is retired.
 - `src/data/navboxes.json`: navboxes.
 - `src/data/icons.json`: 24×24 pixel icons, one per area.
 - `src/components/figures/`: SVG figures for infoboxes.
