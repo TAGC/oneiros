@@ -31,7 +31,8 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 
 ## Ubiquitous language
 
-- The wiki's term pages are the Glossary. Use their terms exactly as defined; never swap in synonyms or invent names for existing concepts.
+- The wiki's term pages are the Glossary. Read the relevant term pages before design work. Use their terms exactly as defined and spelt; never swap in synonyms or invent names for existing concepts.
+- In a term's definition, link every other Glossary term it uses. Never use an undefined word as if it were a term (for example "pulse" for an outburst): define it or say it plainly.
 - Capitalise tracked values and named states (Coherence, Conviction, Hold, Attention, Remembered, Lucid, the belief stages, the emotions, the sleep phases, Attention levels, Coherence status words) and proper nouns (the Dreamer, the Dreamlands, Temenos, Reverie, Oceanus). Lowercase general mechanics and things (lucidity, mood, grain, vividness, memory, bead, obol, apeiron, kyathos).
 - Bold domain terms in replies to the designer.
 - If the designer uses a term loosely, ambiguously, with the wrong capitalisation or differently from the wiki, point it out briefly, suggest the wiki term, then carry on. A term doesn't claim a broad ordinary word (for example "crack"); if a term is used in two senses, flag it.
