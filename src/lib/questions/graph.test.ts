@@ -158,6 +158,26 @@ describe('steps out', () => {
   });
 });
 
+describe('cycles', () => {
+  test('lists each blocked-by cycle by its questions, whatever their state', () => {
+    const graph = graphOf([
+      issue(1, { blockedBy: [3] }),
+      issue(2, { blockedBy: [1] }),
+      issue(3, { blockedBy: [2] }),
+      issue(4, { blockedBy: [1] }),
+      issue(5, { state: 'decided', blockedBy: [6] }),
+      issue(6, { blockedBy: [5] }),
+      issue(7, { blockedBy: [7] }),
+      issue(8, { blockedBy: [404] }),
+    ]);
+    expect(graph.cycles).toEqual([[1, 2, 3], [5, 6], [7]]);
+  });
+
+  test('a graph without cycles has none', () => {
+    expect(graphOf([issue(1), issue(2, { blockedBy: [1] })]).cycles).toEqual([]);
+  });
+});
+
 describe('peripheral', () => {
   test('holds frontier questions that no open question depends on', () => {
     const graph = graphOf([

@@ -41,6 +41,8 @@ export interface GraphQuestion {
 export interface QuestionGraph {
   /** Every question but duplicates, by number. */
   questions: Record<number, GraphQuestion>;
+  /** Each blocked-by cycle's questions, sorted, in order of their first; a check failure. */
+  cycles: number[][];
 }
 
 /**
@@ -105,7 +107,8 @@ export function questionGraph(all: Question[]): QuestionGraph {
     }
   }
 
-  const inCycle = new Set(blockedByCycles(questions, byNumber).flat());
+  const cycles = blockedByCycles(questions, byNumber);
+  const inCycle = new Set(cycles.flat());
   const cap = questions.filter((q) => q.status === 'open').length;
   const steps = new Map<number, number>();
   const stepsOut = (q: Question): number => {
@@ -144,5 +147,5 @@ export function questionGraph(all: Question[]): QuestionGraph {
       roles: ROLES.filter((r) => has[r]),
     };
   }
-  return { questions: records };
+  return { questions: records, cycles };
 }
