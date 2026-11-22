@@ -117,7 +117,8 @@ interface CacheFrontmatter {
 
 const KIND_LABEL = /^kind:(open|conflict)$/;
 const AREA_LABEL = /^area:(.+)$/;
-const TITLE = /^###\s+(.+?)\s*$/;
+/** A locale section's name line, such as a Chinese title: `### <name>`. */
+export const TITLE = /^###\s+(.+?)\s*$/;
 
 const LOCALE_CODES: readonly string[] = LOCALES;
 const CONTEXT = 'Context';
@@ -241,7 +242,8 @@ export function writeQuestionCache(dir: string, issues: PulledIssue[]): void {
   }
 }
 
-const ISSUE_REF = /(?:#|\/issues\/)(\d+)/g;
+/** An issue reference in a property row: `#12` or an issue link. */
+export const ISSUE_REF = /(?:#|\/issues\/)(\d+)/g;
 
 function issueRefs(value: string | undefined): number[] {
   return [...(value ?? '').matchAll(ISSUE_REF)].map((m) => Number(m[1]));
@@ -270,7 +272,7 @@ function sourceNames(value: string): string[] {
 }
 
 /** A property row's value; row names are matched ignoring case. */
-function propertyRow(rows: Record<string, string>, name: string): string | undefined {
+export function propertyRow(rows: Record<string, string>, name: string): string | undefined {
   return Object.entries(rows).find(([key]) => key.toLowerCase() === name)?.[1];
 }
 

@@ -12,10 +12,12 @@ import {
   type GithubIssue,
   getQuestions,
   isDuplicate,
+  propertyRow,
   QUESTION_CACHE,
   type Question,
   type Questions,
   splitSections,
+  TITLE,
   tableRows,
 } from '.';
 import type { Problem } from './problems';
@@ -138,13 +140,6 @@ interface Written {
 
 const written = new WeakMap<Constellation, Written>();
 
-const TITLE = /^###\s+(.+?)\s*$/;
-
-/** The value of a property row, matching its name ignoring case. */
-function row(rows: Record<string, string>, name: string): string | undefined {
-  return Object.entries(rows).find(([key]) => key.toLowerCase() === name)?.[1];
-}
-
 function onScale<T extends string>(scale: readonly T[], value: string | undefined): T | undefined {
   return scale.find((s) => s === value?.toLowerCase());
 }
@@ -185,8 +180,8 @@ function toConstellation(raw: string, questions: Questions): Constellation | und
       .filter((q) => !isDuplicate(q)),
   };
   const facts: Written = { sections: LOCALES.filter((l) => sections[l] !== undefined) };
-  const size = row(rows, 'size');
-  const energy = row(rows, 'energy');
+  const size = propertyRow(rows, 'size');
+  const energy = propertyRow(rows, 'energy');
   if (size !== undefined) facts.size = size;
   if (energy !== undefined) facts.energy = energy;
   const onSize = onScale(SIZES, size);

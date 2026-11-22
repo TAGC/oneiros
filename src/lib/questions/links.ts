@@ -3,6 +3,7 @@
  * applies: blocked-by links (GitHub's issue dependencies), Related rows and Undermined by rows
  * (the property table in the issue body).
  */
+import { ISSUE_REF } from '.';
 
 export const RELATIONS = ['blocked-by', 'related', 'undermined-by'] as const;
 export type Relation = (typeof RELATIONS)[number];
@@ -69,8 +70,6 @@ export function parsePlan(plan: string): LinkChange[] {
 /** The property rows an issue's table holds, in the README's order. */
 const ROW_ORDER = ['page', 'section', 'source', 'raised', 'related', 'undermined by'];
 export type LinkRow = 'Related' | 'Undermined by';
-
-const ISSUE_REF = /(?:#|\/issues\/)(\d+)/g;
 
 function rowName(line: string): string {
   return line.trim().replace(/^\|/, '').split('|')[0].trim().toLowerCase();
