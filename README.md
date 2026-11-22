@@ -162,7 +162,26 @@ An infobox figure is an Astro component in `src/components/figures/` containing 
 
 ### Area icons
 
-The 24×24 pixel icons in `src/data/icons.json` are being replaced by painted icons that match the background art. The designer generates them in Midjourney; Claude cuts them out and checks them in the frame. Approved so far: Items (a terracotta amphora with a teal band) and Library (an upright teal book with copper corners). They are not wired into the site yet.
+The 24×24 pixel icons in `src/data/icons.json` are being replaced by painted icons that match the background art. The designer generates them in Midjourney; Claude cuts them out and checks them in the frame. All 16 are approved (22 Nov 2026). They are not wired into the site yet.
+
+| Area       | Subject                                                    | Main colour                 |
+| ---------- | ---------------------------------------------------------- | --------------------------- |
+| Items      | Amphora with a teal band                                   | Terracotta                  |
+| Library    | Upright book with copper corners                           | Teal                        |
+| Beliefs    | Lit candle in a brass holder                               | Deep red                    |
+| Temenos    | Small marble house with two columns and a lit doorway      | Warm ivory                  |
+| Memory     | Glass orb of swirling light on a dark stand                | Gold                        |
+| Rest       | Crescent moon of glossy carved stone                       | Cyan blue                   |
+| Lore       | Rolled papyrus scroll tied with a cord                     | Parchment, violet cord      |
+| Economy    | Cluster of glowing white beads (obols) on a knotted cord   | Pearl white                 |
+| Dreams     | Feather quill in an inkwell of glowing ink                 | Violet                      |
+| Lucidity   | Clear faceted crystal                                      | Clear white                 |
+| Body       | Open hand on a round cuff                                  | Warm bronze                 |
+| Magic      | Round palette with eight paint dabs in the emotion colours | Pale grey stone, eight dabs |
+| Philosophy | Hourglass with a bleached wood frame and glowing sand      | Pale wood, blue             |
+| Emotion    | Shallow bowl of still water with a soft white glow         | Pale gold, white glow       |
+| World      | Floating shard of land with a tiny temple and a cypress    | Green and grey              |
+| Character  | Theatre mask with a calm, neutral face                     | Porcelain white, blue       |
 
 **Moodboards.** Keep two. "Oneiros" holds the background scenes and is for scenes only: it pulls icons towards isometric angles, scenery and a pixel texture. "Oneiros Icons" holds only approved icons; add each new one once it passes.
 
