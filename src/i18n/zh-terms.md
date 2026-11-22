@@ -82,7 +82,7 @@ The policy follows how the guides already handle Greek names:
 
   Dreams is 你的梦, the old guide's section title. Lore is 典故 (proposed); 传说 is the alternative, but the old guide uses 传说 for "legends".
 
-- **Page status** (a wiki property, not a game concept): **状态**. The five stages reuse the four belief stage terms and the Musing state's: Notion 念头, Musing 沉吟, Tenet 信条, Certainty 确信, Dogma 教条. 状态 also appears inside 凝聚度状态; the context keeps the two apart.
+- **Page status** (a wiki property, not a game concept): **状态**. The four stages reuse the belief stage terms: Notion 念头, Tenet 信条, Certainty 确信, Dogma 教条. 状态 also appears inside 凝聚度状态; the context keeps the two apart.
 
 ---
 
