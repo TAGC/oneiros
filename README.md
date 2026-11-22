@@ -17,7 +17,7 @@ bun run lint           # oxlint
 bun run format         # oxfmt (format:check to verify)
 ```
 
-In dev, a page's link colours are worked out when that page renders. If links look stale after adding a page, restart with `bun run dev --force`.
+In dev, a page's link colours are worked out when that page renders. If links look stale after adding a page, restart the dev server.
 
 ## Layout
 
