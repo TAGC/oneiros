@@ -89,6 +89,18 @@ Status is derived from GitHub, never stored:
 | Undermined  | Decided, with an Undermined by row                        |
 | Duplicate   | Closed as a duplicate of another question issue           |
 
+## The question graph
+
+`questionGraph()` in `src/lib/questions/graph.ts` derives every fact that depends on the links between questions; nothing else derives them. It returns plain data: one record per question, the threads and the cycles. Duplicates are left out. When the questions are loaded, every blocked-by, Undermined by and Related link to a duplicate becomes a link to its canonical question, following a chain of duplicates, and repeats are dropped. A link to a duplicate whose canonical question is not in the cache stays as it is. The designer agreed these rules on 22 Nov 2026.
+
+- **Settled blocker:** a blocker that is decided or ruled out. Every other blocker is unsettled: an open question, an undermined decision (its premise is broken), or an issue missing from the cache (unknown).
+- **Place:** where a question stands. **Frontier:** open, and every blocker is settled, so it is ready to ask. **Blocked:** open, and waiting on at least one unsettled blocker. **Settled:** closed, whether decided, ruled out or undermined. An undermined question's place is settled, yet as a blocker it is unsettled.
+- **Steps out:** the longest chain of unsettled blockers in front of an open question. A frontier question is 0 steps out. Waiting only on frontier questions, undermined decisions or unknown issues is 1 step out, and each open blocker further back in the chain adds one. A settled question is 0. The Astrolabe's tiers give one, two, and three or more steps out a column each.
+- **Dependents:** the open questions a question directly blocks.
+- **Roles**, of open questions: **central** blocks at least `CENTRAL_MIN_DEPENDENTS` (3) open questions directly; **peripheral** is on the frontier, and no open question waits on it; **independent** has no links at all to or from any question in the graph, Related rows included. An independent question is always peripheral too.
+- **Thread kinds:** a blocked-by link runs from blocker to blocked, **settled** when the blocker is settled and **unsettled** otherwise. An **undermines** thread runs from a question to the decision whose premise it broke, from that decision's Undermined by row. The Astrolabe draws the threads.
+- **Cycles:** blocked-by links that lead back to where they started, whatever the state of their questions, including a question blocked by itself. `bun run check` fails on each cycle and names its questions. Until the cycle is broken, every open question in it counts as blocked, and its steps out, and those of every question waiting on it, are capped at the number of open questions, so the build never hangs.
+
 ## Markers
 
 A page marks where an open question's box goes:

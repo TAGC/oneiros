@@ -30,7 +30,7 @@ A **Full screen** button at the top right of the map (all three views) fills the
 Three views, switched by buttons above the map; the choice is remembered in the browser:
 
 - **Night sky** (the main view): a free sky in which each area gathers into its own soft glow, or each constellation into its own patch.
-- **Tiers**: columns from settled ground through the frontier to one, two, and three or more steps out; rows are the areas, or the constellations. A step out is the longest chain of unsettled blockers in front of a question.
+- **Tiers**: columns from settled ground through the frontier to one, two, and three or more steps out; rows are the areas, or the constellations. Steps out are defined with the other graph terms in `docs/open-questions.md`.
 - **Constellations**: a brass dial of the open constellations, not of single questions (see below). It shows only when there are constellations.
 
 ## Constellations
@@ -99,9 +99,9 @@ Everything is laid out at build time and written as static SVG, so positions are
 
 | File | Role |
 | --- | --- |
-| `chart.ts` | Shapes questions from the questions module into stars, threads and area groups for one locale. |
+| `chart.ts` | Shapes questions and their question graph facts into stars, threads and area groups for one locale. It derives no graph fact itself. |
 | `sky.ts` | The night sky layouts, by area and by constellation on one canvas: clusters seated so linked clusters sit side by side, a seeded force layout settled before the page is written, and label placement. |
-| `tiers.ts` | The tiers layout, by area or by constellation. |
+| `tiers.ts` | The tiers layout, by area or by constellation. It only maps each star's steps out to a column. |
 | `curve.ts` | A thread's path in the sky, shared by the build and the client. |
 | `motion.ts` | The data the build hands the client for the flight between clusterings, and each star's progress along it. |
 | `brass.ts` | The constellations dial layout: sectors, rings, marks and name placement. |
@@ -125,9 +125,9 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
-The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
+The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Every graph fact (a star's place, steps out and roles, and the threads with their kinds) comes from `questionGraph()`, whose terms `docs/open-questions.md` defines. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
+The graph facts are tested in `src/lib/questions/graph.test.ts`. The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
 
 ## Keeping it fast
 
