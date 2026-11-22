@@ -2,6 +2,7 @@
 title: Raw magic
 kind: term
 area: Magic
+status: Tenet
 summary: The source of magic that moves, shifting the mood of existing things, paid with your mood.
 aliases:
   - Raw

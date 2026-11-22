@@ -2,6 +2,7 @@
 title: The Dreamer
 kind: term
 area: World
+status: Tenet
 summary: The vast, cosmic and unknowable being whose dream is the Dreamlands, and the only god-figure.
 aliases:
   - Dreamer

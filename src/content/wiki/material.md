@@ -2,6 +2,7 @@
 title: Material
 kind: term
 area: Magic
+status: Tenet
 summary: Force in a particular motion, an emotion or Calm, in the units spells use.
 infobox:
   rows:

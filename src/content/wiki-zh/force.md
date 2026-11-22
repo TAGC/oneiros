@@ -2,6 +2,7 @@
 title: 力
 kind: term
 area: World
+status: Tenet
 summary: 一个意志的运动之量，即其心境之圆的面积，在整个世界中守恒。
 infobox:
   rows:

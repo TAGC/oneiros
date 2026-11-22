@@ -2,6 +2,7 @@
 title: 刺激
 kind: term
 area: Magic
+status: Tenet
 summary: 一个意志所遇到的事物引起的心境形状的变化，不转移任何力。
 infobox:
   rows:

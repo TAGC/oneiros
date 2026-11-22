@@ -2,6 +2,7 @@
 title: 陀螺
 kind: term
 area: Temenos
+status: Tenet
 summary: 你的第一条信念“这是一场梦”，从一开始就处于教条阶段，正是它让你成为清醒者。
 infobox:
   rows:

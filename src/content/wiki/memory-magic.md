@@ -2,6 +2,7 @@
 title: Memory magic
 kind: term
 area: Magic
+status: Tenet
 summary: The source of magic that makes, conjuring what you remember from a bead by feeding it emotions from your mood.
 infobox:
   rows:

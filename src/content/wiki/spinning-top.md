@@ -2,6 +2,7 @@
 title: Spinning top
 kind: term
 area: Temenos
+status: Tenet
 summary: Your first belief, this is a dream, held at Dogma from the start, which makes you Lucid.
 infobox:
   rows:

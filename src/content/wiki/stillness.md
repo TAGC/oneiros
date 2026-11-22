@@ -2,6 +2,7 @@
 title: Stillness
 kind: term
 area: Emotion
+status: Tenet
 summary: The will feeling motionless, its force intact and still moving but its motion no longer felt.
 infobox:
   rows:

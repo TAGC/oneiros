@@ -2,6 +2,7 @@
 title: 信标
 kind: term
 area: Memory
+status: Notion
 summary: 在深渊中迷失时种下的一段记忆；只要你在它招来注意时撑住，它就会把你拉回上方。
 infobox:
   rows:

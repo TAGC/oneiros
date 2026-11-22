@@ -2,6 +2,7 @@
 title: Weight
 kind: term
 area: Beliefs
+status: Tenet
 summary: The size of a belief's effect, the material of its grounds plus its own, never stored.
 infobox:
   rows:

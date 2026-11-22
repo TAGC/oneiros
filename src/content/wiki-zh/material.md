@@ -2,6 +2,7 @@
 title: 材料
 kind: term
 area: Magic
+status: Tenet
 summary: 处于特定运动中的力，即某种情感或平静，以法术所用的单位计量。
 infobox:
   rows:

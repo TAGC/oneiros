@@ -2,6 +2,7 @@
 title: Extraction
 kind: term
 area: Memory
+status: Notion
 summary: Taking a memory or belief out of someone's mind, the dark side of Memory magic.
 aliases:
   - extract

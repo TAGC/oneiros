@@ -2,6 +2,7 @@
 title: 身体与形态
 kind: system
 area: Body
+status: Tenet
 summary: 你的身体作为运动中的意志，如何随情感与伤害而改变，以及装备如何附着于其上。
 infobox:
   rows:

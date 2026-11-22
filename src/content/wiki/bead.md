@@ -2,6 +2,7 @@
 title: Bead
 kind: term
 area: Memory
+status: Tenet
 summary: A glass-like container that holds a memory while it is in the Dreamlands.
 aliases:
   - Beads

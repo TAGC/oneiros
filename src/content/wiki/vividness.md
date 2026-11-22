@@ -2,6 +2,7 @@
 title: Vividness
 kind: term
 area: Memory
+status: Tenet
 summary: A memory's total material, its detail and feeling, from novelty and feeling together.
 infobox:
   rows:

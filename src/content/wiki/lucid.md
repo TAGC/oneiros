@@ -2,6 +2,7 @@
 title: Lucid
 kind: term
 area: Character
+status: Notion
 summary: You, someone who knows the world is a dream, and the only Lucid in your copy of the world.
 infobox:
   rows:

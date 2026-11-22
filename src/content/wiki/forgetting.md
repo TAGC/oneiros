@@ -2,6 +2,7 @@
 title: Forgetting
 kind: term
 area: Memory
+status: Tenet
 summary: The dark, a constant erosion of memory that surges during the Vivid.
 infobox:
   rows:

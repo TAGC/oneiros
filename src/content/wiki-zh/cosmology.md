@@ -2,6 +2,7 @@
 title: 宇宙观
 kind: system
 area: World
+status: Tenet
 summary: 做梦者唯一的梦如何碎裂成碎片与接缝，以及世界的力为何逐渐衰竭。
 navbox: world
 ---

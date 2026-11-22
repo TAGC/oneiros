@@ -2,6 +2,7 @@
 title: Mood capacity
 kind: term
 area: Character
+status: Tenet
 summary: How far your mood can pinch towards one emotion, that emotion's material across everything you hold.
 infobox:
   rows:

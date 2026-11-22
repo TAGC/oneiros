@@ -2,6 +2,7 @@
 title: 回响
 kind: term
 area: Character
+status: Notion
 summary: 凝聚度归零时你归来的形态：变得更弱，但保留你的藏书室和你所知道的一切。
 infobox:
   rows:

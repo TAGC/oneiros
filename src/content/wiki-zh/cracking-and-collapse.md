@@ -2,6 +2,7 @@
 title: 开裂与坍塌
 kind: term
 area: Temenos
+status: Tenet
 summary: 当房间里记忆的扎根度或信念的信念度跌到所在层级界线以下时，房间会发生什么。
 aliases:
   - 坍塌

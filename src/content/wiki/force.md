@@ -2,6 +2,7 @@
 title: Force
 kind: term
 area: World
+status: Tenet
 summary: The amount of a will's motion, the area of its mood's circle, conserved across the world.
 aliases:
   - Kraft

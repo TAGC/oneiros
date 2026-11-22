@@ -2,6 +2,7 @@
 title: 奇景
 kind: term
 area: World
+status: Notion
 summary: 一个地方或事物，在它附近，平静可以化为惊奇。
 navbox: world
 ---

@@ -2,6 +2,7 @@
 title: 内核与外相
 kind: term
 area: Body
+status: Tenet
 summary: 两个装备层：内核，作用于你；外相，即他人如何看你。
 aliases:
   - 内核层

@@ -2,6 +2,7 @@
 title: 心境
 kind: term
 area: Magic
+status: Tenet
 summary: 任何意志当下的感受，被描绘成一个被捏的圆，圆的面积就是它的总力。
 aliases:
   - 被捏的圆

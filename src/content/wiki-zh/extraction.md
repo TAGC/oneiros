@@ -2,6 +2,7 @@
 title: 拾忆
 kind: term
 area: Memory
+status: Notion
 summary: 从某人的心灵中取出一段记忆或一条信念，这是记忆魔法的黑暗面。
 infobox:
   rows:

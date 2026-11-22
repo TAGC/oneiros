@@ -2,6 +2,7 @@
 title: Casting
 kind: system
 area: Magic
+status: Notion
 summary: How a spell is built from a composition and an adverb, priced, read and resolved.
 aliases:
   - Spell

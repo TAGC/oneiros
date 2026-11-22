@@ -2,6 +2,7 @@
 title: 扎根度
 kind: term
 area: Memory
+status: Tenet
 summary: 一段记忆在一个意志中扎根的深度，是其力度中关于扎根的那一半，决定它的层级。
 infobox:
   rows:

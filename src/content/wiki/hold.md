@@ -2,6 +2,7 @@
 title: Hold
 kind: term
 area: Memory
+status: Tenet
 summary: How rooted a memory is in a will, the rootedness half of its strength, which sets its tier.
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Guise
 kind: term
 area: Memory
+status: Notion
 summary: The likeness of someone a target remembers, worn inside their inner world, with your mood matched to how they feel about that person.
 aliases:
   - Guises

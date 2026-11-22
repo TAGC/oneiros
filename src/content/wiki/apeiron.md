@@ -2,6 +2,7 @@
 title: Apeiron
 kind: term
 area: Economy
+status: Tenet
 summary: The formless stuff of dreams, provided by subscription, which pays for LLM generation and buys novelty, never power.
 infobox:
   rows:

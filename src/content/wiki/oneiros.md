@@ -2,6 +2,7 @@
 title: Oneiros
 kind: system
 area: World
+status: Notion
 summary: A dream journal that becomes a game you can share, a systemic RPG set in the Dreamlands.
 infobox:
   rows:

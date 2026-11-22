@@ -2,6 +2,7 @@
 title: 平静
 kind: term
 area: Emotion
+status: Notion
 summary: 意志在静息中环绕；在心境中，是圆里没有被捏向任何情感的部分。
 infobox:
   rows:

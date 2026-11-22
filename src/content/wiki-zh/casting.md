@@ -2,6 +2,7 @@
 title: 施法
 kind: system
 area: Magic
+status: Notion
 summary: 法术如何由一个构成和一个副词组成、定价、解读和结算。
 aliases:
   - 法术

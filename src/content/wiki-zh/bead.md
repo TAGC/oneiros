@@ -2,6 +2,7 @@
 title: 珠子
 kind: term
 area: Memory
+status: Tenet
 summary: 一种玻璃般的容器，在记忆身处梦境之地时盛放它。
 infobox:
   rows:

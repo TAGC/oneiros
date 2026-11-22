@@ -2,6 +2,7 @@
 title: Grain
 kind: term
 area: Magic
+status: Notion
 summary: A thing's resting emotion, the shape its mood relaxes back to.
 infobox:
   rows:

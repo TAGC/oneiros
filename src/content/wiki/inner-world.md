@@ -2,6 +2,7 @@
 title: Inner world
 kind: term
 area: World
+status: Tenet
 summary: A will's private world, where what it holds lives, and the counterpart of the shared Dreamlands.
 aliases:
   - inner worlds

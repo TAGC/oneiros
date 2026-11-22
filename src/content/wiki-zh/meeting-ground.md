@@ -2,6 +2,7 @@
 title: 交会之地
 kind: term
 area: World
+status: Notion
 summary: 两个内在世界相交的一小块空间，你的圣域与另一人的圣域在此并排而立。
 aliases:
   - 居间

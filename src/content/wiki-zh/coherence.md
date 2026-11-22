@@ -2,6 +2,7 @@
 title: 凝聚度
 kind: term
 area: Character
+status: Tenet
 summary: 生命值：一个意志保持自身运动、而不分裂成更简单运动的程度。
 categories:
   - Tracked values

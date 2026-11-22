@@ -2,6 +2,7 @@
 title: Inner voices
 kind: term
 area: Character
+status: Tenet
 summary: Your emotions speaking in the event log, each wanting what the quality feeding it wants.
 aliases:
   - inner voice

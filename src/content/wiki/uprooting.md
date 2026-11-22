@@ -2,6 +2,7 @@
 title: Uprooting
 kind: term
 area: Temenos
+status: Tenet
 summary: Dislodging a rooted memory or belief, surgery on the psyche.
 aliases:
   - uproot

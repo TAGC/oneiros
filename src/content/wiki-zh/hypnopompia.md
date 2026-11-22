@@ -2,6 +2,7 @@
 title: 将醒
 kind: term
 area: Rest
+status: Tenet
 summary: 长休中最后一个可探索的阶段，你在醒来时看到圣域发生了哪些变化。
 infobox:
   rows:

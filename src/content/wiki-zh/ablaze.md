@@ -2,6 +2,7 @@
 title: 燃烧中
 kind: term
 area: Memory
+status: Tenet
 summary: 记忆燃烧期间的状态，显示为一个按其情感着色的球体，边缘显示剩余时间。
 infobox:
   rows:

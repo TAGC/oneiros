@@ -2,6 +2,7 @@
 title: 奥波勒斯
 kind: term
 area: Economy
+status: Tenet
 summary: 一颗装着一座城市在平静中感受的建城记忆的小珠子，用于日常交易。
 infobox:
   rows:

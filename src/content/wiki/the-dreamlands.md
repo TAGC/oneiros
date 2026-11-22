@@ -2,6 +2,7 @@
 title: The Dreamlands
 kind: term
 area: World
+status: Tenet
 summary: The Dreamer's dream, the one shared world all players inhabit, each in their own copy.
 aliases:
   - Dreamlands

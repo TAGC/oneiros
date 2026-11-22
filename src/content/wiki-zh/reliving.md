@@ -2,6 +2,7 @@
 title: 重温
 kind: term
 area: Memory
+status: Tenet
 summary: 把一段记忆从珠子抽回你的心中，这会把你的心境朝它的情感捏去。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 被铭记
 kind: term
 area: World
+status: Tenet
 summary: 处于记忆之光中的事物所处的状态：稳定，不易变幻。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Ring
 kind: term
 area: Magic
+status: Tenet
 summary: The circle beneath every character and thing that shows the shape of its mood.
 aliases:
   - Rings

@@ -2,6 +2,7 @@
 title: Composition
 kind: term
 area: Magic
+status: Notion
 summary: The mix of emotions in a spell, memory or thing.
 aliases:
   - compositions

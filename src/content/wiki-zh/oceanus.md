@@ -2,6 +2,7 @@
 title: 俄刻阿诺斯
 kind: term
 area: World
+status: Tenet
 summary: 承载无定的世界之河。
 navbox: world
 ---

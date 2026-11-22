@@ -2,6 +2,7 @@
 title: Remembered
 kind: term
 area: World
+status: Tenet
 summary: The state of things within memory light, stable and resistant to shifting.
 infobox:
   rows:

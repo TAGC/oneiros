@@ -2,6 +2,7 @@
 title: Aspect
 kind: term
 area: World
+status: Tenet
 summary: One way a thing can vary, such as a door's lock or a fire's height, driven by its mood.
 aliases:
   - Aspects

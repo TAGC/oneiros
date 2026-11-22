@@ -2,6 +2,7 @@
 title: Meeting ground
 kind: term
 area: World
+status: Notion
 summary: The small space where two inner worlds meet, holding your Temenos and another's side by side.
 aliases:
   - Metaxy

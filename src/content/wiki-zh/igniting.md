@@ -2,6 +2,7 @@
 title: 点燃
 kind: term
 area: Memory
+status: Tenet
 summary: 开始燃烧一段记忆；陈设必须在同一个动作中被拆解。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: Capacity
 kind: term
 area: Character
+status: Tenet
 summary: The most something can hold, always qualified as mood capacity, belief capacity or vessel capacity.
 navbox: character
 ---

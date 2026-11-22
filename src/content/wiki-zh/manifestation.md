@@ -2,6 +2,7 @@
 title: 显现
 kind: term
 area: World
+status: Tenet
 summary: 内蕴于意志内在世界中的任何东西，在梦境之地中得到表达，在那里它是外显的。
 navbox: world
 ---

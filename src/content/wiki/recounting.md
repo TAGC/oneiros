@@ -2,6 +2,7 @@
 title: Recounting
 kind: term
 area: Memory
+status: Tenet
 summary: Pouring a Loose memory from your mind into an empty bead, anywhere in the Dreamlands.
 aliases:
   - recount

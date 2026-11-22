@@ -2,6 +2,7 @@
 title: Backstory
 kind: term
 area: Character
+status: Notion
 summary: Your generated starting memories, precious and finite, chosen as the third step of character creation.
 aliases:
   - backstories

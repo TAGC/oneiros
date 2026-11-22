@@ -2,6 +2,7 @@
 title: 制作
 kind: system
 area: Items
+status: Notion
 summary: 求广不求高，建立在一套共用的效果语法和一份让生成内容保持平衡的效力预算之上。
 infobox:
   rows:

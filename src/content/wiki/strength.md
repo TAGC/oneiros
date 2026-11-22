@@ -2,6 +2,7 @@
 title: Strength
 kind: term
 area: Memory
+status: Tenet
 summary: The overall power of a memory or belief, how much material it has and how rooted it is.
 infobox:
   rows:

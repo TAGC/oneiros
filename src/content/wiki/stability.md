@@ -2,6 +2,7 @@
 title: Stability
 kind: term
 area: Body
+status: Tenet
 summary: How much an entity's form shifts with its feelings, from very low for beasts and Nightmares to high for old beings.
 infobox:
   rows:

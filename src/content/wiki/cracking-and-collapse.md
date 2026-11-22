@@ -2,6 +2,7 @@
 title: Cracking and collapse
 kind: term
 area: Temenos
+status: Tenet
 summary: What happens to a room when its memory's Hold or belief's Conviction falls below its tier's line.
 aliases:
   - collapse

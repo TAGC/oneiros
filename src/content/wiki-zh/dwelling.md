@@ -2,6 +2,7 @@
 title: 沉思
 kind: term
 area: Beliefs
+status: Tenet
 summary: 在心中反复思量一条信念，让它像海绵一样从你的心境中吸纳情感。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 遗忘
 kind: term
 area: Memory
+status: Tenet
 summary: 黑暗，一种对记忆持续不断的侵蚀，在鲜梦期间加剧。
 infobox:
   rows:

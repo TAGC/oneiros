@@ -2,6 +2,7 @@
 title: 内容生成
 kind: system
 area: World
+status: Tenet
 summary: 在做梦者梦出世界及其历史之后，大语言模型如何填补世界的空白，并始终遵守引擎的规则。
 infobox:
   rows:

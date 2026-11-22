@@ -2,6 +2,7 @@
 title: Waking summary
 kind: term
 area: Rest
+status: Notion
 summary: The report at the end of a rest, on what was restored, remembered, still needs time and happened while you slept.
 infobox:
   rows:

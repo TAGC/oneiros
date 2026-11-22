@@ -2,6 +2,7 @@
 title: 推断
 kind: term
 area: Library
+status: Notion
 summary: 在藏书室中把信念并排放置而得出的发现；它会成为一条新的信念。
 infobox:
   rows:

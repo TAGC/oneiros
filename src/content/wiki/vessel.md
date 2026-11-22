@@ -2,6 +2,7 @@
 title: Vessel
 kind: term
 area: Items
+status: Notion
 summary: Any container for a liquid, such as a potion or apeiron.
 aliases:
   - Vessels

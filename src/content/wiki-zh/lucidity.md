@@ -2,6 +2,7 @@
 title: 清明
 kind: term
 area: Lucidity
+status: Tenet
 summary: 相反者湮灭所化成的东西；它对抗梦本身，溶解一切维系薄弱之物。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 角色创建
 kind: system
 area: Character
+status: Notion
 summary: 如何创建你的清醒者：先选择出身，再选择气质，最后选择身世。
 infobox:
   rows:

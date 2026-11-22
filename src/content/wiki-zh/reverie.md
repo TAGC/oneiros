@@ -2,6 +2,7 @@
 title: 遐梦
 kind: term
 area: Dreams
+status: Notion
 summary: 由献给做梦者的一则梦境日记条目造就的地方，围绕作为其不可改变之内核的条目生长。
 infobox:
   rows:

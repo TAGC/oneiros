@@ -2,6 +2,7 @@
 title: 消解
 kind: term
 area: Magic
+status: Notion
 summary: 暂定的消解型魔法来源，溶去形态，以你自己的凝聚度支付。
 infobox:
   rows:

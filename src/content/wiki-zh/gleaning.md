@@ -2,6 +2,7 @@
 title: 采忆
 kind: term
 area: Memory
+status: Notion
 summary: 从一个地方取出一段记忆，与种下相反。
 infobox:
   rows:

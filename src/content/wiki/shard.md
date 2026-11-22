@@ -2,6 +2,7 @@
 title: Shard
 kind: term
 area: World
+status: Tenet
 summary: Any fragment of the Dreamer's original will; used alone, one of the world's large, stable regions.
 aliases:
   - Shards

@@ -2,6 +2,7 @@
 title: 枯珠
 kind: term
 area: Memory
+status: Tenet
 summary: 一颗空的珠子：其记忆已被重温、在转移中失去，或从未装入。
 infobox:
   rows:

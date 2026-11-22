@@ -2,6 +2,7 @@
 title: 梦境日记
 kind: system
 area: Dreams
+status: Notion
 summary: 你记录真实梦境的地方，你可以把这些梦献给做梦者，让它们成为世界中的遐梦。
 infobox:
   rows:

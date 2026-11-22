@@ -2,6 +2,7 @@
 title: 分量
 kind: term
 area: Beliefs
+status: Tenet
 summary: 一条信念效果的大小，等于其依据的材料加上它自身的材料，从不储存。
 infobox:
   rows:

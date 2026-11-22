@@ -2,6 +2,7 @@
 title: 伤疤
 kind: term
 area: Temenos
+status: Tenet
 summary: 陈设或以上层级的扎根之物被摧毁或被拙劣地连根拔起时，在宅邸中留下的创伤。
 aliases:
   - 减益

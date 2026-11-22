@@ -2,6 +2,7 @@
 title: Memory tiers
 kind: term
 area: Memory
+status: Tenet
 summary: The names a memory takes on each tier of the rootedness ladder, from Impression to Touchstone.
 aliases:
   - Impression

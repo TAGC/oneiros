@@ -2,6 +2,7 @@
 title: 动机
 kind: term
 area: Magic
+status: Tenet
 summary: 一个意志凭借它所知道的东西而产生的心境形状的变化。
 infobox:
   rows:

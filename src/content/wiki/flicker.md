@@ -2,6 +2,7 @@
 title: Flicker
 kind: term
 area: Body
+status: Notion
 summary: A brief change of form under a strong mood while a memory sits at Room, which is not a mutation.
 aliases:
   - Flickers

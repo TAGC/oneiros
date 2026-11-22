@@ -2,6 +2,7 @@
 title: 变异
 kind: term
 area: Character
+status: Tenet
 summary: 对你形态的持久改变，只有记忆会造成。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 锚定地点
 kind: term
 area: World
+status: Tenet
 summary: 你可以从圣域经由走廊中它的那扇门快速旅行前往的地方。
 infobox:
   rows:

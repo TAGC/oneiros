@@ -2,6 +2,7 @@
 title: 内心之声
 kind: term
 area: Character
+status: Tenet
 summary: 你的情感在事件日志中说话，每一个都想要滋养它的品质所想要的东西。
 infobox:
   rows:

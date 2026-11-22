@@ -2,6 +2,7 @@
 title: 连根拔起
 kind: term
 area: Temenos
+status: Tenet
 summary: 拔除一段已扎根的记忆或一条信念，是对心灵的外科手术。
 infobox:
   rows:

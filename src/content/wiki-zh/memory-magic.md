@@ -2,6 +2,7 @@
 title: 记忆魔法
 kind: term
 area: Magic
+status: Tenet
 summary: 进行创造的魔法来源：以你心境中的情感喂养一颗珠子，召唤出你所记得的东西。
 infobox:
   rows:

@@ -2,6 +2,7 @@
 title: 观察
 kind: term
 area: Magic
+status: Tenet
 summary: 查看一个场景、一段记忆或一处设施，看它感受到什么、如何表现。
 infobox:
   rows:

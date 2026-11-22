@@ -2,6 +2,7 @@
 title: Insight
 kind: term
 area: Library
+status: Notion
 summary: A realisation you sometimes wake with after rest.
 aliases:
   - Insights

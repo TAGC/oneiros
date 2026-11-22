@@ -2,6 +2,7 @@
 title: 临睡
 kind: term
 area: Rest
+status: Tenet
 summary: 长休中第一个可探索的阶段，你在入睡时探索你的圣域。
 infobox:
   rows:

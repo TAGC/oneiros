@@ -2,6 +2,7 @@
 title: Going under
 kind: term
 area: Character
+status: Notion
 summary: An unlockable alternative to becoming an Echo, dropping into a deeper layer of the dream for a second chance.
 aliases:
   - go under

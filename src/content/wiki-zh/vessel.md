@@ -2,6 +2,7 @@
 title: 容器
 kind: term
 area: Items
+status: Notion
 summary: 任何盛装液体的器具，比如装药剂或无定。
 aliases:
   - 绑定的容器

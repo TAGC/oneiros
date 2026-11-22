@@ -2,6 +2,7 @@
 title: Lucidity
 kind: term
 area: Lucidity
+status: Tenet
 summary: What opposites annihilate into; it counters the dream, dissolving whatever is weakly held.
 infobox:
   rows:

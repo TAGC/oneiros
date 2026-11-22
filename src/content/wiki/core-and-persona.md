@@ -2,6 +2,7 @@
 title: Core and persona
 kind: term
 area: Body
+status: Tenet
 summary: The two equipment layers, core, which affects you, and persona, which is how others see you.
 aliases:
   - core layer

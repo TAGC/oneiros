@@ -2,6 +2,7 @@
 title: 深眠
 kind: term
 area: World
+status: Tenet
 summary: 睡眠周期的中间阶段，沉寂而沉重，深层在此时逼近。
 infobox:
   rows:

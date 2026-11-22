@@ -2,6 +2,7 @@
 title: Mutation
 kind: term
 area: Character
+status: Tenet
 summary: A lasting change to your form, which only memories make.
 aliases:
   - Mutations

@@ -2,6 +2,7 @@
 title: 沉没
 kind: term
 area: Character
+status: Notion
 summary: 成为回响之外的一种可解锁的替代方案：坠入梦的更深一层，获得第二次机会。
 infobox:
   rows:

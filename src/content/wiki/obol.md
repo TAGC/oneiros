@@ -2,6 +2,7 @@
 title: Obol
 kind: term
 area: Economy
+status: Tenet
 summary: A small bead holding a city's Calm founding memory, used for everyday trade.
 aliases:
   - Obols

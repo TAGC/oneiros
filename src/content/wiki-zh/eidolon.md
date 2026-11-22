@@ -2,6 +2,7 @@
 title: 异影
 kind: term
 area: Body
+status: Notion
 summary: 一段记忆潜在变异的短暂形态，在你因它处于燃烧中状态时展示出来。
 infobox:
   rows:

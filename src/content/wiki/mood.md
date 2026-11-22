@@ -2,6 +2,7 @@
 title: Mood
 kind: term
 area: Magic
+status: Tenet
 summary: The current feeling of any will, pictured as a pinched circle whose area is its total force.
 aliases:
   - moods

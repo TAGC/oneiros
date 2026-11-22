@@ -2,6 +2,7 @@
 title: 梦暴
 kind: term
 area: World
+status: Notion
 summary: 鲜梦中一种罕见而猛烈的事件，会重塑整片地方。
 navbox: world
 ---

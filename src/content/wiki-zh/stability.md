@@ -2,6 +2,7 @@
 title: 稳定度
 kind: term
 area: Body
+status: Tenet
 summary: 一个存在的形态随其情感变化的程度，从野兽和梦魇的极低，到古老存在的高。
 infobox:
   rows:

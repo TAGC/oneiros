@@ -2,6 +2,7 @@
 title: 内在世界
 kind: term
 area: World
+status: Tenet
 summary: 一个意志的私有世界，它所持有的东西居于其中；与共享的梦境之地相对。
 aliases:
   - 私人世界

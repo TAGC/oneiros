@@ -2,6 +2,7 @@
 title: 惊奇
 kind: term
 area: Lucidity
+status: Notion
 summary: 在奇景附近保持平静，由此进入静止，有时还会留下一段惊奇记忆。
 aliases:
   - 惊奇记忆

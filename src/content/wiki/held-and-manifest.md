@@ -2,6 +2,7 @@
 title: Held and manifest
 kind: term
 area: Magic
+status: Tenet
 summary: Where feeling is, inside a will where opposites coexist, or out in the world where they annihilate.
 aliases:
   - Held

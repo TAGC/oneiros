@@ -2,6 +2,7 @@
 title: Library
 kind: term
 area: Temenos
+status: Notion
 summary: The annular gallery on the Temenos centre's upper floor, holding colourless beliefs and memories and your threads.
 infobox:
   rows:

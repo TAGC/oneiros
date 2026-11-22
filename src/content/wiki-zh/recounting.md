@@ -2,6 +2,7 @@
 title: 倾诉
 kind: term
 area: Memory
+status: Tenet
 summary: 在梦境之地的任何地方，把一段松散的记忆从你心中倒进一颗空珠子。
 infobox:
   rows:

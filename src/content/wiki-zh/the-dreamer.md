@@ -2,6 +2,7 @@
 title: 做梦者
 kind: term
 area: World
+status: Tenet
 summary: 一个浩瀚、宇宙般、不可知的存在，梦境之地就是它的梦；它是唯一的神祇形象。
 infobox:
   rows:

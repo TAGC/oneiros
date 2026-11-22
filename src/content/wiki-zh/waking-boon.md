@@ -2,6 +2,7 @@
 title: 醒来恩赐
 kind: term
 area: Rest
+status: Notion
 summary: 每次休息时，由一个被打理的房间给予的好处。
 infobox:
   rows:

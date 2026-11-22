@@ -2,6 +2,7 @@
 title: Calm
 kind: term
 area: Emotion
+status: Notion
 summary: The will circling at rest; in a mood, the part of the circle not pinched towards any emotion.
 infobox:
   rows:

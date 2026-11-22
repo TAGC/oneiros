@@ -2,6 +2,7 @@
 title: Burning
 kind: term
 area: Memory
+status: Tenet
 summary: Burning a memory pours its material straight into your mood, at the cost of the mood capacity it gave, and leaves you Ablaze.
 aliases:
   - burn
