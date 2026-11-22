@@ -20,11 +20,12 @@ bun run test           # unit tests (bun test)
 bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
 bun run constellations # the constellations from .questions/; `apply <plan> --live` charts them
 bun run links <plan>   # the links a plan adds or removes between questions; `--live` makes them
-bun run duplicate K D  # make question D a duplicate of K; `--live` acts
+bun run duplicate:mark K D   # swap duplicate D's marker for a link to K; `--live` edits
+bun run duplicate:close K D  # after the merge: close D as a duplicate of K; `--live` acts
 bun run verify         # build, test, lint, format:check and check
 ```
 
-Every `--live` run ends by running the pull itself, so `.questions/` matches GitHub.
+Every `--live` run that changes GitHub ends by running the pull itself, so `.questions/` matches GitHub.
 
 In dev, a page's link colours are worked out when that page renders. If links look stale after adding a page, restart the dev server.
 

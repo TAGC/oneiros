@@ -42,7 +42,7 @@ Change the chart only for these reasons:
 - **Too big for one session.** Split a group of more than eight questions along its natural seam.
 - **Two small groups that are one topic.** Merge them, keeping the older milestone's number.
 - **All its questions closed.** It is finished: the wiki and the Astrolabe stop showing it as open at once, and `bun run constellations` lists it under "Ready to close". The helper closes its milestone; drop it from the plan or leave it, either way.
-- **A duplicate closed.** It leaves its constellation: `bun run duplicate` removes its milestone (`docs/duplicates.md`). Reword the reasoning if it named the duplicate.
+- **A duplicate closed.** It leaves its constellation: `bun run duplicate:close` removes its milestone (`docs/duplicates.md`). Reword the reasoning if it named the duplicate.
 
 A group is **cohesive** when settling one question shapes the others: one rule, one mechanic, one owner page or a chain of blocked-by links. A blocker and the questions it blocks belong together. Duplicates of one conflict across pages belong together. Areas do not bound a group; shared rules do.
 
