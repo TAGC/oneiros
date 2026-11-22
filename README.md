@@ -26,7 +26,7 @@ In dev, a page's link colours are worked out when that page renders. If links lo
 - `src/i18n/ui.ts`: interface strings in English and Chinese.
 - `src/data/sheet/`: the reference sheet's tabs as JSON. Do not edit by hand.
 - `src/data/navboxes.json`: navboxes.
-- `src/data/icons.json`: 24×24 pixel icons for the Memory, Beliefs, Temenos and Magic areas.
+- `src/data/icons.json`: 24×24 pixel icons, one per area.
 - `src/components/figures/`: SVG figures for infoboxes.
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
 
@@ -60,6 +60,7 @@ navbox: character # optional; an id in src/data/navboxes.json
 
 - `summary` feeds hover previews, the Glossary index, category pages and search. Keep it to one plain sentence.
 - `area` is also a category. The infobox's Area row is added automatically.
+- `icon: Lore` (optional) shows that key of `src/data/icons.json` beside the title instead of the area's icon.
 - Quote YAML values that start with `[[` or contain `: `.
 
 ### Wiki links
