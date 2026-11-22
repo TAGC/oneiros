@@ -213,6 +213,16 @@ Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form. They still render,
 
 `bun run pull` fetches every issue labelled `kind:open` or `kind:conflict`, open and closed, with their blocked-by links and answer comments. It wipes `.questions/` and writes one Markdown file per issue: the structured facts in frontmatter, the text below. The cache is gitignored. The deploy pulls before every build, and editing, labelling, linking or closing an issue redeploys the site. Locally, pull again after changing issues.
 
+#### Resolving questions
+
+- One pull request per resolved group of questions. It replaces each marker with the rule as plain prose in both languages, and its body says `Closes #N` once for each decided issue, so merging closes the issues and lands the pages together.
+- Post each answer comment while the pull request is open. If the pull request is dropped, the issue stays open with only a draft answer.
+- Every decision the designer asks to record gets an issue, even with no question behind it: open it, answer it and close it in the same pull request.
+- A ruled-out question gets its answer comment, and the pull request removes its marker. Close the issue as not planned (`gh issue close N --reason "not planned"`) once the pull request is merged: a marker naming a closed issue fails the checks.
+- Commit bodies say which issues they close; the answer comments hold the provenance.
+
+The `resolve-open-questions` skill walks through a session.
+
 ### Contents box and backlinks
 
 A page with three or more `##` headings gets a collapsible contents box before the first one. "What links here", the navbox and the categories footer are added automatically.
