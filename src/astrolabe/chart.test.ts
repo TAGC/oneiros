@@ -64,6 +64,18 @@ describe('star status', () => {
   });
 });
 
+describe('duplicates', () => {
+  test('leave the chart, with their threads', () => {
+    const c = chart([
+      question(1),
+      question(2, { status: 'duplicate', closeReason: 'duplicate', duplicateOf: 1 }),
+      question(3, { blockedBy: [2] }),
+    ]);
+    expect(c.stars.map((s) => s.number)).toEqual([1, 3]);
+    expect(c.threads).toEqual([]);
+  });
+});
+
 describe('star roles', () => {
   test('marks central, peripheral and independent questions; independent wins over peripheral', () => {
     const c = chart([

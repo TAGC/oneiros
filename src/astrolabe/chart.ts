@@ -4,7 +4,7 @@
  */
 import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
 import { AREAS } from '../lib/areas';
-import type { Area, Question, QuestionGraph } from '../lib/questions';
+import { type Area, isDuplicate, type Question, type QuestionGraph } from '../lib/questions';
 import type { Constellations, Energy, Size } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
@@ -97,8 +97,8 @@ function inLocale(texts: Partial<Record<Locale, string>>, locale: Locale) {
 }
 
 function starStatus(q: Question, frontier: Set<number>): StarStatus {
-  if (q.status !== 'open') return q.status;
-  return frontier.has(q.number) ? 'frontier' : 'blocked';
+  if (q.status === 'open') return frontier.has(q.number) ? 'frontier' : 'blocked';
+  return q.status === 'duplicate' ? 'decided' : q.status;
 }
 
 function starRoles(n: number, graph: QuestionGraph): StarRole[] {
@@ -115,7 +115,9 @@ export function chartQuestions(
   locale: Locale,
   constellations?: Constellations,
 ): StarChart {
-  const sorted = [...questions].sort((a, b) => a.number - b.number);
+  // The one place that decides which questions the map shows: duplicates stand in for
+  // their canonical issue and stay off it.
+  const sorted = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
   const inChart = new Set(sorted.map((q) => q.number));
   const frontier = new Set(graph.frontier);
   const byNumber = new Map(sorted.map((q) => [q.number, q]));

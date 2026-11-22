@@ -6,7 +6,7 @@
 import './astrolabe.css';
 import { type Locale, useTranslations } from '../i18n/ui';
 import Wiki from '../layouts/Wiki.astro';
-import { getQuestions, type Question, questionGraph } from '../lib/questions';
+import { getQuestions, questionGraph } from '../lib/questions';
 import { getConstellations } from '../lib/questions/constellations';
 import { chartQuestions } from './chart';
 import ConstellationFilter from './ConstellationFilter.astro';
@@ -27,10 +27,8 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const a = t.astrolabe;
 
-/** The one place that decides which questions appear on the map. */
-const shown = (q: Question) => (q.status as string) !== 'duplicate';
 const all = getQuestions();
-const questions = all.all().filter(shown);
+const questions = all.all();
 const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
 const sky = chart.stars.length ? layoutSky(chart) : undefined;
 const tiers = chart.stars.length ? layoutTiers(chart) : undefined;

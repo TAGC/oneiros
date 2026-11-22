@@ -83,7 +83,7 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css` | Styles, on the wiki's tokens, for light and dark. |
 
-The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, the `shown` filter in `Astrolabe.astro`; duplicates are hidden there. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
+The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
 The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`); the page itself is checked by eye in the dev server.
 
