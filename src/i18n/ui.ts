@@ -152,12 +152,16 @@ Five pillars hold it together:
     ', but it is about the wiki, not the game. It is not a game concept and has no Glossary term.',
   ] as readonly [string, string],
   statusBeliefStages: 'belief stages',
-  /** The text before and after the link to Parked topics. */
-  statusOpen: [
-    'What each stage means, and when a page moves up, is still open: see ',
-    '.',
-  ] as readonly [string, string],
-  statusParked: 'Parked topics',
+  /** What each stage means for a page, keyed by the English stage name. */
+  statusMeanings: {
+    Hearsay: 'mentioned only, nothing agreed.',
+    Notion: 'sketched, but the core is still open or in conflict.',
+    Tenet: 'core agreed, details still open.',
+    Creed: 'agreed and audited, nothing open.',
+    Dogma: 'locked by the designer; it will not change.',
+  } as Record<string, string>,
+  statusRule:
+    'A page goes above Tenet only when the designer says so. Very little is set in stone yet.',
 
   /* Random page */
   randomFinding: 'Finding a page…',
@@ -318,8 +322,14 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     '的名称，但它说的是维基，而不是游戏。它不是游戏概念，也没有术语表词条。',
   ],
   statusBeliefStages: '信念阶段',
-  statusOpen: ['每个阶段的含义，以及页面何时升到下一阶段，仍未确定：见', '。'],
-  statusParked: '待议话题',
+  statusMeanings: {
+    Hearsay: '只是提及，尚无任何约定。',
+    Notion: '已有雏形，但核心仍未确定或存在冲突。',
+    Tenet: '核心已约定，细节仍未确定。',
+    Creed: '已约定并经过审核，没有未决问题。',
+    Dogma: '由设计者锁定，不会再变。',
+  },
+  statusRule: '只有设计者明确同意，页面才会高于信条。目前定下来的东西还很少。',
 
   randomFinding: '正在寻找页面…',
   randomNoScript: (link) => `随机页面需要 JavaScript。请试试${link}。`,

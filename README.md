@@ -90,7 +90,7 @@ navbox: character # optional; an id in src/data/navboxes.json
 - `summary` feeds hover previews, the Glossary index, category pages and search. Keep it to one plain sentence.
 - `area` is also a category. The infobox's Area row is added automatically.
 - `icon: Lore` (optional) shows that key of `src/data/icons.json` beside the title instead of the area's icon.
-- `status: Tenet` (optional) shows how settled the page's design idea is: one of Hearsay, Notion, Tenet, Creed or Dogma, from least to most settled. It reuses the belief stage names but is about the wiki, not the game. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. What each stage means is not defined yet (an open question on that page), so only the designer assigns a status.
+- `status: Tenet` (optional) shows how settled the page's design idea is: one of Hearsay, Notion, Tenet, Creed or Dogma, from least to most settled. It reuses the belief stage names but is about the wiki, not the game. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. That page defines each stage. Claude may propose Hearsay, Notion or Tenet; a page goes above Tenet only when the designer says so.
 - Quote YAML values that start with `[[` or contain `: `.
 
 ### Wiki links
