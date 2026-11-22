@@ -8,6 +8,7 @@ import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
 import { type Locale, useTranslations } from '../i18n/ui';
 import { slugify, WIKI_DIRS } from './site';
+import type { Status } from './status';
 
 /** A page as read straight from disk, independent of Astro's content layer. */
 export interface WikiSource {
@@ -59,6 +60,11 @@ export function categoryLabel(name: string, locale: Locale): string {
   if (name === CALLOUTS.open.category) return t.categoryOpen;
   if (name === CALLOUTS.conflict.category) return t.categoryConflict;
   return t.areaNames[name] ?? name;
+}
+
+/** A page status's display name; frontmatter keeps the English name. */
+export function statusLabel(status: Status, locale: Locale): string {
+  return useTranslations(locale).statusNames[status] ?? status;
 }
 
 export const WIKI_LINK = /\[\[([^[\]\n]+?)\]\]/g;
