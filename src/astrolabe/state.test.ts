@@ -8,6 +8,7 @@ describe('the state on arriving', () => {
   test('is the page as built when nothing is saved and there is no address', () => {
     expect(startState(null, '', page)).toEqual({
       view: 'sky',
+      chosenView: 'sky',
       clustering: 'areas',
       showSettled: false,
       filter: { size: 'any', energy: 'any' },
@@ -175,8 +176,10 @@ describe('changing the state', () => {
 });
 
 describe('what is kept', () => {
+  const at = (changes: Partial<AstrolabeState>): AstrolabeState => ({ ...BUILT, ...changes });
   const state: AstrolabeState = {
     view: 'tiers',
+    chosenView: 'tiers',
     clustering: 'constellations',
     showSettled: true,
     filter: { size: 'small', energy: 'low' },
@@ -188,9 +191,35 @@ describe('what is kept', () => {
     expect(startState(savedEntry(state), '', page)).toEqual({
       ...BUILT,
       view: 'tiers',
+      chosenView: 'tiers',
       clustering: 'constellations',
       showSettled: true,
     });
+  });
+
+  test('a view an address made on load is not saved', () => {
+    const saved = '{"view":"tiers","clustering":"areas","showSettled":false}';
+    for (const hash of ['#constellation-panel-3', '#dial', '#star-12']) {
+      const arrived = startState(saved, hash, page);
+      const toggled = act(arrived, { type: 'settled', all: true });
+      expect(JSON.parse(savedEntry(toggled))).toEqual({
+        view: 'tiers',
+        clustering: 'areas',
+        showSettled: true,
+      });
+    }
+  });
+
+  test('a view chosen on the page is saved, even after an address on load', () => {
+    const arrived = startState(null, '#constellation-panel-3', page);
+    expect(JSON.parse(savedEntry(act(arrived, { type: 'view', view: 'tiers' })))).toMatchObject({
+      view: 'tiers',
+    });
+    const closed = act(at({ view: 'tiers', panel: { kind: 'star', n: 5 } }), {
+      type: 'open',
+      panel: { kind: 'constellation', n: 2 },
+    });
+    expect(JSON.parse(savedEntry(closed))).toMatchObject({ view: 'brass' });
   });
 
   test('the saved entry leaves out the filter, the panel and full screen', () => {

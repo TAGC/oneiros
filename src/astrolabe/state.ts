@@ -23,6 +23,8 @@ export interface OpenPanel {
 
 export interface AstrolabeState {
   view: View;
+  /** The view to save: the one last chosen on the page, or the saved one; an address on load never sets it. */
+  chosenView: View;
   clustering: Clustering;
   showSettled: boolean;
   filter: FilterChoice;
@@ -40,6 +42,7 @@ export interface PageOffers {
 /** The page as built, which is also the page without JavaScript. */
 export const BUILT: AstrolabeState = {
   view: 'sky',
+  chosenView: 'sky',
   clustering: 'areas',
   showSettled: false,
   filter: { size: 'any', energy: 'any' },
@@ -51,7 +54,9 @@ export const BUILT: AstrolabeState = {
 export function startState(saved: string | null, hash: string, offers: PageOffers): AstrolabeState {
   const state: AstrolabeState = { ...BUILT };
   const remembered = readSaved(saved);
-  if (offers.views.includes(remembered.view as View)) state.view = remembered.view as View;
+  if (offers.views.includes(remembered.view as View)) {
+    state.view = state.chosenView = remembered.view as View;
+  }
   if (offers.canCluster && remembered.clustering === 'constellations') {
     state.clustering = 'constellations';
   }
@@ -81,6 +86,7 @@ export type Action =
 /** The state after an action; the same object when nothing changes. */
 export function act(state: AstrolabeState, action: Action): AstrolabeState {
   const next = change(state, action);
+  if (next.view !== state.view) next.chosenView = next.view;
   return same(state, next) ? state : next;
 }
 
@@ -117,6 +123,7 @@ function samePanel(a: OpenPanel | null, b: OpenPanel | null): boolean {
 function same(a: AstrolabeState, b: AstrolabeState): boolean {
   return (
     a.view === b.view &&
+    a.chosenView === b.chosenView &&
     a.clustering === b.clustering &&
     a.showSettled === b.showSettled &&
     a.filter.size === b.filter.size &&
@@ -146,9 +153,9 @@ export function addressOf(state: AstrolabeState): string {
 /** The key of the one saved entry. */
 export const SAVED_KEY = 'astrolabe';
 
-/** The saved entry: the remembered choices only. The filter resets on every visit. */
+/** The saved entry: the choices made on the page only. The filter resets on every visit. */
 export function savedEntry(state: AstrolabeState): string {
-  const { view, clustering, showSettled } = state;
+  const { chosenView: view, clustering, showSettled } = state;
   return JSON.stringify({ view, clustering, showSettled });
 }
 
