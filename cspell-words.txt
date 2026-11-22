@@ -1,0 +1,76 @@
+# Project dictionary for cspell (see cspell.config.yaml). One word per line.
+# Add only genuine domain words: Glossary terms, Greek names, proper nouns.
+
+# Glossary terms and aliases
+attunements
+dreamstorm
+dreamstorms
+frontmatter
+malus
+maluses
+navbox
+navboxes
+Oneiros
+playthrough
+sidegrades
+Wakeners
+
+# Greek and Latin names
+Anaxarete
+apeiron
+chous
+crotala
+eidola
+eidolon
+euripi
+euripus
+Herakles
+hypnagogia
+hypnopompia
+idios
+koinos
+kosmos
+kotyle
+kyathoi
+kyathos
+Megara
+Megaron
+Metaxy
+Mnemosyne
+obol
+obols
+Oceanus
+pinacotheca
+pithos
+temenos
+titulus
+
+# Rivers of the underworld
+Cocytus
+Lethe
+Phlegethon
+
+# People, works and games
+Blumberg
+Brogue
+Jost
+l'oeil
+Magicka
+Mainländer
+Noita
+Qud
+Ripa
+Schopenhauer
+Spiritfarer
+Stormlight
+Superhot
+Wildermyth
+
+# Descriptive words the British dictionary lacks
+drumskins
+glasswing
+sightlines
+unaimed
+uncarved
+unpinched
+unshuttered

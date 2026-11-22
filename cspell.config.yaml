@@ -1,0 +1,44 @@
+# Spell check for the English wiki (British English). Run with `bun run check`.
+version: '0.2'
+language: en-GB
+files:
+  - README.md
+  - src/content/wiki/**/*.{md,mdx}
+  - src/data/sheet/*.json
+ignorePaths:
+  - src/content/wiki-zh/**
+  - src/data/sheet-zh/**
+  - node_modules/**
+  - dist/**
+dictionaryDefinitions:
+  - name: oneiros
+    path: ./cspell-words.txt
+    addWords: true
+  - name: american
+    path: ./cspell-american.txt
+dictionaries:
+  - oneiros
+  - american
+ignoreRegExpList:
+  - Urls
+  - Email
+  - HexValues
+  - fenced-code
+  - inline-code
+  - html-tag
+  - hex-colour
+  - frontmatter-key
+  - han
+patterns:
+  - name: fenced-code
+    pattern: /^\s*(`{3,}|~{3,})[\s\S]*?^\s*\1/gm
+  - name: inline-code
+    pattern: /`[^`\n]+`/g
+  - name: html-tag
+    pattern: /<\/?[A-Za-z][^>\n]*>/g
+  - name: hex-colour
+    pattern: /#[0-9A-Fa-f]{3,8}\b/g
+  - name: frontmatter-key
+    pattern: /^\s*(?:-\s+)?[a-z]+(?=:(?:\s|$))/gm
+  - name: han
+    pattern: /[\p{Script=Han}　-〿＀-￯]+/gu
