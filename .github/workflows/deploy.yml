@@ -3,10 +3,18 @@ name: Deploy
 on:
   push:
     branches: [main]
+  # Question text lives in GitHub issues, so edits made only on GitHub redeploy.
+  # GitHub Actions has no trigger for issue dependency (blocked-by) changes: the
+  # `issues` event has no activity type for them and `issue_dependencies` is not
+  # a workflow event. Link changes show on the next deploy; run this workflow by
+  # hand (workflow_dispatch) to publish them sooner.
+  issues:
+    types: [opened, edited, labeled, unlabeled, closed, reopened]
   workflow_dispatch:
 
 permissions:
   contents: read
+  issues: read
   pages: write
   id-token: write
 
@@ -32,6 +40,12 @@ jobs:
 
       - name: Install dependencies
         run: bun install --frozen-lockfile
+
+      - name: Pull questions
+        run: bun run pull
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ github.token }}
 
       - name: Build
         run: bun run build
