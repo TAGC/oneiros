@@ -29,4 +29,4 @@ A belief's **grounds** are what it rests on: the [[Memory|memories]] it rests on
 
 Losing a ground (selling, [[planting]], [[burning]] or forgetting a memory) lightens every belief that rests on it, and the game warns you first. While a memory is out of you in a [[bead]], beliefs resting on it lighten too.
 
-Memories are grounds for beliefs, while [[Conviction]] feeds Hold; what damps that loop is open (see [[Conviction#Conviction and Hold]]).
+Grounds set a belief's weight, not its [[Conviction]]. Whether Conviction can raise a memory's Hold is open (see [[Conviction#Conviction and Hold]]).

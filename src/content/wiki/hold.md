@@ -32,14 +32,11 @@ navbox: memory
 
 ## Raising Hold
 
-Long rests raise Hold, weighted towards recent memories, so memories fade ever more slowly as they age (Jost's law). In the [[Deep]] phase of a long rest recent memories consolidate, their Hold rising. Memories also climb by being relived at high-stakes moments, by [[going under]], in [[Dreamstorm|dreamstorms]] and through saturation. Memories rise smoothly and fall hard.
+Long rests raise Hold, weighted towards recent memories, so memories fade ever more slowly as they age (see [[Memory light#Fading|fading]]). In the [[Deep]] phase of a long rest recent memories consolidate, their Hold rising. Memories also climb by being relived at high-stakes moments, by [[going under]], in [[Dreamstorm|dreamstorms]] and through saturation. Recurrence does not raise Hold: how a memory would recur was never defined. Memories rise smoothly and fall hard.
 
 The vision also says repeated experiences merge into one faint but well-rooted memory; this is not confirmed (see [[Memory#Merging repeated experiences|merging]]).
 
-Conviction feeds Hold, while memories are [[grounds]] for beliefs; what damps that loop is open (see [[Conviction]]).
-
-> [!CONFLICT]
-> The Glossary says Hold "rises during long rests (weighted towards recent memories), with recurrence and with Conviction". The vision names long rests, being relived at high-stakes moments, going under, dreamstorms and saturation, and does not list recurrence. The vision's list is used until this is settled.
+Whether a belief's [[Conviction]] can raise a memory's Hold is open (see [[Conviction#Conviction and Hold]]).
 
 ## Losing Hold
 

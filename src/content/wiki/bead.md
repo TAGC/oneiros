@@ -36,6 +36,10 @@ While a memory is in a bead, you know about it but don't feel it: its [[mood cap
 
 Only beads light the Dreamlands; held memories light only your Temenos. A bead sheds its memory's [[memory light]] in its emotions' colour. Covering a bead hides its light but does not slow its fading. In a bead, a memory fades at a rate set by the glass quality, and the glass also changes how fast a memory flows in or out.
 
+## Condition
+
+A bead has no [[Hold]]: a memory recounted into one loses its Hold, and comes back Loose when relived. A bead's condition is the vividness its memory has left and the quality of its glass. Use leaves no mark (see [[resonance]]).
+
 ## Cracking
 
 In a bead, a memory cracks from low vividness and poor glass, over time and from blows. Conjuring with too much power can also crack a bead. Where opposing light meets in the Dreamlands it sparks into [[lucidity]], so a faint, Loose bead may crack. A cracked memory spills out as [[ambient emotion]] where it broke. See [[Memory light#Cracking|cracking]].

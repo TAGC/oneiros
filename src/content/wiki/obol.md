@@ -39,7 +39,7 @@ Obols are not inherently durable: they last by clustering, their light slowing e
 
 ## Value
 
-Anyone can absorb an obol to shore up their own Coherence, which is why everyone accepts them. A city that runs its rites carelessly loses its citizens' Conviction, and its obols wear faster.
+Anyone can absorb an obol to shore up their own Coherence, which is why everyone accepts them. The city's Conviction stands behind an obol only as trust in its worth. Like every bead, an obol is a snapshot with no [[Hold]]: once minted, only its glass and nearby light set how fast it fades. A city that loses its faith mints fewer new obols, but the ones already made are unaffected.
 
 How obols sit beside beads and other goods is on [[Economy]].
 
@@ -49,4 +49,4 @@ How obols sit beside beads and other goods is on [[Economy]].
 > The designer has not confirmed that absorbing an obol shores up your Coherence.
 
 > [!OPEN]
-> The designer has not confirmed that careless rites make obols wear faster. Since obols now last by clustering rather than through Conviction, "wear faster" has no mechanism.
+> One past chat proposed that a city's Conviction feeds its obols' [[renown]] rather than their Hold. This was never settled.

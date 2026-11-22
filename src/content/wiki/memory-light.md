@@ -34,6 +34,9 @@ Brightness is the rate of that loss: a fresh, Loose memory blazes and dims fast,
 
 Inside you, a memory loses a fixed fraction of its light at any moment, smaller the higher its [[Hold]]. [[Rest|Long rests]] raise Hold, weighted towards recent memories, so memories fade ever more slowly as they age (Jost's law). In a bead, a memory fades at a rate set by the glass quality.
 
+> [!OPEN]
+> The designer agreed to model fading on real memory, so that it follows Jost's law, but never chose a curve. The two rules above (a fixed fraction lost at any moment, smaller with Hold, with long rests raising Hold; a steady rate in a bead set by the glass) were Claude's derivation and are not confirmed.
+
 ## Shelter
 
 Memory light slows the fading of any memory it falls on, by brightness, with diminishing returns and a hard floor, so a cluster lasts longer but never forever. Obols are not inherently durable: they last by clustering.
