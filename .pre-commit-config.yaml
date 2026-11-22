@@ -28,7 +28,7 @@ repos:
         name: cspell (staged)
         entry: bunx cspell --no-progress --no-must-find-files
         language: system
-        files: ^(README\.md|src/content/wiki/.*\.mdx?|src/data/sheet/[^/]*\.json)$
+        files: ^(README\.md|docs/.*\.md|src/content/wiki/.*\.mdx?|src/data/sheet/[^/]*\.json)$
 
       - id: commitlint
         name: commitlint
