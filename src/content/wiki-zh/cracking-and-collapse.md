@@ -51,5 +51,3 @@ navbox: temenos
 ## 待定问题
 
 > [!ISSUE 39]
-
-> [!ISSUE 40]

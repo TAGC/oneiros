@@ -179,7 +179,10 @@ function linkGroups(star: Star) {
           )}
           {page && (
             <p class="al-page">
-              <a href={wikiUrl(page, issueId(star.number), locale)}>{a.onPage}</a>
+              {/* Only open questions keep a marker, so only they have a box to point at. */}
+              <a href={wikiUrl(page, star.question.state === 'open' ? issueId(star.number) : undefined, locale)}>
+                {a.onPage}
+              </a>
             </p>
           )}
         </section>

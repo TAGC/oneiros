@@ -1,13 +1,19 @@
 ---
 /**
- * The Astrolabe page: every question as a star, in two views (night sky and tiers) with a
- * panel per star. Everything is laid out at build time; `client.ts` only adds interaction.
+ * The Astrolabe page: every question as a star, in three views (night sky, tiers and the
+ * constellations dial) with a panel per star and per constellation. Everything is laid out at
+ * build time; `client.ts` and `brass-client.ts` only add interaction.
  */
 import './astrolabe.css';
+import './brass.css';
 import { type Locale, useTranslations } from '../i18n/ui';
 import Wiki from '../layouts/Wiki.astro';
 import { getQuestions, questionGraph } from '../lib/questions';
 import { getConstellations } from '../lib/questions/constellations';
+import { layoutBrass } from './brass';
+import Brass from './Brass.astro';
+import BrassKey from './BrassKey.astro';
+import BrassPanels from './BrassPanels.astro';
 import { chartQuestions } from './chart';
 import ConstellationFilter from './ConstellationFilter.astro';
 import ConstellationList from './ConstellationList.astro';
@@ -32,6 +38,7 @@ const questions = all.all();
 const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
 const sky = chart.stars.length ? layoutSky(chart) : undefined;
 const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
+const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
 ---
 
 <Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">
@@ -54,6 +61,11 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
               <button type="button" data-view="tiers" aria-pressed="false">
                 {a.views.tiers}
               </button>
+              {dial && (
+                <button type="button" data-view="brass" aria-pressed="false">
+                  {a.views.brass}
+                </button>
+              )}
             </div>
             <ConstellationFilter chart={chart} locale={locale} />
             <p class="al-hint" data-for="sky">
@@ -62,6 +74,11 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
             <p class="al-hint" data-for="tiers">
               {a.tiersHint}
             </p>
+            {dial && (
+              <p class="al-hint" data-for="brass">
+                {a.brassHint}
+              </p>
+            )}
           </div>
           <div class="al-frame">
             <SharedDefs />
@@ -94,8 +111,15 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
             <div class="al-view al-view-tiers">
               <Tiers chart={chart} layout={tiers} locale={locale} />
             </div>
+            {dial && (
+              <div class="al-view al-view-brass">
+                <Brass chart={chart} layout={dial} locale={locale} />
+              </div>
+            )}
             <Panels chart={chart} locale={locale} />
+            {dial && <BrassPanels chart={chart} layout={dial} locale={locale} />}
           </div>
+          {dial && <BrassKey locale={locale} />}
           <ConstellationList chart={chart} locale={locale} />
           <Legend locale={locale} />
         </>
@@ -112,4 +136,5 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
 
 <script>
   import './client';
+  import './brass-client';
 </script>

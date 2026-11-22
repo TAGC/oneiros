@@ -19,6 +19,7 @@ bun run check          # spelling and content checks (run after a build)
 bun run test           # unit tests (bun test)
 bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
 bun run constellations # the constellations from .questions/; `apply <plan> --live` charts them
+bun run links <plan>   # the links a plan adds or removes between questions; `--live` makes them
 bun run verify         # build, test, lint, format:check and check
 ```
 
@@ -176,6 +177,16 @@ The issue title is the English title. The body has an English property table, an
 
 One question blocks another through GitHub's own "blocked by" link (the issue's Relationships menu), not a property row. From the command line, `gh api -X POST repos/TAGC/oneiros/issues/<blocked>/dependencies/blocked_by -F issue_id=<id>` takes the blocking issue's `id` from `gh api repos/TAGC/oneiros/issues/<number> --jq .id`, not its number.
 
+To change many links at once, write a plan and run `bun run links <plan>`. Each line adds or removes one link, with an optional reason after a colon:
+
+```question-links
+add #145 blocked-by #142: #145 asks how fast vividness fades, so #142 must first say whether it fades.
+add #139 related #142: both ask about fading on Memory.
+remove #142 undermined-by #208: #208 left its premise standing.
+```
+
+A Related link goes on both issues' rows; an Undermined by row only on the first issue. In a Markdown file, only `question-links` code blocks count. The helper prints the changes and makes them only with `--live`. The `link-questions` skill proposes such plans.
+
 #### Answers and status
 
 The answer is one comment on the issue, posted while the pull request that lands it is open:
@@ -224,6 +235,7 @@ When two issues ask the same question, the designer picks the canonical one and 
 
 ```sh
 gh issue close 145 --reason duplicate --duplicate-of 142
+gh issue edit 145 --remove-milestone
 ```
 
 Without `--duplicate-of` in your `gh`, use the GraphQL API, with each issue's `node_id` from `gh api repos/TAGC/oneiros/issues/<number> --jq .node_id`:
@@ -232,7 +244,7 @@ Without `--duplicate-of` in your `gh`, use the GraphQL API, with each issue's `n
 gh api graphql -f query='mutation($id: ID!, $of: ID!) { closeIssue(input: {issueId: $id, stateReason: DUPLICATE, duplicateIssueId: $of}) { issue { number } } }' -f id=<node_id of 145> -f of=<node_id of 142>
 ```
 
-Close it once the pull request that replaces its marker (below) is merged: a marker naming a duplicate fails the checks. GitHub then shows "Duplicate of #142", and the pull reads it (`duplicateOf` in the cache). A duplicate needs no answer comment. It is left out of the open questions page, the graph facts, constellations and the Astrolabe.
+Close it once the pull request that replaces its marker (below) is merged: a marker naming a duplicate fails the checks. GitHub then shows "Duplicate of #142", and the pull reads it (`duplicateOf` in the cache). A duplicate needs no answer comment, and it leaves its constellation: remove its milestone when you close it. It is left out of the open questions page, the graph facts, constellations and the Astrolabe.
 
 The canonical issue keeps its marker on its owner page. On the duplicate's page, its marker gives way to one plain line linking to the canonical question's box, whose anchor is `issue-<number>`. In English, "See the open question on" (or "See the conflict on") and the page:
 
@@ -281,8 +293,9 @@ The description holds an English property table, then one section per site local
 - **Energy:** `low`, `medium` or `high`, ignoring case. Energy is weight: how hard and far-reaching the decisions are. Low is peripheral or independent questions, mostly confirming wording; high is central questions, foundations, conflicts or philosophy.
 - The two are independent: eight wording fixes are large but low energy; one central question about a premise is small but high energy.
 - Both scales' labels are in `src/i18n/ui.ts`, in both languages.
+- **Reasoning:** the shared theme only, the rule, page or decision that holds the questions together. Never counts ("all four", "both", "two are conflicts") or a roll call of which question asks what, because questions close and move and the description would go stale.
 
-An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.
+An issue's milestone is its constellation, so an issue sits in at most one. Every open question should sit in one; a one-question milestone is fine. Closed questions stay in their milestone and count as settled, except a duplicate, which leaves it when closed. Close the milestone once all its questions are closed; closed constellations are not shown. An open question in no open constellation is ungrouped.
 
 Code reads constellations only through `src/lib/questions/constellations.ts`. `bun run check` checks each open constellation's description (see Checks).
 

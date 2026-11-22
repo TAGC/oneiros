@@ -84,8 +84,10 @@ The policy follows how the guides already handle Greek names:
 
 - **Page status** (a wiki property, not a game concept): **状态**. The four stages reuse the belief stage terms: Notion 念头, Tenet 信条, Certainty 确信, Dogma 教条. 状态 also appears inside 凝聚度状态; the context keeps the two apart.
 - **Canon audit** (a wiki process, the `canon-audit` skill): **正典审核**.
+- **The vision** (the designer's original design document, which the wiki migrated and still cites as a source; not a game term): **愿景** (proposed). Older Chinese pages and issues write it "Vision" in Latin letters; new text uses 愿景.
 - **Astrolabe** (a wiki tool, the star map of every question; not a game term): **星盘** (proposed; the Chinese name is still open). Its question statuses: frontier **前沿**, blocked **受阻**, decided **已定**, ruled out **不采纳**, undermined **前提动摇**. Its roles: central **核心**, peripheral **边缘**, independent **独立**. Open question stays **待定问题** and conflict **冲突**.
 - **Constellation** (wiki tooling, a group of open questions settled in one session; not a game concept): **星座**. Its two scales: **规模** (size): 小 / 中 / 大 (small / medium / large); **精力** (energy): 低 / 中 / 高 (low / medium / high). Proposed.
+- **The Astrolabe's Dial** (the constellations view, a brass dial; wiki tooling, not game terms): the view is the Dial, **表盘**. Its parts: sector **扇区** (one per area), ring **圆环** (one per energy), hub **中心**, rim **外缘**, mark **标记** (one per constellation), notch **刻痕** (one per question round a mark). A constellation's GitHub milestone is its **里程碑**. Proposed.
 
 ---
 
@@ -142,6 +144,7 @@ Column key: **Source** is guide (new), guide (old), guide (new, old) or proposed
 | Inner voices | 内心之声 | 内心声音 | guide (old) † | The new guide wrote 内心声音, once, in the inspirations list. |
 | Coherence | 凝聚度 | | guide (new, old) † | The name is kept. The old guide's "gap" model is superseded. |
 | Coherence status | 凝聚度状态 | 状态词 | proposed | The old guide calls these 状态词. |
+| Maximum Coherence | 凝聚度上限 | | proposed | The Coherence page's section. Follows 串长上限 (chain cap). |
 | Anchored | 稳固 | | guide (old) | Distinct from 锚定地点 (anchored place). |
 | Drifting | 漂浮 | 飘摇 | guide (old) | |
 | Fraying | 绽线 | 磨损 | proposed † | The old guide's 昏沉 named a superseded state. |
@@ -246,6 +249,8 @@ Notes on the intensity words:
 | Vessel capacity | 容器容量 | | proposed | |
 | Keepsake | 信物 | 遗珍 | guide (old) † | In the old guide 信物 was an object that stores memories. Now it is a sentimental heirloom; the word still fits. |
 | Potions | 药剂 | | guide (old) | |
+| Bottled moments (a potion) | 瓶装瞬间 | | proposed | A sheet row on the Potions page. |
+| Saturation (the potion limit) | 饱和 | | proposed | Also one of the ways memories climb the rootedness ladder. |
 | Crafting | 制作 | | guide (old) | |
 | Effects grammar | 效果语法 | | guide (old) | |
 | Power budget | 效力预算 | 强度预算 | proposed † | The old guide had 强度预算; 强度 is now Intensity. |
@@ -303,6 +308,7 @@ Notes on the intensity words:
 | Adverb (alias chained adverbs) | 副词 (串联副词) | | guide (new, old) | |
 | lucidity dispel | 驱散法术 | | guide (old) | |
 | Intensity | 强度 | 烈度 | guide (old) † | See Strength under Memory. |
+| Intensity words | 强度词 | | proposed | The Intensity page's heading. The words themselves are in the Emotion tables. |
 | Reading a spell | 解读法术 | | guide (old) | |
 | Kind | 种类 | 物类 | guide (old) | |
 | Grain | 本性 | 纹理 | guide (old) | |
@@ -319,6 +325,7 @@ Notes on the intensity words:
 | Illusion | 幻象 | | guide (old) | |
 | Outburst | 爆发 | 外泄 | proposed | 迸发 is taken by Joy's motion ("向外迸发"). |
 | Archived ideas | 已存档的构想 | 旧构想 | proposed | |
+| Sleep magic (archived) | 睡眠魔法 | | proposed † | Only as the archived idea's name. The Sleep source and tracked value stay superseded (see section 3). |
 | Navbox group: Overview / Sources / Building a spell / Targets / Mood / Feeling in the world / History | 概览 / 三种来源 / 组成法术 / 目标 / 心境 / 世间的情感 / 沿革 | | proposed | 三种来源 is the old guide's heading. |
 
 **Adverbs.** The old guide gives the long form; the new guide's "远 稳" sets the token style.
@@ -433,6 +440,9 @@ Notes on the intensity words:
 | Quality styles | 品质风格 | | proposed | The new guide: "会改变整座宅邸的风格". |
 | wing / upper floor / cellar / centre / hallway / garden / guest rooms | 侧翼 / 楼上 / 地窖 / 中央大厅 / 走廊 / 花园 / 客房 | | guide (old, new) | |
 | reading room / plot | 阅览室 / 地块 | | proposed | |
+| crossing stairs | 交叉楼梯 | | proposed | |
+| Mirror room (sheet-only) | 镜室 | 镜子房间 | proposed † | The old guide's 镜子 for this room is superseded (see section 3); 镜子 stays the ordinary word for a mirror. |
+| Quality style depth stages: Early / Growing / Deep | 初期 / 渐长 / 深厚 | | proposed | As the Quality styles page writes them; the stage names are still open. This Deep is not the Deep phase (深眠). |
 | Navbox group: The house / The centre / Rooms | 宅邸 / 中央大厅 / 房间 | | proposed | |
 
 ### World

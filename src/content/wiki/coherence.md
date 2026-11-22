@@ -62,8 +62,8 @@ At zero Coherence you return as an [[Echo]]: weaker, but keeping your [[library]
 
 ## Open questions
 
-> [!ISSUE 32]
+See the open question on [[Renown#issue-95|Renown]].
 
-> [!ISSUE 33]
+See the open question on [[Echo#issue-44|Echo]].
 
-> [!ISSUE 34]
+See the open question on [[Coherence status#issue-35|Coherence status]].

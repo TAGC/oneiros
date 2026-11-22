@@ -51,5 +51,3 @@ Collapse is also the destroyed form of a [[Megaron]]: a collapsed hall with sagg
 ## Open questions
 
 > [!ISSUE 39]
-
-> [!ISSUE 40]
