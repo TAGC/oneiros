@@ -162,7 +162,9 @@ An infobox figure is an Astro component in `src/components/figures/` containing 
 
 ### Area icons
 
-The 24×24 pixel icons in `src/data/icons.json` are being replaced by painted icons that match the background art. The designer generates them in Midjourney; Claude cuts them out and checks them in the frame. All 16 are approved (22 Nov 2026). They are not wired into the site yet.
+The area icons are painted to match the background art. The designer generates them in Midjourney; Claude cuts them out and checks them in the frame. All 16 are approved (22 Nov 2026) and shown on the site. The 24×24 pixel icons in `src/data/icons.json` remain as the fallback for any name without a painted icon.
+
+**Files.** Each area's master is the approved Midjourney image, kept as lossless WebP in `art-src/icons/<area>.webp` (not deployed). `bun run icons` cuts out the background and writes `public/icons/<area>-512` and `-128` as WebP and AVIF. To add or replace an icon, save its master there, run `bun run icons`, and list the area in `PAINTED` in `src/lib/icons.ts`.
 
 | Area       | Subject                                                    | Main colour                 |
 | ---------- | ---------------------------------------------------------- | --------------------------- |
