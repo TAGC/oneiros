@@ -1,5 +1,8 @@
 ---
-/** The night sky view: the build-time layout drawn as one static SVG. */
+/**
+ * The night sky view: the build-time layout drawn as static SVG. The decoration sits in its
+ * own SVG behind the map, so its twinkle repaints only that layer; pan and zoom move both.
+ */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
 import type { StarChart } from './chart';
@@ -25,6 +28,15 @@ const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 ---
 
 <svg
+  class="al-sky-back"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <Backdrop chart={chart} layout={layout} />
+</svg>
+<svg
   class="al-sky"
   viewBox={`0 0 ${layout.width} ${layout.height}`}
   preserveAspectRatio="xMidYMid meet"
@@ -33,7 +45,6 @@ const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
   role="group"
   aria-label={a.views.sky}
 >
-  <Backdrop chart={chart} layout={layout} />
   <g class="al-area-names" aria-hidden="true">
     {
       layout.areas.map((area) => (

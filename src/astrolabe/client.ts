@@ -24,6 +24,8 @@ function setUp(root: HTMLElement): void {
   zoom.hidden = false;
   const maps = [...root.querySelectorAll<SVGSVGElement>('.al-sky, .al-tiers')];
   const sky = root.querySelector<SVGSVGElement>('.al-sky')!;
+  /** The sky and its decoration layer, which pan and zoom together. */
+  const layers = [...root.querySelectorAll<SVGSVGElement>('.al-sky-back, .al-sky')];
   const skyView = root.querySelector<HTMLElement>('.al-view-sky')!;
 
   /* Views. */
@@ -183,12 +185,17 @@ function setUp(root: HTMLElement): void {
   const H = Number(sky.dataset.height);
   const home = { x: 0, y: 0, w: W, h: H };
   let box = { ...home };
-  const apply = () => sky.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+  const apply = () => {
+    for (const layer of layers)
+      layer.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+  };
   // A tall frame (a phone) fills its height and crops the sides, so the labels stay legible.
   const fill = () => {
     const r = skyView.getBoundingClientRect();
     const tall = r.height > r.width;
-    sky.setAttribute('preserveAspectRatio', tall ? 'xMidYMid slice' : 'xMidYMid meet');
+    for (const layer of layers) {
+      layer.setAttribute('preserveAspectRatio', tall ? 'xMidYMid slice' : 'xMidYMid meet');
+    }
   };
   fill();
   new ResizeObserver(fill).observe(skyView);
