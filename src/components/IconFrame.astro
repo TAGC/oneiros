@@ -1,5 +1,6 @@
 ---
-import { hasIcon } from '../lib/icons';
+import { hasIcon, PAINTED } from '../lib/icons';
+import { BASE } from '../lib/site';
 import PixelIcon from './PixelIcon.astro';
 
 interface Props {
@@ -9,12 +10,32 @@ interface Props {
 }
 
 const { name, size = 'lg' } = Astro.props;
+const painted = PAINTED.has(name);
+const file = `${BASE}/icons/${name.toLowerCase()}`;
+const srcset = (ext: string) => `${file}-128.${ext} 128w, ${file}-512.${ext} 512w`;
+const sizes = { lg: '200px', md: '64px', sm: '26px' }[size];
 ---
 
 {
   hasIcon(name) && (
     <span class:list={['frame', size !== 'lg' && size]} data-pagefind-ignore>
-      <PixelIcon name={name} />
+      {painted ? (
+        <picture>
+          <source type="image/avif" srcset={srcset('avif')} sizes={sizes} />
+          <img
+            src={`${file}-512.webp`}
+            srcset={srcset('webp')}
+            sizes={sizes}
+            alt=""
+            width="512"
+            height="512"
+            loading="lazy"
+            decoding="async"
+          />
+        </picture>
+      ) : (
+        <PixelIcon name={name} />
+      )}
     </span>
   )
 }
