@@ -69,6 +69,8 @@ Wildermyth
 # Descriptive words the British dictionary lacks
 drumskins
 glasswing
+moodboard
+moodboards
 sightlines
 unaimed
 uncarved
