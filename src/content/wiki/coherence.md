@@ -34,12 +34,12 @@ A will's maximum is the [[material]] of every [[memory]] and [[belief]] it holds
 
 <p class="formula">Maximum Coherence = Σ (material × tier factor) + renown</p>
 
-| Tier        | Memory       | Belief  | Factor |
-| ----------- | ------------ | ------- | -----: |
-| Loose       | Impression   | Hearsay |   ×0.5 |
-| Fixture     | Recollection | Tenet   |     ×1 |
-| Room        | Refrain      | Creed   |     ×2 |
-| [[Megaron]] | Touchstone   | Dogma   |     ×3 |
+| Tier        | Memory       | Belief    | Factor |
+| ----------- | ------------ | --------- | -----: |
+| Loose       | Impression   | Notion    |   ×0.5 |
+| Fixture     | Recollection | Tenet     |     ×1 |
+| Room        | Refrain      | Certainty |     ×2 |
+| [[Megaron]] | Touchstone   | Dogma     |     ×3 |
 
 A collapsed room counts ×0.5 whatever its tier (see [[Cracking and collapse|cracking and collapse]]). Only a belief's own material counts, never its [[weight]], so nothing is counted twice.
 

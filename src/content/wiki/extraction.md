@@ -8,7 +8,7 @@ aliases:
 infobox:
   rows:
     - label: Takes
-      value: A Loose [[memory]] or a Hearsay [[belief]]
+      value: A Loose [[memory]] or a [[belief]] at Notion
     - label: From
       value: Someone's mind, on the [[meeting ground]]
     - label: Opposite
@@ -24,7 +24,7 @@ navbox: memory
 
 Extraction happens on the [[meeting ground]], where your [[Temenos]] and the target's stand side by side. No [[bead]] is involved: memories move directly between the two houses.
 
-It deals only in Loose memories and Hearsay beliefs, since taking anything rooted would mean uprooting it in place (see [[Other minds#What moves]]). Inside their house you take a memory by carrying its lamp, which you can hood to mask its light; a Hearsay belief gives no light at all.
+It deals only in Loose memories and beliefs at Notion, since taking anything rooted would mean uprooting it in place (see [[Other minds#What moves]]). Inside their house you take a memory by carrying its lamp, which you can hood to mask its light; a belief at Notion gives no light at all.
 
 ## In a heist
 

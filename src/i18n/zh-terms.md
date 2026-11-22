@@ -44,6 +44,8 @@ Several guide terms are ordinary words: 平静 (Calm), 注意 (Attention), 静�
    | 观察 (Inspect) | 看, 查看 |
    | 本性 (grain) | 天性 |
    | 种类 (kind) | 类别 |
+   | 念头 (Notion) | 想法 |
+   | 确信 (Certainty) | 深信 |
 
    This is how Chinese does what capitals do in English.
 2. **First mention.** Follow both guides: bold the term and give the English in parentheses, e.g. **清醒者**(Lucid). After that, write it plain.
@@ -61,7 +63,7 @@ The policy follows how the guides already handle Greek names:
 ### Pairs, plurals and measure words
 - **Opposed pairs** are written X与Y, as both guides do: 喜悦与悲伤, 嫉妒与善意.
 - **Plurals.** Chinese has none, so every plural alias (Megara, euripi, kyathoi, eidola, Beads...) disappears. Aliases should be unique strings, and no single character should be an alias.
-- **Measure words.** Fixing these keeps prose consistent: 一段记忆, 一颗珠子, 一枚奥波勒斯, 一条信念, 一个念头, 一道传送门.
+- **Measure words.** Fixing these keeps prose consistent: 一段记忆, 一颗珠子, 一枚奥波勒斯, 一条信念, 一则沉吟, 一道传送门.
 
 ### Site name and area names
 - **Site name:** **Oneiros 维基**. "Oneiros" stays in Latin, as in both guide titles. The alternative is Oneiros 百科; Chinese fan wikis use both.
@@ -94,10 +96,10 @@ Column key: **Source** is guide (new), guide (old), guide (new, old) or proposed
 | Belief | 信念 | | guide (new, old) | The old guide's 法则 ("laws") for beliefs is superseded. |
 | Belief capacity | 信念容量 | | proposed | 信念 + 容量. |
 | Belief stages | 信念阶段 | | proposed | The old guide has "沿着阶梯攀升". |
-| Hearsay (stage, working name) | 传闻 | 耳闻 | proposed † | This frees 传闻 once rumour becomes 谣言 (new guide). |
-| Notion (state) | 念头 | | guide (old) | |
+| Notion (stage) | 念头 | | guide (old) | The old guide's word for the dwelling state, which was called Notion until 22 Nov 2026. The stage now takes both name and word. |
+| Musing (state) | 沉吟 | | proposed | Pondering at length. Shares 沉 with 沉思 (dwelling), the act it names the state of. |
 | Tenet | 信条 | | guide (old) | |
-| Creed | 教义 | 信经 | guide (old) | |
+| Certainty | 确信 | | proposed | Plain "certainty". For "convinced" in ordinary prose, write 深信 (see convention 1). |
 | Dogma | 教条 | | guide (old) | |
 | Conviction | 信念度 | 笃信 | guide (old) | Follows the -度 tracked-value pattern. |
 | Dwelling | 沉思 | 涵泳 | guide (old) | "当你沉思它时". 涵泳 (soaking in) fits the sponge image better but is literary. |
@@ -485,7 +487,7 @@ Superseded old-guide terms (do not reuse): the **睡眠** (Sleep) source and tra
 10. **Unmaking 消解 vs lucidity's "消解" (new guide).** Pick **消解 for Unmaking only**. Lucidity's dissolving becomes **溶解** in prose.
 11. **Strength vs Intensity.** The guide fixes Intensity as **强度**, so Strength needs another word. Pick **力度**. 效力 is the alternative; avoid 实力, which the new guide uses for "power".
 12. **Extraction 拾忆 (old) vs Gleaning.** 拾 ("pick up") fits gleaning better, but the old guide gave 拾忆 to extraction verbatim. Pick **拾忆 = extraction, 采忆 = gleaning**. If David prefers, swap them: 拾忆 for gleaning, 摄取 for extraction.
-13. **Rumour 谣言 (new) vs 传闻 (old).** Pick **谣言**. This frees **传闻** for the Hearsay stage, so every version you hear becomes a 传闻: a neat fit.
+13. **Rumour 谣言 (new) vs 传闻 (old).** Pick **谣言**. This freed **传闻** for the bottom belief stage while it was called Hearsay. Since that stage became Notion (念头), 传闻 is unused.
 14. **Calm 平静 and Attention 注意 are everyday words.** Keep them, as the guides do, and apply convention 1 strictly: for the ordinary senses, write 安静 / 镇定 and 注意力 / 留意.
 15. **Material 材料 (old guide).** Keep **材料**, though it clashes with crafting "materials", as the English does. 质料 is the philosophical alternative if the clash bites.
 

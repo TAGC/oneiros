@@ -10,7 +10,7 @@ infobox:
     - label: Holds
       value: Colourless beliefs, colourless memories, [[Thread|threads]]
     - label: Desk
-      value: Colourless [[Belief stages|Notions]]
+      value: Colourless [[Belief stages|Musings]]
     - label: Doors
       value: Onto the four wings' upper floors
     - label: Kept by an Echo
@@ -24,8 +24,8 @@ The **library** rings the upper floor of your [[Temenos]]'s centre: an annular g
 
 - **Colourless beliefs**, as codices.
 - **Colourless memories**, as white-flamed lamps.
-- **Its own reading-room desk**, for colourless [[Belief stages|Notions]]. Coloured Notions sit on their own floor's reading-room desk (see [[Temenos#Wings and floors]]).
-- **[[Thread|Threads]]** (quests), tied to the [[Belief|beliefs]] they hang off. Every version of a [[rumour]] you hear becomes a belief at Hearsay, and your library keeps the threads hanging off them.
+- **Its own reading-room desk**, for colourless [[Belief stages|Musings]]. Coloured Musings sit on their own floor's reading-room desk (see [[Temenos#Wings and floors]]).
+- **[[Thread|Threads]]** (quests), tied to the [[Belief|beliefs]] they hang off. Every version of a [[rumour]] you hear becomes a belief at Notion, and your library keeps the threads hanging off them.
 
 ## Deductions and insights
 
