@@ -150,6 +150,10 @@ Five pillars hold it together:
   openSub: (n: number) =>
     `Every open question and every conflict between sources, page by page: ${n} in all.`,
   openNone: 'No open questions yet.',
+  openUnmarked: 'Not on a page',
+  openUnmarkedSub: 'Open question issues that no page marks yet, by area.',
+  noArea: 'No area',
+  onGithub: (n: number) => `#${n} on GitHub`,
   onThePage: 'on the page',
   questionMissing: (n: number) =>
     `Question #${n} is not in the question cache. Run \`bun run pull\`.`,
@@ -335,6 +339,10 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   openDescription: '整个维基中的所有待定问题与冲突。',
   openSub: (n) => `逐页列出所有待定问题，以及各来源之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
+  openUnmarked: '不在页面上',
+  openUnmarkedSub: '尚无页面标出的待定问题，按领域列出。',
+  noArea: '无领域',
+  onGithub: (n) => `GitHub 上的 #${n}`,
   onThePage: '查看原处',
   questionMissing: (n) => `问题缓存中没有问题 #${n}。请运行 \`bun run pull\`。`,
 
