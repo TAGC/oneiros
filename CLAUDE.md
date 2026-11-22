@@ -6,7 +6,7 @@ This repo is the design's wiki and its **single source of truth**: https://tagc.
 
 ## Repo map
 
-- `src/content/wiki/`: English pages, one per Glossary term (`kind: term`) plus overview pages (`kind: system`). `README.md` is the authoring guide (frontmatter, `[[wiki links]]`, callouts, `<SheetTable>`, navboxes, icons, Chinese pages, checks): follow it.
+- `src/content/wiki/`: English pages, one per Glossary term (`kind: term`) plus overview pages (`kind: system`). `README.md` (repo root) is the authoring guide (frontmatter, `[[wiki links]]`, callouts, `<SheetTable>`, navboxes, icons, Chinese pages, checks): follow it.
 - `src/content/wiki-zh/`: Chinese pages, paired with the English page by file name.
 - `src/data/sheet/` and `src/data/sheet-zh/`: tabular data (the old reference sheet's tabs), rendered with `<SheetTable>`. `glossary.json` defines the 16 areas.
 - `src/data/navboxes.json`, `src/data/icons.json`: navboxes per area; 24×24 pixel icons per area.
