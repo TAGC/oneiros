@@ -366,3 +366,5 @@ export function getQuestions(): Questions {
   if (cached?.signature !== signature) cached = { signature, questions: loadQuestions(dir) };
   return cached.questions;
 }
+
+export { type QuestionGraph, questionGraph } from './graph';
