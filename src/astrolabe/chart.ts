@@ -2,7 +2,7 @@
  * The Astrolabe's star chart: every question as a star, shaped from the questions module
  * for one locale. Pure data; the layouts in `sky.ts` and `tiers.ts` place it.
  */
-import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
+import { DEFAULT_LOCALE, inLocale, type Locale } from '../i18n/locale';
 import {
   isDuplicate,
   type Place,
@@ -87,13 +87,6 @@ export interface StarChart {
   ungrouped: number[];
 }
 
-function inLocale(texts: Partial<Record<Locale, string>>, locale: Locale) {
-  const own = texts[locale];
-  if (own !== undefined) return { text: own, lang: locale };
-  const fallback = texts[DEFAULT_LOCALE];
-  return fallback === undefined ? undefined : { text: fallback, lang: DEFAULT_LOCALE };
-}
-
 function starStatus(q: Question, place: Place): StarStatus {
   if (q.status === 'open') return place === 'frontier' ? 'frontier' : 'blocked';
   return q.status === 'duplicate' ? 'decided' : q.status;
@@ -125,7 +118,7 @@ export function chartQuestions(
   const undermining = (t: Thread) => t.kind === 'undermines';
 
   const stars: Star[] = sorted.map((q) => {
-    const own = q.title[locale];
+    const label = inLocale(q.title, locale);
     const facts = graph.questions[q.number]!;
     return {
       number: q.number,
@@ -133,8 +126,8 @@ export function chartQuestions(
       status: starStatus(q, facts.place),
       roles: starRoles(facts.roles),
       stepsOut: facts.stepsOut,
-      label: own ?? q.title[DEFAULT_LOCALE] ?? `#${q.number}`,
-      labelLang: own === undefined ? DEFAULT_LOCALE : locale,
+      label: label?.text ?? `#${q.number}`,
+      labelLang: label?.lang ?? DEFAULT_LOCALE,
       blockedBy: ends(blocking, 'from', q.number),
       blocks: ends(blocking, 'to', q.number),
       underminedBy: ends(undermining, 'from', q.number),
