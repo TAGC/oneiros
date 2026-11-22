@@ -1,23 +1,59 @@
 import { afterEach, beforeEach, describe, expect, test } from 'bun:test';
-import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadQuestions, type PulledIssue, writeQuestionCache } from '.';
-import { constellationProblems, loadConstellations } from './constellations';
+import {
+  constellationProblems,
+  type GithubMilestone,
+  loadConstellations,
+  type MilestonedIssue,
+  writeMilestoneCache,
+} from './constellations';
 
-function issue(fields: Partial<PulledIssue> & { number: number }): PulledIssue {
+type Fixture = PulledIssue & MilestonedIssue;
+
+function issue(number: number, inMilestone?: number, fields: Partial<Fixture> = {}): Fixture {
   return {
-    title: `Question ${fields.number}`,
+    number,
+    title: `Question ${number}`,
     body: '## en\n\nEnglish text.\n\n## zh\n\n### 中文标题\n\n中文。',
     state: 'open',
     state_reason: null,
     labels: [{ name: 'kind:open' }, { name: 'area:memory' }],
-    html_url: `https://github.com/TAGC/oneiros/issues/${fields.number}`,
+    html_url: `https://github.com/TAGC/oneiros/issues/${number}`,
+    milestone: inMilestone === undefined ? null : { number: inMilestone },
     ...fields,
   };
 }
 
-const closed = (number: number) => issue({ number, state: 'closed', state_reason: 'completed' });
+const closed = (number: number, inMilestone?: number) =>
+  issue(number, inMilestone, { state: 'closed', state_reason: 'completed' });
+
+const DESCRIPTION = `| Property | Value |
+|---|---|
+| Size | Small |
+| Energy | low |
+
+## en
+
+Both ask how memories fade.
+
+## zh
+
+### 褪色的记忆
+
+两者都问记忆如何褪色。`;
+
+function milestone(fields: Partial<GithubMilestone> & { number: number }): GithubMilestone {
+  return {
+    title: '✦ Fading memories',
+    description: DESCRIPTION,
+    state: 'open',
+    html_url: `https://github.com/TAGC/oneiros/milestone/${fields.number}`,
+    ...fields,
+  };
+}
 
 let dir: string;
 
@@ -29,46 +65,21 @@ afterEach(() => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-/** Writes a question cache and a constellations file, and returns both paths' contents loaded. */
-function setUp(issues: PulledIssue[], yaml: string) {
-  const cache = join(dir, 'cache');
-  writeQuestionCache(cache, issues);
-  const file = join(dir, 'constellations.yaml');
-  writeFileSync(file, yaml);
-  return { file, questions: loadQuestions(cache) };
+/** Writes the cache as the pull does, then loads it back. */
+function load(issues: Fixture[], milestones: GithubMilestone[]) {
+  writeQuestionCache(dir, issues);
+  writeMilestoneCache(dir, milestones, issues);
+  return loadConstellations(dir, loadQuestions(dir));
 }
 
-function load(issues: PulledIssue[], yaml: string) {
-  const { file, questions } = setUp(issues, yaml);
-  return loadConstellations(file, questions);
-}
+const numbers = (list: { number: number }[]) => list.map((q) => q.number);
 
-function problems(
-  issues: PulledIssue[],
-  yaml: string,
-  lookup?: Parameters<typeof constellationProblems>[2],
-) {
-  const { file, questions } = setUp(issues, yaml);
-  return constellationProblems(file, questions, lookup).map((p) => p.message);
-}
-
-const MEMORY = `
-- name:
-    en: Fading memories
-    zh: 褪色的记忆
-  reasoning:
-    en: Both ask how memories fade.
-    zh: 两者都问记忆如何褪色。
-  size: small
-  energy: low
-  issues: [142, 145]
-`;
-
-describe('loading constellations', () => {
-  test('reads each constellation with its open questions in file order', () => {
-    const all = load([issue({ number: 145 }), issue({ number: 142 })], MEMORY).all();
-    expect(all).toHaveLength(1);
-    const [c] = all;
+describe('loading constellations from milestones', () => {
+  test('reads a milestone as a constellation in both languages', () => {
+    const [c] = load([issue(145, 3), issue(142, 3)], [milestone({ number: 3 })]).all();
+    expect(c.number).toBe(3);
+    expect(c.url).toBe('https://github.com/TAGC/oneiros/milestone/3');
+    expect(c.state).toBe('open');
     expect(c.name).toEqual({ en: 'Fading memories', zh: '褪色的记忆' });
     expect(c.reasoning).toEqual({
       en: 'Both ask how memories fade.',
@@ -76,125 +87,113 @@ describe('loading constellations', () => {
     });
     expect(c.size).toBe('small');
     expect(c.energy).toBe('low');
-    expect(c.questions.map((q) => q.number)).toEqual([142, 145]);
+    expect(numbers(c.questions)).toEqual([142, 145]);
   });
 
   test('finds the constellation holding a question', () => {
-    const constellations = load([issue({ number: 142 }), issue({ number: 145 })], MEMORY);
-    expect(constellations.of(145)?.name.en).toBe('Fading memories');
+    const constellations = load([issue(142, 3), issue(7)], [milestone({ number: 3 })]);
+    expect(constellations.of(142)?.number).toBe(3);
     expect(constellations.of(7)).toBeUndefined();
   });
 
-  test('a missing or empty file holds no constellations', () => {
-    const questions = loadQuestions(join(dir, 'none'));
-    expect(loadConstellations(join(dir, 'missing.yaml'), questions).all()).toEqual([]);
-    expect(load([], '# nothing yet\n').all()).toEqual([]);
+  test('no milestones means no constellations', () => {
+    expect(load([issue(1)], []).all()).toEqual([]);
+    expect(loadConstellations(join(dir, 'none'), loadQuestions(join(dir, 'none'))).all()).toEqual(
+      [],
+    );
   });
 
-  test('drops closed issues and issues that are not question issues', () => {
-    const c = load([issue({ number: 142 }), closed(145)], MEMORY.replace('145]', '145, 999]'));
-    expect(c.all()[0].questions.map((q) => q.number)).toEqual([142]);
-    expect(c.of(145)).toBeUndefined();
+  test('keeps closed questions in their constellation', () => {
+    const [c] = load([issue(142, 3), closed(145, 3)], [milestone({ number: 3 })]).all();
+    expect(c.questions.map((q) => [q.number, q.state])).toEqual([
+      [142, 'open'],
+      [145, 'closed'],
+    ]);
   });
 
-  test('drops a constellation left with no open questions', () => {
-    expect(load([closed(142)], MEMORY).all()).toEqual([]);
+  test('lists every constellation but only open ones to draw', () => {
+    const milestones = [milestone({ number: 3 }), milestone({ number: 4, state: 'closed' })];
+    const constellations = load([issue(142, 3), closed(145, 4)], milestones);
+    expect(numbers(constellations.all())).toEqual([3, 4]);
+    expect(numbers(constellations.open())).toEqual([3]);
   });
 
-  test('keeps a question only in the first constellation that names it', () => {
-    const twice = `${MEMORY}${MEMORY.replace('Fading memories', 'Again').replace('[142, 145]', '[145]')}`;
-    const c = load([issue({ number: 142 }), issue({ number: 145 })], twice);
-    expect(c.all()).toHaveLength(1);
-    expect(c.of(145)?.name.en).toBe('Fading memories');
+  test('ignores milestones without the constellation mark', () => {
+    const milestones = [milestone({ number: 3 }), milestone({ number: 5, title: 'Release 1' })];
+    const constellations = load([issue(142, 3), issue(150, 5)], milestones);
+    expect(numbers(constellations.all())).toEqual([3]);
+    expect(constellations.of(150)).toBeUndefined();
   });
 
-  test('reports open questions in no constellation, by number', () => {
-    const issues = [issue({ number: 142 }), issue({ number: 9 }), issue({ number: 3 }), closed(4)];
-    const ungrouped = load(issues, MEMORY).ungrouped();
-    expect(ungrouped.map((q) => q.number)).toEqual([3, 9]);
+  test('reports open questions in no open constellation, by number', () => {
+    const milestones = [
+      milestone({ number: 3 }),
+      milestone({ number: 4, state: 'closed' }),
+      milestone({ number: 5, title: 'Release 1' }),
+    ];
+    const issues = [issue(142, 3), issue(9), issue(3, 4), issue(150, 5), closed(4)];
+    expect(numbers(load(issues, milestones).ungrouped())).toEqual([3, 9, 150]);
   });
 
-  test('a constellation without Chinese text still loads', () => {
-    const english = MEMORY.replace(/\n {4}zh: .*/g, '');
-    const [c] = load([issue({ number: 142 })], english).all();
+  test('a malformed description still loads', () => {
+    const [c] = load([issue(142, 3)], [milestone({ number: 3, description: null })]).all();
     expect(c.name).toEqual({ en: 'Fading memories' });
-  });
-
-  test('a malformed file fails to load', () => {
-    const issues = [issue({ number: 142 })];
-    expect(() => load(issues, MEMORY.replace('size: small', 'size: huge'))).toThrow(/size/);
-    expect(() => load(issues, 'name: not a list\n')).toThrow(/list/);
+    expect(c.reasoning).toEqual({});
+    expect(c.size).toBeUndefined();
+    expect(c.energy).toBeUndefined();
   });
 });
 
-describe('the strict constellations check', () => {
-  const open = [issue({ number: 142 }), issue({ number: 145 })];
+describe('constellation checks', () => {
+  function problems(description: string, state: 'open' | 'closed' = 'open') {
+    const constellations = load([issue(142, 3)], [milestone({ number: 3, description, state })]);
+    return constellationProblems(constellations).map((p) => p.message);
+  }
 
-  test('passes a sound file, an empty one and a missing one', () => {
-    expect(problems(open, MEMORY)).toEqual([]);
-    expect(problems([], '# nothing yet\n')).toEqual([]);
-    const questions = loadQuestions(join(dir, 'none'));
-    expect(constellationProblems(join(dir, 'missing.yaml'), questions)).toEqual([]);
+  test('pass a well-formed description', () => {
+    expect(problems(DESCRIPTION)).toEqual([]);
   });
 
-  test('does not fail on ungrouped open questions', () => {
-    expect(problems([...open, issue({ number: 3 })], MEMORY)).toEqual([]);
-  });
-
-  test('fails on a closed issue', () => {
-    expect(problems([issue({ number: 142 }), closed(145)], MEMORY)).toEqual([
-      '#145 is closed; remove it',
+  test('fail on a missing or invalid Size', () => {
+    expect(problems(DESCRIPTION.replace('| Size | Small |\n', ''))).toEqual([
+      'no Size row; use one of small, medium, large',
+    ]);
+    expect(problems(DESCRIPTION.replace('Small', 'Huge'))).toEqual([
+      'Size "Huge" is not one of small, medium, large',
     ]);
   });
 
-  test('fails on a missing issue', () => {
-    const lookup = (n: number) => (n === 145 ? ('missing' as const) : undefined);
-    expect(problems([issue({ number: 142 })], MEMORY, lookup)).toEqual(['#145 does not exist']);
-  });
-
-  test('fails on an issue without a kind label', () => {
-    const lookup = () => 'not-question' as const;
-    expect(problems([issue({ number: 142 })], MEMORY, lookup)).toEqual([
-      '#145 has no kind:open or kind:conflict label',
+  test('fail on a missing or invalid Energy', () => {
+    expect(problems(DESCRIPTION.replace('| Energy | low |\n', ''))).toEqual([
+      'no Energy row; use one of low, medium, high',
+    ]);
+    expect(problems(DESCRIPTION.replace('| low |', '| none |'))).toEqual([
+      'Energy "none" is not one of low, medium, high',
     ]);
   });
 
-  test('without a lookup, an issue missing from the cache still fails', () => {
-    const [message] = problems([issue({ number: 142 })], MEMORY);
-    expect(message).toStartWith('#145 is not a question issue');
-  });
-
-  test('fails on a missing Chinese name or reasoning', () => {
-    expect(problems(open, MEMORY.replace(/\n {4}zh: 褪色的记忆/, ''))).toEqual(['no `name.zh`']);
-    expect(problems(open, MEMORY.replace(/\n {4}zh: 两者.*/, ''))).toEqual(['no `reasoning.zh`']);
-  });
-
-  test('fails on an issue named twice, in one constellation or across two', () => {
-    expect(problems(open, MEMORY.replace('[142, 145]', '[142, 145, 142]'))).toEqual([
-      '#142 is named twice; it is already in "Fading memories" (line 2)',
-    ]);
-    const again = MEMORY.replace('Fading memories', 'Again').replace('[142, 145]', '[145]');
-    expect(problems(open, MEMORY + again)).toEqual([
-      '#145 is named twice; it is already in "Fading memories" (line 2)',
+  test('fail on a missing English reasoning', () => {
+    expect(problems(DESCRIPTION.replace('## en\n\nBoth ask how memories fade.\n\n', ''))).toEqual([
+      'no `## en` section with the reasoning',
     ]);
   });
 
-  test('fails on a malformed file instead of throwing', () => {
-    expect(problems(open, MEMORY.replace('energy: low', 'energy: none'))).toEqual([
-      '`energy` must be one of low, medium, high',
+  test('fail on a missing Chinese section or Chinese name', () => {
+    expect(problems(DESCRIPTION.replace(/\n\n## zh[\s\S]*$/, ''))).toEqual([
+      'no `## zh` section with the reasoning',
     ]);
-    expect(problems(open, MEMORY.replace('size: small', 'sise: small'))).toEqual([
-      'unknown key `sise`',
-      '`size` must be one of small, medium, large',
+    expect(problems(DESCRIPTION.replace('### 褪色的记忆\n\n', ''))).toEqual([
+      'the `## zh` section has no `### ` name line',
     ]);
-    expect(problems(open, MEMORY.replace('[142, 145]', '[142, "#145"]'))).toEqual([
-      '`issues` holds "#145", not an issue number',
-    ]);
-    expect(problems(open, 'name: [unclosed\n')).toHaveLength(1);
   });
 
-  test('reports the line of each problem', () => {
-    const { file, questions } = setUp([issue({ number: 142 }), closed(145)], MEMORY);
-    expect(constellationProblems(file, questions).map((p) => p.where)).toEqual([`${file}:10`]);
+  test('skip closed constellations, which are not drawn', () => {
+    expect(problems('', 'closed')).toEqual([]);
+  });
+
+  test('report the milestone', () => {
+    const constellations = load([issue(142, 3)], [milestone({ number: 3, description: '' })]);
+    const where = new Set(constellationProblems(constellations).map((p) => p.where));
+    expect([...where]).toEqual(['https://github.com/TAGC/oneiros/milestone/3']);
   });
 });

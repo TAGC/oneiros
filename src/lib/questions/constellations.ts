@@ -1,232 +1,245 @@
 /**
- * Constellations: groups of related open questions, each sized for one session, kept by hand
- * in `src/data/constellations.yaml` and read only through this module. Loading drops closed
- * issues and issues that are not question issues, so a stale entry never breaks the build;
- * `constellationProblems` is the strict check that forces the file to be cleaned up.
+ * Constellations: groups of related open questions, each sized for one session. Each one is
+ * a GitHub milestone whose title starts with `✦ `; an issue's milestone is its constellation.
+ * The pull mirrors the milestones into the question cache (`.questions/milestones/`), and
+ * this module reads them back. Other milestones are ignored.
  */
-import { existsSync, readFileSync } from 'node:fs';
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { isMap, isScalar, isSeq, LineCounter, type Node, parseDocument } from 'yaml';
+import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
 import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
-import { getQuestions, QUESTION_CACHE, type Question, type Questions } from '.';
+import {
+  type GithubIssue,
+  getQuestions,
+  QUESTION_CACHE,
+  type Question,
+  type Questions,
+  splitSections,
+  tableRows,
+} from '.';
 import type { Problem } from './problems';
 
-/** The constellations file, relative to the repo root. */
-export const CONSTELLATIONS_FILE = 'src/data/constellations.yaml';
+/** Where milestones sit inside the question cache. */
+export const MILESTONE_CACHE = 'milestones';
 
-/** How long a constellation takes to settle; labels in `ui.ts` (`constellationSize`). */
+/** A milestone is a constellation when its title starts with this mark. */
+export const CONSTELLATION_MARK = '✦ ';
+
+/** How long a constellation takes to settle; labels in `ui.ts` (`constellationSizes`). */
 export const SIZES = ['small', 'medium', 'large'] as const;
-/** How much energy a constellation needs; labels in `ui.ts` (`constellationEnergy`). */
+/** How much energy a constellation needs; labels in `ui.ts` (`constellationEnergies`). */
 export const ENERGIES = ['low', 'medium', 'high'] as const;
 
 export type Size = (typeof SIZES)[number];
 export type Energy = (typeof ENERGIES)[number];
 
+/** A milestone as GitHub's REST API returns it, as far as the pull needs it. */
+export interface GithubMilestone {
+  number: number;
+  title: string;
+  description: string | null;
+  state: 'open' | 'closed';
+  html_url: string;
+}
+
+/** An issue with the milestone GitHub's issue JSON carries. */
+export type MilestonedIssue = Pick<GithubIssue, 'number' | 'pull_request'> & {
+  milestone?: Pick<GithubMilestone, 'number'> | null;
+};
+
 export interface Constellation {
-  /** The English name is always present. */
+  /** The milestone's number. */
+  number: number;
+  url: string;
+  state: 'open' | 'closed';
+  /** The English name is the milestone title without the mark; others open their section. */
   name: Partial<Record<Locale, string>>;
-  /** Why these questions belong together; the English reasoning is always present. */
+  /** Why these questions belong together, per locale. */
   reasoning: Partial<Record<Locale, string>>;
-  size: Size;
-  energy: Energy;
-  /** Its open question issues, in file order. */
+  /** Absent when the Size row is missing or off the scale (`check` fails). */
+  size?: Size;
+  /** Absent when the Energy row is missing or off the scale (`check` fails). */
+  energy?: Energy;
+  /** Its question issues, open and closed, by number. */
   questions: Question[];
 }
 
 export interface Constellations {
-  /** Constellations with at least one open question, in file order. */
+  /** Every constellation, open and closed, by number. */
   all(): Constellation[];
-  /** The constellation holding an open question. */
+  /** The open constellations, the ones drawn. */
+  open(): Constellation[];
+  /** The constellation holding a question, open or closed. */
   of(number: number): Constellation | undefined;
-  /** Open questions in no constellation, by number. */
+  /** Open questions in no open constellation, by number. */
   ungrouped(): Question[];
 }
 
-/** What a missing issue really is on GitHub, when the strict check can find out. */
-export type IssueLookup = (number: number) => 'missing' | 'not-question' | undefined;
-
-const KEYS = ['name', 'reasoning', 'size', 'energy', 'issues'];
-
-interface Entry {
-  line: number;
-  name: Partial<Record<Locale, string>>;
-  reasoning: Partial<Record<Locale, string>>;
-  size: Size;
-  energy: Energy;
-  issues: { number: number; line: number }[];
+interface MilestoneFrontmatter {
+  number: number;
+  title: string;
+  url: string;
+  state: 'open' | 'closed';
+  /** The question issues in this milestone, by number. */
+  issues: number[];
 }
 
-interface Parsed {
-  entries: Entry[];
-  /** In file order. The loader throws on fatal ones, which make the file unreadable. */
-  problems: (Problem & { fatal: boolean })[];
-}
-
-function lineOf(lines: LineCounter, node: unknown): number {
-  const range = (node as Node | undefined)?.range;
-  return range ? lines.linePos(range[0]).line : 1;
-}
-
-function localised(
-  value: unknown,
-  field: string,
-  report: (message: string, fatal: boolean) => void,
-): Partial<Record<Locale, string>> {
-  const out: Partial<Record<Locale, string>> = {};
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
-    report(`\`${field}\` must map locale codes (${LOCALES.join(', ')}) to text`, true);
-    return out;
+/**
+ * Writes one file per milestone into the question cache, listing the question issues in it.
+ * Call it after `writeQuestionCache`, which wipes the cache.
+ */
+export function writeMilestoneCache(
+  dir: string,
+  milestones: GithubMilestone[],
+  issues: MilestonedIssue[],
+): void {
+  const out = join(dir, MILESTONE_CACHE);
+  mkdirSync(out, { recursive: true });
+  for (const m of milestones) {
+    const front: MilestoneFrontmatter = {
+      number: m.number,
+      title: m.title,
+      url: m.html_url,
+      state: m.state,
+      issues: issues
+        .filter((i) => !i.pull_request && i.milestone?.number === m.number)
+        .map((i) => i.number)
+        .sort((a, b) => a - b),
+    };
+    const description = (m.description ?? '').replace(/\r\n?/g, '\n').trim();
+    writeFileSync(
+      join(out, `${m.number}.md`),
+      `---\n${stringifyYaml(front)}---\n\n${description}\n`,
+    );
   }
-  for (const [key, text] of Object.entries(value)) {
-    if (!(LOCALES as readonly string[]).includes(key)) {
-      report(`\`${field}\` has unknown locale \`${key}\``, false);
-    } else if (typeof text === 'string' && text.trim()) {
-      out[key as Locale] = text.trim();
-    }
-  }
+}
+
+/** What the description says as written, for the checks. */
+interface Written {
+  size?: string;
+  energy?: string;
+  sections: Locale[];
+}
+
+const written = new WeakMap<Constellation, Written>();
+
+const TITLE = /^###\s+(.+?)\s*$/;
+
+/** The value of a property row, matching its name ignoring case. */
+function row(rows: Record<string, string>, name: string): string | undefined {
+  return Object.entries(rows).find(([key]) => key.toLowerCase() === name)?.[1];
+}
+
+function onScale<T extends string>(scale: readonly T[], value: string | undefined): T | undefined {
+  return scale.find((s) => s === value?.toLowerCase());
+}
+
+function toConstellation(raw: string, questions: Questions): Constellation | undefined {
+  const match = /^---\n([\s\S]*?)\n---\n?/.exec(raw);
+  const front = parseYaml(match?.[1] ?? '') as MilestoneFrontmatter;
+  if (!String(front.title).startsWith(CONSTELLATION_MARK)) return undefined;
+  const { lead, sections } = splitSections(raw.slice(match?.[0].length ?? 0), 2, LOCALES);
+  const rows = tableRows(lead);
+
+  const name: Partial<Record<Locale, string>> = {
+    [DEFAULT_LOCALE]: front.title.slice(CONSTELLATION_MARK.length).trim(),
+  };
+  const reasoning: Partial<Record<Locale, string>> = {};
   for (const locale of LOCALES) {
-    if (out[locale]) continue;
-    report(`no \`${field}.${locale}\``, locale === DEFAULT_LOCALE);
-  }
-  return out;
-}
-
-function parse(file: string): Parsed {
-  const parsed: Parsed = { entries: [], problems: [] };
-  if (!existsSync(file)) return parsed;
-  const lines = new LineCounter();
-  const doc = parseDocument(readFileSync(file, 'utf8'), { lineCounter: lines });
-  for (const error of doc.errors) {
-    const where = `${file}:${error.linePos?.[0].line ?? 1}`;
-    parsed.problems.push({ where, message: error.message, fatal: true });
-  }
-  if (parsed.problems.length || doc.contents === null) return parsed;
-  if (!isSeq(doc.contents)) {
-    const message = 'the file must be a list of constellations';
-    parsed.problems.push({ where: `${file}:1`, message, fatal: true });
-    return parsed;
-  }
-
-  for (const item of doc.contents.items) {
-    const line = lineOf(lines, item);
-    const report = (message: string, fatal: boolean, at = line) =>
-      parsed.problems.push({ where: `${file}:${at}`, message, fatal });
-    if (!isMap(item)) {
-      report(`a constellation must be a mapping with ${KEYS.join(', ')}`, true);
-      continue;
-    }
-    const data = item.toJSON() as Record<string, unknown>;
-    for (const key of Object.keys(data)) {
-      if (!KEYS.includes(key)) report(`unknown key \`${key}\``, false);
-    }
-    const name = localised(data.name, 'name', report);
-    const reasoning = localised(data.reasoning, 'reasoning', report);
-    const size = data.size as Size;
-    if (!SIZES.includes(size)) report(`\`size\` must be one of ${SIZES.join(', ')}`, true);
-    const energy = data.energy as Energy;
-    if (!ENERGIES.includes(energy))
-      report(`\`energy\` must be one of ${ENERGIES.join(', ')}`, true);
-
-    const issues: Entry['issues'] = [];
-    const list = item.get('issues', true);
-    if (!isSeq(list) || !list.items.length) {
-      report('`issues` must list at least one issue number', true);
-    } else {
-      for (const node of list.items) {
-        const value = isScalar(node) ? node.value : undefined;
-        const at = lineOf(lines, node);
-        if (typeof value === 'number' && Number.isInteger(value) && value > 0) {
-          issues.push({ number: value, line: at });
-        } else {
-          report(
-            `\`issues\` holds ${JSON.stringify(value ?? null)}, not an issue number`,
-            true,
-            at,
-          );
-        }
+    let text = sections[locale];
+    if (text === undefined) continue;
+    if (locale !== DEFAULT_LOCALE) {
+      const [first, ...rest] = text.split('\n');
+      const heading = TITLE.exec(first);
+      if (heading) {
+        name[locale] = heading[1];
+        text = rest.join('\n').trim();
       }
     }
-    parsed.entries.push({ line, name, reasoning, size, energy, issues });
+    if (text) reasoning[locale] = text;
   }
-  return parsed;
+
+  const constellation: Constellation = {
+    number: front.number,
+    url: front.url,
+    state: front.state,
+    name,
+    reasoning,
+    questions: (front.issues ?? []).flatMap((n) => questions.get(n) ?? []),
+  };
+  const facts: Written = { sections: LOCALES.filter((l) => sections[l] !== undefined) };
+  const size = row(rows, 'size');
+  const energy = row(rows, 'energy');
+  if (size !== undefined) facts.size = size;
+  if (energy !== undefined) facts.energy = energy;
+  const onSize = onScale(SIZES, size);
+  if (onSize) constellation.size = onSize;
+  const onEnergy = onScale(ENERGIES, energy);
+  if (onEnergy) constellation.energy = onEnergy;
+  written.set(constellation, facts);
+  return constellation;
 }
 
-/** Reads a constellations file against the question cache; a missing file holds none. */
-export function loadConstellations(file: string, questions: Questions): Constellations {
-  const { entries, problems } = parse(file);
-  const fatal = problems.filter((p) => p.fatal);
-  if (fatal.length) {
-    const list = fatal.map((p) => `  ${p.where}: ${p.message}`).join('\n');
-    throw new Error(`${file} cannot be read; run \`bun run check:constellations\`:\n${list}`);
+function milestoneFiles(dir: string): string[] {
+  try {
+    return readdirSync(dir).filter((f) => f.endsWith('.md'));
+  } catch {
+    return [];
   }
-  const byNumber = new Map<number, Constellation>();
-  const all: Constellation[] = [];
-  for (const { name, reasoning, size, energy, issues } of entries) {
-    const constellation: Constellation = { name, reasoning, size, energy, questions: [] };
-    for (const { number } of issues) {
-      const question = questions.get(number);
-      if (question?.state !== 'open' || byNumber.has(number)) continue;
-      byNumber.set(number, constellation);
-      constellation.questions.push(question);
-    }
-    if (constellation.questions.length) all.push(constellation);
-  }
-  const ungrouped = questions.all().filter((q) => q.state === 'open' && !byNumber.has(q.number));
+}
+
+/** Reads the constellations from a question cache; a missing cache holds none. */
+export function loadConstellations(dir: string, questions: Questions): Constellations {
+  const folder = join(dir, MILESTONE_CACHE);
+  const all = milestoneFiles(folder)
+    .flatMap((f) => toConstellation(readFileSync(join(folder, f), 'utf8'), questions) ?? [])
+    .sort((a, b) => a.number - b.number);
+  const open = all.filter((c) => c.state === 'open');
+  const byNumber = new Map(all.flatMap((c) => c.questions.map((q) => [q.number, c] as const)));
+  const ungrouped = questions
+    .all()
+    .filter((q) => q.state === 'open' && byNumber.get(q.number)?.state !== 'open');
   return {
     all: () => [...all],
+    open: () => [...open],
     of: (n) => byNumber.get(n),
     ungrouped: () => [...ungrouped],
   };
 }
 
-/** The repo's constellations against the repo's question cache. */
+/** The repo's constellations, from the repo's question cache. */
 export function getConstellations(questions: Questions = getQuestions()): Constellations {
-  return loadConstellations(join(process.cwd(), CONSTELLATIONS_FILE), questions);
+  return loadConstellations(join(process.cwd(), QUESTION_CACHE), questions);
 }
 
 /**
- * The strict check, run by `bun run verify` but not by the deploy: the file is well formed,
- * every constellation has every locale's name and reasoning, and every issue it names is an
- * open question issue named only once.
+ * Every open constellation's description has a Size and an Energy on their scales, the
+ * English reasoning, and for each other locale a section with its name and reasoning.
+ * Closed constellations are not drawn, so they are not checked.
  */
-export function constellationProblems(
-  file: string,
-  questions: Questions,
-  lookup: IssueLookup = () => undefined,
-): Problem[] {
-  const parsed = parse(file);
-  const problems: Problem[] = parsed.problems.map(({ where, message }) => ({ where, message }));
-  const seen = new Map<number, Entry>();
-  for (const entry of parsed.entries) {
-    for (const { number, line } of entry.issues) {
-      const where = `${file}:${line}`;
-      const first = seen.get(number);
-      if (first) {
-        problems.push({
-          where,
-          message: `#${number} is named twice; it is already in "${first.name.en}" (line ${first.line})`,
-        });
+export function constellationProblems(constellations: Constellations): Problem[] {
+  const problems: Problem[] = [];
+  for (const c of constellations.open()) {
+    const report = (message: string) => problems.push({ where: c.url, message });
+    const facts = written.get(c) ?? { sections: [] };
+    for (const [property, scale, value] of [
+      ['Size', SIZES, facts.size],
+      ['Energy', ENERGIES, facts.energy],
+    ] as const) {
+      const list = scale.join(', ');
+      if (value === undefined) report(`no ${property} row; use one of ${list}`);
+      else if (!onScale(scale, value)) report(`${property} "${value}" is not one of ${list}`);
+    }
+    for (const locale of LOCALES) {
+      if (!facts.sections.includes(locale)) {
+        report(`no \`## ${locale}\` section with the reasoning`);
         continue;
       }
-      seen.set(number, entry);
-      const question = questions.get(number);
-      if (question?.state === 'closed') {
-        problems.push({ where, message: `#${number} is closed; remove it` });
-      } else if (!question) {
-        const found = lookup(number);
-        const message =
-          found === 'missing'
-            ? `#${number} does not exist`
-            : found === 'not-question'
-              ? `#${number} has no kind:open or kind:conflict label`
-              : `#${number} is not a question issue in ${QUESTION_CACHE}/ (missing, or without a kind:open or kind:conflict label; run \`bun run pull\`)`;
-        problems.push({ where, message });
+      if (locale !== DEFAULT_LOCALE && !c.name[locale]) {
+        report(`the \`## ${locale}\` section has no \`### \` name line`);
       }
+      if (!c.reasoning[locale]) report(`the \`## ${locale}\` section has no reasoning`);
     }
   }
-  return problems.sort((a, b) => lineNumber(a) - lineNumber(b));
-}
-
-function lineNumber(problem: Problem): number {
-  return Number(/:(\d+)$/.exec(problem.where)?.[1] ?? 0);
+  return problems;
 }
