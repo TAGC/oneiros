@@ -17,7 +17,8 @@ import remarkParse from 'remark-parse';
 import remarkSmartypants from 'remark-smartypants';
 import { unified } from 'unified';
 import { SKIP, visit } from 'unist-util-visit';
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { getQuestions, type Questions } from './questions';
 import { markerBlocks } from './questions/markers';
 import { WIKI_DIRS, wikiUrl } from './site';
@@ -158,6 +159,11 @@ function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
   for (const { issue, node } of markerBlocks(tree)) {
     const box = markerBox(issue, locale, questions);
     node.children = parseFragment(box.markdown) as Blockquote['children'];
+    if (box.lang !== locale) {
+      for (const child of node.children) {
+        child.data = { ...child.data, hProperties: { ...child.data?.hProperties, lang: box.lang } };
+      }
+    }
     toNote(node, box.kind, box.id, calloutHeading(box.kind, locale, questions.get(issue)));
   }
 }

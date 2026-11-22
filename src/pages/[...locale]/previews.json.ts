@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
-import { type Locale, localePaths } from '../../i18n/ui';
+import { type Locale } from '../../i18n/locale';
+import { localePaths } from '../../i18n/ui';
 import { getPages } from '../../lib/pages';
 import { plainText } from '../../lib/wiki';
 

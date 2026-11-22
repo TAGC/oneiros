@@ -3,7 +3,7 @@
  * one, two, and three or more steps out; rows are the areas, or the constellations. Steps
  * out come from the question graph.
  */
-import type { Locale } from '../i18n/ui';
+import type { Locale } from '../i18n/locale';
 import type { Area } from '../lib/questions';
 import type { Cluster } from '../lib/questions/clusters';
 import type { Star, StarChart, Thread } from './chart';

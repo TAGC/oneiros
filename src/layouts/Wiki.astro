@@ -2,15 +2,8 @@
 import '../styles/wiki.css';
 import IconFrame from '../components/IconFrame.astro';
 import WikiLink from '../components/WikiLink.astro';
-import {
-  CJK_FONTS,
-  DEFAULT_LOCALE,
-  HTML_LANG,
-  type Locale,
-  LOCALES,
-  otherLocale,
-  useTranslations,
-} from '../i18n/ui';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale, LOCALES } from '../i18n/locale';
+import { CJK_FONTS, otherLocale, useTranslations } from '../i18n/ui';
 import { SIDEBAR_AREAS } from '../lib/areas';
 import { categoryUrl, SITE, url } from '../lib/site';
 import { categoryLabel, resolve } from '../lib/wiki';

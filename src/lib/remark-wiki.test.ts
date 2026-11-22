@@ -4,7 +4,7 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
-import type { Locale } from '../i18n/ui';
+import type { Locale } from '../i18n/locale';
 import type { Question, Questions } from './questions';
 import remarkWiki from './remark-wiki';
 import { markerBox } from './wiki';
@@ -122,6 +122,16 @@ describe('issue markers', () => {
     expect(html).toContain('#999');
   });
 
+  test('mark English text on a Chinese page as English', () => {
+    const html = render('> [!ISSUE 7]', 'zh');
+    expect(html).toContain('<p lang="en">The vision says X.</p>');
+    expect(html).not.toMatch(/class="note-h"[^>]*lang=/);
+  });
+
+  test('leave text in the page language unmarked', () => {
+    expect(render('> [!ISSUE 142]', 'zh')).not.toContain('lang=');
+  });
+
   test('are the only boxes: an old inline callout stays a plain quote', () => {
     const html = render('> [!OPEN]\n> Inline text.\n\n> [!ISSUE 7]', 'en');
     expect(html).toContain('id="issue-7"');
@@ -142,7 +152,15 @@ describe('a marker box', () => {
       kind: 'conflict',
       id: 'issue-7',
       markdown: 'The vision says X.',
+      lang: 'en',
       issue: 7,
+    });
+  });
+
+  test('falls back to English text, saying so', () => {
+    expect(markerBox(7, 'zh', questions)).toMatchObject({
+      markdown: 'The vision says X.',
+      lang: 'en',
     });
   });
 

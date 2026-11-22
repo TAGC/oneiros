@@ -5,7 +5,8 @@
  * and zoom move both. The layout clustered by constellation rides along as data, for the client
  * to fly the stars to; the flight moves only the map.
  */
-import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
 import { quietSettled, type StarChart } from './chart';
 import { constellationFacts } from './facts';

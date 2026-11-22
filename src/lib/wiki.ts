@@ -1,7 +1,8 @@
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { inLocale, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import type { Question, Questions } from './questions';
 import { slugify, WIKI_DIRS } from './site';
 import type { Status } from './status';
@@ -38,6 +39,8 @@ export interface MarkerBox {
   kind: CalloutKind;
   id: string;
   markdown: string;
+  /** The language the text is in: the page's, or English when it falls back. */
+  lang: Locale;
   /** The question issue behind the `[!ISSUE N]` marker. */
   issue: number;
 }
@@ -236,10 +239,10 @@ export function issueId(n: number): string {
 /** The box a `[!ISSUE N]` marker stands for; a missing question says so in its text. */
 export function markerBox(issue: number, locale: Locale, questions: Questions): MarkerBox {
   const question = questions.get(issue);
-  const markdown = question
-    ? (question.text[locale] ?? question.text[DEFAULT_LOCALE] ?? '')
-    : useTranslations(locale).questionMissing(issue);
-  return { kind: question?.kind ?? 'open', id: issueId(issue), markdown, issue };
+  const { text: markdown, lang } = question
+    ? (inLocale(question.text, locale) ?? { text: '', lang: locale })
+    : { text: useTranslations(locale).questionMissing(issue), lang: locale };
+  return { kind: question?.kind ?? 'open', id: issueId(issue), markdown, lang, issue };
 }
 
 /** Strips wiki-link syntax to its labels, for plain-text uses such as previews. */

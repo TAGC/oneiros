@@ -3,7 +3,8 @@
  * The tiers view: columns by how far a question is from being ready, rows by area or by
  * constellation. The page draws one of each; the choice of clustering shows one.
  */
-import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { quietSettled, type StarChart } from './chart';
 import Glyph from './Glyph.astro';
 import type { TiersLayout } from './tiers';

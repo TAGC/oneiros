@@ -4,7 +4,8 @@
  * and tiers and the Open questions page lay out this list; none of them decides membership.
  * Terms in `docs/constellations.md`.
  */
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../../i18n/locale';
+import { useTranslations } from '../../i18n/ui';
 import { AREAS } from '../areas';
 import { type Area, isDuplicate, type Question } from '.';
 import { type Constellation, type Constellations, isFinished } from './constellations';

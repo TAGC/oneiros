@@ -4,7 +4,7 @@ import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import remarkSmartypants from 'remark-smartypants';
 import { unified } from 'unified';
-import type { Locale } from '../i18n/ui';
+import type { Locale } from '../i18n/locale';
 import remarkWiki from './remark-wiki';
 
 const processors = new Map<string, ReturnType<typeof createProcessor>>();

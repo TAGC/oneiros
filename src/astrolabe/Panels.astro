@@ -3,7 +3,8 @@
  * One panel per star, written at build time: its question, context and answer in the page's
  * language, and its links. Without JavaScript, `:target` shows the panel a star links to.
  */
-import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { renderMarkdown } from '../lib/markdown';
 import { CENTRAL_MIN_DEPENDENTS } from '../lib/questions';
 import { wikiUrl } from '../lib/site';

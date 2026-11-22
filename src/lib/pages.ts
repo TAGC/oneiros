@@ -1,7 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { type CollectionEntry, getCollection } from 'astro:content';
-import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 import { AREAS } from './areas';
 import { getQuestions } from './questions';
 import { readMarkers } from './questions/markers';

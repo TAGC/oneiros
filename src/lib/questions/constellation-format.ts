@@ -4,7 +4,7 @@
  * and `## zh` with `### <Chinese name>` and the reasoning. The one place that writes, reads and
  * validates it: reading a written constellation gives the same constellation.
  */
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
 import { propertyRow, splitSections, TITLE, tableRows } from '.';
 
 /** A milestone is a constellation when its title starts with this mark. */

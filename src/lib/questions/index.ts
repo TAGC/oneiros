@@ -8,7 +8,7 @@
 import { mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parse as parseYaml, stringify as stringifyYaml } from 'yaml';
-import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/ui';
+import { DEFAULT_LOCALE, LOCALES, type Locale } from '../../i18n/locale';
 import { AREAS } from '../areas';
 import { slugify } from '../site';
 import type { CalloutKind } from '../wiki';

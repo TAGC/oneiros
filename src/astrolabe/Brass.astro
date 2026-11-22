@@ -3,7 +3,8 @@
  * The constellations view: a brass dial with one mark per open constellation. Sectors are
  * the areas, rings are energy. Laid out at build time by `brass.ts`; drawn as code.
  */
-import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { type DialLayout, BAND_NAME_SIZE, LABEL_LINE, polar } from './brass';
 import type { StarChart } from './chart';
 import { constellationFacts } from './facts';

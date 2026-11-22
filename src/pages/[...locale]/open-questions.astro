@@ -1,7 +1,8 @@
 ---
 import QuestionBox from '../../components/QuestionBox.astro';
 import WikiLink from '../../components/WikiLink.astro';
-import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import { DEFAULT_LOCALE, inLocale, type Locale } from '../../i18n/locale';
+import { localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
 import { AREAS } from '../../lib/areas';
 import { getPages, type Page } from '../../lib/pages';
@@ -50,16 +51,10 @@ const areas = [...AREAS, undefined]
   .map((area) => ({ area, list: ungroupedUnmarked.filter((q) => q.area === area) }))
   .filter((g) => g.list.length);
 
-/** A text in the viewer's language, or in English, with the language it is in. */
-function inLocale(text: Partial<Record<Locale, string>>): { text: string; lang: Locale } {
-  const lang = text[locale] === undefined ? 'en' : locale;
-  return { text: text[lang] ?? '', lang };
-}
-
 /** A question issue's box: its text from the page that marks it, or from the issue. */
 function issueBox(q: Question) {
   const marked = markedOn.get(q.number);
-  const { text, lang } = inLocale(q.text);
+  const { text, lang } = inLocale(q.text, locale) ?? { text: '', lang: DEFAULT_LOCALE };
   return {
     kind: q.kind,
     heading: calloutHeading(q.kind, locale, q),
@@ -95,7 +90,7 @@ function issueBox(q: Question) {
     grouped.map((cluster) => {
       const c = constellations.all().find((k) => k.number === cluster.constellation)!;
       const name = cluster.name!;
-      const reasoning = inLocale(c.reasoning);
+      const reasoning = inLocale(c.reasoning, locale);
       const facts = [
         c.size && t.constellationFact(t.constellationSize, t.constellationSizes[c.size]),
         c.energy && t.constellationFact(t.constellationEnergy, t.constellationEnergies[c.energy]),
@@ -105,7 +100,7 @@ function issueBox(q: Question) {
         <section>
           <h2 lang={name.lang === locale ? undefined : name.lang}>{name.text}</h2>
           <p class="sub">{facts.join(' · ')}</p>
-          {reasoning.text && (
+          {reasoning?.text && (
             <p lang={reasoning.lang === locale ? undefined : reasoning.lang}>{reasoning.text}</p>
           )}
           {cluster.questions.map((q) => (
