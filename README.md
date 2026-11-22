@@ -50,6 +50,7 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `src/data/icons.json`: 24×24 pixel icons, one per area.
 - `src/components/figures/`: SVG figures for infoboxes.
 - `public/art/`: the background art the designer generated. Dark mode uses a night scene of the Dreamlands (made with Midjourney), graded darker and bluer for the site. Light mode uses a day scene (`dreamlands-day-*`), graded slightly softer and less saturated. The ungraded originals stay outside the repo.
+- `src/components/LICENSE-lucide.txt`: the licence for the three Lucide icons on the Quality styles page.
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
 
 ## Authoring guide
