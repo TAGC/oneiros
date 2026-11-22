@@ -160,6 +160,33 @@ Links are page titles and resolve like wiki links. Set `navbox: character` on ea
 
 An infobox figure is an Astro component in `src/components/figures/` containing one SVG, named in PascalCase (`CoherenceRings.astro` is `figure: CoherenceRings`).
 
+### Area icons
+
+The 24×24 pixel icons in `src/data/icons.json` are being replaced by painted icons that match the background art. The designer generates them in Midjourney; Claude cuts them out and checks them in the frame. Approved so far: Items (a terracotta amphora with a teal band) and Library (an upright teal book with copper corners). They are not wired into the site yet.
+
+**Moodboards.** Keep two. "Oneiros" holds the background scenes and is for scenes only: it pulls icons towards isometric angles, scenery and a pixel texture. "Oneiros Icons" holds only approved icons; add each new one once it passes.
+
+**Rules for every icon.**
+
+- Angle: seen slightly from above (about 20 degrees), upright, centred, turned slightly. No diagonal tilt, no strict isometric.
+- Style: smooth hand-painted digital illustration, clean edges, thick dark outline, warm lamplight only. No rim light or blue sheen.
+- Shape: one object, a bold simple silhouette, minimal ornament. Fine pattern turns to noise at small sizes.
+- Colour: one main colour per icon, named in the prompt and taken from the background (terracotta, teal, stone, gold, deep red), so the set stays varied. With few icons on the board, its colours bleed into new ones.
+
+**Prompt.** Run with the Oneiros Icons moodboard on:
+
+```text
+single <object>, RPG inventory icon, slight high angle view, upright, centred, turned slightly, no diagonal tilt, <main colour> <material>, simple shapes, minimal ornament, smooth hand-painted digital illustration, clean anti-aliased edges, thick dark outline, warm lamplight only, solid black background --no pixel art, pixelated, rim light, isometric, scenery, shadow --ar 1:1
+```
+
+**Fixing a near miss.** Use Midjourney's image edit on the chosen result rather than a fresh prompt, and say what to keep as well as what to change:
+
+- Jagged or pixelated edges (the scenes board causes these; upscaling only enlarges them): `redraw this exact <object> as a smooth hand-painted digital illustration, clean anti-aliased edges, smooth shading, keep the same shape, colours, dark outline and warm light --no pixel art, pixelated, dithering, jagged edges`. Turn the moodboard off for this step.
+- Wrong colour: `recolour this exact <object>: <colours>, keep shape, outline and lighting --no <unwanted colours>`.
+- Wrong angle: `stand this exact <object> upright, turned slightly, slight high angle view, centred, no diagonal tilt, keep colours, outline and style`.
+
+**Checking.** Claude removes the solid background, crops to a square and mocks the icon in the real frame at the tile size (up to 200px), 64px and 26px, beside the icon it replaces. An icon passes when its silhouette and main colour still read at 26px.
+
 ### Chinese pages
 
 English is the default and keeps its URLs. Chinese lives under `/oneiros/zh/`, mirroring every English route, and the header switches between the two.
