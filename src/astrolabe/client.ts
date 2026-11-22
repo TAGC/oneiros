@@ -41,6 +41,63 @@ function setUp(root: HTMLElement): void {
     if (button) showView(button.dataset.view!);
   });
 
+  /* Constellations: the switch, and the time and energy filter. */
+  const cfilter = root.querySelector<HTMLElement>('.al-cfilter');
+  if (cfilter && (Number(cfilter.dataset.total) || root.querySelector('.al-warn'))) {
+    cfilter.hidden = false;
+    const toggle = cfilter.querySelector<HTMLButtonElement>('.al-ctoggle')!;
+    const showConstellations = (on: boolean) => {
+      root.dataset.constellations = on ? 'on' : 'off';
+      toggle.setAttribute('aria-pressed', String(on));
+      storage('astrolabe-constellations', on ? 'on' : 'off');
+    };
+    const remembered = storage('astrolabe-constellations');
+    showConstellations(remembered ? remembered === 'on' : root.dataset.constellations === 'on');
+    toggle.addEventListener('click', () =>
+      showConstellations(root.dataset.constellations !== 'on'),
+    );
+
+    const SCALES: Record<string, string[]> = {
+      size: ['small', 'medium', 'large'],
+      energy: ['low', 'medium', 'high'],
+    };
+    const chosen: Record<string, string> = { size: 'any', energy: 'any' };
+    const fits = (el: Element) =>
+      Object.entries(chosen).every(([scale, max]) => {
+        if (max === 'any') return true;
+        const value = el.getAttribute(`data-${scale}`);
+        return value !== null && SCALES[scale].indexOf(value) <= SCALES[scale].indexOf(max);
+      });
+    const fitText = cfilter.querySelector<HTMLElement>('.al-fit');
+    const applyFilter = () => {
+      const unfit = new Set<string>();
+      let fitting = 0;
+      for (const group of root.querySelectorAll('.al-cgroup')) {
+        const ok = fits(group);
+        group.classList.toggle('al-unfit', !ok);
+        if (ok) fitting++;
+        else unfit.add(group.getAttribute('data-c')!);
+      }
+      for (const card of root.querySelectorAll('.al-card')) {
+        card.classList.toggle('al-unfit', !fits(card));
+      }
+      for (const star of root.querySelectorAll('.al-star[data-c]')) {
+        star.classList.toggle('al-unfit', unfit.has(star.getAttribute('data-c')!));
+      }
+      if (fitText) fitText.textContent = fitText.dataset.template!.replace('9999', String(fitting));
+    };
+    cfilter.addEventListener('click', (e) => {
+      const button = (e.target as Element).closest<HTMLButtonElement>('.al-scale button');
+      if (!button) return;
+      const scale = button.parentElement!.dataset.scale!;
+      chosen[scale] = button.dataset.value!;
+      for (const b of button.parentElement!.querySelectorAll('button')) {
+        b.setAttribute('aria-pressed', String(b === button));
+      }
+      applyFilter();
+    });
+  }
+
   /* Selection and the panel. A drag on the sky is not a click on a star. */
   let dragged = false;
   let selected: number | undefined;

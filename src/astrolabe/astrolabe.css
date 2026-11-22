@@ -579,6 +579,198 @@
   font-size: 14px;
 }
 
+/* Constellations: lines, names, the filter and the list. */
+.astrolabe {
+  --al-const: light-dark(#3a3660, #d9d5ff);
+}
+.astrolabe[data-constellations='off'] :is(.al-constellations, .al-warn),
+.astrolabe[data-constellations='off'] .al-scale,
+.astrolabe[data-constellations='off'] .al-fit {
+  display: none;
+}
+.al-cline {
+  stroke: var(--al-const);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+.al-cring {
+  fill: none;
+  stroke: var(--al-const);
+  stroke-width: 1;
+  stroke-dasharray: 1 3;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+.al-cname {
+  font: italic 600 16px var(--serif, 'Crimson Pro', serif);
+  fill: var(--al-const);
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+:lang(zh) .al-cname {
+  font-style: normal;
+  font-size: 15px;
+}
+.al-cmeta {
+  font: 12px var(--sans, 'Source Sans 3', sans-serif);
+  fill: var(--al-const);
+  opacity: 0.85;
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.al-cgroup,
+.al-card {
+  transition: opacity 0.25s;
+}
+.astrolabe[data-constellations='on'] .al-unfit {
+  opacity: 0.15;
+}
+.astrolabe[data-constellations='on'] .al-star.al-unfit {
+  opacity: 0.3;
+}
+.astrolabe[data-constellations='on'] .al-card.al-unfit {
+  opacity: 0.45;
+}
+.al-warn-sign {
+  fill: var(--al-star-fill);
+  stroke: var(--open);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+.al-warn-bang {
+  stroke: var(--open);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.al-cfilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+.al-cfilter[hidden] {
+  display: none;
+}
+.al-ctoggle,
+.al-scale button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mute);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.al-ctoggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius);
+}
+.al-ctoggle[aria-pressed='true'],
+.al-scale button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--al-const) 16%, transparent);
+  color: var(--ink);
+}
+.al-scale {
+  display: inline-flex;
+  align-items: center;
+}
+.al-scale-name {
+  margin-inline-end: 6px;
+  font-size: 14px;
+  color: var(--mute);
+}
+.al-scale button {
+  padding: 3px 9px;
+  margin-inline-start: -1px;
+}
+.al-scale button:nth-child(2) {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.al-scale button:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.al-fit {
+  margin: 0;
+  font-size: 14px;
+  color: var(--mute);
+}
+.al-clist {
+  margin-top: 22px;
+}
+.al-clist h2 {
+  margin-top: 0;
+}
+.al-clist-sub {
+  color: var(--mute);
+}
+.al-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.al-card {
+  padding: 10px 14px 12px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--al-const);
+  border-radius: var(--radius);
+  background: var(--soft);
+}
+.al-card h3 {
+  margin: 0;
+  font: italic 600 19px var(--serif, 'Crimson Pro', serif);
+}
+:lang(zh) .al-card h3 {
+  font-style: normal;
+}
+.al-card p {
+  margin: 4px 0;
+  font-size: 14.5px;
+}
+.al-card-facts {
+  color: var(--mute);
+}
+.al-card-stars {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+}
+.al-star-link {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.al-star-link .al-mini {
+  align-self: center;
+}
+.al-ungrouped {
+  margin-top: 14px;
+}
+.al-ungrouped summary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.al-panel-c {
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+.al-panel-c-facts {
+  display: block;
+  color: var(--mute);
+  font-size: 13px;
+}
+
 /* The key. */
 .al-key {
   margin-top: 18px;

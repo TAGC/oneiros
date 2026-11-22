@@ -14,9 +14,11 @@ interface Props {
   roles?: StarRole[];
   /** Staggers the twinkle; omit for a still glyph (key, panel). */
   number?: number;
+  /** An open question in no constellation: a small warning mark, shown with constellations. */
+  warn?: boolean;
 }
 
-const { status, conflict = false, roles = [], number } = Astro.props;
+const { status, conflict = false, roles = [], number, warn = false } = Astro.props;
 const scale = roles.includes('central') ? 1.5 : 1;
 const f = (v: number) => Number(v.toFixed(2));
 const twinkle =
@@ -33,6 +35,7 @@ const reach = { frontier: ray, blocked: ring, decided: disc, 'ruled-out': 5, und
 ];
 const moon = (reach + 4) * 0.72;
 const tone = conflict ? 'al-conflict' : 'al-open';
+const warnAt = `translate(${f(-(reach + 9))} ${f(-(reach + 7))})`;
 ---
 
 <g class:list={['al-glyph', `al-g-${status}`, conflict && 'al-g-conflict']}>
@@ -82,6 +85,14 @@ const tone = conflict ? 'al-conflict' : 'al-open';
   {
     roles.includes('peripheral') && (
       <circle class:list={['al-moon', conflict && 'al-conflict']} cx={f(moon)} cy={f(-moon)} r={1.8} />
+    )
+  }
+  {
+    warn && (
+      <g class="al-warn" transform={warnAt}>
+        <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
+        <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
+      </g>
     )
   }
 </g>

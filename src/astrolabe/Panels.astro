@@ -10,6 +10,7 @@ import { wikiUrl } from '../lib/site';
 import { calloutHeading, issueId } from '../lib/wiki';
 import type { Star, StarChart } from './chart';
 import Glyph from './Glyph.astro';
+import { constellationFacts } from './facts';
 import { areaTint } from './tints';
 
 interface Props {
@@ -21,6 +22,7 @@ const { chart, locale } = Astro.props;
 const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 
 /** The text for this page's language, or English marked as such. */
 function localised(texts: Partial<Record<Locale, string>> | undefined) {
@@ -92,6 +94,25 @@ function linkGroups(star: Star) {
               </li>
             ))}
           </ul>
+          {star.constellation !== undefined && (
+            <p class="al-panel-c">
+              {a.constellation}
+              {t.colon}
+              <a
+                href={`#constellation-${star.constellation}`}
+                lang={
+                  groupOf.get(star.constellation)!.nameLang === locale
+                    ? undefined
+                    : HTML_LANG[groupOf.get(star.constellation)!.nameLang]
+                }
+              >
+                {groupOf.get(star.constellation)!.name}
+              </a>
+              <span class="al-panel-c-facts">
+                {constellationFacts(groupOf.get(star.constellation)!, t)}
+              </span>
+            </p>
+          )}
           <div class:list={['note', conflict ? 'note-conflict' : 'note-open']}>
             <p class="note-h">
               <strong>{calloutHeading(q.kind, locale, q)}</strong>

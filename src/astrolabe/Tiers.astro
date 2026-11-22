@@ -27,6 +27,7 @@ const counts = new Map(
   ]),
 );
 const LINE = 18;
+const ungrouped = new Set(chart.ungrouped);
 ---
 
 <svg
@@ -114,6 +115,7 @@ const LINE = 18;
               star.roles.includes('central') && 'al-central',
             ]}
             data-n={star.number}
+            data-c={star.constellation}
             aria-label={a.starLabel(star.number, star.label, status, areaName(q.area))}
           >
             <rect
@@ -125,7 +127,12 @@ const LINE = 18;
             />
             <g transform={`translate(${placed.x} ${placed.y})`}>
               <circle class="al-focus" r={placed.r + 6} />
-              <Glyph status={star.status} conflict={q.kind === 'conflict'} roles={star.roles} />
+              <Glyph
+                status={star.status}
+                conflict={q.kind === 'conflict'}
+                roles={star.roles}
+                warn={ungrouped.has(star.number)}
+              />
             </g>
             <text class="al-label" lang={HTML_LANG[star.labelLang]}>
               {placed.label.lines.map((line, i) => (

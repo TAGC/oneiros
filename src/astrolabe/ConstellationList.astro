@@ -1,0 +1,68 @@
+---
+/** Every open constellation with its reasoning and questions, then the ungrouped questions. */
+import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
+import type { StarChart } from './chart';
+import { constellationFacts } from './facts';
+import StarLink from './StarLink.astro';
+
+interface Props {
+  chart: StarChart;
+  locale: Locale;
+}
+
+const { chart, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
+---
+
+{
+  (chart.constellations.length > 0 || chart.ungrouped.length > 0) && (
+    <section class="al-clist" aria-labelledby="al-clist-title">
+      <h2 id="al-clist-title">{a.constellations}</h2>
+      <p class="al-clist-sub">
+        {chart.constellations.length ? a.constellationsSub : a.noConstellations}
+      </p>
+      <div class="al-cards">
+        {chart.constellations.map((c) => (
+          <article
+            class="al-card"
+            id={`constellation-${c.number}`}
+            data-c={c.number}
+            data-size={c.size}
+            data-energy={c.energy}
+          >
+            <h3 lang={lang(c.nameLang)}>
+              <a href={c.url}>{c.name}</a>
+            </h3>
+            <p class="al-card-facts">{constellationFacts(c, t)}</p>
+            {c.reasoning && <p lang={lang(c.reasoning.lang)}>{c.reasoning.text}</p>}
+            <ul class="al-card-stars" aria-label={a.members}>
+              {c.stars.map((n) => (
+                <StarLink star={byNumber.get(n)!} />
+              ))}
+            </ul>
+          </article>
+        ))}
+      </div>
+      {chart.ungrouped.length > 0 && (
+        <details class="al-ungrouped">
+          <summary>
+            <svg class="al-mini" viewBox="-7 -7 14 14" aria-hidden="true">
+              <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
+              <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
+            </svg>
+            {a.ungrouped(chart.ungrouped.length)}
+          </summary>
+          <p>{a.ungroupedHelp}</p>
+          <ul class="al-card-stars">
+            {chart.ungrouped.map((n) => (
+              <StarLink star={byNumber.get(n)!} />
+            ))}
+          </ul>
+        </details>
+      )}
+    </section>
+  )
+}

@@ -3,6 +3,7 @@
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
 import type { StarChart } from './chart';
+import { constellationFacts } from './facts';
 import Glyph from './Glyph.astro';
 import type { SkyLayout } from './sky';
 import { areaKey, areaTint } from './tints';
@@ -18,6 +19,9 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
+const ungrouped = new Set(chart.ungrouped);
+const placedAt = new Map(layout.stars.map((s) => [s.number, s]));
+const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 ---
 
 <svg
@@ -57,6 +61,37 @@ const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? are
       ))
     }
   </g>
+  <g class="al-constellations" aria-hidden="true">
+    {
+      layout.constellations.map((placed) => {
+        const c = groupOf.get(placed.number)!;
+        return (
+          <g
+            class="al-cgroup"
+            data-c={c.number}
+            data-size={c.size}
+            data-energy={c.energy}
+          >
+            {placed.segments.map(([from, to]) => {
+              const p = placedAt.get(from)!;
+              const q = placedAt.get(to)!;
+              return <line class="al-cline" x1={p.x} y1={p.y} x2={q.x} y2={q.y} />;
+            })}
+            {c.stars.map((n) => {
+              const p = placedAt.get(n)!;
+              return <circle class="al-cring" cx={p.x} cy={p.y} r={p.r + 6} />;
+            })}
+            <text class="al-cname" x={placed.label.x} y={placed.label.y + 15} text-anchor="middle" lang={HTML_LANG[c.nameLang]}>
+              {c.name}
+            </text>
+            <text class="al-cmeta" x={placed.label.x} y={placed.label.y + 31} text-anchor="middle">
+              {constellationFacts(c, t)}
+            </text>
+          </g>
+        );
+      })
+    }
+  </g>
   <g class="al-stars">
     {
       layout.stars.map((placed) => {
@@ -75,6 +110,7 @@ const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? are
               star.roles.includes('central') && 'al-central',
             ]}
             data-n={star.number}
+            data-c={star.constellation}
             data-area={areaKey(q.area)}
             aria-label={a.starLabel(star.number, star.label, status, areaName(q.area))}
           >
@@ -86,6 +122,7 @@ const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? are
                 conflict={q.kind === 'conflict'}
                 roles={star.roles}
                 number={star.number}
+                warn={ungrouped.has(star.number)}
               />
             </g>
             <text

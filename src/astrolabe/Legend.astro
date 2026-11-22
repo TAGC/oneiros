@@ -69,6 +69,20 @@ const threads = ['open', 'settled', 'undermines'] as const;
         <span class="al-key-glow" aria-hidden="true"></span>
         <span>{a.areaGlow}</span>
       </li>
+      <li>
+        <svg class="al-key-mark" viewBox="0 -8 40 16" aria-hidden="true">
+          <line class="al-cline" x1="5" y1="4" x2="35" y2="-4" />
+          <circle class="al-cring" cx="5" cy="4" r="3" />
+          <circle class="al-cring" cx="35" cy="-4" r="3" />
+        </svg>
+        <span>{a.constellationKey}</span>
+      </li>
+      <li>
+        <svg class="al-key-mark" viewBox="-16 -16 32 32" aria-hidden="true">
+          <Glyph status="blocked" warn />
+        </svg>
+        <span>{a.ungroupedKey}</span>
+      </li>
     </ul>
   </div>
 </details>

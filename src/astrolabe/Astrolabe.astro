@@ -7,7 +7,10 @@ import './astrolabe.css';
 import { type Locale, useTranslations } from '../i18n/ui';
 import Wiki from '../layouts/Wiki.astro';
 import { getQuestions, type Question, questionGraph } from '../lib/questions';
+import { getConstellations } from '../lib/questions/constellations';
 import { chartQuestions } from './chart';
+import ConstellationFilter from './ConstellationFilter.astro';
+import ConstellationList from './ConstellationList.astro';
 import Legend from './Legend.astro';
 import Panels from './Panels.astro';
 import SharedDefs from './SharedDefs.astro';
@@ -26,14 +29,19 @@ const a = t.astrolabe;
 
 /** The one place that decides which questions appear on the map. */
 const shown = (q: Question) => (q.status as string) !== 'duplicate';
-const questions = getQuestions().all().filter(shown);
-const chart = chartQuestions(questions, questionGraph(questions), locale);
+const all = getQuestions();
+const questions = all.all().filter(shown);
+const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
 const sky = chart.stars.length ? layoutSky(chart) : undefined;
 const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
 ---
 
 <Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">
-  <div class="astrolabe" data-view="sky">
+  <div
+    class="astrolabe"
+    data-view="sky"
+    data-constellations={chart.constellations.length ? 'on' : 'off'}
+  >
     <h1>{a.name}</h1>
     <p class="sub">{a.sub}</p>
     {
@@ -49,6 +57,7 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
                 {a.views.tiers}
               </button>
             </div>
+            <ConstellationFilter chart={chart} locale={locale} />
             <p class="al-hint" data-for="sky">
               {a.hint}
             </p>
@@ -89,6 +98,7 @@ const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
             </div>
             <Panels chart={chart} locale={locale} />
           </div>
+          <ConstellationList chart={chart} locale={locale} />
           <Legend locale={locale} />
         </>
       ) : (
