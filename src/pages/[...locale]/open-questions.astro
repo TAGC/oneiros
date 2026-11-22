@@ -4,7 +4,6 @@ import WikiLink from '../../components/WikiLink.astro';
 import { DEFAULT_LOCALE, inLocale, type Locale, localePaths } from '../../i18n/locale';
 import { useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
-import { AREAS } from '../../lib/areas';
 import { getPages, type Page } from '../../lib/pages';
 import { getQuestions, type Question } from '../../lib/questions';
 import { clusterList } from '../../lib/questions/clusters';
@@ -47,9 +46,10 @@ const ungroupedPages = pages
   .map((p) => ({ ...p, markers: p.markers.filter((m) => ungrouped.has(m.issue)) }))
   .filter((p) => p.markers.length);
 const ungroupedUnmarked = unmarked.filter((q) => ungrouped.has(q.number));
-const areas = [...AREAS, undefined]
-  .map((area) => ({ area, list: ungroupedUnmarked.filter((q) => q.area === area) }))
-  .filter((g) => g.list.length);
+const areas = clusterList(ungroupedUnmarked, undefined, 'areas', locale).map((c) => ({
+  name: c.name,
+  list: c.questions.map((n) => questions.get(n)!),
+}));
 
 /** A question issue's box: its text from the page that marks it, or from the issue. */
 function issueBox(q: Question) {
@@ -141,7 +141,9 @@ function issueBox(q: Question) {
             <p>{t.openUnmarkedSub}</p>
             {areas.map((g) => (
               <>
-                <h4>{g.area ? (t.areaNames[g.area] ?? g.area) : t.noArea}</h4>
+                <h4 lang={g.name && g.name.lang !== locale ? g.name.lang : undefined}>
+                  {g.name?.text ?? t.noArea}
+                </h4>
                 {g.list.map((q) => (
                   <QuestionBox {...issueBox(q)} />
                 ))}
