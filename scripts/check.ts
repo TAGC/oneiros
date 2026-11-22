@@ -20,6 +20,8 @@ process.env.NODE_ENV = 'production';
 const { calloutKind, issueMarker, WIKI_LINK } = await import('../src/lib/wiki');
 const { getQuestions } = await import('../src/lib/questions');
 const { issueProblems, markerProblems } = await import('../src/lib/questions/problems');
+const { constellationProblems, getConstellations } =
+  await import('../src/lib/questions/constellations');
 const { wikiLinkNode } = await import('../src/lib/remark-wiki');
 
 const ROOT = join(import.meta.dirname, '..');
@@ -549,6 +551,7 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Page status', checkStatus],
   ['Question markers', () => markerProblems(getQuestions(), markedPages())],
   ['Question issues', () => issueProblems(getQuestions())],
+  ['Constellations', () => constellationProblems(getConstellations())],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {
