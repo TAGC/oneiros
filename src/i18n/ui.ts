@@ -164,8 +164,14 @@ Five pillars hold it together:
     Certainty: 'Agreed and audited, nothing open.',
     Dogma: 'Locked by the designer; it will not change.',
   } as Record<string, string>,
-  statusRule:
-    'A page goes above Tenet only when the designer says so. Very little is set in stone yet.',
+  statusRulesHeading: 'Rules',
+  statusRules: [
+    'Only the designer raises a status. Claude may propose a status for a new page, or propose lowering one.',
+    'Certainty needs a passed canon audit and nothing open. Dogma also needs the designer to lock it, and its page changes only with their approval.',
+    'The build fails if a Certainty or Dogma page holds an open question or a conflict.',
+    "When a conflict or an open question about a page's core lands on a Tenet page, or its core rule changes, Claude asks whether its status still holds.",
+    'Very little is set in stone yet.',
+  ],
 
   /* Random page */
   randomFinding: 'Finding a page…',
@@ -336,7 +342,14 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     Certainty: '已约定并经过审核，没有未决问题。',
     Dogma: '由设计者锁定，不会再变。',
   },
-  statusRule: '只有设计者明确同意，页面才会高于信条。目前定下来的东西还很少。',
+  statusRulesHeading: '规则',
+  statusRules: [
+    '只有设计者能提升状态。Claude 可以为新页面提议状态，或提议降低状态。',
+    '确信需要通过正典审核，且没有未决问题。教条还需设计者锁定，其页面只有经设计者同意才会改动。',
+    '如果确信或教条页面含有未决问题或冲突，构建会失败。',
+    '当信条页面出现冲突或关于其核心的未决问题，或其核心规则改变时，Claude 会询问其状态是否仍然成立。',
+    '目前定下来的东西还很少。',
+  ],
 
   randomFinding: '正在寻找页面…',
   randomNoScript: (link) => `随机页面需要 JavaScript。请试试${link}。`,
