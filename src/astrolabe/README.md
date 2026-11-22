@@ -103,7 +103,7 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `text.ts` | Rough text widths and line wrapping for English and Chinese, since no fonts are measured at build time. |
 | `Astrolabe.astro` | The page, inside the wiki layout. The route in `src/pages/[...locale]/astrolabe.astro` only renders it. |
 | `Sky.astro`, `Tiers.astro`, `Brass.astro` | The three views. The sky is drawn by area, with the layout by constellation as data; the tiers are drawn once each way. |
-| `Backdrop.astro` | The night sky's decoration: specks, the engraved dial and the area glows. |
+| `Backdrop.astro`, `backdrop.ts` | The night sky's decoration: specks, the engraved dial and the area glows, in their own SVG layer behind the map. The specks are merged into a few paths (`backdrop.ts`). |
 | `Glyph.astro` | A star's glyph, shared by the views, the panel and the key. |
 | `Panels.astro` | One panel per star. Without JavaScript, `:target` shows the panel a star links to. |
 | `BrassPanels.astro`, `BrassKey.astro` | One panel per constellation, and how to read the dial, for the constellations view. |
@@ -112,15 +112,25 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `StarLink.astro`, `facts.ts` | A link that opens a star's panel; a constellation's facts on one line. |
 | `Legend.astro` | The key under the map. |
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
-| `client.ts` | The view switch, the Cluster by choice, the star panel, thread highlighting, and pan and zoom on the sky. |
-| `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings. |
+| `client.ts`, `viewbox.ts` | The view switch, the Cluster by choice, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
+| `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings, writing the map once per frame. |
 | `brass-client.ts` | The constellations view: its panel, the filter on its marks, and star links that lead to the night sky. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
 The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `motion.test.ts`); the page itself is checked by eye in the dev server.
+The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`); the page itself is checked by eye in the dev server.
+
+## Keeping it fast
+
+The night sky is one large SVG, so every repaint redraws all of it. A few rules keep pan, zoom and the idle twinkle cheap:
+
+- Draw many small decorative marks as a few paths, not one element each.
+- Animate the decoration only in its own layer (`.al-sky-back`), never in the map above it.
+- Fade paths that span the sky with `fill-opacity`, not `opacity`: opacity composites a layer as large as the path.
+- Pan and zoom write the view box at most once per frame and never read the SVG's screen matrix in an event handler.
+- The twinkle pauses while the sky is dragged or zoomed.
 
 ## Art
 

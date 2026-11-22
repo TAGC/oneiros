@@ -1,7 +1,9 @@
 ---
 /**
- * The night sky view: the build-time layout drawn as one static SVG, clustered by area. The
- * layout clustered by constellation rides along as data, for the client to fly the stars to.
+ * The night sky view: the build-time layout drawn as static SVG, clustered by area. The
+ * decoration sits in its own SVG behind the map, so its twinkle repaints only that layer; pan
+ * and zoom move both. The layout clustered by constellation rides along as data, for the client
+ * to fly the stars to; the flight moves only the map.
  */
 import { HTML_LANG, type Locale, useTranslations } from '../i18n/ui';
 import Backdrop from './Backdrop.astro';
@@ -45,6 +47,15 @@ const motionData: SkyMotionData | undefined = byConstellation && {
 ---
 
 <svg
+  class="al-sky-back"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <Backdrop chart={chart} layout={layout} />
+</svg>
+<svg
   class="al-sky"
   viewBox={`0 0 ${layout.width} ${layout.height}`}
   preserveAspectRatio="xMidYMid meet"
@@ -53,7 +64,6 @@ const motionData: SkyMotionData | undefined = byConstellation && {
   role="group"
   aria-label={a.views.sky}
 >
-  <Backdrop chart={chart} layout={layout} />
   <g class="al-area-names" aria-hidden="true">
     {
       layout.clusters.map(

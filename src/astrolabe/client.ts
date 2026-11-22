@@ -6,6 +6,8 @@
 import type { SkyMotionData } from './motion';
 import { skyMotion } from './sky-motion';
 
+import { type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
+
 const astrolabe = document.querySelector<HTMLElement>('.astrolabe');
 if (astrolabe?.querySelector('.al-frame')) setUp(astrolabe);
 
@@ -27,6 +29,8 @@ function setUp(root: HTMLElement): void {
   zoom.hidden = false;
   const maps = [...root.querySelectorAll<SVGSVGElement>('.al-sky, .al-tiers')];
   const sky = root.querySelector<SVGSVGElement>('.al-sky')!;
+  /** The sky and its decoration layer, which pan and zoom together. */
+  const layers = [...root.querySelectorAll<SVGSVGElement>('.al-sky-back, .al-sky')];
   const skyView = root.querySelector<HTMLElement>('.al-view-sky')!;
 
   /* Views. */
@@ -194,36 +198,42 @@ function setUp(root: HTMLElement): void {
     });
   }
 
-  /* Pan and zoom on the night sky, by moving its viewBox. */
+  /*
+   * Pan and zoom on the night sky, by moving its viewBox. Events only update `box`; the
+   * SVGs are written once per frame, and positions come from `box` rather than the SVG's
+   * screen matrix, so no event forces a layout.
+   */
   const W = Number(sky.dataset.width);
   const H = Number(sky.dataset.height);
-  const home = { x: 0, y: 0, w: W, h: H };
-  let box = { ...home };
-  const apply = () => sky.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+  const home: ViewBox = { x: 0, y: 0, w: W, h: H };
+  let box: ViewBox = { ...home };
+  let fit: Fit = 'meet';
+  let pending = 0;
+  const write = () => {
+    pending = 0;
+    for (const layer of layers) {
+      layer.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+    }
+  };
+  const apply = () => {
+    if (!pending) pending = requestAnimationFrame(write);
+  };
+  const flush = () => {
+    if (!pending) return;
+    cancelAnimationFrame(pending);
+    write();
+  };
   // A tall frame (a phone) fills its height and crops the sides, so the labels stay legible.
   const fill = () => {
     const r = skyView.getBoundingClientRect();
-    const tall = r.height > r.width;
-    sky.setAttribute('preserveAspectRatio', tall ? 'xMidYMid slice' : 'xMidYMid meet');
+    fit = r.height > r.width ? 'slice' : 'meet';
+    for (const layer of layers) layer.setAttribute('preserveAspectRatio', `xMidYMid ${fit}`);
   };
   fill();
   new ResizeObserver(fill).observe(skyView);
-  const toSky = (clientX: number, clientY: number) => {
-    const ctm = sky.getScreenCTM();
-    if (!ctm) return { x: 0, y: 0 };
-    const p = new DOMPoint(clientX, clientY).matrixTransform(ctm.inverse());
-    return { x: p.x, y: p.y };
-  };
   const zoomAt = (clientX: number, clientY: number, factor: number) => {
-    const w = Math.min(W * 1.6, Math.max(W / 10, box.w / factor));
-    const f = box.w / w;
-    const p = toSky(clientX, clientY);
-    box = {
-      x: p.x - (p.x - box.x) / f,
-      y: p.y - (p.y - box.y) / f,
-      w,
-      h: (box.h * w) / box.w,
-    };
+    const frame = sky.getBoundingClientRect();
+    box = zoomBox(box, frame, fit, clientX, clientY, factor, W / 10, W * 1.6);
     apply();
   };
   const zoomCentre = (factor: number) => {
@@ -240,6 +250,8 @@ function setUp(root: HTMLElement): void {
       apply();
     }
   });
+  // The twinkle rests while the sky moves (see .al-dragging and .al-zooming in the CSS).
+  let zooming: ReturnType<typeof setTimeout> | undefined;
   skyView.addEventListener(
     'wheel',
     (e) => {
@@ -247,6 +259,9 @@ function setUp(root: HTMLElement): void {
       if (!e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
       zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)));
+      skyView.classList.add('al-zooming');
+      clearTimeout(zooming);
+      zooming = setTimeout(() => skyView.classList.remove('al-zooming'), 200);
     },
     { passive: false },
   );
@@ -282,10 +297,7 @@ function setUp(root: HTMLElement): void {
       return;
     }
     if (!dragged) return;
-    const ctm = sky.getScreenCTM();
-    if (!ctm) return;
-    box.x -= (now.x - last.x) / ctm.a;
-    box.y -= (now.y - last.y) / ctm.d;
+    box = panBox(box, sky.getBoundingClientRect(), fit, now.x - last.x, now.y - last.y);
     apply();
   });
   const end = (e: PointerEvent) => {
@@ -301,6 +313,7 @@ function setUp(root: HTMLElement): void {
 
   /** Pans the sky so a star outside the view (or under the panel) comes into sight. */
   function ensureVisible(n: number) {
+    flush();
     const star = sky.querySelector<SVGGraphicsElement>(`.al-star[data-n="${n}"] g`);
     if (!star) return;
     const r = star.getBoundingClientRect();
@@ -313,8 +326,8 @@ function setUp(root: HTMLElement): void {
       r.top > view.top + 20 &&
       r.bottom < view.bottom - 20;
     if (inside) return;
-    const target = toSky((view.left + right) / 2, (view.top + view.bottom) / 2);
-    const at = toSky(r.left + r.width / 2, r.top + r.height / 2);
+    const target = toSky(box, view, fit, (view.left + right) / 2, (view.top + view.bottom) / 2);
+    const at = toSky(box, view, fit, r.left + r.width / 2, r.top + r.height / 2);
     box.x += at.x - target.x;
     box.y += at.y - target.y;
     apply();
