@@ -234,6 +234,8 @@ function setUp(root: HTMLElement): void {
       apply();
     }
   });
+  // The twinkle rests while the sky moves (see .al-dragging and .al-zooming in the CSS).
+  let zooming: ReturnType<typeof setTimeout> | undefined;
   skyView.addEventListener(
     'wheel',
     (e) => {
@@ -241,6 +243,9 @@ function setUp(root: HTMLElement): void {
       if (!e.ctrlKey && !e.metaKey) return;
       e.preventDefault();
       zoomAt(e.clientX, e.clientY, Math.exp(-e.deltaY * (e.deltaMode === 1 ? 0.05 : 0.0018)));
+      skyView.classList.add('al-zooming');
+      clearTimeout(zooming);
+      zooming = setTimeout(() => skyView.classList.remove('al-zooming'), 200);
     },
     { passive: false },
   );
