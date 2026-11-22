@@ -106,3 +106,61 @@ describe('the tiers layout', () => {
     expect(layout.threads[0].d).toMatch(/^M[\d.]+,[\d.]+/);
   });
 });
+
+function constellations(questions: Question[], members: Record<number, number[]>) {
+  const open = Object.entries(members).map(([number, ns]) => ({
+    number: Number(number),
+    url: `https://github.com/TAGC/oneiros/milestone/${number}`,
+    state: 'open' as const,
+    name: { en: `A constellation with a name long enough to wrap, number ${number}` },
+    reasoning: {},
+    questions: questions.filter((q) => ns.includes(q.number)),
+  }));
+  const held = new Set(Object.values(members).flat());
+  return {
+    all: () => open,
+    open: () => open,
+    of: () => undefined,
+    ungrouped: () => questions.filter((q) => !held.has(q.number) && q.status === 'open'),
+  };
+}
+
+function byConstellation(questions: Question[], members: Record<number, number[]>) {
+  const chart = chartQuestions(
+    questions,
+    questionGraph(questions),
+    'en',
+    constellations(questions, members),
+  );
+  return layoutTiers(chart, 'constellations');
+}
+
+describe('the tiers layout by constellation', () => {
+  test('gives each constellation a row, then one row for the questions in none', () => {
+    const qs = [1, 2, 3, 4, 5].map((n) => question(n));
+    const layout = byConstellation(qs, { 7: [4, 2], 3: [5] });
+    expect(layout.rows.map((r) => r.constellation)).toEqual([3, 7, undefined]);
+    const rowOf = { 1: 2, 2: 1, 3: 2, 4: 1, 5: 0 } as Record<number, number>;
+    for (const s of layout.stars) {
+      const row = layout.rows[rowOf[s.number]];
+      expect(s.label.box.y1).toBeGreaterThanOrEqual(row.y);
+      expect(s.label.box.y2).toBeLessThanOrEqual(row.y + row.height);
+    }
+  });
+
+  test('wraps a long constellation name inside the name column and its row', () => {
+    const layout = byConstellation([question(1)], { 2: [1] });
+    const [row] = layout.rows;
+    expect(row.name!.lines.length).toBeGreaterThan(1);
+    expect(row.height).toBeGreaterThanOrEqual(row.name!.lines.length * 18 + 18);
+    expect(layout.columns[0].x).toBe(layout.areaWidth);
+  });
+
+  test('keeps the same tiers as by area', () => {
+    const qs = [question(1), question(2, { blockedBy: [1] }), question(3, { status: 'decided' })];
+    const byArea = tiers(qs);
+    const layout = byConstellation(qs, { 1: [2] });
+    expect(tierOf(layout)).toEqual(tierOf(byArea));
+    expect(layout.columns.map((c) => c.tier)).toEqual(byArea.columns.map((c) => c.tier));
+  });
+});

@@ -1,11 +1,12 @@
 /**
  * The tiers view: a working map. Columns run from settled ground through the frontier to
- * one, two, and three or more steps out; rows are the areas. A step out is the longest
- * chain of unsettled blockers in front of a question.
+ * one, two, and three or more steps out; rows are the areas, or the constellations. A step
+ * out is the longest chain of unsettled blockers in front of a question.
  */
+import type { Locale } from '../i18n/ui';
 import type { Area } from '../lib/questions';
 import type { Star, StarChart, Thread } from './chart';
-import type { Box } from './sky';
+import type { Box, Clustering } from './sky';
 import { starRadius } from './sky';
 import { textWidth, wrapText } from './text';
 
@@ -18,8 +19,12 @@ export interface TierColumn {
   width: number;
 }
 
+/** An area's row, or a constellation's; by constellation, the last row holds the rest. */
 export interface TierRow {
   area?: Area;
+  constellation?: number;
+  /** A constellation's name, wrapped to the name column. */
+  name?: { lines: string[]; lang: Locale };
   y: number;
   height: number;
 }
@@ -39,11 +44,12 @@ export interface TierThread extends Thread {
 }
 
 export interface TiersLayout {
+  by: Clustering;
   width: number;
   height: number;
   /** Where the column headings sit, above the first row. */
   headerHeight: number;
-  /** The width of the area names at the left of each row. */
+  /** The width of the row names at the left of each row. */
   areaWidth: number;
   columns: TierColumn[];
   rows: TierRow[];
@@ -53,6 +59,8 @@ export interface TiersLayout {
 
 const HEADER = 58;
 const AREA_WIDTH = 132;
+const CONSTELLATION_WIDTH = 172;
+const NAME_SIZE = 15;
 const COLUMN = 214;
 const TEXT_INSET = 34;
 const SIZE = 13.5;
@@ -104,14 +112,15 @@ function path(a: TierStar, b: TierStar, aLabelEnd: number, kind: Thread['kind'])
   return `M${f(sx)},${f(a.y)}C${f(sx - bow)},${f(a.y)} ${f(ex + bow)},${f(b.y)} ${f(ex)},${f(b.y)}`;
 }
 
-export function layoutTiers(chart: StarChart): TiersLayout {
+export function layoutTiers(chart: StarChart, by: Clustering = 'areas'): TiersLayout {
+  const nameWidth = by === 'areas' ? AREA_WIDTH : CONSTELLATION_WIDTH;
   const steps = stepsOut(chart);
   const tiers = new Map(chart.stars.map((s) => [s.number, tierOf(s, steps)]));
   const deepest = Math.max(1, ...tiers.values());
   const columns: TierColumn[] = [];
   for (let t = 0; t <= deepest; t++) {
     if (t <= 1 || [...tiers.values()].includes(t as Tier)) {
-      columns.push({ tier: t as Tier, x: AREA_WIDTH + columns.length * COLUMN, width: COLUMN });
+      columns.push({ tier: t as Tier, x: nameWidth + columns.length * COLUMN, width: COLUMN });
     }
   }
   const columnOf = new Map(columns.map((c) => [c.tier, c]));
@@ -120,7 +129,25 @@ export function layoutTiers(chart: StarChart): TiersLayout {
   const rows: TierRow[] = [];
   const stars: TierStar[] = [];
   let y = HEADER;
-  for (const group of chart.areas) {
+  const groups: { row: Omit<TierRow, 'y' | 'height'>; stars: number[] }[] =
+    by === 'areas'
+      ? chart.areas.map((g) => ({ row: g.area ? { area: g.area } : {}, stars: g.stars }))
+      : [
+          ...chart.constellations
+            .filter((c) => c.stars.length)
+            .map((c) => ({
+              row: {
+                constellation: c.number,
+                name: { lines: wrapText(c.name, NAME_SIZE, nameWidth - 28), lang: c.nameLang },
+              },
+              stars: c.stars,
+            })),
+          {
+            row: {},
+            stars: chart.stars.filter((s) => s.constellation === undefined).map((s) => s.number),
+          },
+        ].filter((g) => g.stars.length);
+  for (const group of groups) {
     const cells = new Map<Tier, number>();
     const placed: TierStar[] = [];
     for (const number of group.stars) {
@@ -152,10 +179,13 @@ export function layoutTiers(chart: StarChart): TiersLayout {
         },
       });
     }
-    const height = Math.max(54, ...[...cells.values()].map((h) => h - CELL_GAP + ROW_PAD * 2));
-    const row: TierRow = { y, height };
-    if (group.area) row.area = group.area;
-    rows.push(row);
+    const named = (group.row.name?.lines.length ?? 1) * LINE + 38;
+    const height = Math.max(
+      54,
+      named,
+      ...[...cells.values()].map((h) => h - CELL_GAP + ROW_PAD * 2),
+    );
+    rows.push({ ...group.row, y, height });
     stars.push(...placed);
     y += height;
   }
@@ -170,8 +200,9 @@ export function layoutTiers(chart: StarChart): TiersLayout {
   return {
     width: last.x + last.width,
     height: y,
+    by,
     headerHeight: HEADER,
-    areaWidth: AREA_WIDTH,
+    areaWidth: nameWidth,
     columns,
     rows,
     stars,
