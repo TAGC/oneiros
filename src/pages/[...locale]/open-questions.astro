@@ -4,6 +4,7 @@ import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
 import { renderMarkdown } from '../../lib/markdown';
 import { getPages } from '../../lib/pages';
+import { getQuestions } from '../../lib/questions';
 import { wikiUrl } from '../../lib/site';
 import { calloutHeading } from '../../lib/wiki';
 
@@ -15,6 +16,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
+const questions = getQuestions();
 const pages = (await getPages(locale)).filter((p) => p.callouts.length);
 const count = pages.reduce((n, p) => n + p.callouts.length, 0);
 ---
@@ -39,7 +41,13 @@ const count = pages.reduce((n, p) => n + p.callouts.length, 0);
         {p.callouts.map((c) => (
           <div class={`note note-${c.kind}`}>
             <p class="note-h">
-              <strong>{calloutHeading(c.kind, locale)}</strong> ·{' '}
+              <strong>
+                {calloutHeading(
+                  c.kind,
+                  locale,
+                  c.issue === undefined ? undefined : questions.get(c.issue),
+                )}
+              </strong> ·{' '}
               <a href={wikiUrl(p.slug, c.id, p.locale)}>{t.onThePage}</a>
             </p>
             {p.locale === locale ? (

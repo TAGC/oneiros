@@ -7,7 +7,7 @@ import { unified } from 'unified';
 import { visit } from 'unist-util-visit';
 import { parse as parseYaml } from 'yaml';
 import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
-import { getQuestions, type Questions } from './questions';
+import { getQuestions, type Question, type Questions } from './questions';
 import { slugify, WIKI_DIRS } from './site';
 import type { Status } from './status';
 
@@ -52,9 +52,29 @@ export const CALLOUTS: Record<CalloutKind, { category: string }> = {
   conflict: { category: 'Pages with conflicts' },
 };
 
-export function calloutHeading(kind: CalloutKind, locale: Locale): string {
+/**
+ * A callout box's header. A conflict question names the sources in its Source row; an
+ * inline `[!CONFLICT]` callout keeps the fixed vision-and-sheet header.
+ */
+export function calloutHeading(kind: CalloutKind, locale: Locale, question?: Question): string {
   const t = useTranslations(locale);
-  return kind === 'open' ? t.openQuestion : t.conflict;
+  if (kind === 'open') return t.openQuestion;
+  if (!question) return t.conflict;
+  const sources = question.properties.sources ?? [];
+  if (sources.length < 2) return t.conflictBare;
+  return t.conflictBetween(sources.map((s) => sourceName(s, locale) ?? s));
+}
+
+/**
+ * A conflict source's name in a locale: a `[[wiki link]]` gives its page's title in that
+ * locale, any other source must be one of the listed non-page sources. Undefined otherwise,
+ * including a link whose page has no version in the locale.
+ */
+export function sourceName(source: string, locale: Locale): string | undefined {
+  const link = /^\[\[([^[\]\n]+?)\]\]$/.exec(source.trim());
+  if (!link) return useTranslations(locale).conflictSources[source.trim().toLowerCase()];
+  const found = resolve(parseWikiLink(link[1]).target, locale);
+  return found.exists && found.locale === locale ? found.title : undefined;
 }
 
 /** A category's display name: automatic categories and areas are translated, others are names. */
