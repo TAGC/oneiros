@@ -20,6 +20,8 @@ process.env.NODE_ENV = 'production';
 const { calloutKind, issueMarker, WIKI_LINK } = await import('../src/lib/wiki');
 const { getQuestions } = await import('../src/lib/questions');
 const { issueProblems, markerProblems } = await import('../src/lib/questions/problems');
+const { constellationProblems, getConstellations } =
+  await import('../src/lib/questions/constellations');
 const { wikiLinkNode } = await import('../src/lib/remark-wiki');
 
 const ROOT = join(import.meta.dirname, '..');
@@ -288,39 +290,27 @@ function checkEnglishStyle(): Problem[] {
   return problems;
 }
 
-// ---------------------------------------------------------------- Chinese parity
+// ---------------------------------------------------------------- question markers
 
 const calloutParser = unified().use(remarkParse).use(remarkGfm);
 
-function callouts(raw: string): Record<CalloutKind, number[]> {
+/** A page's question markers and any old inline callouts, with their lines. */
+function blockquotes(raw: string): Pick<MarkedPage, 'markers' | 'callouts'> {
   const { bodyLine } = frontmatter(raw);
   const body = raw
     .split('\n')
     .slice(bodyLine - 1)
     .join('\n');
-  const out: Record<CalloutKind, number[]> = { open: [], conflict: [] };
+  const markers: MarkedPage['markers'] = [];
+  const callouts: { kind: CalloutKind; line: number }[] = [];
   visit(calloutParser.parse(body) as Root, 'blockquote', (node: Blockquote) => {
-    const kind = calloutKind(node);
-    if (kind) out[kind].push((node.position?.start.line ?? 1) + bodyLine - 1);
-  });
-  return out;
-}
-
-// ---------------------------------------------------------------- question markers
-
-function markers(raw: string): { issue: number; line: number }[] {
-  const { bodyLine } = frontmatter(raw);
-  const body = raw
-    .split('\n')
-    .slice(bodyLine - 1)
-    .join('\n');
-  const out: { issue: number; line: number }[] = [];
-  visit(calloutParser.parse(body) as Root, 'blockquote', (node: Blockquote) => {
+    const line = (node.position?.start.line ?? 1) + bodyLine - 1;
     const issue = issueMarker(node);
-    if (issue !== undefined)
-      out.push({ issue, line: (node.position?.start.line ?? 1) + bodyLine - 1 });
+    if (issue !== undefined) markers.push({ issue, line });
+    const kind = calloutKind(node);
+    if (kind) callouts.push({ kind, line });
   });
-  return out;
+  return { markers, callouts };
 }
 
 /** Every page in both locales with its markers, for the question checks. */
@@ -333,7 +323,7 @@ function markedPages(): MarkedPage[] {
         locale,
         slug: file.replace(/^.*\/|\.mdx?$/g, ''),
         status: frontmatter(raw).data.status,
-        markers: markers(raw),
+        ...blockquotes(raw),
       };
     }),
   );
@@ -342,9 +332,8 @@ function markedPages(): MarkedPage[] {
 // ---------------------------------------------------------------- page status
 
 /**
- * Certainty and Dogma need nothing open, so their pages may hold no open or conflict
- * callouts (markers are checked with the questions). A Chinese page carries the same status
- * as its English page.
+ * A Chinese page carries the same status as its English page. (Certainty and Dogma pages
+ * holding markers are checked with the questions.)
  */
 function checkStatus(): Problem[] {
   const problems: Problem[] = [];
@@ -360,14 +349,6 @@ function checkStatus(): Problem[] {
           where: file,
           message: `status ${String(status)} differs from the English page's ${String(english.get(slug))}`,
         });
-      if (status !== 'Certainty' && status !== 'Dogma') continue;
-      const found = callouts(raw);
-      for (const kind of ['open', 'conflict'] as const)
-        for (const line of found[kind])
-          problems.push({
-            where: `${file}:${line}`,
-            message: `${status} page holds ${kind === 'open' ? 'an open' : 'a conflict'} callout; resolve it or lower the status`,
-          });
     }
   }
   return problems;
@@ -401,22 +382,6 @@ function checkPageParity(): Problem[] {
       problems.push({
         where: `${zhFile}:${line}`,
         message: `${key} is ${JSON.stringify(got) ?? 'missing'}, English has ${JSON.stringify(want) ?? 'none'}`,
-      });
-    }
-    const enCallouts = callouts(enRaw);
-    const zhCallouts = callouts(zhRaw);
-    for (const kind of ['open', 'conflict'] as CalloutKind[]) {
-      const a = enCallouts[kind];
-      const b = zhCallouts[kind];
-      if (a.length === b.length) continue;
-      const marker = kind === 'open' ? '[!OPEN]' : '[!CONFLICT]';
-      problems.push({
-        where: zhFile,
-        message: `${b.length} ${marker} callouts, English has ${a.length}`,
-        detail: [
-          `English at lines ${a.join(', ') || 'none'} of ${enFile}`,
-          `Chinese at lines ${b.join(', ') || 'none'}`,
-        ],
       });
     }
   }
@@ -549,6 +514,7 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Page status', checkStatus],
   ['Question markers', () => markerProblems(getQuestions(), markedPages())],
   ['Question issues', () => issueProblems(getQuestions())],
+  ['Constellations', () => constellationProblems(getConstellations())],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {

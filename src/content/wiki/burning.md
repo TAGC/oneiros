@@ -30,8 +30,7 @@ navbox: memory
 
 Burning is the only way to pay for the top [[intensity|intensities]], which cost more than a developed character's [[mood capacity]].
 
-> [!OPEN]
-> The Glossary said burning costs "the mood capacity it gave". A memory in a bead already gives no mood capacity (see [[recounting]]), so what burning costs beyond the memory and its bead is not settled.
+> [!ISSUE 29]
 
 ## Burning a memory you hold
 

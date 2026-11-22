@@ -42,5 +42,4 @@ Once surfaced, it is undone by [[uprooting]], which always scars.
 
 At [[character creation]] you pick one of three [[backstory]] memories to start surfaced.
 
-> [!CONFLICT]
-> The Glossary calls surfacing "a memory's step from Room to Megaron". The vision puts it at Megaron: a Touchstone "may surface as a mutation", and surfacing is "the last step". On the Glossary's reading every Touchstone has surfaced; on the vision's, a Touchstone may not yet have. The vision's version is used until this is settled.
+> [!ISSUE 108]

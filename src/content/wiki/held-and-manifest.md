@@ -43,13 +43,10 @@ Force becomes manifest the moment it leaves a mood. A [[chain]] is only a plan u
 
 To cast opposites at one target, keep them apart until they land: sequential casts, twin casting or a buffer.
 
-> [!OPEN]
-> Twin casting and a buffer are named as ways to keep opposites apart until they land, but neither is designed yet.
+> [!ISSUE 55]
 
 ## Open questions
 
-> [!OPEN]
-> What is left of a spell after it strikes something manifest?
+> [!ISSUE 56]
 
-> [!OPEN]
-> How do held undertones and opposed creatures fit this rule? The vision lists both among the places where opposites annihilate into lucidity, yet says held feeling never annihilates.
+> [!ISSUE 57]

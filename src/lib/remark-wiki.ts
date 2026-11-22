@@ -22,14 +22,11 @@ import { getQuestions, type Questions } from './questions';
 import { WIKI_DIRS, wikiUrl } from './site';
 import {
   calloutHeading,
-  calloutId,
-  calloutKind,
   type CalloutKind,
   issueMarker,
   markerCallout,
   parseWikiLink,
   resolve,
-  stripCalloutMarker,
   WIKI_LINK,
 } from './wiki';
 
@@ -168,18 +165,6 @@ function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
   });
 }
 
-function transformCallouts(tree: Root, locale: Locale): void {
-  const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
-  visit(tree, 'blockquote', (node: Blockquote) => {
-    if (node.data?.hName) return;
-    const kind = calloutKind(node);
-    if (!kind) return;
-    counts[kind] += 1;
-    stripCalloutMarker(node);
-    toNote(node, kind, calloutId(kind, counts[kind]), calloutHeading(kind, locale));
-  });
-}
-
 function transformTables(tree: Root): void {
   visit(tree, 'table', (node: Table, index, parent: Parent | undefined) => {
     node.data = { hProperties: { className: ['wt'] } };
@@ -248,14 +233,13 @@ function contentsBox(tree: Root, headings: Heading[], locale: Locale): void {
   if (at !== -1) tree.children.splice(at, 0, toc);
 }
 
-/** Wiki links everywhere; for articles also callouts and question markers, `.wt` tables, heading ids and contents. */
+/** Wiki links everywhere; for articles also question markers, `.wt` tables, heading ids and contents. */
 export default function remarkWiki(options: RemarkWikiOptions = {}) {
   return (tree: Root, file?: SourceFile) => {
     const locale = options.locale ?? fileLocale(file);
     if (options.article) expandMarkers(tree, locale, options.questions ?? getQuestions());
     transformLinks(tree, options.page, locale);
     if (!options.article) return;
-    transformCallouts(tree, locale);
     transformTables(tree);
     contentsBox(tree, addHeadingIds(tree), locale);
   };

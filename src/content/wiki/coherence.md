@@ -62,11 +62,8 @@ At zero Coherence you return as an [[Echo]]: weaker, but keeping your [[library]
 
 ## Open questions
 
-> [!OPEN]
-> The multiplier on [[renown]] is not yet set.
+> [!ISSUE 32]
 
-> [!OPEN]
-> Exactly what survives when you return as an [[Echo]] is open.
+> [!ISSUE 33]
 
-> [!OPEN]
-> No thresholds are defined for the [[#Coherence status|status words]] (Anchored, Drifting, Fraying, Unravelling).
+> [!ISSUE 34]

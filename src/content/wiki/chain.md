@@ -25,5 +25,4 @@ A chain is only a plan until you cast it, and its opposites cancel at the cast (
 
 A chain runs up to a **chain cap**. The cap is shared between verbs and adverbs, so you trade intensity for shaping (see [[Casting#Chained adverbs|chained adverbs]]).
 
-> [!OPEN]
-> What is the chain cap, and does it grow with the character?
+> [!ISSUE 31]

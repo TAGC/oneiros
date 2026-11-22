@@ -25,8 +25,7 @@ The exterior of your [[Temenos]] is your body; the interior is your mind.
 
 [[Coherence|Damage]] lowers your Coherence. It also reshapes your mood, since pain can pinch you towards Fear or Grief (see [[Mood]]).
 
-> [!OPEN]
-> What is pain, and does it need its own place in the ontology, or is it only a [[stimulus]] that pinches you towards Fear or Grief?
+> [!ISSUE 28]
 
 ## How form changes
 

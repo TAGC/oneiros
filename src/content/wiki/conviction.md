@@ -39,5 +39,4 @@ Places, factions and cultures hold beliefs of their own. A whole city's Convicti
 
 Conviction belongs only to beliefs; a memory never has Conviction of its own.
 
-> [!OPEN]
-> Claude once proposed that the Conviction of a belief that a memory happened raises that memory's Hold. The designer agreed only "for now", and the rule cannot work as it stands: nothing defines a belief tied to one memory (whether there is one per memory, where it comes from, what raises it). Without it the rule is not used. Grounds do not raise Conviction, so no feedback loop arises.
+> [!ISSUE 36]

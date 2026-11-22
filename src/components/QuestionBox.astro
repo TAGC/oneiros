@@ -1,0 +1,44 @@
+---
+import type { Locale } from '../i18n/ui';
+import { renderMarkdown } from '../lib/markdown';
+
+interface Props {
+  kind: string;
+  heading: string;
+  /** Shown after the heading, each after a dot; a link when it has an `href`. */
+  links: { href?: string; text: string }[];
+  title?: string;
+  markdown: string;
+  /** The page the text belongs to, for resolving its wiki links. */
+  page?: string;
+  /** The language the text is in. */
+  lang: Locale;
+  /** The language of the page showing the box. */
+  locale: Locale;
+}
+
+const { kind, heading, links, title, markdown, page, lang, locale } = Astro.props;
+const html = renderMarkdown(markdown, page, lang);
+---
+
+<div class={`note note-${kind}`}>
+  <p class="note-h">
+    <strong>{heading}</strong>
+    {
+      links.map((l) => (
+        <>
+          {' '}
+          · {l.href ? <a href={l.href}>{l.text}</a> : l.text}
+        </>
+      ))
+    }
+  </p>
+  {
+    title && (
+      <p>
+        <strong>{title}</strong>
+      </p>
+    )
+  }
+  {lang === locale ? <Fragment set:html={html} /> : <div lang={lang} set:html={html} />}
+</div>

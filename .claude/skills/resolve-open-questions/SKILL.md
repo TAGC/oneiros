@@ -12,7 +12,8 @@ Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marke
 ## 1. Pick a group
 
 - Run `bun run pull`, then list the open questions: `gh issue list --state open --label kind:conflict` and `--label kind:open`, or grep `.questions/`. List the old callouts too: `grep -n -A2 '\[!CONFLICT\]\|\[!OPEN\]' src/content/wiki/*.md*`. The `/open-questions/` page collects both.
-- Conflicts before opens. Then opens area by area.
+- A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (README, "Constellations"). List them with `gh api 'repos/TAGC/oneiros/milestones?state=open' --jq '.[] | select(.title | startswith("✦ ")) | "\(.number) \(.title)"'` and offer one first. Its questions are `gh issue list --state open --milestone "<title>"`.
+- Without a fitting constellation: conflicts before opens. Then opens area by area.
 - Prefer questions whose blockers are all settled: an open question blocked by another open question waits for it.
 - A group is a set of related, interdependent questions, such as burning, recounting and beads. Keep it small enough for one session. Duplicates of one conflict across pages are one question.
 - Tell the designer the group and how many questions it holds, then start.
@@ -64,8 +65,11 @@ Once every question in the group is settled, ask the designer whether to open th
 
 The issues and their answer comments are the decision record. Do not keep a separate log or write provenance into commit bodies.
 
-The designer merges the pull request; merging deploys. Once it is merged, close each ruled-out issue with `gh issue close N --reason "not planned"`. Closing it earlier fails the deploy's checks, since its marker still names a closed issue.
+The designer merges the pull request; merging deploys. Once it is merged:
+
+1. Close each ruled-out issue with `gh issue close N --reason "not planned"`. Closing it earlier fails the deploy's checks, since its marker still names a closed issue.
+2. For each constellation the group drew from, check `gh issue list --state open --milestone "<title>"`. When it lists nothing, close the milestone: `gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`.
 
 ## 5. Hand over
 
-Report the pull request, the issues it closes, any ruled-out issues still to close, new question issues and loose ends, then stop. The designer starts a fresh agent for the next group.
+Report the pull request, the issues it closes, any ruled-out issues and milestones still to close, new question issues and loose ends, then stop. The designer starts a fresh agent for the next group.

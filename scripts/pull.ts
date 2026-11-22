@@ -1,7 +1,8 @@
 /**
  * Mirrors the repo's question issues (labelled `kind:open` or `kind:conflict`, open and
  * closed) into the gitignored question cache, with each issue's blocked-by links and
- * comments (the cache keeps only the answer comment). Needs the `gh` CLI, signed in.
+ * comments (the cache keeps only the answer comment), and every milestone with the question
+ * issues in it (constellations). Needs the `gh` CLI, signed in.
  * Usage: bun run pull
  */
 import { execFileSync } from 'node:child_process';
@@ -12,6 +13,11 @@ import {
   QUESTION_CACHE,
   writeQuestionCache,
 } from '../src/lib/questions';
+import {
+  type GithubMilestone,
+  type MilestonedIssue,
+  writeMilestoneCache,
+} from '../src/lib/questions/constellations';
 import { REPO } from '../src/lib/site';
 
 const ROOT = join(import.meta.dirname, '..');
@@ -30,13 +36,13 @@ function list<T>(path: string): T[] {
     .map((line) => JSON.parse(line) as T);
 }
 
-const byNumber = new Map<number, GithubIssue>();
+const byNumber = new Map<number, GithubIssue & MilestonedIssue>();
 for (const label of KIND_LABELS) {
   const path = `repos/${SLUG}/issues?labels=${encodeURIComponent(label)}&state=all&per_page=100`;
-  for (const issue of list<GithubIssue>(path)) byNumber.set(issue.number, issue);
+  for (const issue of list<GithubIssue & MilestonedIssue>(path)) byNumber.set(issue.number, issue);
 }
 
-const issues: PulledIssue[] = [...byNumber.values()]
+const issues: (PulledIssue & MilestonedIssue)[] = [...byNumber.values()]
   .filter((i) => !i.pull_request)
   .map((issue) => ({
     ...issue,
@@ -47,5 +53,9 @@ const issues: PulledIssue[] = [...byNumber.values()]
       ? list<{ body: string | null }>(`repos/${SLUG}/issues/${issue.number}/comments?per_page=100`)
       : [],
   }));
+const milestones = list<GithubMilestone>(`repos/${SLUG}/milestones?state=all&per_page=100`);
 writeQuestionCache(join(ROOT, QUESTION_CACHE), issues);
-console.log(`Wrote ${issues.length} question(s) to ${QUESTION_CACHE}/`);
+writeMilestoneCache(join(ROOT, QUESTION_CACHE), milestones, issues);
+console.log(
+  `Wrote ${issues.length} question(s) and ${milestones.length} milestone(s) to ${QUESTION_CACHE}/`,
+);

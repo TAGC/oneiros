@@ -31,5 +31,4 @@ Reliving follows the same transfer rules as recounting: a fixed rate of flow, co
 
 The vision also uses "relived" in a wider sense. Memories climb the [[rootedness ladder]] by being relived at high-stakes moments, among other ways (see [[Hold]]). A memory heading towards [[surfacing]] can be stopped by no longer reliving it, among other ways.
 
-> [!OPEN]
-> The vision does not say whether being "relived at high-stakes moments", or reliving that leads towards surfacing, is the same act as drawing a memory from a bead.
+> [!ISSUE 94]
