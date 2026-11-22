@@ -37,8 +37,13 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
 - **Section links:** every internal link in `dist/` must reach an existing page, and its `#fragment` an existing `id` on that page.
 - **Red links:** a link to a missing page fails unless its slug is in `src/data/redlinks.json`. Both languages share the list. The check also fails when a listed page has been written or nothing links to it any more.
 - **English style:** no em dashes, and no spaced en dashes used as dashes, in the English pages, sheet data or README.
-- **Chinese parity:** every English page has a Chinese page with the same extension, `kind`, `area`, `navbox` and number of `[!OPEN]` and `[!CONFLICT]` callouts. Every tab in `src/data/sheet-zh/` has the same block types, header lengths, row counts and row lengths as its English tab.
-- **Question markers:** every `[!ISSUE N]` marker must name an open question issue in the question cache.
+- **Chinese parity:** every English page has a Chinese page with the same extension, `kind`, `area`, `navbox` and number of `[!OPEN]` and `[!CONFLICT]` callouts, and the same `[!ISSUE N]` markers. Every tab in `src/data/sheet-zh/` has the same block types, header lengths, row counts and row lengths as its English tab.
+- **Questions:** checked against the question cache.
+  - Every `[!ISSUE N]` marker names an open question issue.
+  - An issue's Page row matches the page that holds its marker.
+  - Every issue has a section for each site locale, and its `## zh` section has the Chinese title.
+  - Every Undermined by row and blocked-by link names an existing issue.
+  - Every answer comment has a section for each site locale.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
 To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
@@ -95,7 +100,7 @@ navbox: character # optional; an id in src/data/navboxes.json
 - `summary` feeds hover previews, the Glossary index, category pages and search. Keep it to one plain sentence.
 - `area` is also a category. The infobox's Area row is added automatically.
 - `icon: Lore` (optional) shows that key of `src/data/icons.json` beside the title instead of the area's icon.
-- `status: Tenet` (optional) shows how settled the page's design idea is: one of Notion, Tenet, Certainty or Dogma, from least to most settled. It uses the belief stages' rootedness ladder for the wiki's own beliefs about how the game should play; it is not a game concept. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. That page defines each stage. Only the designer raises a status; Claude may propose one for a new page, or propose lowering one. The status page lists the full rules, and `bun run check` fails if a Certainty or Dogma page holds an open or conflict callout.
+- `status: Tenet` (optional) shows how settled the page's design idea is: one of Notion, Tenet, Certainty or Dogma, from least to most settled. It uses the belief stages' rootedness ladder for the wiki's own beliefs about how the game should play; it is not a game concept. The infobox shows it as a Status row under the Area row, with the stage's painted icon; a page without an infobox shows it beside the title. Both link to `/oneiros/status/`, which explains it. That page defines each stage. Only the designer raises a status; Claude may propose one for a new page, or propose lowering one. The status page lists the full rules, and `bun run check` fails if a Certainty or Dogma page holds an open or conflict callout or a question marker.
 - Quote YAML values that start with `[[` or contain `: `.
 
 ### Wiki links
