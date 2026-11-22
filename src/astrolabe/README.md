@@ -23,6 +23,8 @@ It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-ma
 | Thin lines between ringed stars | One constellation |
 | Small warning triangle | An open question in no constellation |
 
+Settled questions (decided, ruled out, undermined) show on the night sky and the tiers only while a thread links them to an open question (it blocks one, waits on one, or an open question broke its premise). A **Show settled** switch above the map shows them all; it is off by default and remembered in the browser. Agreed by the designer on 22 Nov 2026. Every layout is computed with every star, and a hidden star keeps its place, so the switch moves nothing else; without JavaScript the map follows the default. The rule lives in one place, `quietSettled` beside `chartQuestions` in `chart.ts`. The Dial's notches, each constellation's settled count and the counts above the map still count every question.
+
 A **Full screen** button at the top right of the map (all three views) fills the screen with the map and the controls above it, by the browser's full screen or, where there is none (an iPhone) or the browser refuses it, by covering the page. The same button or Escape leaves it; Escape first closes an open panel. It shows only with JavaScript. The designer asked for it on 22 Nov 2026.
 
 Three views, switched by buttons above the map; the choice is remembered in the browser:
