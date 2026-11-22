@@ -13,6 +13,7 @@ Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marke
 
 - Run `bun run pull`, then list the open questions: `gh issue list --state open --label kind:conflict` and `--label kind:open`, or grep `.questions/`. The `/open-questions/` page collects them.
 - A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (README, "Constellations"). List them with `gh api 'repos/TAGC/oneiros/milestones?state=open' --jq '.[] | select(.title | startswith("✦ ")) | "\(.number) \(.title)"'` and offer one first. Its questions are `gh issue list --state open --milestone "<title>"`.
+- When `bun run constellations` lists ungrouped questions or constellations ready to close, run the `chart-constellations` skill first.
 - Without a fitting constellation: conflicts before opens. Then opens area by area.
 - Prefer questions whose blockers are all settled: an open question blocked by another open question waits for it.
 - A group is a set of related, interdependent questions, such as burning, recounting and beads. Keep it small enough for one session.

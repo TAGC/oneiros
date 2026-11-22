@@ -17,6 +17,7 @@
     "icons": "bun scripts/icons.ts",
     "pull": "bun scripts/pull.ts",
     "links": "bun scripts/question-links.ts",
+    "constellations": "bun scripts/constellations.ts",
     "test": "bun test",
     "format:check": "oxfmt --check",
     "check": "cspell --no-progress && bun scripts/check.ts",
