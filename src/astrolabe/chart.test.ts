@@ -1,5 +1,6 @@
 import { describe, expect, test } from 'bun:test';
 import { type Question, questionGraph } from '../lib/questions';
+import type { Constellation, Constellations } from '../lib/questions/constellations';
 import { chartQuestions } from './chart';
 
 type Fixture = Partial<Question> & { status?: Question['status'] };
@@ -114,6 +115,93 @@ describe('threads', () => {
     expect(two.blocks).toEqual([3]);
     expect(two.undermines).toEqual([4]);
     expect(three.blockedBy).toEqual([2]);
+  });
+});
+
+describe('constellations', () => {
+  function sky(questions: Question[], constellations: Constellation[], locale: 'en' | 'zh' = 'en') {
+    const open = constellations.filter((c) => c.state === 'open');
+    const grouped = new Set(open.flatMap((c) => c.questions.map((q) => q.number)));
+    const fake: Constellations = {
+      all: () => constellations,
+      open: () => open,
+      of: (n) => constellations.find((c) => c.questions.some((q) => q.number === n)),
+      ungrouped: () => questions.filter((q) => q.state === 'open' && !grouped.has(q.number)),
+    };
+    return chartQuestions(questions, questionGraph(questions), locale, fake);
+  }
+
+  function constellation(
+    number: number,
+    members: Question[],
+    fixture: Partial<Constellation> = {},
+  ) {
+    return {
+      number,
+      url: `https://github.com/TAGC/oneiros/milestone/${number}`,
+      state: 'open' as const,
+      name: { en: `Group ${number}`, zh: `星座 ${number}` },
+      reasoning: { en: 'Why.' },
+      questions: members,
+      ...fixture,
+    };
+  }
+
+  test('lists open constellations with their name, scales and progress, by stars on the map', () => {
+    const qs = [question(1), question(2, { status: 'decided' }), question(3), question(4)];
+    const c = sky(
+      qs,
+      [
+        constellation(7, [qs[0], qs[1]], { size: 'small', energy: 'low' }),
+        constellation(8, [qs[2]], { name: { en: 'Only English' } }),
+        constellation(9, [qs[3]], { state: 'closed' }),
+      ],
+      'zh',
+    );
+    expect(
+      c.constellations.map((k) => ({
+        number: k.number,
+        name: k.name,
+        nameLang: k.nameLang,
+        size: k.size,
+        energy: k.energy,
+        settled: k.settled,
+        stars: k.stars,
+      })),
+    ).toEqual([
+      {
+        number: 7,
+        name: '星座 7',
+        nameLang: 'zh',
+        size: 'small',
+        energy: 'low',
+        settled: 1,
+        stars: [1, 2],
+      },
+      {
+        number: 8,
+        name: 'Only English',
+        nameLang: 'en',
+        size: undefined,
+        energy: undefined,
+        settled: 0,
+        stars: [3],
+      },
+    ]);
+  });
+
+  test('marks open questions that no open constellation holds', () => {
+    const qs = [question(1), question(2), question(3, { status: 'decided' })];
+    const c = sky(qs, [constellation(7, [qs[0]]), constellation(9, [qs[1]], { state: 'closed' })]);
+    expect(c.ungrouped).toEqual([2]);
+    expect(c.stars.find((s) => s.number === 1)!.constellation).toBe(7);
+    expect(c.stars.find((s) => s.number === 2)!.constellation).toBeUndefined();
+  });
+
+  test('has no constellations and no warnings without constellation data', () => {
+    const c = chart([question(1)]);
+    expect(c.constellations).toEqual([]);
+    expect(c.ungrouped).toEqual([]);
   });
 });
 

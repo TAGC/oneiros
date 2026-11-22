@@ -49,12 +49,22 @@ export interface SkyThread extends Thread {
   d: string;
 }
 
+/** A constellation's lines (a shortest tree through its stars) and the place for its name. */
+export interface SkyConstellation {
+  number: number;
+  /** Pairs of star numbers to join. */
+  segments: [number, number][];
+  /** The centre of the name's first line, and the box its two lines take. */
+  label: { x: number; y: number; box: Box };
+}
+
 export interface SkyLayout {
   width: number;
   height: number;
   stars: SkyStar[];
   areas: SkyArea[];
   threads: SkyThread[];
+  constellations: SkyConstellation[];
 }
 
 /** The glyph's reach, shared by every view: frontier stars have rays, central ones are larger. */
@@ -357,6 +367,88 @@ function moved(box: Box, dx: number, dy: number): Box {
   return { x1: box.x1 + dx, y1: box.y1 + dy, x2: box.x2 + dx, y2: box.y2 + dy };
 }
 
+/** Prim's shortest tree over a constellation's stars: its constellation lines. */
+function shortestTree(points: SkyStar[]): [number, number][] {
+  if (points.length < 2) return [];
+  const inTree = [points[0]];
+  const rest = points.slice(1);
+  const segments: [number, number][] = [];
+  while (rest.length) {
+    let best: { a: SkyStar; b: SkyStar; d: number } | undefined;
+    for (const a of inTree) {
+      for (const b of rest) {
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (!best || d < best.d) best = { a, b, d };
+      }
+    }
+    segments.push([best!.a.number, best!.b.number]);
+    inTree.push(best!.b);
+    rest.splice(rest.indexOf(best!.b), 1);
+  }
+  return segments;
+}
+
+const NAME_SIZE = 16;
+const NAME_HEIGHT = 36;
+
+function placeConstellations(
+  chart: StarChart,
+  stars: SkyStar[],
+  areas: SkyArea[],
+): SkyConstellation[] {
+  const at = new Map(stars.map((s) => [s.number, s]));
+  const taken: Box[] = [
+    ...stars.map((s) => s.label.box),
+    ...stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
+    ...areas.map((a) => a.label.box),
+  ];
+  const out: SkyConstellation[] = [];
+  for (const c of chart.constellations) {
+    const points = c.stars.flatMap((n) => at.get(n) ?? []);
+    if (!points.length) continue;
+    const boxes = points.flatMap((p) => [
+      p.label.box,
+      { x1: p.x - p.r, y1: p.y - p.r, x2: p.x + p.r, y2: p.y + p.r },
+    ]);
+    const x1 = Math.min(...boxes.map((b) => b.x1));
+    const x2 = Math.max(...boxes.map((b) => b.x2));
+    const y1 = Math.min(...boxes.map((b) => b.y1));
+    const y2 = Math.max(...boxes.map((b) => b.y2));
+    const w = Math.max(textWidth(c.name, NAME_SIZE) * 0.95, 160);
+    const cx = (x1 + x2) / 2;
+    const cy = (y1 + y2) / 2;
+    let best: SkyConstellation['label'] | undefined;
+    let bestCost = Infinity;
+    for (let ring = 0; ring < 10; ring++) {
+      const gap = 8 + ring * 22;
+      const spots = [
+        { x: cx, y: y2 + gap },
+        { x: cx, y: y1 - gap - NAME_HEIGHT },
+        { x: x2 + gap + w / 2, y: cy - NAME_HEIGHT / 2 },
+        { x: x1 - gap - w / 2, y: cy - NAME_HEIGHT / 2 },
+      ];
+      spots.forEach((spot, i) => {
+        const box = {
+          x1: spot.x - w / 2,
+          y1: spot.y,
+          x2: spot.x + w / 2,
+          y2: spot.y + NAME_HEIGHT,
+        };
+        let cost = i * 5 + ring * 80;
+        for (const o of taken) cost += overlapArea(box, o) * 1000;
+        if (cost < bestCost) {
+          bestCost = cost;
+          best = { x: spot.x, y: spot.y, box };
+        }
+      });
+      if (bestCost < 1000) break;
+    }
+    taken.push(best!.box);
+    out.push({ number: c.number, segments: shortestTree(points), label: best! });
+  }
+  return out;
+}
+
 export function layoutSky(chart: StarChart): SkyLayout {
   const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
   const anchors = anchorsFor(chart);
@@ -416,8 +508,10 @@ export function layoutSky(chart: StarChart): SkyLayout {
       label: labels.get(n.star.number)!,
     }))
     .sort((a, b) => a.number - b.number);
+  const constellations = placeConstellations(chart, stars, areas);
 
   const boxes = [
+    ...constellations.map((c) => c.label.box),
     ...stars.map((s) => s.label.box),
     ...stars.map((s) => ({ x1: s.x - s.r, y1: s.y - s.r, x2: s.x + s.r, y2: s.y + s.r })),
     ...areas.map((a) => a.label.box),
@@ -446,6 +540,13 @@ export function layoutSky(chart: StarChart): SkyLayout {
       box: moved(a.label.box, -minX, -minY),
     };
   }
+  for (const c of constellations) {
+    c.label = {
+      x: round(c.label.x - minX),
+      y: round(c.label.y - minY),
+      box: moved(c.label.box, -minX, -minY),
+    };
+  }
   const placed = new Map(stars.map((s) => [s.number, s]));
   const threads = chart.threads.map((t) => {
     const bend = (t.from + t.to) % 2 ? 0.12 : -0.12;
@@ -454,5 +555,12 @@ export function layoutSky(chart: StarChart): SkyLayout {
       d: curve(placed.get(t.from)!, placed.get(t.to)!, t.kind === 'undermines' ? 0.22 : bend),
     };
   });
-  return { width: Math.ceil(maxX - minX), height: Math.ceil(maxY - minY), stars, areas, threads };
+  return {
+    width: Math.ceil(maxX - minX),
+    height: Math.ceil(maxY - minY),
+    stars,
+    areas,
+    threads,
+    constellations,
+  };
 }

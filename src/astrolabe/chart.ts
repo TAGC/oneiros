@@ -5,6 +5,7 @@
 import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
 import { AREAS } from '../lib/areas';
 import type { Area, Question, QuestionGraph } from '../lib/questions';
+import type { Constellations, Energy, Size } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
 export type StarStatus = 'frontier' | 'blocked' | 'decided' | 'ruled-out' | 'undermined';
@@ -35,6 +36,25 @@ export interface Star {
   /** Undermined decisions in the chart whose premise this question broke, sorted. */
   underminedBy: number[];
   undermines: number[];
+  /** The open constellation holding this question, by milestone number. */
+  constellation?: number;
+}
+
+/** An open constellation, as the map draws it. */
+export interface ChartConstellation {
+  number: number;
+  url: string;
+  /** The name in the chart's locale, or English. */
+  name: string;
+  nameLang: Locale;
+  reasoning?: { text: string; lang: Locale };
+  size?: Size;
+  energy?: Energy;
+  /** How many of its questions are closed, of how many. */
+  settled: number;
+  total: number;
+  /** Its questions on the map, open and closed, by number. */
+  stars: number[];
 }
 
 /**
@@ -63,6 +83,17 @@ export interface StarChart {
   /** Areas with stars, in the wiki's order, then questions of no area. */
   areas: AreaGroup[];
   counts: StarCounts;
+  /** Open constellations, by milestone number; empty without constellation data. */
+  constellations: ChartConstellation[];
+  /** Open questions on the map that no open constellation holds, by number. */
+  ungrouped: number[];
+}
+
+function inLocale(texts: Partial<Record<Locale, string>>, locale: Locale) {
+  const own = texts[locale];
+  if (own !== undefined) return { text: own, lang: locale };
+  const fallback = texts[DEFAULT_LOCALE];
+  return fallback === undefined ? undefined : { text: fallback, lang: DEFAULT_LOCALE };
 }
 
 function starStatus(q: Question, frontier: Set<number>): StarStatus {
@@ -82,6 +113,7 @@ export function chartQuestions(
   questions: Question[],
   graph: QuestionGraph,
   locale: Locale,
+  constellations?: Constellations,
 ): StarChart {
   const sorted = [...questions].sort((a, b) => a.number - b.number);
   const inChart = new Set(sorted.map((q) => q.number));
@@ -126,6 +158,37 @@ export function chartQuestions(
     };
   });
 
+  const groups: ChartConstellation[] = (constellations?.open() ?? []).map((c) => {
+    const name = inLocale(c.name, locale)!;
+    const group: ChartConstellation = {
+      number: c.number,
+      url: c.url,
+      name: name.text,
+      nameLang: name.lang,
+      settled: c.questions.filter((q) => q.state === 'closed').length,
+      total: c.questions.length,
+      stars: c.questions
+        .map((q) => q.number)
+        .filter((n) => inChart.has(n))
+        .sort((a, b) => a - b),
+    };
+    const reasoning = inLocale(c.reasoning, locale);
+    if (reasoning) group.reasoning = reasoning;
+    if (c.size) group.size = c.size;
+    if (c.energy) group.energy = c.energy;
+    return group;
+  });
+  for (const group of groups) {
+    for (const n of group.stars) {
+      const star = stars.find((s) => s.number === n)!;
+      star.constellation = group.number;
+    }
+  }
+  const ungrouped = (constellations?.ungrouped() ?? [])
+    .map((q) => q.number)
+    .filter((n) => inChart.has(n))
+    .sort((a, b) => a - b);
+
   const areas: AreaGroup[] = [...AREAS, undefined]
     .map((area) => ({ area, stars: sorted.filter((q) => q.area === area).map((q) => q.number) }))
     .filter((g) => g.stars.length)
@@ -135,5 +198,5 @@ export function chartQuestions(
     counts[s.status]++;
     if (s.question.status === 'open') counts.open++;
   }
-  return { locale, stars, threads, areas, counts };
+  return { locale, stars, threads, areas, counts, constellations: groups, ungrouped };
 }

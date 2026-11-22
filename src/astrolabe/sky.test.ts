@@ -129,6 +129,37 @@ describe('the sky layout', () => {
     expect(others[0].area).toBeUndefined();
   });
 
+  test('joins each constellation with lines and names it clear of the star labels', () => {
+    const qs = questions();
+    const members = [qs[0], qs[6], qs[11], qs[12]];
+    const fake = {
+      all: () => [],
+      open: () => [
+        {
+          number: 3,
+          url: 'https://github.com/TAGC/oneiros/milestone/3',
+          state: 'open' as const,
+          name: { en: 'A fairly long constellation name' },
+          reasoning: {},
+          questions: members,
+        },
+      ],
+      of: () => undefined,
+      ungrouped: () => [],
+    };
+    const layout = layoutSky(chartQuestions(qs, questionGraph(qs), 'en', fake));
+    const [c] = layout.constellations;
+    expect(c.number).toBe(3);
+    expect(c.segments).toHaveLength(3);
+    const joined = new Set(c.segments.flat());
+    expect([...joined].sort((a, b) => a - b)).toEqual([1, 7, 12, 13]);
+    for (const s of layout.stars) expect(overlap(c.label.box, s.label.box)).toBe(false);
+    expect(c.label.box.x1).toBeGreaterThanOrEqual(0);
+    expect(c.label.box.y1).toBeGreaterThanOrEqual(0);
+    expect(c.label.box.x2).toBeLessThanOrEqual(layout.width);
+    expect(c.label.box.y2).toBeLessThanOrEqual(layout.height);
+  });
+
   test('draws a thread for each link, as a path between the two stars', () => {
     const layout = sky();
     expect(layout.threads.map((t) => [t.from, t.to])).toEqual([
