@@ -107,7 +107,8 @@ function setUpBrass(root: HTMLElement): void {
   };
   root.querySelector('.al-cfilter')?.addEventListener('click', applyFilter);
 
-  /* Open the view or the constellation a link points to, or the view last used. */
+  /* Open the view (`#constellations`) or the constellation a link points to, or the view
+     last used. */
   const fromHash = /^#constellation-panel-(\d+)$/.exec(location.hash);
   let saved: string | null = null;
   try {
@@ -115,6 +116,7 @@ function setUpBrass(root: HTMLElement): void {
   } catch {
     /* Storage unavailable: nothing is remembered. */
   }
-  if (fromHash || (saved === 'brass' && !location.hash.startsWith('#star-'))) showView('brass');
+  const toView = fromHash || location.hash === '#constellations';
+  if (toView || (saved === 'brass' && !location.hash.startsWith('#star-'))) showView('brass');
   if (fromHash) show(Number(fromHash[1]), false);
 }
