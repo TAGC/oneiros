@@ -1077,13 +1077,13 @@ body:lang(zh) {
   );
   --art-w: max(100vw, 1800px);
   --art-h: calc(var(--art-w) * 1440 / 3360);
-  /* Light: a pale mist over the night; dark: a thin veil. Both fade to the page background. */
+  /* A thin veil, lighter in light mode, that fades to the page background. */
   --veil-top: light-dark(
-    color-mix(in srgb, var(--bg) 80%, transparent),
+    color-mix(in srgb, var(--bg) 22%, transparent),
     color-mix(in srgb, var(--bg) 38%, transparent)
   );
   --veil-mid: light-dark(
-    color-mix(in srgb, var(--bg) 88%, transparent),
+    color-mix(in srgb, var(--bg) 45%, transparent),
     color-mix(in srgb, var(--bg) 62%, transparent)
   );
 }
@@ -1101,7 +1101,10 @@ header.top {
     var(--head);
 }
 nav.side {
-  background: color-mix(in srgb, var(--bg) 74%, transparent);
+  background: light-dark(
+    color-mix(in srgb, var(--bg) 76%, transparent),
+    color-mix(in srgb, var(--bg) 74%, transparent)
+  );
 }
 /* The main page opens with the scene itself, dissolving into the page. */
 .hero {
