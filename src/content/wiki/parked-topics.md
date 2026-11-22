@@ -27,3 +27,10 @@ The idea arose from [[bead|beads]] being glass-like containers that hold a memor
 
 > [!OPEN]
 > Is glass inert to every emotion, and if so, why is it an exception to the solid kind?
+
+## What each Status stage means
+
+Parked on 22 November 2026. A page's Status shows how settled its idea is. It reuses the five [[belief stages|belief stage]] names, from Hearsay to Dogma, but it is about the wiki, not the game. What each stage means for a page is not yet defined.
+
+> [!OPEN]
+> What does each Status stage mean for a page, and when does a page move up to the next?
