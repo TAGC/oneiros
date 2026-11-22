@@ -16,7 +16,9 @@ bun run preview        # serve dist/ (search works here, not in dev)
 bun run lint           # oxlint
 bun run format         # oxfmt (format:check to verify)
 bun run check          # spelling and content checks (run after a build)
-bun run verify         # build, lint, format:check and check
+bun run test           # unit tests (bun test)
+bun run pull           # mirror question issues into .questions/ (needs gh, signed in)
+bun run verify         # build, test, lint, format:check and check
 ```
 
 In dev, a page's link colours are worked out when that page renders. If links look stale after adding a page, restart the dev server.
@@ -36,6 +38,7 @@ Git hooks run the same checks earlier. Set them up once per clone with `pre-comm
 - **Red links:** a link to a missing page fails unless its slug is in `src/data/redlinks.json`. Both languages share the list. The check also fails when a listed page has been written or nothing links to it any more.
 - **English style:** no em dashes, and no spaced en dashes used as dashes, in the English pages, sheet data or README.
 - **Chinese parity:** every English page has a Chinese page with the same extension, `kind`, `area`, `navbox` and number of `[!OPEN]` and `[!CONFLICT]` callouts. Every tab in `src/data/sheet-zh/` has the same block types, header lengths, row counts and row lengths as its English tab.
+- **Question markers:** every `[!ISSUE N]` marker must name an open question issue in the question cache.
 - **Chinese terms:** superseded renderings listed in `src/i18n/zh-forbidden.json` must not appear in the Chinese pages or sheet data.
 
 To allow a red link, add the slug and a one-line reason to `src/data/redlinks.json`:
@@ -58,6 +61,8 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 - `public/art/`: the background art the designer generated. Dark mode uses a night scene of the Dreamlands (made with Midjourney), graded darker and bluer for the site. Light mode uses a day scene (`dreamlands-day-*`), graded slightly softer and less saturated. The ungraded originals stay outside the repo.
 - `src/components/LICENSE-lucide.txt`: the licence for the three Lucide icons on the Quality styles page.
 - `src/lib/`: the wiki link resolver, remark plugin and page helpers.
+- `src/lib/questions/`: the questions module, the only way into question data. It writes and reads the question cache.
+- `.questions/`: the question cache, one Markdown file per question issue. `bun run pull` wipes and rewrites it; it is gitignored.
 
 ## Authoring guide
 
@@ -120,6 +125,16 @@ Links inside raw HTML (such as `<p class="formula">`) are not processed.
 ```
 
 `[!OPEN]` renders as an "Open question" note and adds the page to "Pages with open questions". `[!CONFLICT]` renders as "Conflict: vision and sheet disagree" and adds "Pages with conflicts". Every callout is listed on `/oneiros/open-questions/`. Use one callout per question so each can be linked.
+
+### Question markers
+
+Open questions are moving to GitHub issues labelled `kind:open` or `kind:conflict` and one `area:<area>`. A page marks where a question's box goes:
+
+```md
+> [!ISSUE 142]
+```
+
+The build fills in the box from the question cache: the header from the `kind:` label, the body from the issue's `## en` or `## zh` section for the page's language, with wiki links resolved as on pages. The `## zh` section starts with a `### ` line holding the Chinese title. Markers count like callouts on the open questions page and in the automatic categories, and inline callouts keep working beside them. Run `bun run pull` first, or the box says the question is missing.
 
 ### Contents box and backlinks
 
