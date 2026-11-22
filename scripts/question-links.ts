@@ -1,79 +1,77 @@
 /**
  * Applies an approved links plan to the question issues: blocked-by links through GitHub's
- * issue dependencies API, Related and Undermined by rows by editing each issue body's property
- * table. Dry run by default: it reads the issues and prints what it would change.
+ * issue dependencies, Related and Undermined by rows by editing each issue body's property
+ * table. Dry run by default: it reads the issues and prints what it would change. A live run
+ * ends by pulling, so the question cache matches GitHub.
  * Plan lines are `add|remove #N blocked-by|related|undermined-by #M: <reason>`; in a Markdown
  * file only `question-links` code blocks count. Needs the `gh` CLI, signed in.
  * Usage: bun run links <plan file> [--live]
  */
 import { readFileSync } from 'node:fs';
 import { type LinkedIssue, parsePlan, planChanges } from '../src/lib/questions/links';
-import { gh, SLUG } from './gh';
+import { type GitHub, liveGitHub } from './github';
+import { CACHE, pull } from './pull';
 
-const args = process.argv.slice(2);
-const live = args.includes('--live');
-const file = args.find((a) => !a.startsWith('--'));
-if (!file) {
-  console.error('Usage: bun run links <plan file> [--live]');
-  process.exit(1);
+export interface RunOptions {
+  live: boolean;
+  /** The question cache a live run refreshes. */
+  cache: string;
+  log: (line: string) => void;
+  /** Warnings and errors; `log` when absent. */
+  warn?: (line: string) => void;
 }
 
-interface RestIssue {
-  id: number;
-  body: string | null;
-  labels: { name: string }[];
-  pull_request?: unknown;
-}
-
-const changes = parsePlan(readFileSync(file, 'utf8'));
-const numbers = [...new Set(changes.flatMap((c) => [c.issue, c.other]))].sort((a, b) => a - b);
-const ids = new Map<number, number>();
-const issues = new Map<number, LinkedIssue>();
-for (const n of numbers) {
-  const issue = JSON.parse(gh([`repos/${SLUG}/issues/${n}`])) as RestIssue;
-  if (issue.pull_request || !issue.labels.some((l) => /^kind:(open|conflict)$/.test(l.name))) {
-    throw new Error(`#${n} is not a question issue`);
+/** Applies a links plan's text: prints the changes, and makes them when live. */
+export function applyLinks(github: GitHub, plan: string, { live, cache, log }: RunOptions): void {
+  const changes = parsePlan(plan);
+  const numbers = [...new Set(changes.flatMap((c) => [c.issue, c.other]))].sort((a, b) => a - b);
+  const issues = new Map<number, LinkedIssue>();
+  for (const n of numbers) {
+    const issue = github.question(n);
+    issues.set(n, {
+      body: issue.body ?? '',
+      blockedBy: (issue.blockedBy ?? []).map((b) => b.number),
+    });
   }
-  const blockers = gh(['--paginate', '--jq', '.[].number', `${blockedBy(n)}?per_page=100`]);
-  ids.set(n, issue.id);
-  issues.set(n, {
-    body: issue.body ?? '',
-    blockedBy: blockers.split('\n').filter(Boolean).map(Number),
+
+  const planned = planChanges(changes, issues);
+  const verb = live ? '' : 'would ';
+  for (const { issue, before, after } of planned.bodies) {
+    const was = new Set(before.split(/\r?\n/));
+    const now = new Set(after.split(/\r?\n/));
+    log(`#${issue}: ${verb}edit the property table`);
+    for (const line of was) if (!now.has(line)) log(`  - ${line}`);
+    for (const line of now) if (!was.has(line)) log(`  + ${line}`);
+    if (live) github.editIssueBody(issue, after);
+  }
+  for (const { issue, blocker } of planned.block) {
+    log(`#${issue}: ${verb}add blocked by #${blocker}`);
+    if (live) github.addBlockedBy(issue, blocker);
+  }
+  for (const { issue, blocker } of planned.unblock) {
+    log(`#${issue}: ${verb}remove blocked by #${blocker}`);
+    if (live) github.removeBlockedBy(issue, blocker);
+  }
+  for (const line of planned.skipped) log(`skipped: ${line}`);
+  const total = planned.bodies.length + planned.block.length + planned.unblock.length;
+  if (!live) {
+    log(`Dry run: ${total} change(s). Add --live to make them.`);
+    return;
+  }
+  log(`Applied ${total} change(s).`);
+  log(pull(github, cache));
+}
+
+if (import.meta.main) {
+  const args = process.argv.slice(2);
+  const file = args.find((a) => !a.startsWith('--'));
+  if (!file) {
+    console.error('Usage: bun run links <plan file> [--live]');
+    process.exit(1);
+  }
+  applyLinks(liveGitHub(), readFileSync(file, 'utf8'), {
+    live: args.includes('--live'),
+    cache: CACHE,
+    log: console.log,
   });
 }
-
-/** GitHub's dependencies endpoint; it takes the blocking issue's `id`, not its number. */
-function blockedBy(n: number): string {
-  return `repos/${SLUG}/issues/${n}/dependencies/blocked_by`;
-}
-
-const planned = planChanges(changes, issues);
-const verb = live ? '' : 'would ';
-for (const { issue, before, after } of planned.bodies) {
-  const was = new Set(before.split(/\r?\n/));
-  const now = new Set(after.split(/\r?\n/));
-  console.log(`#${issue}: ${verb}edit the property table`);
-  for (const line of was) if (!now.has(line)) console.log(`  - ${line}`);
-  for (const line of now) if (!was.has(line)) console.log(`  + ${line}`);
-  if (live) {
-    gh(
-      ['-X', 'PATCH', `repos/${SLUG}/issues/${issue}`, '--input', '-'],
-      JSON.stringify({ body: after }),
-    );
-  }
-}
-for (const { issue, blocker } of planned.block) {
-  console.log(`#${issue}: ${verb}add blocked by #${blocker}`);
-  if (live) gh(['-X', 'POST', blockedBy(issue), '-F', `issue_id=${ids.get(blocker)}`]);
-}
-for (const { issue, blocker } of planned.unblock) {
-  console.log(`#${issue}: ${verb}remove blocked by #${blocker}`);
-  if (live) gh(['-X', 'DELETE', `${blockedBy(issue)}/${ids.get(blocker)}`]);
-}
-for (const line of planned.skipped) console.log(`skipped: ${line}`);
-const total = planned.bodies.length + planned.block.length + planned.unblock.length;
-console.log(
-  live
-    ? `Applied ${total} change(s). Run bun run pull.`
-    : `Dry run: ${total} change(s). Add --live to make them.`,
-);
