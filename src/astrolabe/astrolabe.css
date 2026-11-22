@@ -924,3 +924,67 @@
     bottom: 8px;
   }
 }
+
+/* Full screen: the controls above the map and the map's frame fill the screen, by the
+   Fullscreen API or, where there is none, as a fixed overlay. */
+.al-fullscreen {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--page) 90%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+}
+.al-fullscreen[hidden] {
+  display: none;
+}
+.al-fullscreen svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.al-fs-exit,
+.al-full .al-fs-enter {
+  display: none;
+}
+.al-full .al-fs-exit {
+  display: inline;
+}
+.al-stage.al-full {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: 10px clamp(8px, 2vw, 20px) clamp(8px, 2vw, 20px);
+  background: var(--page);
+}
+.al-stage.al-full .al-bar {
+  margin: 0 0 8px;
+}
+.al-stage.al-full .al-hint {
+  display: none;
+}
+.astrolabe .al-stage.al-full .al-frame,
+.astrolabe[data-view='brass'] .al-stage.al-full .al-frame {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 0;
+}
+/* The page under the overlay stays still. */
+:root.al-full-page,
+:root.al-full-page body {
+  overflow: hidden;
+}

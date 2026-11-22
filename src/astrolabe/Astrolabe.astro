@@ -2,7 +2,7 @@
 /**
  * The Astrolabe page: every question as a star, in three views (night sky, tiers and the
  * constellations dial) with a panel per star and per constellation. Everything is laid out at
- * build time; `client.ts` and `brass-client.ts` only add interaction.
+ * build time; `client.ts`, `brass-client.ts` and `fullscreen-client.ts` only add interaction.
  */
 import './astrolabe.css';
 import './brass.css';
@@ -51,6 +51,7 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
       sky && tiers ? (
         <>
           <p class="al-stats">{a.stats(chart.counts)}</p>
+          <div class="al-stage">
           <div class="al-bar">
             <div class="al-views" role="group" aria-label={a.view} hidden>
               <button type="button" data-view="sky" aria-pressed="true">
@@ -80,6 +81,27 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
           </div>
           <div class="al-frame">
             <SharedDefs />
+            <button
+              type="button"
+              class="al-fullscreen"
+              aria-pressed="false"
+              aria-label={a.fullScreen}
+              title={a.fullScreen}
+              data-enter={a.fullScreen}
+              data-exit={a.exitFullScreen}
+              hidden
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  class="al-fs-enter"
+                  d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"
+                />
+                <path
+                  class="al-fs-exit"
+                  d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"
+                />
+              </svg>
+            </button>
             <div class="al-view al-view-sky">
               <Sky
                 chart={chart}
@@ -125,6 +147,7 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
             <Panels chart={chart} locale={locale} />
             {dial && <BrassPanels chart={chart} layout={dial} locale={locale} />}
           </div>
+          </div>
           {dial && <BrassKey locale={locale} />}
           <ConstellationList chart={chart} locale={locale} />
           <Legend locale={locale} />
@@ -143,4 +166,5 @@ const dial = chart.constellations.length ? layoutBrass(chart) : undefined;
 <script>
   import './client';
   import './brass-client';
+  import './fullscreen-client';
 </script>

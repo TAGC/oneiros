@@ -23,6 +23,8 @@ It is inspired by [rengwu/wayfinder-maps](https://github.com/rengwu/wayfinder-ma
 | Thin lines between ringed stars | One constellation |
 | Small warning triangle | An open question in no constellation |
 
+A **Full screen** button at the top right of the map (all three views) fills the screen with the map and the controls above it, by the browser's full screen or, where there is none (an iPhone) or the browser refuses it, by covering the page. The same button or Escape leaves it; Escape first closes an open panel. It shows only with JavaScript. The designer asked for it on 22 Nov 2026.
+
 Three views, switched by buttons above the map; the choice is remembered in the browser:
 
 - **Night sky** (the main view): a free sky in which each area gathers into its own soft glow, or each constellation into its own patch.
@@ -114,13 +116,14 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
 | `client.ts`, `viewbox.ts` | The view switch, the Cluster by choice, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
 | `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings, writing the map once per frame. |
+| `fullscreen.ts`, `fullscreen-client.ts` | The full screen button: which way the browser allows, and the button itself. |
 | `brass-client.ts` | The constellations view: its panel, the filter on its marks, and star links that lead to the night sky. |
 | `tints.ts` | Each area's glow colour, from the eight emotion colours. |
 | `astrolabe.css`, `brass.css` | Styles, on the wiki's tokens, for light and dark; `brass.css` holds the dial's. |
 
 The Astrolabe reads question data only through the questions module: `getQuestions()` and `questionGraph()` from `src/lib/questions`, and `getConstellations()`. Which questions appear is decided in one place, `chartQuestions` in `chart.ts`: duplicates (`isDuplicate`) stay off the map. Interface strings live under `astrolabe` in `src/i18n/ui.ts`, in both languages; the Chinese name, 星盘, is that one string. Its Chinese terms are in `src/i18n/zh-terms.md`.
 
-The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`); the page itself is checked by eye in the dev server.
+The layout logic is tested with `bun test` (`chart.test.ts`, `sky.test.ts`, `tiers.test.ts`, `brass.test.ts`, `backdrop.test.ts`, `viewbox.test.ts`, `motion.test.ts`, `fullscreen.test.ts`); the page itself is checked by eye in the dev server.
 
 ## Keeping it fast
 

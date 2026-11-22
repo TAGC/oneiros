@@ -186,6 +186,8 @@ Five pillars hold it together:
     zoomIn: 'Zoom in',
     zoomOut: 'Zoom out',
     resetView: 'Reset the view',
+    fullScreen: 'Full screen',
+    exitFullScreen: 'Exit full screen',
     key: 'Key',
     named: (name: string) => `${name}.`,
     status: {
@@ -493,6 +495,8 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     zoomIn: '放大',
     zoomOut: '缩小',
     resetView: '重置视图',
+    fullScreen: '全屏',
+    exitFullScreen: '退出全屏',
     key: '图例',
     named: (name) => `${name}：`,
     status: {
