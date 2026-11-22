@@ -1,0 +1,76 @@
+{
+  "$comment": "Superseded or rejected Chinese renderings from zh-terms.md (section 3 and its 'do not reuse' list). `allow` lists longer strings that contain the term legitimately. Left out because they cannot be matched without false positives: 睡眠 (inside 睡眠周期 and ordinary sleep), 镜子 (the sheet's Mirror row), 法则 (natural laws), 信物 (kept with a new meaning), 浮现 (still Surfacing), 消解 (still Unmaking), 深深的憎恨 (the long form is fine in prose), 清醒梦 (ordinary 'lucid dream').",
+  "terms": [
+    {
+      "term": "情绪",
+      "preferred": "心境",
+      "note": "mood (hardest call 1)"
+    },
+    {
+      "term": "哀伤",
+      "preferred": "悲伤",
+      "note": "Grief and its intensity levels (hardest call 2)"
+    },
+    {
+      "term": "梦者",
+      "preferred": "做梦者",
+      "note": "the Dreamer (hardest call 4)",
+      "allow": ["做梦者", "被梦者"]
+    },
+    {
+      "term": "无限质",
+      "preferred": "无定",
+      "note": "apeiron (hardest call 5)"
+    },
+    {
+      "term": "奥波拉斯",
+      "preferred": "奥波勒斯",
+      "note": "obol (hardest call 6)"
+    },
+    {
+      "term": "鲜明期",
+      "preferred": "鲜梦",
+      "note": "Vivid (hardest call 7)"
+    },
+    {
+      "term": "骇明期",
+      "preferred": "骇梦",
+      "note": "Lurid (hardest call 7)"
+    },
+    {
+      "term": "梅加隆",
+      "preferred": "正殿",
+      "note": "Megaron (hardest call 8)"
+    },
+    {
+      "term": "原生魔法",
+      "preferred": "原始魔法",
+      "note": "Raw magic (hardest call 9)"
+    },
+    {
+      "term": "昏沉",
+      "preferred": "绽线",
+      "note": "superseded status word; Fraying is 绽线"
+    },
+    {
+      "term": "暗流",
+      "preferred": "瓦解",
+      "note": "superseded status word; Unravelling is 瓦解"
+    },
+    {
+      "term": "深层房间",
+      "preferred": "独室",
+      "note": "superseded ladder rung"
+    },
+    {
+      "term": "杂物",
+      "preferred": "(none)",
+      "note": "superseded clutter concept"
+    },
+    {
+      "term": "磨损与燃尽",
+      "preferred": "燃烧",
+      "note": "superseded wear-and-burn-out model; Burning is 燃烧"
+    }
+  ]
+}

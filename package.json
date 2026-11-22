@@ -14,7 +14,9 @@
     "astro": "astro",
     "lint": "oxlint",
     "format": "oxfmt",
-    "format:check": "oxfmt --check"
+    "format:check": "oxfmt --check",
+    "check": "cspell --no-progress && bun scripts/check.ts",
+    "verify": "bun run build && bun run lint && bun run format:check && bun run check"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.10",
