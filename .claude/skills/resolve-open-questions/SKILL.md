@@ -47,7 +47,7 @@ Between unsettled sources, no source wins by default. The sheet was ruled author
 - Stress-test each settled answer with one concrete edge-case scenario before moving on, for example "you are knocked out mid-recount while rushing a Fixture: is the memory lost, scarred, or both?". The designer's answer may settle a detail or become a new question.
 - Picks are suggestions. A pick becomes a decision only when the designer accepts it.
 - If a detail of an agreed rule stays undecided, it becomes a new question issue.
-- When a decision breaks the premise of an earlier decided issue, tell the designer. If they agree, the earlier issue gains an Undermined by row naming the new one.
+- After each decision, look for **undermined** questions: decided issues in the cache whose answer or question rests on a rule the new decision changes. Search the closed issues on the same pages and the pages they link to. Propose each one to the designer as `add #<old> undermined-by #<new>: <the premise it broke>`. Add each approved line to a `question-links` block in `<scratchpad>/links-plan.md` (README, "Open questions").
 
 ## 4. Land the group
 
@@ -59,7 +59,7 @@ Once every question in the group is settled, ask the designer whether to open th
 4. Edit the pages in English and Chinese, following `README.md` and CLAUDE.md. Replace each decided marker with its outcome as plain rule. Remove the marker of each ruled-out question. Replace each duplicate's marker with the one-line link to its canonical question (README, "Duplicates"), or, when the canonical question is decided in this group, with a link to its settled rule. A duplicate gets no answer comment.
 5. When a decision is hard to reverse, surprising to a later reader and the result of a real trade-off (for example "burn only from a bead"), add a short "why" to the owner page's prose, using only reasons the designer gave. Other decisions need no reason on the page; the answer comment holds the provenance.
 6. Changing a Tenet page's rules needs no status question; ask only if a change challenges the page's premise itself.
-7. Add new blocked-by links and Undermined by rows on GitHub.
+7. Add the approved blocked-by links and Undermined by rows to the links plan, run `bun run links <scratchpad>/links-plan.md` to check it, then again with `--live`.
 8. Run `bun run pull`, then `bun run verify`.
 9. Make **one commit per cohesive set of decisions**: usually one for the group, and a separate one for any unrelated decision the session settled along the way. Each commit body says which issues it closes, for example `Closes #142, #145.`, and holds no provenance.
 10. Push the branch and open one pull request for the group. Its body lists each decision in a line, says `Closes #N` once per decided issue, and names each ruled-out issue and each duplicate without a closing keyword.
