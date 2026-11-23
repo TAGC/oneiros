@@ -97,7 +97,7 @@ function issueBox(q: Question) {
         t.constellationSettled(cluster.total - cluster.open, cluster.total),
       ].filter(Boolean);
       return (
-        <section>
+        <section id={`constellation-${cluster.constellation}`}>
           <h2 lang={name.lang === locale ? undefined : name.lang}>{name.text}</h2>
           <p class="sub">{facts.join(' · ')}</p>
           {reasoning?.text && (
@@ -112,7 +112,7 @@ function issueBox(q: Question) {
   }
   {
     (ungroupedPages.length > 0 || areas.length > 0) && (
-      <section>
+      <section id="ungrouped">
         <h2>{t.openUngrouped}</h2>
         <p>{t.openUngroupedSub}</p>
         {ungroupedPages.map((p) => (
