@@ -13,6 +13,9 @@ import { AREAS } from '../areas';
 import { splitFrontmatter } from '../frontmatter';
 import { slugify } from '../site';
 import type { CalloutKind } from '../wiki';
+import { isDuplicate } from './duplicates';
+
+export { isDuplicate, withoutDuplicates } from './duplicates';
 
 /** The question cache, relative to the repo root. */
 export const QUESTION_CACHE = '.questions';
@@ -88,16 +91,6 @@ export interface Question {
   provenance?: string;
   /** On a duplicate: the canonical issue, when GitHub names one. */
   duplicateOf?: number;
-}
-
-/** Duplicates stand in for their canonical issue: lists, graphs and maps skip them. */
-export function isDuplicate(question: Question): boolean {
-  return question.status === 'duplicate';
-}
-
-/** The questions without duplicates, by number; a new array. */
-export function withoutDuplicates(questions: Question[]): Question[] {
-  return questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
 }
 
 export interface Questions {
