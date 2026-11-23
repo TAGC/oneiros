@@ -28,9 +28,8 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
   (open.length > 0 || ungrouped.length > 0) && (
     <section class="al-clist" aria-labelledby="al-clist-title">
       <h2 id="al-clist-title">{a.constellations}</h2>
-      <p class="al-clist-sub">
-        {open.length ? `${a.constellationsSub} ${a.constellationsOnPage}` : a.noConstellations}
-      </p>
+      <p class="al-clist-sub">{open.length ? a.constellationsSub : a.noConstellations}</p>
+      {open.length > 0 && <p class="al-clist-sub">{a.constellationsOnPage}</p>}
       <ul class="al-cards">
         {open.map((c) => (
           <li
