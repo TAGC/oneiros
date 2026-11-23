@@ -46,4 +46,4 @@ Every question sits in exactly one cluster of each clustering. By constellation,
 
 The clusters come in one order. By area: the wiki's areas, then "No area". By constellation: the open constellations, then "In no constellation", then the finished constellations, each by milestone number. Empty clusters are left out.
 
-The cluster list, `clusterList` in `src/lib/questions/clusters.ts`, is the one place that decides membership and order. The Astrolabe's night sky and tiers lay it out. The open questions page reads the clustering by constellation, keeps only the open questions and drops the clusters left empty: the open constellations, then "Not in a constellation".
+The cluster list, `clusterList` in `src/lib/questions/clusters.ts`, is the one place that decides membership and order. The Astrolabe's night sky and tiers lay it out. The open questions page reads the clustering by constellation, keeps only the open questions and drops the clusters left empty: the open constellations, then "Not in a constellation". Within that last section, the questions no page marks are grouped by the clustering by area of those questions, so the page never groups questions itself.
