@@ -148,6 +148,7 @@ describe('the sky layout', () => {
     ];
     const fake = {
       all: () => open,
+      get: (n: number) => open.find((c) => c.number === n),
       open: () => open,
       of: () => undefined,
       finished: () => [],
@@ -199,6 +200,7 @@ function fakeConstellations(qs: Question[], members = MEMBERS) {
   }));
   return {
     all: () => open,
+    get: (n: number) => open.find((c) => c.number === n),
     open: () => open.filter((c) => !isFinished(c)),
     of: () => undefined,
     finished: () => open.filter(isFinished),

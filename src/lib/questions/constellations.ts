@@ -76,6 +76,8 @@ export interface Constellation {
 export interface Constellations {
   /** Every constellation, open and closed, by number. */
   all(): Constellation[];
+  /** One constellation, open or closed, by its milestone number. */
+  get(number: number): Constellation | undefined;
   /** The open constellations that are not finished: the ones drawn and charted. */
   open(): Constellation[];
   /** The finished constellations (see `isFinished`), by number. */
@@ -177,15 +179,17 @@ export function loadConstellations(dir: string, questions: Questions): Constella
   const open = all.filter((c) => !isFinished(c));
   const finished = all.filter(isFinished);
   const toClose = finished.filter((c) => c.state === 'open');
-  const byNumber = new Map(all.flatMap((c) => c.questions.map((q) => [q.number, c] as const)));
+  const byNumber = new Map(all.map((c) => [c.number, c]));
+  const byQuestion = new Map(all.flatMap((c) => c.questions.map((q) => [q.number, c] as const)));
   const held = new Set(open.flatMap((c) => c.questions.map((q) => q.number)));
   const ungrouped = questions.all().filter((q) => q.state === 'open' && !held.has(q.number));
   return {
     all: () => [...all],
+    get: (n) => byNumber.get(n),
     open: () => [...open],
     finished: () => [...finished],
     toClose: () => [...toClose],
-    of: (n) => byNumber.get(n),
+    of: (n) => byQuestion.get(n),
     ungrouped: () => [...ungrouped],
   };
 }

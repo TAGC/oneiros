@@ -48,6 +48,7 @@ function dial(groups: Constellation[], locale: 'en' | 'zh' = 'en') {
   ];
   const fake: Constellations = {
     all: () => groups,
+    get: (n) => groups.find((c) => c.number === n),
     open: () => groups.filter((c) => c.state === 'open'),
     of: (n) => groups.find((c) => c.questions.some((q) => q.number === n)),
     finished: () => [],

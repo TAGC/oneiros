@@ -148,7 +148,7 @@ function constellationErrors(
   for (const problem of formatProblems(c)) report(problem);
   for (const n of c.questions ?? []) if (!isOpen(n)) report(`#${n} is not an open question`);
 
-  const own = constellations.all().find((m) => m.number === c.number);
+  const own = c.number === undefined ? undefined : constellations.get(c.number);
   if (c.number !== undefined && own?.state !== 'open') {
     report(`milestone ${c.number} is not an open constellation`);
   } else {
@@ -216,7 +216,7 @@ export function chartOperations(
   const operations: Operation[] = [];
   for (const c of planned) {
     const { title, description } = writeConstellation(c);
-    const current = constellations.all().find((m) => m.number === c.number)?.milestone;
+    const current = c.number === undefined ? undefined : constellations.get(c.number)?.milestone;
     if (c.number === undefined || !current) {
       operations.push({ kind: 'create', ref: c.name.en.trim(), title, description });
       continue;

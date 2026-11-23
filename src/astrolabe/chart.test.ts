@@ -149,6 +149,7 @@ describe('constellations', () => {
     const grouped = new Set(open.flatMap((c) => c.questions.map((q) => q.number)));
     const fake: Constellations = {
       all: () => constellations,
+      get: (n) => constellations.find((c) => c.number === n),
       open: () => open,
       of: (n) => constellations.find((c) => c.questions.some((q) => q.number === n)),
       finished: () => constellations.filter(isFinished),

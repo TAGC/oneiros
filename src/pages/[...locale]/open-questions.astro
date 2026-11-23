@@ -88,7 +88,7 @@ function issueBox(q: Question) {
   {count === 0 && <p>{t.openNone}</p>}
   {
     grouped.map((cluster) => {
-      const c = constellations.all().find((k) => k.number === cluster.constellation)!;
+      const c = constellations.get(cluster.constellation!)!;
       const name = cluster.name!;
       const reasoning = inLocale(c.reasoning, locale);
       const facts = [

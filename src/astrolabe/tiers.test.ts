@@ -113,6 +113,7 @@ function constellations(questions: Question[], members: Record<number, number[]>
   const held = new Set(Object.values(members).flat());
   return {
     all: () => open,
+    get: (n: number) => open.find((c) => c.number === n),
     open: () => open.filter((c) => !isFinished(c)),
     of: () => undefined,
     finished: () => open.filter(isFinished),

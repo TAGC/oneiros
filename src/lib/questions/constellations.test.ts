@@ -96,6 +96,16 @@ describe('loading constellations from milestones', () => {
     expect(constellations.of(7)).toBeUndefined();
   });
 
+  test('finds a constellation by its milestone number, open or closed', () => {
+    const constellations = load(
+      [issue(142, 3), issue(7, 5)],
+      [milestone({ number: 3 }), milestone({ number: 5, state: 'closed' })],
+    );
+    expect(constellations.get(3)?.number).toBe(3);
+    expect(constellations.get(5)?.state).toBe('closed');
+    expect(constellations.get(4)).toBeUndefined();
+  });
+
   test('no milestones means no constellations', () => {
     expect(load([issue(1)], []).all()).toEqual([]);
     expect(loadConstellations(join(dir, 'none'), loadQuestions(join(dir, 'none'))).all()).toEqual(
