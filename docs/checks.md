@@ -1,6 +1,6 @@
 # Checks
 
-`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs lint, format:check and check after the build, and a failure stops the deploy.
+`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs lint, knip, format:check and check after the build, and a failure stops the deploy.
 
 Git hooks run the same checks earlier. Set them up once per clone with `pre-commit install` (needs [pre-commit](https://pre-commit.com)); `.pre-commit-config.yaml` defines them.
 
@@ -36,3 +36,7 @@ To allow a red link, add the slug and a one-line reason to `src/data/redlinks.js
 ```
 
 To accept a word cspell does not know, add it to `cspell-words.txt` under the right heading. Add only genuine domain words, Greek names and proper nouns; fix anything else. To ban a Chinese term, add `{ "term", "preferred", "note", "allow" }` to `src/i18n/zh-forbidden.json`, where `allow` lists longer strings that contain the term legitimately (as `做梦者` contains `梦者`).
+
+## Code
+
+- **Unused code** (`bun run knip`, configured in `knip.json`): files nothing imports, unused exports and unused or missing dependencies. Entry points are the Astro pages and config (found by knip's Astro plugin), `scripts/*.ts`, the test files, and the infobox figures in `src/components/figures/`, which `Infobox.astro` loads by name through `import.meta.glob`. An exported type or interface that its own module uses is allowed, since it names part of that module's interface. `@commitlint/cli` is listed as used, since only the commit-msg hook runs it. Delete dead code, or drop the `export` from a value only its own module uses; list a new entry point in `knip.json` only when something loads it without an import.
