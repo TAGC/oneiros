@@ -37,6 +37,7 @@ The authoring guide and the rest of the reference, by topic:
 
 - [Checks](docs/checks.md): the content checks, the git hooks and the deploy; allowing a red link or a word, banning a Chinese term.
 - [Layout](docs/layout.md): where things live in the repo.
+- [Coding standards](CODING_STANDARDS.md): the judgement calls a reviewer makes on code that no check decides.
 - [Pages](docs/pages.md): file names, frontmatter, the contents box, styles and figures.
 - [Wiki links](docs/wiki-links.md): the `[[wiki link]]` syntax and how targets resolve.
 - [Open questions](docs/open-questions.md): question issues and their labels, issue format, links, answers and status, markers, the pull and resolving questions.

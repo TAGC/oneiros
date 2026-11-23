@@ -47,4 +47,4 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
   - Domain modules (`src/lib/` and the Astrolabe's `.ts` modules) do not import the interface strings, `src/i18n/ui.ts`; pages and components pass them the strings they need. The modules that render localised text themselves are listed by name in the config, each with its reason. Keep that list from growing.
   - Nothing the Astrolabe's browser code imports (`start.ts` and everything it reaches: the `*client*.ts` modules and `state*.ts`) reaches the questions module, the interface strings or a Node built-in, since none of them runs in a browser.
 
-  No rule can see a path written as a string, so the rule that only the questions module reads the question cache stays a review rule.
+  No rule can see a path written as a string, so the rule that only the questions module reads the question cache stays a review rule ([coding standards](../CODING_STANDARDS.md)).
