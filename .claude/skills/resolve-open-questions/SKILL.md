@@ -28,7 +28,8 @@ Finding facts is Claude's job, never the designer's. Before asking, read:
 - the answer comments of related closed issues;
 - every page in the group, and the pages they link to;
 - the data in `src/data/sheet/`;
-- the reference sheet, a Claude Sheet at https://claude.ai/artifact/SFhGFU5jpuYinbFNRFfXRG, read through the Claude Docs connector (`guide` topic.sheets, then `read`). Its Glossary tab holds the older definitions.
+- the reference sheet, a Claude Sheet at https://claude.ai/artifact/SFhGFU5jpuYinbFNRFfXRG, read through the Claude Docs connector (`guide` topic.sheets, then `read`). Its Glossary tab holds the older definitions;
+- the chat evidence in `.chats/`, if this machine has it (local and gitignored, never committed or published). `report.md` gives each question open on 23 Nov 2026 a likely answer, a confidence and quotes from the claude.ai design chats of 17 to 22 Nov 2026; `renames.md` lists each term's older names; `chats/` holds the redacted chats. It is evidence, not a decision: check the issue has not changed since, show the designer the quotes, and ask as usual. Answer comments cite a chat by title, date and message number, never with quotes.
 
 Many open questions are already answered in one of these. Say so with the source, instead of asking.
 
