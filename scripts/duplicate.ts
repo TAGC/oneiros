@@ -19,7 +19,7 @@ import { WIKI_DIRS } from '../src/lib/site';
 import { issueId } from '../src/lib/wiki';
 import { type GitHub, liveGitHub, NotAQuestion, type PulledQuestion } from './github';
 import { CACHE, pull } from './pull';
-import type { RunOptions } from './question-links';
+import type { RunOptions } from './run';
 
 /** The line that stands in for a duplicate's marker, linking to the kept question's box. */
 function linkLine(locale: Locale, title: string, keep: Question): string {

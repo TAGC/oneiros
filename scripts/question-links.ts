@@ -11,15 +11,7 @@ import { readFileSync } from 'node:fs';
 import { type LinkedIssue, parsePlan, planChanges } from '../src/lib/questions/links';
 import { type GitHub, liveGitHub } from './github';
 import { CACHE, pull } from './pull';
-
-export interface RunOptions {
-  live: boolean;
-  /** The question cache a live run refreshes. */
-  cache: string;
-  log: (line: string) => void;
-  /** Warnings and errors; `log` when absent. */
-  warn?: (line: string) => void;
-}
+import type { RunOptions } from './run';
 
 /** Applies a links plan's text: prints the changes, and makes them when live. */
 export function applyLinks(github: GitHub, plan: string, { live, cache, log }: RunOptions): void {

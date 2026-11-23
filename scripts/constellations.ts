@@ -20,7 +20,7 @@ import {
 import { loadConstellations } from '../src/lib/questions/constellations';
 import { type GitHub, liveGitHub } from './github';
 import { CACHE, pull } from './pull';
-import type { RunOptions } from './question-links';
+import type { RunOptions } from './run';
 
 function describe(op: Operation): string {
   switch (op.kind) {
