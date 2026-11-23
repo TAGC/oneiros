@@ -1,0 +1,179 @@
+---
+/**
+ * The Astrolabe page: every question as a star, in three views (night sky, tiers and the
+ * constellations dial) with a panel per star and per constellation. Everything is laid out at
+ * build time; `client.ts`, `brass-client.ts` and `fullscreen-client.ts` only add interaction.
+ */
+import './astrolabe.css';
+import './brass.css';
+import { type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import Wiki from '../layouts/Wiki.astro';
+import { getQuestions, questionGraph } from '../lib/questions';
+import { getConstellations } from '../lib/questions/constellations';
+import { layoutBrass } from './brass';
+import Brass from './Brass.astro';
+import BrassKey from './BrassKey.astro';
+import BrassPanels from './BrassPanels.astro';
+import { chartQuestions, openConstellations, quietSettled } from './chart';
+import ConstellationFilter from './ConstellationFilter.astro';
+import ConstellationList from './ConstellationList.astro';
+import Legend from './Legend.astro';
+import Panels from './Panels.astro';
+import SharedDefs from './SharedDefs.astro';
+import Sky from './Sky.astro';
+import { layoutSkies } from './sky';
+import Tiers from './Tiers.astro';
+import { layoutTiers } from './tiers';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+
+const all = getQuestions();
+const questions = all.all();
+const chart = chartQuestions(questions, questionGraph(questions), locale, getConstellations(all));
+const skies = chart.stars.length ? layoutSkies(chart) : undefined;
+const sky = skies?.areas;
+const tiers = chart.stars.length ? layoutTiers(chart) : undefined;
+const tiersByConstellation = skies?.constellations && layoutTiers(chart, 'constellations');
+const quietCount = quietSettled(chart).length;
+const dial = openConstellations(chart).length ? layoutBrass(chart) : undefined;
+---
+
+<Wiki title={a.name} description={a.description} locale={locale} path="/astrolabe/">
+  <div class="astrolabe" data-view="sky" data-cluster="areas" data-settled="linked">
+    <h1>{a.name}</h1>
+    <p class="sub">{a.sub}</p>
+    {
+      sky && tiers ? (
+        <>
+          <p class="al-stats">{a.stats(chart.counts)}</p>
+          <div class="al-stage">
+          <div class="al-bar">
+            <div class="al-views" role="group" aria-label={a.view} hidden>
+              <button type="button" data-view="sky" aria-pressed="true">
+                {a.views.sky}
+              </button>
+              <button type="button" data-view="tiers" aria-pressed="false">
+                {a.views.tiers}
+              </button>
+              {dial && (
+                <button type="button" data-view="brass" aria-pressed="false">
+                  {a.views.brass}
+                </button>
+              )}
+            </div>
+            {quietCount > 0 && (
+              <button type="button" class="al-settled" aria-pressed="false" hidden>
+                <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                  <circle cx="5" cy="8" r="3" fill="currentColor" />
+                  <circle cx="11.5" cy="8" r="2.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                {a.showSettled}
+              </button>
+            )}
+            <ConstellationFilter chart={chart} locale={locale} />
+            <p class="al-hint" data-for="sky">
+              {a.hint}
+            </p>
+            <p class="al-hint" data-for="tiers">
+              {a.tiersHint}
+            </p>
+            {dial && (
+              <p class="al-hint" data-for="brass">
+                {a.brassHint}
+              </p>
+            )}
+          </div>
+          <div class="al-frame">
+            <SharedDefs />
+            <button
+              type="button"
+              class="al-fullscreen"
+              aria-pressed="false"
+              aria-label={a.fullScreen}
+              title={a.fullScreen}
+              data-enter={a.fullScreen}
+              data-exit={a.exitFullScreen}
+              hidden
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+                <path
+                  class="al-fs-enter"
+                  d="M8 3H5a2 2 0 0 0-2 2v3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M16 21h3a2 2 0 0 0 2-2v-3"
+                />
+                <path
+                  class="al-fs-exit"
+                  d="M8 3v3a2 2 0 0 1-2 2H3M21 8h-3a2 2 0 0 1-2-2V3M3 16h3a2 2 0 0 1 2 2v3M16 21v-3a2 2 0 0 1 2-2h3"
+                />
+              </svg>
+            </button>
+            <div class="al-view al-view-sky">
+              <Sky
+                chart={chart}
+                layout={sky}
+                byConstellation={skies?.constellations}
+                locale={locale}
+              />
+              <div class="al-zoom" hidden>
+                <button type="button" data-zoom="in" aria-label={a.zoomIn} title={a.zoomIn}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M3 8h10M8 3v10" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                </button>
+                <button type="button" data-zoom="out" aria-label={a.zoomOut} title={a.zoomOut}>
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <path d="M3 8h10" stroke="currentColor" stroke-width="1.8" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  data-zoom="reset"
+                  aria-label={a.resetView}
+                  title={a.resetView}
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+                    <circle cx="8" cy="8" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+                    <path d="M8 1v3M8 12v3M1 8h3M12 8h3" stroke="currentColor" stroke-width="1.6" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="al-view al-view-tiers">
+              <Tiers chart={chart} layout={tiers} locale={locale} />
+              {tiersByConstellation && (
+                <Tiers chart={chart} layout={tiersByConstellation} locale={locale} />
+              )}
+            </div>
+            {dial && (
+              <div class="al-view al-view-brass">
+                <Brass chart={chart} layout={dial} locale={locale} />
+              </div>
+            )}
+            <Panels chart={chart} locale={locale} />
+            {dial && <BrassPanels chart={chart} layout={dial} locale={locale} />}
+          </div>
+          </div>
+          {dial && <BrassKey locale={locale} />}
+          <ConstellationList chart={chart} locale={locale} />
+          <Legend locale={locale} />
+        </>
+      ) : (
+        <p>{a.empty}</p>
+      )
+    }
+  </div>
+  <p slot="footer" class="al-credit">
+    {a.inspiredBy} <a href="https://github.com/rengwu/wayfinder-maps">wayfinder-maps</a>
+    {a.licence}
+  </p>
+</Wiki>
+
+<script>
+  import './start';
+</script>

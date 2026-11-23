@@ -21,5 +21,4 @@ An **Echo** is what you return as when your [[Coherence]] reaches zero: weaker, 
 
 [[Going under]] is the alternative to becoming an Echo: dropping into a deeper layer of the dream for a second chance. It is something you unlock, for example through a belief such as _death is only a deeper dream_.
 
-> [!OPEN]
-> What does an Echo keep? "Your library and what you knew" now means your colourless beliefs and memories; is that all, or more? (Deferred.)
+> [!ISSUE 44]

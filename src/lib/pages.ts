@@ -1,10 +1,12 @@
 import { execFileSync } from 'node:child_process';
 import { join } from 'node:path';
 import { type CollectionEntry, getCollection } from 'astro:content';
-import { DEFAULT_LOCALE, type Locale } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 import { AREAS } from './areas';
-import { slugify, WIKI_DIRS } from './site';
-import { type Callout, CALLOUTS, extractCallouts, sourceBySlug } from './wiki';
+import { getQuestions } from './questions';
+import { readBodyMarkers } from './questions/markers';
+import { WIKI_DIRS } from './site';
+import { CALLOUTS, type MarkerBox, markerBox, sourceBySlug } from './wiki';
 
 export type Entry = CollectionEntry<'wiki'> | CollectionEntry<'wiki-zh'>;
 
@@ -14,7 +16,8 @@ export interface Page {
   file: string;
   title: string;
   categories: string[];
-  callouts: Callout[];
+  /** The page's question markers, in page order, each as its box. */
+  markers: MarkerBox[];
   /** The language the page is written in; a zh list falls back to English pages. */
   locale: Locale;
   /** The English page's title, which orders zh lists until a Chinese ordering is chosen. */
@@ -30,9 +33,12 @@ function fileName(entry: Entry, locale: Locale): string {
 }
 
 function toPage(entry: Entry, locale: Locale): Page {
-  const callouts = extractCallouts(entry.body ?? '');
+  const questions = getQuestions();
+  const markers = readBodyMarkers(entry.body ?? '').markers.map((m) =>
+    markerBox(m.issue, locale, questions),
+  );
   const auto = (['open', 'conflict'] as const)
-    .filter((kind) => callouts.some((c) => c.kind === kind))
+    .filter((kind) => markers.some((m) => m.kind === kind))
     .map((kind) => CALLOUTS[kind].category);
   const categories = [...new Set([entry.data.area, ...(entry.data.categories ?? []), ...auto])];
   return {
@@ -41,7 +47,7 @@ function toPage(entry: Entry, locale: Locale): Page {
     file: fileName(entry, locale),
     title: entry.data.title,
     categories,
-    callouts,
+    markers,
     locale,
     sortTitle: entry.data.title,
   };
@@ -62,7 +68,7 @@ async function load(locale: Locale): Promise<Page[]> {
 }
 
 /**
- * Every wiki page with its computed categories and callouts, A to Z by (English) title.
+ * Every wiki page with its computed categories and markers, A to Z by (English) title.
  * For zh, each page is the Chinese version where one exists, else the English one.
  */
 export function getPages(locale: Locale = DEFAULT_LOCALE): Promise<Page[]> {
@@ -88,10 +94,6 @@ export async function getCategories(locale: Locale = DEFAULT_LOCALE): Promise<Ma
     );
   }
   return map;
-}
-
-export function categoryBySlug(categories: Map<string, Page[]>, slug: string): string | undefined {
-  return [...categories.keys()].find((name) => slugify(name) === slug);
 }
 
 /** Each wiki file's last commit date (YYYY-MM-DD), from one `git log` over both folders. */

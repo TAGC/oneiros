@@ -62,12 +62,14 @@ Magicka
 Mainländer
 Noita
 Qud
+rengwu
 Ripa
 Schopenhauer
 Spiritfarer
 Stormlight
 Superhot
 Vairocana
+wayfinder
 Wildermyth
 
 # Descriptive words the British dictionary lacks

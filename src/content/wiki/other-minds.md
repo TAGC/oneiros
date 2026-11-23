@@ -63,8 +63,7 @@ When you go in matters. A house's phases mirror the world's [[sleep cycle]]: [[S
 | Deep   | Still and heavy; recent memories consolidate; the house's depths come closer (tentative)                      | Hardest and riskiest | Easiest: Attention climbs slowest                                                                                           |
 | Vivid  | Weak memories are discarded, the house reshuffles, and the sleeper's dreams manifest as hostile creatures     | Fairly easy          | Dangerous and hard to navigate, but the most darkness, and you stand out least; a memory taken now passes as natural loss  |
 
-> [!OPEN]
-> The vision marks "the house's depths come closer" in the Deep as tentative.
+See the open question on [[Rest#issue-98|Rest]].
 
 ## Practitioners
 
@@ -74,8 +73,6 @@ The common belief is that the world is real and minds mirror it as a microcosm; 
 
 ## Open questions
 
-> [!OPEN]
-> How you defend your own house is open, until an NPC intruder is designed.
+> [!ISSUE 77]
 
-> [!OPEN]
-> Whether the same access works on guarded places is open.
+> [!ISSUE 78]

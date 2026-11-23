@@ -31,12 +31,10 @@ Under the **power budget**, every effect costs points by how often it fires and 
 
 Gear can amplify, protect, widen or store, using the shared effects grammar. It is worn in body-part slots with a core layer and a persona layer (see [[Core and persona]]), and has [[stability]] of its own.
 
-> [!OPEN]
-> The designer has not confirmed that gear can amplify, protect, widen or store.
+> [!ISSUE 41]
 
 ## Ingredients
 
 The optional garden in your [[Temenos]] grows ingredients between rests. How food compares with potions is on [[Potions#Food and potions]].
 
-> [!OPEN]
-> The vision names the crafts (bottling, imprinting, materials, anchors, artifice) but does not yet describe them.
+> [!ISSUE 42]

@@ -4,19 +4,20 @@
  */
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { Blockquote, Root } from 'mdast';
-import remarkGfm from 'remark-gfm';
-import remarkParse from 'remark-parse';
-import { unified } from 'unified';
-import { visit } from 'unist-util-visit';
-import { parse as parseYaml } from 'yaml';
-import type { Locale } from '../src/i18n/ui';
+import { LOCALES } from '../src/i18n/locale';
+import { splitFrontmatter } from '../src/lib/frontmatter';
 import { BASE, WIKI_DIRS } from '../src/lib/site';
-import type { CalloutKind } from '../src/lib/wiki';
+import type { MarkedPage, Problem } from '../src/lib/questions/problems';
 
 // Production mode makes the wiki index read each folder once instead of re-checking file times.
 process.env.NODE_ENV = 'production';
-const { calloutKind, WIKI_LINK } = await import('../src/lib/wiki');
+const { WIKI_LINK } = await import('../src/lib/wiki');
+const { readMarkers } = await import('../src/lib/questions/markers');
+const { getQuestions } = await import('../src/lib/questions');
+const { cycleProblems, issueProblems, markerProblems } =
+  await import('../src/lib/questions/problems');
+const { constellationProblems, getConstellations } =
+  await import('../src/lib/questions/constellations');
 const { wikiLinkNode } = await import('../src/lib/remark-wiki');
 
 const ROOT = join(import.meta.dirname, '..');
@@ -24,12 +25,6 @@ const DIST = join(ROOT, 'dist');
 const SHEET = { en: 'src/data/sheet', zh: 'src/data/sheet-zh' };
 const REDLINKS = 'src/data/redlinks.json';
 const FORBIDDEN = 'src/i18n/zh-forbidden.json';
-
-interface Problem {
-  where: string;
-  message: string;
-  detail?: string[];
-}
 
 // ---------------------------------------------------------------- helpers
 
@@ -44,13 +39,6 @@ function files(dir: string, test: (name: string) => boolean): string[] {
 
 const read = (file: string) => readFileSync(join(ROOT, file), 'utf8');
 const isPage = (f: string) => /\.mdx?$/.test(f);
-
-function frontmatter(raw: string): { data: Record<string, unknown>; bodyLine: number } {
-  const match = /^---\r?\n([\s\S]*?)\r?\n---\r?\n?/.exec(raw);
-  if (!match) return { data: {}, bodyLine: 1 };
-  const data = (parseYaml(match[1]) ?? {}) as Record<string, unknown>;
-  return { data, bodyLine: match[0].split('\n').length };
-}
 
 function lineOf(raw: string, pattern: RegExp): number | undefined {
   const at = raw.split('\n').findIndex((l) => pattern.test(l));
@@ -160,7 +148,7 @@ function sourcesLinkingTo(url: string): string[] {
       if (!list.includes(where)) list.push(where);
       linkIndex!.set(key, list);
     };
-    for (const locale of ['en', 'zh'] as Locale[]) {
+    for (const locale of LOCALES) {
       for (const file of files(WIKI_DIRS[locale], isPage)) {
         const slug = file.replace(/^.*\/|\.mdx?$/g, '');
         read(file)
@@ -271,6 +259,7 @@ function checkEnglishStyle(): Problem[] {
     ...files(WIKI_DIRS.en, isPage),
     ...files(SHEET.en, (f) => f.endsWith('.json')),
     'README.md',
+    ...files('docs', isPage),
   ];
   const problems: Problem[] = [];
   for (const file of targets) {
@@ -291,37 +280,37 @@ function checkEnglishStyle(): Problem[] {
   return problems;
 }
 
-// ---------------------------------------------------------------- Chinese parity
+// ---------------------------------------------------------------- question markers
 
-const calloutParser = unified().use(remarkParse).use(remarkGfm);
-
-function callouts(raw: string): Record<CalloutKind, number[]> {
-  const { bodyLine } = frontmatter(raw);
-  const body = raw
-    .split('\n')
-    .slice(bodyLine - 1)
-    .join('\n');
-  const out: Record<CalloutKind, number[]> = { open: [], conflict: [] };
-  visit(calloutParser.parse(body) as Root, 'blockquote', (node: Blockquote) => {
-    const kind = calloutKind(node);
-    if (kind) out[kind].push((node.position?.start.line ?? 1) + bodyLine - 1);
-  });
-  return out;
+/** Every page in both locales with its markers, for the question checks. */
+function markedPages(): MarkedPage[] {
+  return LOCALES.flatMap((locale) =>
+    files(WIKI_DIRS[locale], isPage).map((file) => {
+      const raw = read(file);
+      return {
+        file,
+        locale,
+        slug: file.replace(/^.*\/|\.mdx?$/g, ''),
+        status: splitFrontmatter(raw).data.status,
+        ...readMarkers(raw),
+      };
+    }),
+  );
 }
 
 // ---------------------------------------------------------------- page status
 
 /**
- * Certainty and Dogma need nothing open, so their pages may hold no open or conflict
- * callouts. A Chinese page carries the same status as its English page.
+ * A Chinese page carries the same status as its English page. (Certainty and Dogma pages
+ * holding markers are checked with the questions.)
  */
 function checkStatus(): Problem[] {
   const problems: Problem[] = [];
   const english = new Map<string, unknown>();
-  for (const locale of ['en', 'zh'] as const) {
+  for (const locale of LOCALES) {
     for (const file of files(WIKI_DIRS[locale], isPage)) {
       const raw = read(file);
-      const { status } = frontmatter(raw).data;
+      const { status } = splitFrontmatter(raw).data;
       const slug = file.replace(/^.*\//, '').replace(/\.mdx?$/, '');
       if (locale === 'en') english.set(slug, status);
       else if (english.has(slug) && english.get(slug) !== status)
@@ -329,14 +318,6 @@ function checkStatus(): Problem[] {
           where: file,
           message: `status ${String(status)} differs from the English page's ${String(english.get(slug))}`,
         });
-      if (status !== 'Certainty' && status !== 'Dogma') continue;
-      const found = callouts(raw);
-      for (const kind of ['open', 'conflict'] as const)
-        for (const line of found[kind])
-          problems.push({
-            where: `${file}:${line}`,
-            message: `${status} page holds ${kind === 'open' ? 'an open' : 'a conflict'} callout; resolve it or lower the status`,
-          });
     }
   }
   return problems;
@@ -360,8 +341,8 @@ function checkPageParity(): Problem[] {
     }
     const enRaw = read(enFile);
     const zhRaw = read(zhFile);
-    const enData = frontmatter(enRaw).data;
-    const zhData = frontmatter(zhRaw).data;
+    const enData = splitFrontmatter(enRaw).data;
+    const zhData = splitFrontmatter(zhRaw).data;
     for (const key of ['kind', 'area', 'navbox']) {
       const want = enData[key];
       const got = zhData[key];
@@ -370,22 +351,6 @@ function checkPageParity(): Problem[] {
       problems.push({
         where: `${zhFile}:${line}`,
         message: `${key} is ${JSON.stringify(got) ?? 'missing'}, English has ${JSON.stringify(want) ?? 'none'}`,
-      });
-    }
-    const enCallouts = callouts(enRaw);
-    const zhCallouts = callouts(zhRaw);
-    for (const kind of ['open', 'conflict'] as CalloutKind[]) {
-      const a = enCallouts[kind];
-      const b = zhCallouts[kind];
-      if (a.length === b.length) continue;
-      const marker = kind === 'open' ? '[!OPEN]' : '[!CONFLICT]';
-      problems.push({
-        where: zhFile,
-        message: `${b.length} ${marker} callouts, English has ${a.length}`,
-        detail: [
-          `English at lines ${a.join(', ') || 'none'} of ${enFile}`,
-          `Chinese at lines ${b.join(', ') || 'none'}`,
-        ],
       });
     }
   }
@@ -516,6 +481,10 @@ const CHECKS: [string, () => Problem[] | Promise<Problem[]>][] = [
   ['Chinese sheet parity', checkSheetParity],
   ['Chinese terms', checkChineseTerms],
   ['Page status', checkStatus],
+  ['Question markers', () => markerProblems(getQuestions(), markedPages())],
+  ['Question issues', () => issueProblems(getQuestions())],
+  ['Question cycles', () => cycleProblems(getQuestions())],
+  ['Constellations', () => constellationProblems(getConstellations())],
 ];
 
 if (!existsSync(join(DIST, 'index.html'))) {

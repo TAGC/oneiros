@@ -1,11 +1,15 @@
 ---
+import QuestionBox from '../../components/QuestionBox.astro';
 import WikiLink from '../../components/WikiLink.astro';
-import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import { DEFAULT_LOCALE, inLocale, type Locale, localePaths } from '../../i18n/locale';
+import { useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
-import { renderMarkdown } from '../../lib/markdown';
-import { getPages } from '../../lib/pages';
-import { wikiUrl } from '../../lib/site';
-import { calloutHeading } from '../../lib/wiki';
+import { getPages, type Page } from '../../lib/pages';
+import { getQuestions, type Question } from '../../lib/questions';
+import { clusterList } from '../../lib/questions/clusters';
+import { getConstellations } from '../../lib/questions/constellations';
+import { url, wikiUrl } from '../../lib/site';
+import { calloutHeading, type MarkerBox } from '../../lib/wiki';
 
 export const getStaticPaths = localePaths;
 
@@ -15,8 +19,61 @@ interface Props {
 
 const { locale } = Astro.props;
 const t = useTranslations(locale);
-const pages = (await getPages(locale)).filter((p) => p.callouts.length);
-const count = pages.reduce((n, p) => n + p.callouts.length, 0);
+const questions = getQuestions();
+const constellations = getConstellations(questions);
+const pages = (await getPages(locale)).filter((p) => p.markers.length);
+/** Where each question issue is marked: its page and its box there. */
+const markedOn = new Map<number, { page: Page; marker: MarkerBox }>();
+for (const page of pages) {
+  for (const marker of page.markers) {
+    markedOn.set(marker.issue, { page, marker });
+  }
+}
+const unmarked = questions.all().filter((q) => q.state === 'open' && !markedOn.has(q.number));
+const count = pages.reduce((n, p) => n + p.markers.length, 0) + unmarked.length;
+
+/** The Constellations clustering's open questions; finished constellations hold none. */
+const clusters = clusterList(questions.all(), constellations, 'constellations', locale)
+  .map((c) => ({
+    ...c,
+    questions: c.questions.map((n) => questions.get(n)!).filter((q) => q.state === 'open'),
+  }))
+  .filter((c) => c.questions.length);
+const grouped = clusters.filter((c) => c.kind === 'constellation');
+const none = clusters.find((c) => c.kind === 'none');
+const ungrouped = new Set(none?.questions.map((q) => q.number));
+const ungroupedPages = pages
+  .map((p) => ({ ...p, markers: p.markers.filter((m) => ungrouped.has(m.issue)) }))
+  .filter((p) => p.markers.length);
+const ungroupedUnmarked = unmarked.filter((q) => ungrouped.has(q.number));
+const areas = clusterList(ungroupedUnmarked, undefined, 'areas', locale).map((c) => ({
+  name: c.name,
+  list: c.questions.map((n) => questions.get(n)!),
+}));
+
+/** A question issue's box: its text from the page that marks it, or from the issue. */
+function issueBox(q: Question) {
+  const marked = markedOn.get(q.number);
+  const { text, lang } = inLocale(q.text, locale) ?? { text: '', lang: DEFAULT_LOCALE };
+  return {
+    kind: q.kind,
+    heading: calloutHeading(q.kind, locale, q),
+    links: [
+      marked
+        ? {
+            href: wikiUrl(marked.page.slug, marked.marker.id, marked.page.locale),
+            text: marked.page.title,
+          }
+        : { text: t.openUnmarked },
+      { href: q.url, text: t.onGithub(q.number) },
+    ],
+    title: inLocale(q.title, locale),
+    markdown: marked ? marked.marker.markdown : text,
+    page: marked?.page.slug ?? q.properties.page,
+    lang: marked ? marked.page.locale : lang,
+    locale,
+  };
+}
 ---
 
 <Wiki
@@ -27,29 +84,74 @@ const count = pages.reduce((n, p) => n + p.callouts.length, 0);
 >
   <h1>{t.openQuestions}</h1>
   <p class="sub">{t.openSub(count)}</p>
-  {pages.length === 0 && <p>{t.openNone}</p>}
+  <p><a href={url('/astrolabe/', locale)}>{t.astrolabe.seeMap}</a></p>
+  {count === 0 && <p>{t.openNone}</p>}
   {
-    pages.map((p) => (
-      <section>
-        <h2>
-          <WikiLink to={p} locale={locale}>
-            {p.title}
-          </WikiLink>
-        </h2>
-        {p.callouts.map((c) => (
-          <div class={`note note-${c.kind}`}>
-            <p class="note-h">
-              <strong>{calloutHeading(c.kind, locale)}</strong> ·{' '}
-              <a href={wikiUrl(p.slug, c.id, p.locale)}>{t.onThePage}</a>
-            </p>
-            {p.locale === locale ? (
-              <Fragment set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
-            ) : (
-              <div lang={p.locale} set:html={renderMarkdown(c.markdown, p.slug, p.locale)} />
-            )}
-          </div>
+    grouped.map((cluster) => {
+      const c = constellations.get(cluster.constellation!)!;
+      const name = cluster.name!;
+      const reasoning = inLocale(c.reasoning, locale);
+      const facts = [
+        c.size && t.constellationFact(t.constellationSize, t.constellationSizes[c.size]),
+        c.energy && t.constellationFact(t.constellationEnergy, t.constellationEnergies[c.energy]),
+        t.constellationSettled(cluster.total - cluster.open, cluster.total),
+      ].filter(Boolean);
+      return (
+        <section id={`constellation-${cluster.constellation}`}>
+          <h2 lang={name.lang === locale ? undefined : name.lang}>{name.text}</h2>
+          <p class="sub">{facts.join(' · ')}</p>
+          {reasoning?.text && (
+            <p lang={reasoning.lang === locale ? undefined : reasoning.lang}>{reasoning.text}</p>
+          )}
+          {cluster.questions.map((q) => (
+            <QuestionBox {...issueBox(q)} />
+          ))}
+        </section>
+      );
+    })
+  }
+  {
+    (ungroupedPages.length > 0 || areas.length > 0) && (
+      <section id="ungrouped">
+        <h2>{t.openUngrouped}</h2>
+        <p>{t.openUngroupedSub}</p>
+        {ungroupedPages.map((p) => (
+          <>
+            <h3>
+              <WikiLink to={p} locale={locale}>
+                {p.title}
+              </WikiLink>
+            </h3>
+            {p.markers.map((m) => (
+              <QuestionBox
+                kind={m.kind}
+                heading={calloutHeading(m.kind, locale, questions.get(m.issue))}
+                links={[{ href: wikiUrl(p.slug, m.id, p.locale), text: t.onThePage }]}
+                markdown={m.markdown}
+                page={p.slug}
+                lang={p.locale}
+                locale={locale}
+              />
+            ))}
+          </>
         ))}
+        {areas.length > 0 && (
+          <>
+            <h3>{t.openUnmarked}</h3>
+            <p>{t.openUnmarkedSub}</p>
+            {areas.map((g) => (
+              <>
+                <h4 lang={g.name && g.name.lang !== locale ? g.name.lang : undefined}>
+                  {g.name?.text ?? t.noArea}
+                </h4>
+                {g.list.map((q) => (
+                  <QuestionBox {...issueBox(q)} />
+                ))}
+              </>
+            ))}
+          </>
+        )}
       </section>
-    ))
+    )
   }
 </Wiki>

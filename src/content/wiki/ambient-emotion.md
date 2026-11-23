@@ -40,10 +40,8 @@ Ambient emotion is [[Held and manifest|manifest]], so opposites cancel in it int
 
 Along a [[seam]], neighbouring [[Shard|shards]]' opposed ambient emotion meets and annihilates, so seams shimmer with lucidity.
 
-> [!OPEN]
-> Cascades are possible but still to be explored.
+> [!ISSUE 20]
 
 ## Drawing it in
 
-> [!OPEN]
-> Drawing ambient emotion into a mood is a possible advanced skill, not yet decided. The vision's [[Other ideas]] also lists "Feelings might be drawn out of places and people into your mood."
+> [!ISSUE 21]

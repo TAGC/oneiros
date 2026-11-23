@@ -12,27 +12,34 @@ import type {
   Text,
 } from 'mdast';
 import { toString } from 'mdast-util-to-string';
+import remarkGfm from 'remark-gfm';
+import remarkParse from 'remark-parse';
+import remarkSmartypants from 'remark-smartypants';
+import { unified } from 'unified';
 import { SKIP, visit } from 'unist-util-visit';
-import { DEFAULT_LOCALE, type Locale, useTranslations } from '../i18n/ui';
+import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import { getQuestions, type Questions } from './questions';
+import { markerBlocks } from './questions/markers';
 import { WIKI_DIRS, wikiUrl } from './site';
 import {
   calloutHeading,
-  calloutId,
-  calloutKind,
   type CalloutKind,
+  markerBox,
   parseWikiLink,
   resolve,
-  stripCalloutMarker,
   WIKI_LINK,
 } from './wiki';
 
 export interface RemarkWikiOptions {
-  /** Also add heading ids, the contents box, callouts and table classes (full articles). */
+  /** Also add heading ids, the contents box, marker boxes and table classes (full articles). */
   article?: boolean;
   /** The page slug that `[[#Section]]` links point into, when rendered off that page. */
   page?: string;
   /** The locale links resolve in; by default worked out from the file's folder. */
   locale?: Locale;
+  /** Where `[!ISSUE N]` markers find their questions; by default the repo's question cache. */
+  questions?: Questions;
   /** Unused here: puts `renderDigest()` into Astro's config so cached pages re-render. */
   digest?: string;
 }
@@ -78,7 +85,7 @@ interface SourceFile {
 }
 
 /** The locale of a content file, from the folder it sits in. */
-export function fileLocale(file?: SourceFile): Locale {
+function fileLocale(file?: SourceFile): Locale {
   const path = String(file?.path ?? file?.history[0] ?? '').replaceAll('\\', '/');
   return path.includes(`/${WIKI_DIRS.zh}/`) ? 'zh' : DEFAULT_LOCALE;
 }
@@ -127,25 +134,38 @@ function transformLinks(tree: Root, page: string | undefined, locale: Locale): v
   });
 }
 
-function transformCallouts(tree: Root, locale: Locale): void {
-  const counts: Record<CalloutKind, number> = { open: 0, conflict: 0 };
-  visit(tree, 'blockquote', (node: Blockquote) => {
-    const kind = calloutKind(node);
-    if (!kind) return;
-    counts[kind] += 1;
-    stripCalloutMarker(node);
-    node.children.unshift({
-      type: 'paragraph',
-      data: { hProperties: { className: ['note-h'] } },
-      children: [
-        { type: 'strong', children: [{ type: 'text', value: calloutHeading(kind, locale) }] },
-      ],
-    });
-    node.data = {
-      hName: 'div',
-      hProperties: { className: ['note', `note-${kind}`], id: calloutId(kind, counts[kind]) },
-    };
+/** Turns a blockquote into a callout box with its header. */
+function toNote(node: Blockquote, kind: CalloutKind, id: string, heading: string): void {
+  node.children.unshift({
+    type: 'paragraph',
+    data: { hProperties: { className: ['note-h'] } },
+    children: [{ type: 'strong', children: [{ type: 'text', value: heading }] }],
   });
+  node.data = { hName: 'div', hProperties: { className: ['note', `note-${kind}`], id } };
+}
+
+const fragmentProcessor = unified().use(remarkParse).use(remarkGfm).use(remarkSmartypants);
+
+function parseFragment(markdown: string): RootContent[] {
+  const tree = fragmentProcessor.runSync(fragmentProcessor.parse(markdown)) as Root;
+  visit(tree, (node) => {
+    delete node.position;
+  });
+  return tree.children;
+}
+
+/** Fills each `[!ISSUE N]` marker with its question's text for the page's locale. */
+function expandMarkers(tree: Root, locale: Locale, questions: Questions): void {
+  for (const { issue, node } of markerBlocks(tree)) {
+    const box = markerBox(issue, locale, questions);
+    node.children = parseFragment(box.markdown) as Blockquote['children'];
+    if (box.lang !== locale) {
+      for (const child of node.children) {
+        child.data = { ...child.data, hProperties: { ...child.data?.hProperties, lang: box.lang } };
+      }
+    }
+    toNote(node, box.kind, box.id, calloutHeading(box.kind, locale, questions.get(issue)));
+  }
 }
 
 function transformTables(tree: Root): void {
@@ -216,13 +236,13 @@ function contentsBox(tree: Root, headings: Heading[], locale: Locale): void {
   if (at !== -1) tree.children.splice(at, 0, toc);
 }
 
-/** Wiki links everywhere; for articles also callouts, `.wt` tables, heading ids and contents. */
+/** Wiki links everywhere; for articles also question markers, `.wt` tables, heading ids and contents. */
 export default function remarkWiki(options: RemarkWikiOptions = {}) {
   return (tree: Root, file?: SourceFile) => {
     const locale = options.locale ?? fileLocale(file);
+    if (options.article) expandMarkers(tree, locale, options.questions ?? getQuestions());
     transformLinks(tree, options.page, locale);
     if (!options.article) return;
-    transformCallouts(tree, locale);
     transformTables(tree);
     contentsBox(tree, addHeadingIds(tree), locale);
   };

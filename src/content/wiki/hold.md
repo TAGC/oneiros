@@ -43,6 +43,3 @@ Whether a belief's [[Conviction]] can raise a memory's Hold is open (see [[Convi
 [[Forgetting]] wears Hold: the Dark [[scar]] malus makes neighbouring rooms lose Hold faster to it. If Hold slips below its tier's line, the room cracks, a warning that mends if it recovers; left too long or too far below, it collapses (see [[cracking and collapse]]).
 
 A memory in a [[bead]] has no Hold. [[Reliving]] a memory brings it back Loose. Igniting a [[Fixture]] carefully keeps its Hold, so it burns long (see [[igniting]]).
-
-> [!OPEN]
-> "Crack" has two senses around Hold. A memory cracks when it is weak, spilling out as ambient emotion (see [[Memory light#Cracking|cracking]]). A room cracks when Hold slips below its tier's line, as a warning before it collapses (see [[cracking and collapse]]). The Glossary's Hold entry uses both. Whether one should get another word is not settled.

@@ -50,8 +50,4 @@ Collapse is also the destroyed form of a [[Megaron]]: a collapsed hall with sagg
 
 ## Open questions
 
-> [!OPEN]
-> How punishing should a collapse be: when are a collapsed room's buried contents destroyed? The Glossary says destroying them "is possible", but not when.
-
-> [!OPEN]
-> "Crack" has two senses: a room cracks when its Hold or Conviction slips below its tier's line, and a memory cracks when it is weak (low vividness and low Hold), spilling as ambient emotion. The Glossary's [[Hold]] entry uses both. This page owns the room sense and [[Memory light]] the memory sense; the designer may want distinct words.
+> [!ISSUE 39]

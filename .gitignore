@@ -5,6 +5,9 @@ node_modules/
 dist/
 .astro/
 
+# Question cache, rewritten by `bun run pull`
+.questions/
+
 # OS
 .DS_Store
 

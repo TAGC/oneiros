@@ -1,6 +1,7 @@
 ---
 import IconFrame from '../../components/IconFrame.astro';
-import { type Locale, localePaths, useTranslations } from '../../i18n/ui';
+import { type Locale, localePaths } from '../../i18n/locale';
+import { useTranslations } from '../../i18n/ui';
 import Wiki from '../../layouts/Wiki.astro';
 import { AREAS } from '../../lib/areas';
 import { renderMarkdown } from '../../lib/markdown';
@@ -19,7 +20,7 @@ const { locale } = Astro.props;
 const t = useTranslations(locale);
 const pages = await getPages(locale);
 const categories = await getCategories(locale);
-const openCount = pages.reduce((n, p) => n + p.callouts.length, 0);
+const openCount = pages.reduce((n, p) => n + p.markers.length, 0);
 const translatedCount = pages.filter((p) => p.locale === 'zh').length;
 const welcome = renderMarkdown(t.welcome, undefined, locale);
 ---

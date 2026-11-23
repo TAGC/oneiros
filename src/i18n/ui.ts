@@ -2,36 +2,11 @@
  * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
+import type { StarStatus } from '../astrolabe/chart';
+import type { Role, ThreadKind } from '../lib/questions';
+import type { Energy, Size } from '../lib/questions/constellation-format';
 import type { Status } from '../lib/status';
-
-export const LOCALES = ['en', 'zh'] as const;
-export type Locale = (typeof LOCALES)[number];
-export const DEFAULT_LOCALE: Locale = 'en';
-
-/** The `<html lang>` value; Pagefind builds one search index per value. */
-export const HTML_LANG: Record<Locale, string> = { en: 'en-GB', zh: 'zh-Hans' };
-
-/** Noto Serif SC for titles and Noto Sans SC for body text, loaded on zh pages only. */
-export const CJK_FONTS =
-  'https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap';
-
-export function toLocale(value: unknown): Locale {
-  return value === 'zh' ? 'zh' : 'en';
-}
-
-export function otherLocale(locale: Locale): Locale {
-  return locale === 'zh' ? 'en' : 'zh';
-}
-
-/** The `[...locale]` route param: undefined for English, so its URLs keep no prefix. */
-export function localeParam(locale: Locale): string | undefined {
-  return locale === DEFAULT_LOCALE ? undefined : locale;
-}
-
-/** `getStaticPaths` entries for a page under `src/pages/[...locale]/`, one per locale. */
-export function localePaths() {
-  return LOCALES.map((locale) => ({ params: { locale: localeParam(locale) }, props: { locale } }));
-}
+import type { Locale } from './locale';
 
 const en = {
   siteName: 'Oneiros Wiki',
@@ -71,7 +46,11 @@ const en = {
   colon: ': ',
   fromWiki: 'From the Oneiros Wiki',
   openQuestion: 'Open question',
-  conflict: 'Conflict: vision and sheet disagree',
+  conflictBare: 'Conflict',
+  conflictBetween: (names: string[]) =>
+    `Conflict: ${names.slice(0, -1).join(', ')} and ${names.at(-1)} disagree`,
+  /** Sources a conflict's Source row may name that are not wiki pages, by English name. */
+  conflictSources: { vision: 'vision', sheet: 'sheet' } as Record<string, string>,
   englishOnly: 'English only',
   englishData: 'English data',
   englishDataNote: 'This table is not translated yet.',
@@ -143,9 +122,141 @@ Five pillars hold it together:
   /* Open questions */
   openDescription: 'Every open question and conflict across the wiki.',
   openSub: (n: number) =>
-    `Every open question and every conflict between the vision and the sheet, page by page: ${n} in all.`,
+    `Every open question and every conflict between sources, by constellation: ${n} in all.`,
   openNone: 'No open questions yet.',
+  openUngrouped: 'Not in a constellation',
+  openUngroupedSub: 'Open questions that no constellation holds yet, page by page.',
+  openUnmarked: 'Not on a page',
+  openUnmarkedSub: 'Open question issues that no page marks yet, by area.',
+  noArea: 'No area',
+  onGithub: (n: number) => `#${n} on GitHub`,
   onThePage: 'on the page',
+  constellationSize: 'Size',
+  constellationEnergy: 'Energy',
+  constellationSizes: { small: 'Small', medium: 'Medium', large: 'Large' } as Record<Size, string>,
+  constellationEnergies: { low: 'Low', medium: 'Medium', high: 'High' } as Record<Energy, string>,
+  constellationSettled: (settled: number, total: number) => `${settled} of ${total} settled`,
+  constellationFact: (label: string, value: string) => `${label}: ${value}`,
+  questionMissing: (n: number) =>
+    `Question #${n} is not in the question cache. Run \`bun run pull\`.`,
+
+  /* Astrolabe: the star map of every question. */
+  astrolabe: {
+    name: 'Astrolabe',
+    description:
+      'Every question on the wiki as a star: what is ready to ask, what waits, and what is settled.',
+    sub: 'Every question on the wiki as a star, clustered by area or by constellation.',
+    seeMap: 'See every question as a star map in the Astrolabe.',
+    stats: (c: Record<string, number>) =>
+      `${c.open} open: ${c.frontier} on the frontier, ${c.blocked} blocked. ${c.decided} decided, ${c['ruled-out']} ruled out, ${c.undermined} undermined.`,
+    empty: 'No questions yet. Run `bun run pull` to fetch them from GitHub.',
+    view: 'View',
+    views: { sky: 'Night sky', tiers: 'Tiers', brass: 'Dial' },
+    hint: 'Drag to pan; pinch, Ctrl and scroll, or the buttons to zoom. Select a star to read it.',
+    tiersHint:
+      'Settled ground on the left, the frontier next, then the questions further out. Select a star to read it.',
+    brassHint:
+      'Each mark is one constellation, in the sector of its main area and on the ring of the energy it needs. Select one to read it.',
+    zoomIn: 'Zoom in',
+    zoomOut: 'Zoom out',
+    resetView: 'Reset the view',
+    fullScreen: 'Full screen',
+    showSettled: 'Show settled',
+    exitFullScreen: 'Exit full screen',
+    key: 'Key',
+    named: (name: string) => `${name}.`,
+    status: {
+      frontier: 'Frontier',
+      blocked: 'Blocked',
+      decided: 'Decided',
+      'ruled-out': 'Ruled out',
+      undermined: 'Undermined',
+    } satisfies Record<StarStatus, string>,
+    statusHelp: {
+      frontier: 'Open, and every blocker is settled. Ready to ask.',
+      blocked: 'Open, but waiting on a question that is not settled.',
+      decided: 'Closed as decided.',
+      'ruled-out': 'Closed as not planned.',
+      undermined: 'Decided, but a later question broke its premise.',
+    } satisfies Record<StarStatus, string>,
+    conflict: 'Conflict',
+    withConflict: (status: string) => `${status}, conflict`,
+    conflictHelp: 'Two sources disagree. Drawn in red.',
+    roles: {
+      central: 'Central',
+      peripheral: 'Peripheral',
+      independent: 'Independent',
+    } satisfies Record<Role, string>,
+    roleHelp: {
+      central: (n: number) => `Open, and blocks ${n} or more open questions. A larger star.`,
+      peripheral: () => 'On the frontier, and no open question waits on it. A small moon.',
+      independent: () =>
+        'Open, with no links to any question, not even a related one. A dotted orbit.',
+    } satisfies Record<Role, (n: number) => string>,
+    threads: {
+      unsettled: 'Blocked by a question that is not settled: open or undermined.',
+      settled: 'Blocked by a settled question: decided or ruled out.',
+      undermines: 'Broke the premise of a decision.',
+    } satisfies Record<ThreadKind, string>,
+    areaGlow: 'Each soft glow is one of the wiki’s areas.',
+    tiers: ['Settled ground', 'Frontier', 'One step out', 'Two steps out', 'Further out'],
+    tierHelp: [
+      'Closed questions',
+      'Ready to ask now',
+      'Waits on one question',
+      'Waits on a chain of two',
+      'Waits on a longer chain',
+    ],
+    areaOpen: (open: number, all: number) => `${open} open of ${all}`,
+    starLabel: (n: number, title: string, status: string, area: string) =>
+      `#${n}: ${title}${/[?.!]$/.test(title) ? '' : '.'} ${status}, ${area}.`,
+    close: 'Close',
+    question: 'Question',
+    context: 'Context',
+    answer: 'Answer',
+    links: 'Links',
+    blockedBy: 'Blocked by',
+    blocks: 'Blocks',
+    underminedBy: 'Undermined by',
+    undermines: 'Undermines',
+    onPage: 'See it on its wiki page',
+    constellations: 'Constellations',
+    clusterBy: 'Cluster by',
+    clusters: { areas: 'Areas', constellations: 'Constellations' } as Record<string, string>,
+    noConstellation: 'In no constellation',
+    constellationsSub:
+      'Groups of open questions, each sized to settle in one session. Keep lit the ones that fit the time and energy you have.',
+    time: 'Time',
+    any: 'Any',
+    fit: (fit: number, all: number) =>
+      all === 1 ? `${fit} of 1 constellation fits.` : `${fit} of ${all} constellations fit.`,
+    noConstellations: 'No constellations yet.',
+    constellation: 'Constellation',
+    members: 'Its questions',
+    constellationsOnPage: 'Each name leads to its questions on the Open questions page.',
+    ungrouped: (n: number) => `Not in a constellation (${n})`,
+    constellationKey: 'Lines join the questions of one constellation.',
+    ungroupedKey: 'An open question in no constellation yet.',
+    /* The constellations view: a brass dial. */
+    dialCount: (n: number) => (n === 1 ? '1 constellation' : `${n} constellations`),
+    dialUngrouped: (n: number) =>
+      n === 1 ? '1 open question in none' : `${n} open questions in none`,
+    dialEnergy: 'Energy rises outward',
+    noEnergy: 'Not set',
+    markLabel: (name: string, facts: string) => `${name}. ${facts}.`,
+    milestone: 'Milestone on GitHub',
+    areas: 'Areas',
+    starInSky: 'Show it in the night sky',
+    onItsPage: 'On its page',
+    dialKey: [
+      'Sectors are the areas; rings are energy, low near the hub and high at the rim.',
+      'A constellation sits in the area holding most of its questions; a tie goes to the area first in the wiki.',
+      'A larger mark is a larger constellation: small, medium or large.',
+      'Each notch round a mark is one of its questions; a gold notch is settled.',
+    ],
+    inspiredBy: 'Inspired by',
+    licence: '(MIT).',
+  },
 
   /* Status */
   statusDescription: "How settled a page's design idea is.",
@@ -242,7 +353,9 @@ const zh: UI = {
   colon: '：',
   fromWiki: '来自 Oneiros 维基',
   openQuestion: '待定问题',
-  conflict: '冲突：愿景与参考表不一致',
+  conflictBare: '冲突',
+  conflictBetween: (names) => `冲突：${names.slice(0, -1).join('、')}与${names.at(-1)}不一致`,
+  conflictSources: { vision: '愿景', sheet: '参考表' },
   englishOnly: '仅有英文版（English only）',
   englishData: '英文数据',
   englishDataNote: '此表尚未翻译，以下为英文原文。',
@@ -323,9 +436,133 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   categoryConflict: '含冲突的页面',
 
   openDescription: '整个维基中的所有待定问题与冲突。',
-  openSub: (n) => `逐页列出所有待定问题，以及愿景与参考表之间的所有冲突：共 ${n} 处。`,
+  openSub: (n) => `按星座列出所有待定问题，以及各来源之间的所有冲突：共 ${n} 处。`,
   openNone: '尚无待定问题。',
+  openUngrouped: '不在星座中',
+  openUngroupedSub: '尚未归入任何星座的待定问题，逐页列出。',
+  openUnmarked: '不在页面上',
+  openUnmarkedSub: '尚无页面标出的待定问题，按领域列出。',
+  noArea: '无领域',
+  onGithub: (n) => `GitHub 上的 #${n}`,
   onThePage: '查看原处',
+  constellationSize: '规模',
+  constellationEnergy: '精力',
+  constellationSizes: { small: '小', medium: '中', large: '大' },
+  constellationEnergies: { low: '低', medium: '中', high: '高' },
+  constellationSettled: (settled, total) => `已定 ${settled} / ${total}`,
+  constellationFact: (label, value) => `${label}：${value}`,
+  questionMissing: (n) => `问题缓存中没有问题 #${n}。请运行 \`bun run pull\`。`,
+
+  astrolabe: {
+    name: '星盘',
+    description: '维基上的每个问题都是一颗星：哪些可以先问，哪些在等待，哪些已经定下。',
+    sub: '维基上的每个问题都是一颗星，按领域或星座聚集。',
+    seeMap: '在星盘中把所有问题看作一幅星图。',
+    stats: (c) =>
+      `${c.open} 个待定：${c.frontier} 个前沿，${c.blocked} 个受阻。${c.decided} 个已定，${c['ruled-out']} 个不采纳，${c.undermined} 个前提动摇。`,
+    empty: '尚无问题。请运行 `bun run pull` 从 GitHub 获取。',
+    view: '视图',
+    views: { sky: '夜空', tiers: '层级', brass: '表盘' },
+    hint: '拖动平移；双指、Ctrl 加滚轮或按钮缩放。选择一颗星即可阅读。',
+    tiersHint: '左边是已定之地，接着是前沿，再往右是更远的问题。选择一颗星即可阅读。',
+    brassHint:
+      '每枚标记是一个星座，位于其主要领域的扇区，落在它所需精力的圆环上。选择一枚即可阅读。',
+    zoomIn: '放大',
+    zoomOut: '缩小',
+    resetView: '重置视图',
+    fullScreen: '全屏',
+    showSettled: '显示已定问题',
+    exitFullScreen: '退出全屏',
+    key: '图例',
+    named: (name) => `${name}：`,
+    status: {
+      frontier: '前沿',
+      blocked: '受阻',
+      decided: '已定',
+      'ruled-out': '不采纳',
+      undermined: '前提动摇',
+    },
+    statusHelp: {
+      frontier: '待定，且所有阻挡它的问题都已定下。可以先问。',
+      blocked: '待定，但仍在等一个尚未定下的问题。',
+      decided: '已定并关闭。',
+      'ruled-out': '不采纳并关闭。',
+      undermined: '已定，但后来的问题动摇了它的前提。',
+    },
+    conflict: '冲突',
+    withConflict: (status) => `${status}，冲突`,
+    conflictHelp: '两处来源互相矛盾。以红色绘出。',
+    roles: {
+      central: '核心',
+      peripheral: '边缘',
+      independent: '独立',
+    },
+    roleHelp: {
+      central: (n) => `待定，且阻挡 ${n} 个或更多待定问题。星更大。`,
+      peripheral: () => '处于前沿，且没有待定问题在等它。旁边有一颗小卫星。',
+      independent: () => '待定，与任何问题都没有关联，连相关问题也没有。外绕虚线轨道。',
+    },
+    threads: {
+      unsettled: '被一个尚未定下的问题阻挡：待定或前提动摇。',
+      settled: '被一个已定下的问题阻挡：已定或不采纳。',
+      undermines: '动摇了一项决定的前提。',
+    },
+    areaGlow: '每团柔光是维基的一个领域。',
+    tiers: ['已定之地', '前沿', '一步之外', '两步之外', '更远处'],
+    tierHelp: [
+      '已关闭的问题',
+      '现在就可以问',
+      '在等一个问题',
+      '在等一串两个问题',
+      '在等更长的一串问题',
+    ],
+    areaOpen: (open, all) => `${all} 个中 ${open} 个待定`,
+    starLabel: (n, title, status, area) =>
+      `#${n}：${title}${/[？。！?.!]$/.test(title) ? '' : '。'}${status}，${area}。`,
+    close: '关闭',
+    question: '问题',
+    context: '背景',
+    answer: '答案',
+    links: '关联',
+    blockedBy: '阻挡它的',
+    blocks: '它阻挡的',
+    underminedBy: '动摇它的',
+    undermines: '它动摇的',
+    onPage: '在维基页面上查看',
+    constellations: '星座',
+    clusterBy: '聚集方式',
+    clusters: { areas: '领域', constellations: '星座' },
+    noConstellation: '不在任何星座中',
+    constellationsSub:
+      '一组组待定问题，每组的大小都适合一次定夺。只点亮符合你现有时间和精力的星座。',
+    time: '时间',
+    any: '不限',
+    fit: (fit, all) => `${all} 个星座中有 ${fit} 个合适。`,
+    noConstellations: '尚无星座。',
+    constellation: '星座',
+    members: '其中的问题',
+    constellationsOnPage: '点击名称，可在待定问题页面查看其中的问题。',
+    ungrouped: (n) => `不在星座中（${n}）`,
+    constellationKey: '连线把同一星座的问题串在一起。',
+    ungroupedKey: '尚不属于任何星座的待定问题。',
+    dialCount: (n) => `${n} 个星座`,
+    dialUngrouped: (n) => `${n} 个待定问题不在任何星座中`,
+    dialEnergy: '精力由内向外递增',
+    noEnergy: '未设',
+    markLabel: (name, facts) => `${name}。${facts}。`,
+    milestone: 'GitHub 上的里程碑',
+    areas: '领域',
+    starInSky: '在夜空中显示',
+    onItsPage: '在其页面上',
+    dialKey: [
+      '扇区是领域；圆环是精力，低的靠近中心，高的靠近外缘。',
+      '星座位于收纳其最多问题的领域；数量相同时，取维基中排在前面的领域。',
+      '标记越大，星座规模越大：小、中或大。',
+      '标记周围的每道刻痕是其中一个问题；金色刻痕表示已定。',
+    ],
+    inspiredBy: '灵感来自',
+    licence: '（MIT）。',
+  },
 
   statusDescription: '页面所述设计想法的确定程度。',
   statusIntro:
@@ -375,7 +612,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   notFoundOpen: '待定问题',
 };
 
-export const UI_STRINGS: Record<Locale, UI> = { en, zh };
+const UI_STRINGS: Record<Locale, UI> = { en, zh };
 
 export function useTranslations(locale: Locale): UI {
   return UI_STRINGS[locale];

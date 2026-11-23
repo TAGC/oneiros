@@ -1,0 +1,7 @@
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["scripts/*.ts", "{src,scripts}/**/*.test.ts", "src/components/figures/*.astro"],
+  "project": ["{src,scripts}/**/*.{ts,astro,mdx}", "*.ts"],
+  "ignoreDependencies": ["@commitlint/cli"],
+  "ignoreExportsUsedInFile": { "interface": true, "type": true }
+}

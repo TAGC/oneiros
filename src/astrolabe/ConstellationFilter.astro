@@ -1,0 +1,75 @@
+---
+/**
+ * The choice of clustering (by area or by constellation) and the time and energy filter.
+ * A constellation fits when its size and energy are the ones chosen; one without a size or
+ * energy fits only "Any".
+ */
+import { type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import { ENERGIES, SIZES } from '../lib/questions/constellation-format';
+import { openConstellations, type StarChart } from './chart';
+
+interface Props {
+  chart: StarChart;
+  locale: Locale;
+}
+
+const { chart, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const scales = [
+  { name: 'size', label: a.time, values: SIZES, labels: t.constellationSizes },
+  { name: 'energy', label: t.constellationEnergy, values: ENERGIES, labels: t.constellationEnergies },
+] as const;
+const all = openConstellations(chart).length;
+/** The line under the filter for each number of constellations that fit, from none to all. */
+const fitTexts = Array.from({ length: all + 1 }, (_, fit) => a.fit(fit, all));
+---
+
+<div class="al-cfilter" hidden data-total={all}>
+  <div class="al-cluster" role="group" aria-label={a.clusterBy}>
+    <span class="al-scale-name">{a.clusterBy}</span>
+    <button type="button" data-cluster="areas" aria-pressed="true">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <circle cx="4.5" cy="5" r="3.2" fill="currentColor" opacity="0.35" />
+        <circle cx="11" cy="10.5" r="3.6" fill="currentColor" opacity="0.35" />
+        <circle cx="4.5" cy="5" r="1.2" fill="currentColor" />
+        <circle cx="11" cy="10.5" r="1.2" fill="currentColor" />
+      </svg>
+      {a.clusters.areas}
+    </button>
+    <button type="button" data-cluster="constellations" aria-pressed="false">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">
+        <path d="M2 12l4-7 4 4 4-7" fill="none" stroke="currentColor" stroke-width="1.4" />
+        <circle cx="2" cy="12" r="1.6" fill="currentColor" />
+        <circle cx="6" cy="5" r="1.6" fill="currentColor" />
+        <circle cx="10" cy="9" r="1.6" fill="currentColor" />
+        <circle cx="14" cy="2" r="1.6" fill="currentColor" />
+      </svg>
+      {a.clusters.constellations}
+    </button>
+  </div>
+  {
+    all > 0 &&
+      scales.map((scale) => (
+        <div class="al-scale" role="group" aria-label={scale.label} data-scale={scale.name}>
+          <span class="al-scale-name">{scale.label}</span>
+          <button type="button" data-value="any" aria-pressed="true">
+            {a.any}
+          </button>
+          {scale.values.map((value: string) => (
+            <button type="button" data-value={value} aria-pressed="false">
+              {(scale.labels as Record<string, string>)[value]}
+            </button>
+          ))}
+        </div>
+      ))
+  }
+  {
+    all > 0 && (
+      <p class="al-fit" aria-live="polite" data-texts={JSON.stringify(fitTexts)}>
+        {fitTexts[all]}
+      </p>
+    )
+  }
+</div>

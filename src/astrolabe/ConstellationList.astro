@@ -1,0 +1,64 @@
+---
+/**
+ * The open constellations under the map, each by name and facts, linking to its section on
+ * the Open questions page, then a link to the questions in none. Their reasoning and
+ * questions live only on that page.
+ */
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import { url } from '../lib/site';
+import { openConstellations, type StarChart, ungroupedStars } from './chart';
+import { constellationFacts } from './facts';
+
+interface Props {
+  chart: StarChart;
+  locale: Locale;
+}
+
+const { chart, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const open = openConstellations(chart);
+const ungrouped = ungroupedStars(chart);
+const page = url('/open-questions/', locale);
+const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
+---
+
+{
+  (open.length > 0 || ungrouped.length > 0) && (
+    <section class="al-clist" aria-labelledby="al-clist-title">
+      <h2 id="al-clist-title">{a.constellations}</h2>
+      <p class="al-clist-sub">{open.length ? a.constellationsSub : a.noConstellations}</p>
+      {open.length > 0 && <p class="al-clist-sub">{a.constellationsOnPage}</p>}
+      <ul class="al-cards">
+        {open.map((c) => (
+          <li
+            class="al-card"
+            id={`constellation-${c.number}`}
+            data-c={c.number}
+            data-size={c.size}
+            data-energy={c.energy}
+          >
+            <h3 lang={lang(c.nameLang)}>
+              {c.cluster?.open ? (
+                <a href={`${page}#constellation-${c.number}`}>{c.name}</a>
+              ) : (
+                c.name
+              )}
+            </h3>
+            <p class="al-card-facts">{constellationFacts(c, t)}</p>
+          </li>
+        ))}
+      </ul>
+      {ungrouped.length > 0 && (
+        <p class="al-ungrouped">
+          <svg class="al-mini" viewBox="-7 -7 14 14" aria-hidden="true">
+            <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
+            <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
+          </svg>
+          <a href={`${page}#ungrouped`}>{a.ungrouped(ungrouped.length)}</a>
+        </p>
+      )}
+    </section>
+  )
+}

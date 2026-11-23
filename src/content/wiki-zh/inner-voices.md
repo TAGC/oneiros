@@ -50,5 +50,4 @@ navbox: character
 
 台词分两部分撰写：每种品质想要什么，以及每种情感听起来是什么样子；节奏部分由规则施加。
 
-> [!OPEN]
-> Vision 把“inner voices”写成小写（术语表也是），但也写了首字母大写的“your Voices”和“Voices are emotions”。哪种写法才是术语尚无定论；本维基的英文正文使用小写。
+> [!ISSUE 60]

@@ -1,0 +1,193 @@
+---
+/**
+ * One panel per star, written at build time: its question, context and answer in the page's
+ * language, and its links. Without JavaScript, `:target` shows the panel a star links to.
+ */
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import { renderMarkdown } from '../lib/markdown';
+import { CENTRAL_MIN_DEPENDENTS } from '../lib/questions';
+import { wikiUrl } from '../lib/site';
+import { calloutHeading, issueId } from '../lib/wiki';
+import type { Star, StarChart } from './chart';
+import Glyph from './Glyph.astro';
+import { constellationFacts } from './facts';
+import { areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  locale: Locale;
+}
+
+const { chart, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
+
+/** The text for this page's language, or English marked as such. */
+function localised(texts: Partial<Record<Locale, string>> | undefined) {
+  const own = texts?.[locale];
+  if (own !== undefined) return { markdown: own, lang: locale };
+  if (texts?.en !== undefined) return { markdown: texts.en, lang: 'en' as Locale };
+  return undefined;
+}
+
+function html(markdown: string, lang: Locale, page?: string) {
+  return renderMarkdown(markdown, page, lang);
+}
+
+function linkGroups(star: Star) {
+  return [
+    { name: a.blockedBy, list: star.blockedBy },
+    { name: a.blocks, list: star.blocks },
+    { name: a.underminedBy, list: star.underminedBy },
+    { name: a.undermines, list: star.undermines },
+  ].filter((g) => g.list.length);
+}
+---
+
+<div class="al-panels">
+  {
+    chart.stars.map((star) => {
+      const q = star.question;
+      const text = localised(q.text);
+      const answer = localised(q.answer);
+      const conflict = q.kind === 'conflict';
+      const page = q.properties.page;
+      return (
+        <section
+          class="al-panel"
+          id={`star-${star.number}`}
+          aria-labelledby={`star-${star.number}-title`}
+          tabindex="-1"
+        >
+          <div class="al-panel-top">
+            <a class="al-panel-number" href={q.url}>
+              {t.onGithub(star.number)}
+            </a>
+            <a class="al-close" href="#" data-close aria-label={a.close} title={a.close}>
+              <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">
+                <path d="M2 2l10 10M12 2L2 12" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+            </a>
+          </div>
+          <h2 id={`star-${star.number}-title`} lang={HTML_LANG[star.labelLang]}>
+            {star.label}
+          </h2>
+          <ul class="al-chips">
+            <li style={`--tint:${areaTint(q.area)}`}>
+              <i class="al-dot" />
+              {q.area ? (t.areaNames[q.area] ?? q.area) : t.noArea}
+            </li>
+            <li>
+              <svg class="al-mini" viewBox="-13 -13 26 26" aria-hidden="true">
+                <Glyph status={star.status} conflict={conflict} />
+              </svg>
+              {a.status[star.status]}
+            </li>
+            {star.roles.map((role) => (
+              <li title={a.roleHelp[role](CENTRAL_MIN_DEPENDENTS)}>
+                <svg class="al-mini" viewBox="-13 -13 26 26" aria-hidden="true">
+                  <Glyph status="frontier" roles={[role]} />
+                </svg>
+                {a.roles[role]}
+              </li>
+            ))}
+          </ul>
+          {star.constellation !== undefined && (
+            <p class="al-panel-c">
+              {a.constellation}
+              {t.colon}
+              <a
+                href={`#constellation-${star.constellation}`}
+                lang={
+                  groupOf.get(star.constellation)!.nameLang === locale
+                    ? undefined
+                    : HTML_LANG[groupOf.get(star.constellation)!.nameLang]
+                }
+              >
+                {groupOf.get(star.constellation)!.name}
+              </a>
+              <span class="al-panel-c-facts">
+                {constellationFacts(groupOf.get(star.constellation)!, t)}
+              </span>
+            </p>
+          )}
+          <div class:list={['note', conflict ? 'note-conflict' : 'note-open']}>
+            <p class="note-h">
+              <strong>{calloutHeading(q.kind, locale, q)}</strong>
+            </p>
+            {text &&
+              (text.lang === locale ? (
+                <Fragment set:html={html(text.markdown, text.lang, page)} />
+              ) : (
+                <div lang={HTML_LANG[text.lang]} set:html={html(text.markdown, text.lang, page)} />
+              ))}
+          </div>
+          {q.context && (
+            <>
+              <h3>{a.context}</h3>
+              <div
+                class="al-context"
+                lang={locale === 'en' ? undefined : HTML_LANG.en}
+                set:html={html(q.context, 'en', page)}
+              />
+            </>
+          )}
+          {answer && (
+            <div class={`al-answer al-answer-${star.status}`}>
+              <h3>{a.answer}</h3>
+              <div
+                lang={answer.lang === locale ? undefined : HTML_LANG[answer.lang]}
+                set:html={html(answer.markdown, answer.lang, page)}
+              />
+              {q.provenance && (
+                <p class="al-provenance" lang={locale === 'en' ? undefined : HTML_LANG.en}>
+                  {q.provenance}
+                </p>
+              )}
+            </div>
+          )}
+          {linkGroups(star).length > 0 && (
+            <>
+              <h3>{a.links}</h3>
+              <dl class="al-links">
+                {linkGroups(star).map((group) => (
+                  <>
+                    <dt>{group.name}</dt>
+                    {group.list.map((n) => {
+                      const other = byNumber.get(n)!;
+                      return (
+                        <dd>
+                          <a href={`#star-${n}`} data-star={n}>
+                            <svg class="al-mini" viewBox="-13 -13 26 26" aria-hidden="true">
+                              <Glyph
+                                status={other.status}
+                                conflict={other.question.kind === 'conflict'}
+                              />
+                            </svg>
+                            <span class="al-link-n">#{n}</span>
+                            <span lang={HTML_LANG[other.labelLang]}>{other.label}</span>
+                          </a>
+                        </dd>
+                      );
+                    })}
+                  </>
+                ))}
+              </dl>
+            </>
+          )}
+          {page && (
+            <p class="al-page">
+              {/* Only open questions keep a marker, so only they have a box to point at. */}
+              <a href={wikiUrl(page, star.question.state === 'open' ? issueId(star.number) : undefined, locale)}>
+                {a.onPage}
+              </a>
+            </p>
+          )}
+        </section>
+      );
+    })
+  }
+</div>

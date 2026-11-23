@@ -45,8 +45,6 @@ How obols sit beside beads and other goods is on [[Economy]].
 
 ## Open questions
 
-> [!OPEN]
-> The designer has not confirmed that absorbing an obol shores up your Coherence.
+> [!ISSUE 72]
 
-> [!OPEN]
-> One past chat proposed that a city's Conviction feeds its obols' [[renown]] rather than their Hold. This was never settled.
+> [!ISSUE 73]

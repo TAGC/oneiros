@@ -3,6 +3,7 @@ version: '0.2'
 language: en-GB
 files:
   - README.md
+  - docs/**/*.md
   - src/content/wiki/**/*.{md,mdx}
   - src/data/sheet/*.json
 ignorePaths:

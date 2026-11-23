@@ -38,8 +38,6 @@ navbox: world
 
 ## 待定问题
 
-> [!OPEN]
-> 「梦」中的居民在多大程度上意识到它正在终结？
+> [!ISSUE 37]
 
-> [!OPEN]
-> “The Dream”（即本页的「梦」；英文首字母大写，如“the Dream's end”）没有定义。它可能指梦境之地，也可能指做梦者的意志；Vision 没有说明。
+> [!ISSUE 38]

@@ -2,15 +2,8 @@
 import '../styles/wiki.css';
 import IconFrame from '../components/IconFrame.astro';
 import WikiLink from '../components/WikiLink.astro';
-import {
-  CJK_FONTS,
-  DEFAULT_LOCALE,
-  HTML_LANG,
-  type Locale,
-  LOCALES,
-  otherLocale,
-  useTranslations,
-} from '../i18n/ui';
+import { DEFAULT_LOCALE, HTML_LANG, type Locale, LOCALES, CJK_FONTS, otherLocale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
 import { SIDEBAR_AREAS } from '../lib/areas';
 import { categoryUrl, SITE, url } from '../lib/site';
 import { categoryLabel, resolve } from '../lib/wiki';
@@ -205,6 +198,7 @@ const alternates = path
               )
             }
             <li><a href={url('/open-questions/', locale)}>{t.openQuestions}</a></li>
+            <li><a href={url('/astrolabe/', locale)}>{t.astrolabe.name}</a></li>
             <li><a href={url('/status/', locale)}>{t.status}</a></li>
           </ul>
         </div>

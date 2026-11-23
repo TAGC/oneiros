@@ -75,5 +75,4 @@ Among ideas liked but not yet worked through: prepared spells, saved casts with 
 
 ## Open questions
 
-> [!OPEN]
-> How does combat feel moment to moment?
+> [!ISSUE 30]

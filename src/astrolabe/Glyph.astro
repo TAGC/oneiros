@@ -1,0 +1,99 @@
+---
+/**
+ * A star's glyph, centred on the origin. Shape carries the status, so it reads without
+ * colour: a rayed star (frontier), a hollow ring (blocked), a solid disc (decided), a dashed
+ * disc struck through (ruled out), a disc in a broken ring (undermined). Conflicts are red
+ * and turned 45 degrees; central stars are larger; a peripheral star has a small moon and an
+ * independent one a dotted orbit.
+ */
+import type { Role } from '../lib/questions';
+import type { StarStatus } from './chart';
+
+interface Props {
+  status: StarStatus;
+  conflict?: boolean;
+  roles?: Role[];
+  /** Staggers the twinkle; omit for a still glyph (key, panel). */
+  number?: number;
+  /** An open question in no constellation: a small warning mark, shown with constellations. */
+  warn?: boolean;
+}
+
+const { status, conflict = false, roles = [], number, warn = false } = Astro.props;
+const scale = roles.includes('central') ? 1.5 : 1;
+const f = (v: number) => Number(v.toFixed(2));
+const twinkle =
+  number === undefined
+    ? undefined
+    : `--tw:${f(3.2 + ((number * 37) % 100) / 33)}s;--tw-delay:-${f(((number * 53) % 100) / 20)}s`;
+const ray = 10 * scale;
+const waist = ray * 0.18;
+const rays = `M0,${-ray}L${f(waist)},${f(-waist)}L${ray},0L${f(waist)},${f(waist)}L0,${ray}L${f(-waist)},${f(waist)}L${-ray},0L${f(-waist)},${f(-waist)}Z`;
+const disc = 4 * scale;
+const ring = 4.2 * scale;
+const reach = { frontier: ray, blocked: ring, decided: disc, 'ruled-out': 5, undermined: 7.6 }[
+  status
+];
+const moon = (reach + 4) * 0.72;
+const tone = conflict ? 'al-conflict' : 'al-open';
+const warnAt = `translate(${f(-(reach + 9))} ${f(-(reach + 7))})`;
+---
+
+<g class:list={['al-glyph', `al-g-${status}`, conflict && 'al-g-conflict']}>
+  {
+    roles.includes('independent') && (
+      <circle class="al-orbit" r={f(reach + 4)} />
+    )
+  }
+  {
+    status === 'frontier' && (
+      <>
+        {twinkle && (
+          <circle
+            class:list={['al-halo', conflict && 'al-halo-conflict']}
+            r={f(ray * 1.5)}
+            style={twinkle}
+          />
+        )}
+        <path class={tone} d={rays} transform={conflict ? 'rotate(45)' : undefined} />
+        <circle class="al-core" r={f(ray * 0.24)} />
+      </>
+    )
+  }
+  {
+    status === 'blocked' && (
+      <>
+        <circle class:list={['al-ring', conflict && 'al-ring-conflict']} r={ring} />
+        {conflict && (
+          <path
+            class="al-cross"
+            d={`M${f(-ring / 2)},${f(-ring / 2)}L${f(ring / 2)},${f(ring / 2)}M${f(ring / 2)},${f(-ring / 2)}L${f(-ring / 2)},${f(ring / 2)}`}
+          />
+        )}
+      </>
+    )
+  }
+  {(status === 'decided' || status === 'undermined') && <circle class="al-disc" r={disc} />}
+  {status === 'undermined' && <circle class="al-broken" r={7.6} />}
+  {
+    status === 'ruled-out' && (
+      <>
+        <circle class="al-ruled" r={3.4} />
+        <path class="al-slash" d="M-5,5L5,-5" />
+      </>
+    )
+  }
+  {
+    roles.includes('peripheral') && (
+      <circle class:list={['al-moon', conflict && 'al-conflict']} cx={f(moon)} cy={f(-moon)} r={1.8} />
+    )
+  }
+  {
+    warn && (
+      <g class="al-warn" transform={warnAt}>
+        <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
+        <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
+      </g>
+    )
+  }
+</g>

@@ -42,5 +42,4 @@ Sometimes you keep a **wonder memory**, the rarest kind of [[memory]] and the me
 
 Wonder memories, new experiences felt deeply, are the most prized; the designer has not confirmed this yet (see [[Economy]]).
 
-> [!OPEN]
-> Stillness magic, for which a wonder memory is the medium, is not yet described.
+> [!ISSUE 126]

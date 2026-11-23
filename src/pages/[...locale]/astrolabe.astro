@@ -1,0 +1,12 @@
+---
+import Astrolabe from '../../astrolabe/Astrolabe.astro';
+import { type Locale, localePaths } from '../../i18n/locale';
+
+export const getStaticPaths = localePaths;
+
+interface Props {
+  locale: Locale;
+}
+---
+
+<Astrolabe locale={Astro.props.locale} />

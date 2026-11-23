@@ -1,0 +1,1027 @@
+/* The Astrolabe. Built on the wiki's tokens (src/styles/wiki.css): light-dark() colours, the
+   eight emotions, --open gold and --red conflicts. Dark: a night sky printed like an old star
+   atlas. Light: a dawn paper atlas with watercolour glows. */
+.astrolabe {
+  --al-undermine: light-dark(#8a3fa8, #d6a6ff);
+  --al-settled: light-dark(#2a2940, #f1f0fb);
+  --al-ruled: light-dark(#8d8aa3, #8a87a6);
+  --al-core: light-dark(#7a4508, #fff8ea);
+  --al-sky-1: light-dark(#fdf9f0, #2c2d60);
+  --al-sky-2: light-dark(#f1edf1, #151631);
+  --al-sky-3: light-dark(#e1dcea, #0b0c1d);
+  --al-speck: light-dark(#2a2940, #ffffff);
+  --al-dial: light-dark(#5b5578, #b9b4ff);
+  --al-star-fill: light-dark(#f7f3ef, #17183a);
+  --al-label: light-dark(#26243c, #e6e5f2);
+  --al-label-closed: light-dark(#6d6a84, #9c9aba);
+  --al-halo-ink: light-dark(#f8f4eecc, #12132bd9);
+  --al-panel-shadow: light-dark(#2a2a6033, #00000066);
+  /* Non-colour theme values; light-dark() takes colours only. */
+  --al-neb-o: 0.62;
+  --al-neb-blend: multiply;
+  --al-speck-o: 0.42;
+  --al-dial-o: 0.2;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .astrolabe {
+    --al-neb-o: 0.5;
+    --al-neb-blend: screen;
+    --al-speck-o: 0.85;
+    --al-dial-o: 0.12;
+  }
+}
+:root[data-theme='dark'] .astrolabe {
+  --al-neb-o: 0.5;
+  --al-neb-blend: screen;
+  --al-speck-o: 0.85;
+  --al-dial-o: 0.12;
+}
+
+.al-stats {
+  margin: 10px 0 0;
+  color: var(--mute);
+}
+.al-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin: 14px 0 10px;
+}
+.al-views {
+  display: inline-flex;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.al-views[hidden] {
+  display: none;
+}
+.al-views button {
+  border: 0;
+  background: transparent;
+  color: var(--mute);
+  font: inherit;
+  font-size: 14px;
+  padding: 4px 12px;
+  cursor: pointer;
+}
+.al-views button + button {
+  border-inline-start: 1px solid var(--line);
+}
+.al-views button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--open) 18%, transparent);
+  color: var(--ink);
+  font-weight: 600;
+}
+.al-hint {
+  margin: 0;
+  font-size: 14px;
+  color: var(--mute);
+}
+.astrolabe[data-view='sky'] .al-hint[data-for='tiers'],
+.astrolabe[data-view='tiers'] .al-hint[data-for='sky'],
+.astrolabe[data-view='sky'] .al-view-tiers,
+.astrolabe[data-view='tiers'] .al-view-sky {
+  display: none;
+}
+
+/* The frame holds both views and the star panel. */
+.al-frame {
+  position: relative;
+  height: clamp(440px, 78vh, 860px);
+  margin: 0 calc(-1 * clamp(4px, 1.4vw, 20px));
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: radial-gradient(
+    ellipse at 52% 32%,
+    var(--al-sky-1),
+    var(--al-sky-2) 62%,
+    var(--al-sky-3)
+  );
+}
+.al-defs {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.al-view {
+  position: absolute;
+  inset: 0;
+}
+.al-view-sky {
+  touch-action: none;
+  cursor: grab;
+}
+.al-view-sky.al-dragging {
+  cursor: grabbing;
+}
+.al-sky,
+.al-sky-back {
+  display: block;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  user-select: none;
+}
+.al-view-tiers {
+  overflow: auto;
+  background: var(--page);
+}
+.al-tiers {
+  display: block;
+}
+
+/* Decoration. */
+.al-specks {
+  fill: var(--al-speck);
+  opacity: var(--al-speck-o);
+}
+.al-dial {
+  fill: none;
+  stroke: var(--al-dial);
+  opacity: var(--al-dial-o);
+}
+.al-dial text {
+  fill: var(--al-dial);
+  stroke: none;
+  font: italic 12px var(--serif, 'Crimson Pro', serif);
+}
+.al-nebulae {
+  opacity: var(--al-neb-o);
+  mix-blend-mode: var(--al-neb-blend);
+}
+.al-neb-0 {
+  stop-color: var(--tint);
+  stop-opacity: 0.55;
+}
+.al-neb-1 {
+  stop-color: var(--tint);
+  stop-opacity: 0.2;
+}
+.al-neb-2 {
+  stop-color: var(--tint);
+  stop-opacity: 0;
+}
+.al-area-names text {
+  font: italic 600 17px var(--serif, 'Crimson Pro', serif);
+  letter-spacing: 0.04em;
+  fill: color-mix(in oklab, var(--tint) 58%, var(--ink));
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+:lang(zh) .al-area-names text {
+  font-style: normal;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+}
+
+/* Threads. */
+.al-thread {
+  fill: none;
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.al-thread-unsettled {
+  stroke: color-mix(in srgb, var(--open) 75%, transparent);
+}
+.al-thread-settled {
+  stroke: color-mix(in srgb, var(--mute) 70%, transparent);
+  stroke-width: 1;
+  stroke-dasharray: 2 3.5;
+}
+.al-thread-undermines {
+  stroke: var(--al-undermine);
+  stroke-width: 1.2;
+  stroke-dasharray: 0.5 3.5;
+}
+.al-arrow-unsettled {
+  fill: var(--open);
+}
+.al-arrow-settled {
+  fill: var(--mute);
+}
+.al-arrow-undermines {
+  fill: var(--al-undermine);
+}
+
+/* Glyphs. */
+.al-open {
+  fill: var(--open);
+}
+.al-conflict {
+  fill: var(--red);
+}
+.al-core {
+  fill: var(--al-core);
+}
+.al-halo {
+  fill: url(#al-halo);
+}
+.al-halo-conflict {
+  fill: url(#al-halo-conflict);
+}
+.al-halo-0 {
+  stop-color: var(--open);
+  stop-opacity: 0.55;
+}
+.al-halo-1 {
+  stop-color: var(--open);
+  stop-opacity: 0;
+}
+.al-halo-c0 {
+  stop-color: var(--red);
+  stop-opacity: 0.5;
+}
+.al-halo-c1 {
+  stop-color: var(--red);
+  stop-opacity: 0;
+}
+.al-ring {
+  fill: var(--al-star-fill);
+  stroke: var(--open);
+  stroke-width: 1.4;
+}
+.al-ring-conflict {
+  stroke: var(--red);
+}
+.al-cross {
+  stroke: var(--red);
+  stroke-width: 1.2;
+  stroke-linecap: round;
+}
+.al-disc {
+  fill: var(--al-settled);
+}
+.al-broken {
+  fill: none;
+  stroke: var(--al-undermine);
+  stroke-width: 1.5;
+  stroke-dasharray: 3 2.2;
+}
+.al-ruled {
+  fill: var(--al-star-fill);
+  stroke: var(--al-ruled);
+  stroke-width: 1.1;
+  stroke-dasharray: 1.6 1.4;
+}
+.al-slash {
+  stroke: var(--al-ruled);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.al-moon {
+  fill: var(--open);
+}
+.al-moon.al-conflict {
+  fill: var(--red);
+}
+.al-orbit {
+  fill: none;
+  stroke: var(--mute);
+  stroke-width: 0.9;
+  stroke-dasharray: 1 3;
+  stroke-linecap: round;
+}
+
+/* Stars and labels. */
+.al-star {
+  cursor: pointer;
+  outline: none;
+}
+.al-hit {
+  fill: transparent;
+}
+.al-focus {
+  fill: none;
+  stroke: none;
+}
+.al-star:focus-visible .al-focus {
+  stroke: var(--link);
+  stroke-width: 1.8;
+}
+.al-label {
+  font: 400 12.5px var(--sans, 'Source Sans 3', system-ui, sans-serif);
+  fill: var(--al-label);
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.al-is-closed .al-label {
+  fill: var(--al-label-closed);
+}
+.al-central .al-label {
+  font-weight: 600;
+}
+.al-star:hover .al-label,
+.al-star:focus-visible .al-label,
+.al-star.al-selected .al-label {
+  fill: var(--ink);
+  font-weight: 600;
+}
+.al-star.al-selected .al-focus {
+  stroke: var(--ink);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+}
+.al-has-selection .al-star:not(.al-selected, .al-near) {
+  opacity: 0.45;
+}
+.al-has-selection .al-thread {
+  opacity: 0.25;
+}
+.al-thread.al-lit {
+  opacity: 1;
+  stroke-width: 2;
+}
+
+/* Tiers. */
+.al-tiers .al-label {
+  font-size: 13.5px;
+  stroke: none;
+}
+.al-band {
+  fill: transparent;
+}
+.al-band-0 {
+  fill: color-mix(in srgb, var(--soft) 70%, transparent);
+}
+.al-band-1 {
+  fill: color-mix(in srgb, var(--open) 9%, transparent);
+}
+.al-band-2 {
+  fill: color-mix(in srgb, var(--grief) 5%, transparent);
+}
+.al-band-3 {
+  fill: color-mix(in srgb, var(--grief) 9%, transparent);
+}
+.al-band-4 {
+  fill: color-mix(in srgb, var(--grief) 13%, transparent);
+}
+.al-col-name {
+  font: 600 18px var(--serif, 'Crimson Pro', serif);
+  fill: var(--ink);
+}
+.al-band-1 + .al-col-name {
+  fill: var(--open);
+}
+.al-col-help,
+.al-row-count {
+  font: 12.5px var(--sans, 'Source Sans 3', sans-serif);
+  fill: var(--mute);
+}
+.al-row-line {
+  stroke: var(--line);
+}
+.al-row-tint {
+  fill: var(--tint);
+  opacity: 0.8;
+}
+.al-row-name {
+  font: 600 15px var(--serif, 'Crimson Pro', serif);
+  fill: var(--ink);
+}
+
+/* Twinkle: frontier halos and a few specks. A speck path spans the whole sky, so it fades
+   by fill-opacity: opacity would composite a sky-sized layer for every path. */
+.al-halo {
+  animation: al-twinkle var(--tw, 4s) ease-in-out var(--tw-delay, 0s) infinite alternate;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.al-tw {
+  animation: al-twinkle-fade var(--tw, 4s) ease-in-out var(--tw-delay, 0s) infinite alternate;
+}
+@keyframes al-twinkle {
+  from {
+    opacity: 0.45;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+}
+@keyframes al-twinkle-fade {
+  from {
+    fill-opacity: 0.45;
+  }
+  to {
+    fill-opacity: 1;
+  }
+}
+/* It rests while the sky is dragged or zoomed, so each frame only redraws the move. */
+.al-dragging :is(.al-halo, .al-tw),
+.al-zooming :is(.al-halo, .al-tw),
+.al-flying :is(.al-halo, .al-tw) {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .al-halo,
+  .al-tw {
+    animation: none;
+  }
+}
+
+/* Zoom buttons. */
+.al-zoom {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.al-zoom[hidden] {
+  display: none;
+}
+.al-zoom button {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--page) 90%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+/* The star panel. */
+.al-panels {
+  position: absolute;
+  inset: 12px 56px 12px auto;
+  width: min(390px, calc(100% - 80px));
+  pointer-events: none;
+}
+.al-panel {
+  display: none;
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 12px 18px 16px;
+  background: var(--page);
+  color: var(--ink);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 12px 34px var(--al-panel-shadow);
+  font-size: 15px;
+  line-height: 1.55;
+  pointer-events: auto;
+}
+.astrolabe:not(.al-js) .al-panel:target,
+.al-panel.al-open-panel {
+  display: block;
+}
+.al-panel:focus {
+  outline: none;
+}
+.al-panel-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+.al-panel-number {
+  color: var(--mute);
+}
+.al-close {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+.al-close:hover {
+  text-decoration: none;
+  background: var(--soft);
+}
+.al-panel h2 {
+  margin: 6px 0 10px;
+  padding: 0;
+  border: 0;
+  font-size: 23px;
+  line-height: 1.2;
+}
+.al-panel h3 {
+  margin: 16px 0 4px;
+  font-size: 15px;
+  color: var(--mute);
+}
+.al-panel .note {
+  margin: 10px 0 0;
+}
+.al-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.al-chips li {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 1px 10px 1px 7px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--soft);
+  font-size: 13px;
+}
+.al-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--tint);
+}
+.al-mini {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  overflow: visible;
+}
+.al-answer {
+  margin-top: 16px;
+  padding-inline-start: 12px;
+  border-inline-start: 3px solid var(--al-settled);
+}
+.al-answer-ruled-out {
+  border-color: var(--al-ruled);
+}
+.al-answer-undermined {
+  border-color: var(--al-undermine);
+}
+.al-answer h3 {
+  margin-top: 0;
+}
+.al-answer p,
+.al-context p {
+  margin: 0 0 6px;
+}
+.al-provenance {
+  color: var(--mute);
+  font-size: 13px;
+}
+.al-links {
+  margin: 0;
+}
+.al-links dt {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--mute);
+}
+.al-links dd {
+  margin: 0;
+}
+.al-links a {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 2px 0;
+}
+.al-links .al-mini {
+  align-self: center;
+}
+.al-link-n {
+  color: var(--mute);
+  font-size: 13px;
+}
+.al-page {
+  margin: 14px 0 0;
+  font-size: 14px;
+}
+
+/* Constellations: lines, names, the filter and the list. */
+.astrolabe {
+  --al-const: light-dark(#3a3660, #d9d5ff);
+}
+/* Clustered by area (the default, and without JavaScript), the map shows no constellation
+   marks and the time and energy filter hides; clustered by constellation, the tiers swap too.
+   The filter keeps its space, so switching never moves the map below it. */
+.astrolabe:not([data-cluster='constellations']) .al-warn,
+.astrolabe:not([data-cluster='constellations']) .al-tiers[data-by='constellations'],
+.astrolabe[data-cluster='constellations'] .al-tiers[data-by='areas'] {
+  display: none;
+}
+.astrolabe:not([data-cluster='constellations']) :is(.al-scale, .al-fit) {
+  visibility: hidden;
+}
+/* What belongs to one clustering fades out as the stars set off, and in as they arrive. */
+.al-constellations,
+.al-cluster-names {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.3s,
+    visibility 0s 0.3s;
+}
+.astrolabe[data-cluster='constellations'] :is(.al-constellations, .al-cluster-names) {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 0.5s 0.9s,
+    visibility 0s 0.9s;
+}
+.al-area-names,
+.al-nebulae {
+  transition: opacity 0.5s 0.9s;
+}
+.astrolabe[data-cluster='constellations'] :is(.al-area-names, .al-nebulae) {
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.astrolabe.al-instant :is(.al-constellations, .al-cluster-names, .al-area-names, .al-nebulae) {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .astrolabe :is(.al-constellations, .al-cluster-names, .al-area-names, .al-nebulae) {
+    transition: none;
+  }
+}
+.al-cluster-names text {
+  font: italic 600 17px var(--serif, 'Crimson Pro', serif);
+  letter-spacing: 0.04em;
+  fill: var(--mute);
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+:lang(zh) .al-cluster-names text {
+  font-style: normal;
+  font-size: 15px;
+  letter-spacing: 0.2em;
+}
+.al-cline {
+  stroke: var(--al-const);
+  stroke-width: 1.1;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+.al-cring {
+  fill: none;
+  stroke: var(--al-const);
+  stroke-width: 1;
+  stroke-dasharray: 1 3;
+  stroke-linecap: round;
+  opacity: 0.7;
+}
+.al-cname {
+  font: italic 600 16px var(--serif, 'Crimson Pro', serif);
+  fill: var(--al-const);
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3.5px;
+  stroke-linejoin: round;
+}
+:lang(zh) .al-cname {
+  font-style: normal;
+  font-size: 15px;
+}
+.al-cmeta {
+  font: 12px var(--sans, 'Source Sans 3', sans-serif);
+  fill: var(--al-const);
+  opacity: 0.85;
+  paint-order: stroke;
+  stroke: var(--al-halo-ink);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+}
+.al-cgroup,
+.al-card {
+  transition: opacity 0.25s;
+}
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-unfit {
+  opacity: 0.15;
+}
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-star.al-unfit {
+  opacity: 0.3;
+}
+.astrolabe:is([data-cluster='constellations'], [data-view='brass']) .al-card.al-unfit {
+  opacity: 0.45;
+}
+.al-warn-sign {
+  fill: var(--al-star-fill);
+  stroke: var(--open);
+  stroke-width: 1.3;
+  stroke-linejoin: round;
+}
+.al-warn-bang {
+  stroke: var(--open);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+}
+.al-cfilter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+}
+.al-cfilter[hidden] {
+  display: none;
+}
+.al-cluster button,
+.al-scale button {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--mute);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.al-cluster {
+  display: inline-flex;
+  align-items: center;
+}
+.al-cluster[hidden] {
+  display: none;
+}
+.al-cluster button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  margin-inline-start: -1px;
+}
+.al-cluster button:nth-child(2) {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.al-cluster button:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.al-cluster button[aria-pressed='true'],
+.al-scale button[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--al-const) 16%, transparent);
+  color: var(--ink);
+}
+.al-scale {
+  display: inline-flex;
+  align-items: center;
+}
+.al-scale-name {
+  margin-inline-end: 6px;
+  font-size: 14px;
+  color: var(--mute);
+}
+.al-scale button {
+  padding: 3px 9px;
+  margin-inline-start: -1px;
+}
+.al-scale button:nth-child(2) {
+  border-radius: var(--radius) 0 0 var(--radius);
+}
+.al-scale button:last-child {
+  border-radius: 0 var(--radius) var(--radius) 0;
+}
+.al-fit {
+  margin: 0;
+  font-size: 14px;
+  color: var(--mute);
+}
+.al-clist {
+  margin-top: 22px;
+}
+.al-clist h2 {
+  margin-top: 0;
+}
+.al-clist-sub {
+  color: var(--mute);
+}
+.al-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+.al-card {
+  padding: 10px 14px 12px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid var(--al-const);
+  border-radius: var(--radius);
+  background: var(--soft);
+}
+.al-card h3 {
+  margin: 0;
+  font: italic 600 19px var(--serif, 'Crimson Pro', serif);
+}
+:lang(zh) .al-card h3 {
+  font-style: normal;
+}
+.al-card p {
+  margin: 4px 0;
+  font-size: 14.5px;
+}
+.al-card-facts {
+  color: var(--mute);
+}
+.al-star-link {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 1px 0;
+}
+.al-star-link .al-mini {
+  align-self: center;
+}
+.al-ungrouped {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  font-weight: 600;
+}
+.al-panel-c {
+  margin: 8px 0 0;
+  font-size: 14px;
+}
+.al-panel-c-facts {
+  display: block;
+  color: var(--mute);
+  font-size: 13px;
+}
+
+/* The key. */
+.al-key {
+  margin-top: 18px;
+}
+.al-key summary {
+  cursor: pointer;
+  font: 400 22px var(--serif, 'Crimson Pro', serif);
+}
+.al-key-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0 28px;
+}
+.al-key ul {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.al-key li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 3px 0;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+.al-key-mark {
+  width: 40px;
+  height: 28px;
+  overflow: visible;
+}
+.al-key-glow {
+  width: 34px;
+  height: 22px;
+  border-radius: 50%;
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--grief) 55%, transparent),
+    transparent
+  );
+}
+.al-credit {
+  margin: 0 0 6px;
+}
+
+/* Phone: the panel becomes a bottom sheet. */
+@media (max-width: 600px) {
+  .al-frame {
+    height: 70vh;
+    min-height: 380px;
+    margin: 0 -8px;
+  }
+  .al-panels {
+    position: fixed;
+    inset: auto 0 0;
+    width: auto;
+    z-index: 30;
+  }
+  .al-panel {
+    max-height: 64vh;
+    border-radius: 12px 12px 0 0;
+  }
+  .al-zoom {
+    right: 8px;
+    bottom: 8px;
+  }
+}
+
+/* Full screen: the controls above the map and the map's frame fill the screen, by the
+   Fullscreen API or, where there is none, as a fixed overlay. */
+.al-fullscreen {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--page) 90%, transparent);
+  color: var(--ink);
+  cursor: pointer;
+}
+.al-fullscreen[hidden] {
+  display: none;
+}
+.al-fullscreen svg {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.al-fs-exit,
+.al-full .al-fs-enter {
+  display: none;
+}
+.al-full .al-fs-exit {
+  display: inline;
+}
+.al-stage.al-full {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  padding: 10px clamp(8px, 2vw, 20px) clamp(8px, 2vw, 20px);
+  background: var(--page);
+}
+.al-stage.al-full .al-bar {
+  margin: 0 0 8px;
+}
+.al-stage.al-full .al-hint {
+  display: none;
+}
+.astrolabe .al-stage.al-full .al-frame,
+.astrolabe[data-view='brass'] .al-stage.al-full .al-frame {
+  flex: 1;
+  height: auto;
+  min-height: 0;
+  max-height: none;
+  aspect-ratio: auto;
+  margin: 0;
+}
+/* The page under the overlay stays still. */
+:root.al-full-page,
+:root.al-full-page body {
+  overflow: hidden;
+}
+
+/* Settled questions with no thread to an open one hide unless "Show settled" is on. They keep
+   their place, so showing them moves nothing else. */
+.astrolabe:not([data-settled='all']) .al-quiet {
+  display: none;
+}
+.al-settled {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--mute);
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.al-settled[hidden],
+.astrolabe[data-view='brass'] .al-settled {
+  display: none;
+}
+.al-settled[aria-pressed='true'] {
+  background: color-mix(in srgb, var(--open) 18%, transparent);
+  color: var(--ink);
+}
+
+/* A finished constellation (its settled questions, clustered by constellation): faint, its
+   name dimmed, and no facts line. */
+.al-cfinished {
+  opacity: 0.45;
+}
+.al-cfinished .al-cname {
+  font-weight: 400;
+}
+.al-row-finished.al-row-name {
+  fill: var(--mute);
+  font-weight: 400;
+}
+.al-row-finished.al-row-tint {
+  opacity: 0.4;
+}

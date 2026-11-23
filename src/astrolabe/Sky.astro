@@ -1,0 +1,253 @@
+---
+/**
+ * The night sky view: the build-time layout drawn as static SVG, clustered by area. The
+ * decoration sits in its own SVG behind the map, so its twinkle repaints only that layer; pan
+ * and zoom move both. The layout clustered by constellation rides along as data, for the client
+ * to fly the stars to; the flight moves only the map.
+ */
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import Backdrop from './Backdrop.astro';
+import { quietSettled, type StarChart, starsOf, ungroupedStars } from './chart';
+import { constellationFacts } from './facts';
+import Glyph from './Glyph.astro';
+import type { SkyMotionData, SkySpot } from './motion';
+import type { SkyLayout } from './sky';
+import { areaKey, areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: SkyLayout;
+  /** The same sky clustered by constellation, when there are constellations. */
+  byConstellation?: SkyLayout | undefined;
+  locale: Locale;
+}
+
+const { chart, layout, byConstellation, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
+const areaName = (area: string | undefined) => (area ? (t.areaNames[area] ?? area) : t.noArea);
+const ungrouped = new Set(ungroupedStars(chart));
+/* Settled questions with no thread to an open one hide unless "Show settled" is on. */
+const quiet = new Set(quietSettled(chart));
+const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
+/* Constellation lines, rings and names show only when clustered by constellation. */
+const linedAt = new Map(byConstellation?.stars.map((s) => [s.number, s]));
+const motion = (l: SkyLayout): Record<string, SkySpot> =>
+  Object.fromEntries(
+    l.stars.map((s) => {
+      const baseline = Number((s.label.y + s.label.size - 1).toFixed(1));
+      const spot: SkySpot = [s.x, s.y, s.r, s.label.x, baseline, s.label.anchor];
+      return [s.number, spot];
+    }),
+  );
+const motionData: SkyMotionData | undefined = byConstellation && {
+  lineHeight: layout.stars[0]?.label.lineHeight ?? 15,
+  areas: motion(layout),
+  constellations: motion(byConstellation),
+};
+---
+
+<svg
+  class="al-sky-back"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  preserveAspectRatio="xMidYMid meet"
+  aria-hidden="true"
+  focusable="false"
+>
+  <Backdrop chart={chart} layout={layout} />
+</svg>
+<svg
+  class="al-sky"
+  viewBox={`0 0 ${layout.width} ${layout.height}`}
+  preserveAspectRatio="xMidYMid meet"
+  data-width={layout.width}
+  data-height={layout.height}
+  role="group"
+  aria-label={a.views.sky}
+>
+  <g class="al-area-names" aria-hidden="true">
+    {
+      layout.clusters.map(
+        (area) =>
+          area.label && (
+            <text
+              x={area.label.x}
+              y={area.label.y}
+              text-anchor="middle"
+              style={`--tint:${areaTint(area.area)}`}
+            >
+              {areaName(area.area)}
+            </text>
+          ),
+      )
+    }
+  </g>
+  <g class="al-threads" aria-hidden="true">
+    {
+      layout.threads.map((thread) => (
+        <path
+          class:list={[
+            'al-thread',
+            `al-thread-${thread.kind}`,
+            (quiet.has(thread.from) || quiet.has(thread.to)) && 'al-quiet',
+          ]}
+          data-from={thread.from}
+          data-to={thread.to}
+          data-kind={thread.kind}
+          d={thread.d}
+          marker-end={`url(#al-arrow-${thread.kind})`}
+        />
+      ))
+    }
+  </g>
+  {
+    byConstellation && (
+      <g class="al-cluster-names" aria-hidden="true">
+        {byConstellation.clusters.map(
+          (cluster) =>
+            cluster.label && (
+              <text x={cluster.label.x} y={cluster.label.y} text-anchor="middle">
+                {a.noConstellation}
+              </text>
+            ),
+        )}
+      </g>
+    )
+  }
+  {
+    byConstellation && (
+      <g class="al-constellations" aria-hidden="true">
+        {byConstellation.constellations.map((placed) => {
+          const c = groupOf.get(placed.number)!;
+          // A finished constellation is faint, has no facts line and ignores the filter.
+          const allQuiet = starsOf(c).every((n) => quiet.has(n));
+          return (
+            <g
+              class:list={[
+                'al-cgroup',
+                placed.finished && 'al-cfinished',
+                allQuiet && 'al-quiet',
+              ]}
+              data-c={c.number}
+              data-size={placed.finished ? undefined : c.size}
+              data-energy={placed.finished ? undefined : c.energy}
+            >
+              {placed.segments.map(([from, to]) => {
+                const p = linedAt.get(from)!;
+                const q = linedAt.get(to)!;
+                return (
+                  <line
+                    class:list={[
+                      'al-cline',
+                      (quiet.has(from) || quiet.has(to)) && 'al-quiet',
+                    ]}
+                    data-a={from}
+                    data-b={to}
+                    x1={p.x}
+                    y1={p.y}
+                    x2={q.x}
+                    y2={q.y}
+                  />
+                );
+              })}
+              {starsOf(c).map((n) => {
+                const p = linedAt.get(n)!;
+                return (
+                  <circle
+                    class:list={['al-cring', quiet.has(n) && 'al-quiet']}
+                    data-n={n}
+                    cx={p.x}
+                    cy={p.y}
+                    r={p.r + 6}
+                  />
+                );
+              })}
+              <text
+                class="al-cname"
+                x={placed.label.x}
+                y={placed.label.y + 15}
+                text-anchor="middle"
+                lang={HTML_LANG[c.nameLang]}
+              >
+                {c.name}
+              </text>
+              {!placed.finished && (
+                <text
+                  class="al-cmeta"
+                  x={placed.label.x}
+                  y={placed.label.y + 31}
+                  text-anchor="middle"
+                >
+                  {constellationFacts(c, t)}
+                </text>
+              )}
+            </g>
+          );
+        })}
+      </g>
+    )
+  }
+  <g class="al-stars">
+    {
+      layout.stars.map((placed) => {
+        const star = byNumber.get(placed.number)!;
+        const q = star.question;
+        const status =
+          q.kind === 'conflict' ? a.withConflict(a.status[star.status]) : a.status[star.status];
+        const { label } = placed;
+        return (
+          <a
+            href={`#star-${star.number}`}
+            class:list={[
+              'al-star',
+              `al-st-${star.status}`,
+              q.status === 'open' ? 'al-is-open' : 'al-is-closed',
+              star.roles.includes('central') && 'al-central',
+              quiet.has(star.number) && 'al-quiet',
+            ]}
+            data-n={star.number}
+            data-c={star.constellation}
+            data-area={areaKey(q.area)}
+            aria-label={a.starLabel(star.number, star.label, status, areaName(q.area))}
+          >
+            <g transform={`translate(${placed.x} ${placed.y})`}>
+              <circle class="al-hit" r="16" />
+              <circle class="al-focus" r={placed.r + 8} />
+              <Glyph
+                status={star.status}
+                conflict={q.kind === 'conflict'}
+                roles={star.roles}
+                number={star.number}
+                warn={ungrouped.has(star.number)}
+              />
+            </g>
+            <text
+              class="al-label"
+              text-anchor={label.anchor}
+              lang={HTML_LANG[star.labelLang]}
+              style={`font-size:${label.size}px`}
+            >
+              {label.lines.map((line, i) => (
+                <tspan x={label.x} y={Number((label.y + label.size - 1 + i * label.lineHeight).toFixed(1))}>
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          </a>
+        );
+      })
+    }
+  </g>
+</svg>
+{
+  motionData && (
+    <script
+      is:inline
+      type="application/json"
+      class="al-sky-motion"
+      set:html={JSON.stringify(motionData)}
+    />
+  )
+}

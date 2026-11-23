@@ -1,0 +1,282 @@
+---
+/**
+ * The constellations view: a brass dial with one mark per open constellation. Sectors are
+ * the areas, rings are energy. Laid out at build time by `brass.ts`; drawn as code.
+ */
+import { HTML_LANG, type Locale } from '../i18n/locale';
+import { useTranslations } from '../i18n/ui';
+import { type DialLayout, BAND_NAME_SIZE, LABEL_LINE, polar } from './brass';
+import { openConstellations, progressOf, type StarChart, ungroupedStars } from './chart';
+import { constellationFacts } from './facts';
+import { isCjk } from './text';
+import { areaTint } from './tints';
+
+interface Props {
+  chart: StarChart;
+  layout: DialLayout;
+  locale: Locale;
+}
+
+const { chart, layout, locale } = Astro.props;
+const t = useTranslations(locale);
+const a = t.astrolabe;
+const { centre: C, hub, plate, band, limb } = layout;
+const open = openConstellations(chart);
+const ungrouped = ungroupedStars(chart);
+const byNumber = new Map(open.map((c) => [c.number, c]));
+const f = (v: number) => Number(v.toFixed(2));
+const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
+
+/** An arc of radius r from one angle to another, clockwise unless `back`. */
+function arc(r: number, from: number, to: number, back = false) {
+  const p = polar(r, from);
+  const q = polar(r, to);
+  const large = Math.abs(to - from) > 180 ? 1 : 0;
+  return `M${f(p.x)},${f(p.y)}A${r},${r} 0 ${large} ${back ? 0 : 1} ${f(q.x)},${f(q.y)}`;
+}
+
+/** A closed band between two radii, from one angle to another. */
+function wedge(r1: number, r2: number, from: number, to: number) {
+  const a1 = polar(r2, from);
+  const a2 = polar(r2, to);
+  const b1 = polar(r1, to);
+  const b2 = polar(r1, from);
+  const large = to - from > 180 ? 1 : 0;
+  return `M${f(a1.x)},${f(a1.y)}A${r2},${r2} 0 ${large} 1 ${f(a2.x)},${f(a2.y)}L${f(b1.x)},${f(b1.y)}A${r1},${r1} 0 ${large} 0 ${f(b2.x)},${f(b2.y)}Z`;
+}
+
+const middle = (plate + band) / 2;
+const sectors = layout.sectors.map((s, i) => {
+  const mid = (s.start + s.end) / 2;
+  // Names on the lower half run the other way, so they read upright.
+  const lower = mid > 90 && mid < 270;
+  const r = lower ? middle + BAND_NAME_SIZE * 0.36 : middle - BAND_NAME_SIZE * 0.36;
+  return {
+    ...s,
+    id: `al-band-${i}`,
+    name: s.area ? (t.areaNames[s.area] ?? s.area) : t.noArea,
+    path: lower ? arc(r, s.end, s.start, true) : arc(r, s.start, s.end),
+  };
+});
+
+const ticks: string[] = [];
+for (let d = 0; d < 360; d += 2) {
+  const long = d % 30 === 0 ? 11 : d % 10 === 0 ? 7 : 4;
+  const p = polar(band + 1, d);
+  const q = polar(band + 1 + long, d);
+  ticks.push(`M${f(p.x)},${f(p.y)}L${f(q.x)},${f(q.y)}`);
+}
+
+/** The notches round a mark: one per question, the settled ones first. */
+function notches(r: number, settled: number, total: number) {
+  const out: { d: string; settled: boolean }[] = [];
+  const n = Math.max(1, total);
+  const gap = n > 1 ? Math.min(14, 120 / n) : 0;
+  for (let i = 0; i < n; i++) {
+    const from = (i * 360) / n + gap / 2;
+    const to = ((i + 1) * 360) / n - gap / 2;
+    const p = { x: r * Math.sin((from * Math.PI) / 180), y: -r * Math.cos((from * Math.PI) / 180) };
+    const q = { x: r * Math.sin((to * Math.PI) / 180), y: -r * Math.cos((to * Math.PI) / 180) };
+    const d =
+      n === 1
+        ? `M0,${-r}A${r},${r} 0 1 1 0,${r}A${r},${r} 0 1 1 0,${-r}`
+        : `M${f(p.x)},${f(p.y)}A${r},${r} 0 ${to - from > 180 ? 1 : 0} 1 ${f(q.x)},${f(q.y)}`;
+    out.push({ d, settled: i < settled });
+  }
+  return out;
+}
+
+const STAR = (r: number) => {
+  const w = r * 0.2;
+  return `M0,${-r}L${f(w)},${f(-w)}L${r},0L${f(w)},${f(w)}L0,${r}L${f(-w)},${f(w)}L${-r},0L${f(-w)},${f(-w)}Z`;
+};
+
+const ruleWidth = 20;
+const top = -30;
+const viewBox = `0 ${top} ${layout.size} ${layout.size - top}`;
+---
+
+<svg
+  class="al-brass"
+  viewBox={viewBox}
+  role="group"
+  aria-label={a.views.brass}
+  data-size={layout.size}
+>
+  <defs>
+    <linearGradient id="al-brass-a" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" class="al-brass-hi"></stop>
+      <stop offset="0.45" class="al-brass-mid"></stop>
+      <stop offset="1" class="al-brass-lo"></stop>
+    </linearGradient>
+    <linearGradient id="al-brass-b" x1="1" y1="0" x2="0" y2="1">
+      <stop offset="0" class="al-brass-hi"></stop>
+      <stop offset="0.55" class="al-brass-mid"></stop>
+      <stop offset="1" class="al-brass-lo"></stop>
+    </linearGradient>
+    <radialGradient id="al-brass-plate" cx="50%" cy="45%" r="55%">
+      <stop offset="0" class="al-plate-0"></stop>
+      <stop offset="1" class="al-plate-1"></stop>
+    </radialGradient>
+    {sectors.map((s) => <path id={s.id} d={s.path} fill="none" />)}
+  </defs>
+
+  <g class="al-instrument" aria-hidden="true">
+    <circle class="al-shackle" cx={C} cy={top + 14} r="12" />
+    <path
+      class="al-throne"
+      d={`M${C - 70},${C - limb + 14}C${C - 56},${C - limb - 6} ${C - 30},${C - limb - 10} ${C},${C - limb - 12}C${C + 30},${C - limb - 10} ${C + 56},${C - limb - 6} ${C + 70},${C - limb + 14}Z`}
+    />
+    <circle class="al-limb" cx={C} cy={C} r={limb} />
+    <path class="al-ticks" d={ticks.join('')} />
+    <circle class="al-bandring" cx={C} cy={C} r={band} />
+    {
+      sectors.map((s) => (
+        <>
+          <path
+            class="al-band-tint"
+            d={arc(plate + 2.5, s.start + 0.6, s.end - 0.6)}
+            style={`--tint:${areaTint(s.area)}`}
+          />
+          <path
+            class="al-band-line"
+            d={`M${f(polar(plate, s.start).x)},${f(polar(plate, s.start).y)}L${f(polar(band, s.start).x)},${f(polar(band, s.start).y)}`}
+          />
+          <text class="al-band-name" lang={lang(locale)}>
+            <textPath href={`#${s.id}`} startOffset="50%" text-anchor="middle">
+              {s.name}
+            </textPath>
+          </text>
+        </>
+      ))
+    }
+    <path
+      class="al-band-line"
+      d={`M${f(polar(plate, 360 - layout.rule).x)},${f(polar(plate, 360 - layout.rule).y)}L${f(polar(band, 360 - layout.rule).x)},${f(polar(band, 360 - layout.rule).y)}`}
+    />
+    <path class="al-band-rule" d={wedge(plate, band, -layout.rule, layout.rule)} />
+    <circle class="al-plate" cx={C} cy={C} r={plate} />
+    {
+      layout.sectors.map((s) => (
+        <path
+          class="al-sector"
+          d={`M${f(polar(hub + 6, s.start).x)},${f(polar(hub + 6, s.start).y)}L${f(polar(plate, s.start).x)},${f(polar(plate, s.start).y)}`}
+        />
+      ))
+    }
+    {
+      layout.rings.map((ring) => (
+        <circle
+          class:list={['al-ring', ring.energy ? `al-ring-${ring.energy}` : 'al-ring-none']}
+          cx={C}
+          cy={C}
+          r={ring.r}
+        />
+      ))
+    }
+    <circle class="al-plate-edge" cx={C} cy={C} r={plate - 5} />
+    <rect
+      class="al-rule"
+      x={C - ruleWidth / 2}
+      y={C - plate + 4}
+      width={ruleWidth}
+      height={plate - hub - 4}
+      rx="3"
+    />
+    {
+      layout.rings.map((ring) => {
+        const y = (ring.labelBox.y1 + ring.labelBox.y2) / 2;
+        const text = ring.energy ? t.constellationEnergies[ring.energy] : a.noEnergy;
+        // Latin names run up the rule; Chinese ones stand upright, a character to a line.
+        return isCjk(text) ? (
+          <text class="al-rule-name" x={C} y={f(y - ((text.length - 1) * 12) / 2)} dy="0.35em">
+            {[...text].map((ch, i) => (
+              <tspan x={C} dy={i ? 12 : undefined}>
+                {ch}
+              </tspan>
+            ))}
+          </text>
+        ) : (
+          <text class="al-rule-name" transform={`translate(${C} ${f(y)}) rotate(-90)`} dy="0.35em">
+            {text}
+          </text>
+        );
+      })
+    }
+    <circle class="al-hub" cx={C} cy={C} r={hub} />
+    <circle class="al-hub-in" cx={C} cy={C} r={hub - 6} />
+    <text class="al-hub-count" x={C} y={C - 14}>
+      {a.dialCount(open.length)}
+    </text>
+    {
+      ungrouped.length > 0 && (
+        <text class="al-hub-note" x={C} y={C + 10}>
+          {a.dialUngrouped(ungrouped.length)}
+        </text>
+      )
+    }
+    <text class="al-hub-note al-hub-energy" x={C} y={C + 32}>
+      {a.dialEnergy}
+    </text>
+  </g>
+
+  <g class="al-marks">
+    {
+      layout.marks.map((m) => {
+        const c = byNumber.get(m.number)!;
+        const facts = constellationFacts(c, t);
+        const box = m.label.box;
+        const hit = {
+          x1: Math.min(box.x1, m.x - m.r - 6),
+          y1: Math.min(box.y1, m.y - m.r - 6),
+          x2: Math.max(box.x2, m.x + m.r + 6),
+          y2: Math.max(box.y2, m.y + m.r + 6),
+        };
+        return (
+          <a
+            href={`#constellation-panel-${c.number}`}
+            class:list={['al-cmark', !c.size && 'al-cmark-unsized']}
+            data-c={c.number}
+            data-size={c.size}
+            data-energy={c.energy}
+            aria-label={a.markLabel(c.name, facts)}
+          >
+            <rect
+              class="al-hit"
+              x={f(hit.x1)}
+              y={f(hit.y1)}
+              width={f(hit.x2 - hit.x1)}
+              height={f(hit.y2 - hit.y1)}
+            />
+            {m.label.leader && (
+              <path
+                class="al-leader"
+                d={`M${f(m.label.leader.x1)},${f(m.label.leader.y1)}L${f(m.label.leader.x2)},${f(m.label.leader.y2)}`}
+              />
+            )}
+            <g transform={`translate(${f(m.x)} ${f(m.y)})`}>
+              <circle class="al-cmark-focus" r={m.r + 10} />
+              {notches(m.r + 4.5, progressOf(c).settled, progressOf(c).total).map((n) => (
+                <path class:list={['al-notch', n.settled && 'al-notch-settled']} d={n.d} />
+              ))}
+              <circle class="al-boss" r={m.r} />
+              <path class="al-boss-star" d={STAR(m.r * 0.62)} />
+            </g>
+            <text
+              class="al-cmark-name"
+              lang={lang(c.nameLang)}
+              text-anchor={m.label.anchor}
+              aria-hidden="true"
+            >
+              {m.label.lines.map((line, i) => (
+                <tspan x={f(m.label.x)} y={f(m.label.y + 14.5 + i * LABEL_LINE)}>
+                  {line}
+                </tspan>
+              ))}
+            </text>
+          </a>
+        );
+      })
+    }
+  </g>
+</svg>
