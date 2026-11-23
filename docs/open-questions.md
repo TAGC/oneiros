@@ -128,7 +128,7 @@ Inline `[!OPEN]` and `[!CONFLICT]` callouts are the old form, and `bun run check
 - Every decision the designer asks to record gets an issue, even with no question behind it: open it, answer it and close it in the same pull request.
 - A ruled-out question gets its answer comment, and the pull request removes its marker. Close the issue as not planned (`gh issue close N --reason "not planned"`) once the pull request is merged: a marker naming a closed issue fails the checks.
 - Commit bodies say which issues they close; the answer comments hold the provenance.
-- Once every question in a constellation is closed, close its milestone (`gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`).
+- Once every question in a constellation is closed, close its milestone: `bun run constellations` lists it under "Ready to close", and `bun run constellations:apply` on the current chart (`bun run constellations:plan`), with `--live`, closes it.
 
 The `resolve-open-questions` skill walks through a session.
 

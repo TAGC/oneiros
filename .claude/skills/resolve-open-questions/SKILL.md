@@ -12,7 +12,7 @@ Each question is a GitHub issue (a **question issue**) with a `[!ISSUE N]` marke
 ## 1. Pick a group
 
 - Run `bun run pull`, then list the open questions: `gh issue list --state open --label kind:conflict` and `--label kind:open`, or grep `.questions/`. The `/open-questions/` page collects them.
-- A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (`docs/constellations.md`). List them with `gh api 'repos/TAGC/oneiros/milestones?state=open' --jq '.[] | select(.title | startswith("✦ ")) | "\(.number) \(.title)"'` and offer one first. Its questions are `gh issue list --state open --milestone "<title>"`.
+- A **constellation** is a ready-made group: a milestone whose title starts with `✦ `, with its size and energy in the description (`docs/constellations.md`). `bun run constellations` lists each open one with its open questions; offer one first.
 - When `bun run constellations` lists ungrouped questions or constellations ready to close, run the `chart-constellations` skill first.
 - Without a fitting constellation: conflicts before opens. Then opens area by area.
 - Prefer questions whose blockers are all settled: an open question blocked by another open question waits for it.
@@ -70,7 +70,7 @@ The issues and their answer comments are the decision record. Do not keep a sepa
 The designer merges the pull request; merging deploys. Once it is merged:
 
 1. Close each ruled-out issue with `gh issue close N --reason "not planned"`. Close each duplicate with `bun run duplicate:close <canonical> <duplicate>`, then again with `--live`: it closes the duplicate, removes its milestone (a duplicate leaves its constellation) and pulls. Closing either earlier fails the deploy's checks, since its marker still names a closed issue; `duplicate:close` refuses while the marker is on a page.
-2. For each constellation the group drew from, check `gh issue list --state open --milestone "<title>"`. When it lists nothing, close the milestone: `gh api -X PATCH repos/TAGC/oneiros/milestones/<number> -f state=closed`.
+2. Run `bun run pull`, then `bun run constellations`. When it lists constellations under "Ready to close", write the current chart with `bun run constellations:plan > <scratchpad>/constellations.yaml` and run `bun run constellations:apply <scratchpad>/constellations.yaml`, then again with `--live`: it closes their milestones and pulls.
 
 ## 5. Hand over
 
