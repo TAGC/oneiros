@@ -2,10 +2,11 @@ import { createHash } from 'node:crypto';
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { LOCALES } from '../i18n/locale';
+import { QUESTION_CACHE } from './questions';
 import { allSources } from './wiki';
 
 /** Code and data, other than a page's own file, that its rendered Markdown depends on. */
-const INPUTS = ['src/lib', 'src/i18n', 'bun.lock', '.questions'];
+const INPUTS = ['src/lib', 'src/i18n', 'bun.lock', QUESTION_CACHE];
 
 function files(root: string, path: string): string[] {
   try {
