@@ -1,6 +1,6 @@
 # Checks
 
-`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs `lint`, `knip`, `depcruise`, `format:check` and `check` after the build, and a failure stops the deploy.
+`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs `lint`, `knip`, `depcruise`, `format:check` and `check` after the build, and a failure stops the deploy. On a pull request to `main`, the check workflow (`.github/workflows/check.yml`) pulls the questions and runs `bun run verify`.
 
 Git hooks run the same checks earlier. Set them up once per clone with `pre-commit install` (needs [pre-commit](https://pre-commit.com)); `.pre-commit-config.yaml` defines them.
 
