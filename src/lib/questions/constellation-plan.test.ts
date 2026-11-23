@@ -3,7 +3,12 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { loadQuestions, type PulledIssue, writeQuestionCache } from '.';
-import { chartOperations, currentChart, type PlannedConstellation, stateReport } from './chart';
+import {
+  chartOperations,
+  currentChart,
+  type PlannedConstellation,
+  stateReport,
+} from './constellation-plan';
 import { writeConstellation } from './constellation-format';
 import {
   constellationProblems,

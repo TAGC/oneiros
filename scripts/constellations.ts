@@ -16,7 +16,7 @@ import {
   type Operation,
   type Plan,
   stateReport,
-} from '../src/lib/questions/chart';
+} from '../src/lib/questions/constellation-plan';
 import { loadConstellations } from '../src/lib/questions/constellations';
 import { type GitHub, liveGitHub } from './github';
 import { CACHE, pull } from './pull';

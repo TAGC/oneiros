@@ -4,7 +4,7 @@ import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { stringify as stringifyYaml } from 'yaml';
 import { loadQuestions } from '../src/lib/questions';
-import { currentChart } from '../src/lib/questions/chart';
+import { currentChart } from '../src/lib/questions/constellation-plan';
 import { writeConstellation } from '../src/lib/questions/constellation-format';
 import { loadConstellations } from '../src/lib/questions/constellations';
 import { type FakeIssue, fakeGitHub } from './github-fake';
