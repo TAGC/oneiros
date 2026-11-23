@@ -47,5 +47,3 @@ Apeiron can't be harvested, traded, crafted or turned into memories. For what el
 ## Attention
 
 [[Attention]] stays dangerous for everyone. Apeiron only decides whether what the Dreamer brings is new or familiar.
-
-> [!ISSUE 23]
