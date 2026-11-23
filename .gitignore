@@ -8,6 +8,10 @@ dist/
 # Question cache, rewritten by `bun run pull`
 .questions/
 
+# Redacted claude.ai chat exports and their evidence reports, local only.
+# No trailing slash: .chats is a symlink to iCloud Drive.
+.chats
+
 # OS
 .DS_Store
 
