@@ -1,6 +1,6 @@
 /* The Astrolabe. Built on the wiki's tokens (src/styles/wiki.css): light-dark() colours, the
-   eight emotions, --open gold and --red conflicts. Dark: a night sky printed like an old star
-   atlas. Light: a dawn paper atlas with watercolour glows. */
+   eight emotions, --open gold and --red conflicts. The night sky is always dark, printed like
+   an old star atlas; the tiers follow the theme (light: a dawn paper atlas). */
 .astrolabe {
   --al-undermine: light-dark(#8a3fa8, #d6a6ff);
   --al-settled: light-dark(#2a2940, #f1f0fb);
@@ -110,7 +110,19 @@
   position: absolute;
   inset: 0;
 }
+/* The night sky keeps its dark colours in the light theme too. */
 .al-view-sky {
+  color-scheme: dark;
+  --al-neb-o: 0.5;
+  --al-neb-blend: screen;
+  --al-speck-o: 0.85;
+  --al-dial-o: 0.12;
+  background: radial-gradient(
+    ellipse at 52% 32%,
+    var(--al-sky-1),
+    var(--al-sky-2) 62%,
+    var(--al-sky-3)
+  );
   touch-action: none;
   cursor: grab;
 }
