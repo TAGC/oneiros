@@ -5,6 +5,7 @@
  */
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
+import { getPages } from '../lib/pages';
 import { wikiUrl } from '../lib/site';
 import { issueId } from '../lib/wiki';
 import type { DialLayout } from './brass';
@@ -24,6 +25,8 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const markOf = new Map(layout.marks.map((m) => [m.number, m]));
+/** `slug#issue` for every marker on a page, so a link only points at a box that exists. */
+const boxed = new Set((await getPages(locale)).flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
 const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
 ---
 
@@ -83,7 +86,7 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
                     <span lang={lang(star.labelLang)}>{star.label}</span>
                   </a>
                   {page && (
-                    <a class="al-cpanel-page" href={wikiUrl(page, star.question.state === 'open' ? issueId(n) : undefined, locale)}>
+                    <a class="al-cpanel-page" href={wikiUrl(page, boxed.has(`${page}#${n}`) ? issueId(n) : undefined, locale)}>
                       {a.onItsPage}
                     </a>
                   )}

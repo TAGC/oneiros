@@ -6,6 +6,7 @@
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
 import { renderMarkdown } from '../lib/markdown';
+import { getPages } from '../lib/pages';
 import { CENTRAL_MIN_DEPENDENTS } from '../lib/questions';
 import { wikiUrl } from '../lib/site';
 import { calloutHeading, issueId } from '../lib/wiki';
@@ -24,6 +25,8 @@ const t = useTranslations(locale);
 const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
+/** `slug#issue` for every marker on a page, so a link only points at a box that exists. */
+const boxed = new Set((await getPages(locale)).flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
 
 /** The text for this page's language, or English marked as such. */
 function localised(texts: Partial<Record<Locale, string>> | undefined) {
@@ -180,8 +183,9 @@ function linkGroups(star: Star) {
           )}
           {page && (
             <p class="al-page">
-              {/* Only open questions keep a marker, so only they have a box to point at. */}
-              <a href={wikiUrl(page, star.question.state === 'open' ? issueId(star.number) : undefined, locale)}>
+              {/* Only a page that still has the marker has a box to point at: a decided question's
+                  marker goes before its issue closes. */}
+              <a href={wikiUrl(page, boxed.has(`${page}#${star.number}`) ? issueId(star.number) : undefined, locale)}>
                 {a.onPage}
               </a>
             </p>
