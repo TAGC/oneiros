@@ -19,7 +19,7 @@ infobox:
     - label: Sources
       value: Backstory, trading, living, finding
     - label: Shown as
-      value: An oil lamp burning in its emotion's colour
+      value: An oil lamp in its emotion's colour when Loose; its tier's form when rooted
 navbox: memory
 ---
 
@@ -50,7 +50,7 @@ Memories come from four sources:
 
 A memory is intangible. Held, it lives in your [[Temenos]]; in the Dreamlands it lives in a [[bead]]. Every memory travels in a bead, obols included. You move a memory between your mind and a bead by [[recounting]] and [[reliving]].
 
-Inside the Temenos, memories appear as oil lamps whose flames burn in their emotion's colour. A memory sits on the floor of its strongest emotion, tugged by the others, and keeps the colour it was felt in. Brightness shows how fast it is fading: a fading memory gutters and a lost one goes out (see [[memory light]]).
+Inside the Temenos, a Loose memory appears as an oil lamp whose flame burns in its emotion's colour, and a rooted one takes its tier's form (see [[Memory tiers]]). A memory sits on the floor of its strongest emotion, tugged by the others, and keeps the colour it was felt in. A lamp's brightness shows how fast it is fading: a fading memory gutters and a lost one goes out (see [[memory light]]).
 
 ## Memory as value
 

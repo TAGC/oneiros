@@ -39,12 +39,10 @@ Obols are not inherently durable: they last by clustering, their light slowing e
 
 ## Value
 
-Anyone can absorb an obol to shore up their own Coherence, which is why everyone accepts them. The city's Conviction stands behind an obol only as trust in its worth. Like every bead, an obol is a snapshot with no [[Hold]]: once minted, only its glass and nearby light set how fast it fades. A city that loses its faith mints fewer new obols, but the ones already made are unaffected.
+Anyone can absorb an obol to shore up their own Coherence, which is why everyone accepts them. The city's Conviction stands behind an obol only as trust in its worth: it feeds neither the obol's [[renown]] nor its Hold. Obols have no renown of their own; they last by clustering, their [[memory light]] slowing each other's fading. Like every bead, an obol is a snapshot with no [[Hold]]: once minted, only its glass and nearby light set how fast it fades. A city that loses its faith mints fewer new obols, but the ones already made are unaffected.
 
 How obols sit beside beads and other goods is on [[Economy]].
 
 ## Open questions
 
 > [!ISSUE 72]
-
-> [!ISSUE 73]
