@@ -73,12 +73,15 @@ export interface DuplicateOptions extends RunOptions {
   root: string;
 }
 
-const failer = (warn: (line: string) => void) => (message: string) => {
+/** Writes a refusal as an `error:` line; false, for the step to return. */
+const refusalLogger = (warn: (line: string) => void) => (message: string) => {
   warn(`error: ${message}`);
   return false;
 };
 
-const verbs = (live: boolean) => (would: string, did: string) => (live ? did : `would ${would}`);
+/** A change's verb as the run says it: done when live, "would" in a dry run. */
+const verbForRun = (live: boolean) => (would: string, did: string) =>
+  live ? did : `would ${would}`;
 
 /**
  * The page step: prints DROP's marker edits in both languages, and makes them when live. Reads
@@ -89,7 +92,7 @@ export function duplicatePages(
   drop: number,
   { live, cache, root, log, warn = log }: DuplicateOptions,
 ): boolean {
-  const fail = failer(warn);
+  const fail = refusalLogger(warn);
   if (keep === drop) return fail(`#${keep} cannot be a duplicate of itself`);
   const questions = loadQuestions(cache);
   const kept = questions.get(keep);
@@ -131,7 +134,7 @@ export function duplicatePages(
     else log(`${file}: no marker for #${drop}`);
   }
 
-  const verb = verbs(live);
+  const verb = verbForRun(live);
   for (const edit of edits) {
     if (edit.link === undefined) {
       log(`${edit.file}:${edit.line}: ${verb('remove', 'removed')} the marker for #${drop}`);
@@ -175,7 +178,7 @@ export function closeDuplicate(
   drop: number,
   { live, cache, root, log, warn = log }: DuplicateOptions,
 ): boolean {
-  const fail = failer(warn);
+  const fail = refusalLogger(warn);
   if (keep === drop) return fail(`#${keep} cannot be a duplicate of itself`);
   const marking = pagesMarking(root, drop);
   if (marking.length) {
@@ -211,7 +214,7 @@ export function closeDuplicate(
     return fail(`#${drop} is closed; only an open question can become a duplicate`);
   }
 
-  const verb = verbs(live);
+  const verb = verbForRun(live);
   const milestone = droppedIssue.milestone?.number;
   const total = Number(!done) + Number(milestone !== undefined);
   if (!done) {
