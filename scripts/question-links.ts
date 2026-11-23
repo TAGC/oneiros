@@ -11,7 +11,7 @@ import { readFileSync } from 'node:fs';
 import { type LinkedIssue, parsePlan, planChanges } from '../src/lib/questions/links';
 import { type GitHub, liveGitHub } from './github';
 import { CACHE, pull } from './pull';
-import type { RunOptions } from './run';
+import { type RunOptions, summary } from './run';
 
 /** Applies a links plan's text: prints the changes, and makes them when live. */
 export function applyLinks(github: GitHub, plan: string, { live, cache, log }: RunOptions): void {
@@ -46,12 +46,8 @@ export function applyLinks(github: GitHub, plan: string, { live, cache, log }: R
   }
   for (const line of planned.skipped) log(`skipped: ${line}`);
   const total = planned.bodies.length + planned.block.length + planned.unblock.length;
-  if (!live) {
-    log(`Dry run: ${total} change(s). Add --live to make them.`);
-    return;
-  }
-  log(`Applied ${total} change(s).`);
-  log(pull(github, cache));
+  log(summary(total, live));
+  if (live) log(pull(github, cache));
 }
 
 if (import.meta.main) {

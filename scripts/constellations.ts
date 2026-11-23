@@ -20,7 +20,7 @@ import {
 import { loadConstellations } from '../src/lib/questions/constellations';
 import { type GitHub, liveGitHub } from './github';
 import { CACHE, pull } from './pull';
-import type { RunOptions } from './run';
+import { type RunOptions, summary } from './run';
 
 function describe(op: Operation): string {
   switch (op.kind) {
@@ -76,13 +76,9 @@ export function applyChart(
     for (const e of result.errors) warn(`error: ${e}`);
     return false;
   }
-  if (!result.operations.length) log('Nothing to change.');
-  else if (live) run(github, result.operations, log);
-  else {
-    for (const op of result.operations) log(describe(op));
-    log('');
-    log(`Dry run: ${result.operations.length} operation(s). Add --live to apply them.`);
-  }
+  if (live) run(github, result.operations, log);
+  else for (const op of result.operations) log(describe(op));
+  log(summary(result.operations.length, live));
   if (live) log(pull(github, cache));
   return true;
 }

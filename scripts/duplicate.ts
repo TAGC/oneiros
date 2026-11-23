@@ -19,7 +19,7 @@ import { WIKI_DIRS } from '../src/lib/site';
 import { issueId } from '../src/lib/wiki';
 import { type GitHub, liveGitHub, NotAQuestion, type PulledQuestion } from './github';
 import { CACHE, pull } from './pull';
-import type { RunOptions } from './run';
+import { type RunOptions, summary } from './run';
 
 /** The line that stands in for a duplicate's marker, linking to the kept question's box. */
 function linkLine(locale: Locale, title: string, keep: Question): string {
@@ -142,12 +142,9 @@ export function duplicatePages(
     }
     if (live) writeFileSync(join(root, edit.file), edit.text, 'utf8');
   }
-  if (!edits.length) log('Nothing to change.');
-  else if (!live) log(`Dry run: ${edits.length} change(s). Add --live to make them.`);
-  else {
-    const next = `bun run duplicate:close ${keep} ${drop}`;
-    log(`Made ${edits.length} change(s). After the pull request merges, run ${next}.`);
-  }
+  const next = `bun run duplicate:close ${keep} ${drop}`;
+  const after = live && edits.length ? ` After the pull request merges, run ${next}.` : '';
+  log(summary(edits.length, live) + after);
   return true;
 }
 
@@ -225,9 +222,7 @@ export function closeDuplicate(
     log(`#${drop}: ${verb('remove', 'removed')} from milestone ${milestone}`);
     if (live) github.removeMilestone(drop);
   }
-  if (!total) log('Nothing to change.');
-  else if (!live) log(`Dry run: ${total} change(s). Add --live to make them.`);
-  else log(`Made ${total} change(s).`);
+  log(summary(total, live));
   if (live) log(pull(github, cache));
   return true;
 }

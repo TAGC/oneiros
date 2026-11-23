@@ -123,7 +123,7 @@ add #4 undermined-by #2: #2 broke its premise.
     expect(questions.get(2)?.blockedBy).toEqual([1]);
     expect(questions.get(4)?.status).toBe('undermined');
     expect(out.slice(-2)).toEqual([
-      'Applied 5 change(s).',
+      'Made 5 change(s).',
       'Wrote 4 question(s) and 0 milestone(s) to .questions/',
     ]);
   });
@@ -209,8 +209,7 @@ describe('a constellations plan', () => {
       'assign #3 to milestone 1',
       'assign #4 to milestone "Beads and obols"',
       'close milestone 2',
-      '',
-      'Dry run: 6 operation(s). Add --live to apply them.',
+      'Dry run: 6 change(s). Add --live to make them.',
     ]);
   });
 
@@ -227,6 +226,10 @@ describe('a constellations plan', () => {
     expect(milestones[0].description).toContain('How memories fade and what it costs.');
     expect(milestones[2].description).toBe('Not a constellation.');
     expect(milestones[3].description).toContain('### 珠子与奥波');
+    expect(out.slice(-2)).toEqual([
+      'Made 6 change(s).',
+      'Wrote 5 question(s) and 4 milestone(s) to .questions/',
+    ]);
     expect(github.questions().map((q) => [q.number, q.milestone?.number])).toEqual([
       [1, 1],
       [2, 4],
