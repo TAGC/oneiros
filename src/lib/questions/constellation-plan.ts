@@ -13,7 +13,8 @@ import {
   statedCounts,
   writeConstellation,
 } from './constellation-format';
-import type { Constellations, Energy, Size } from './constellations';
+import type { Energy, Size } from './constellation-format';
+import type { Constellations } from './constellations';
 
 /** One open constellation as the plan wants it. */
 export interface PlannedConstellation {

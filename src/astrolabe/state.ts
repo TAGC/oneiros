@@ -3,8 +3,8 @@
  * clustering, Show settled, the time and energy filter, the open panel and full screen.
  * The page layer (`state-client.ts`) reads and writes the page; nothing here touches it.
  */
-import type { Energy, Size } from '../lib/questions/constellations';
-import type { Clustering } from './sky';
+import type { Energy, Size } from '../lib/questions/constellation-format';
+import type { Clustering } from '../lib/questions/clusters';
 
 export type View = 'sky' | 'tiers' | 'brass';
 

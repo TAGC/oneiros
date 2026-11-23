@@ -3,10 +3,10 @@
  * with their labels, threads and constellation lines following. Positions come from the
  * build (`.al-sky-motion`); this only moves what is already drawn.
  */
-import type { Thread } from './chart';
+import type { Thread } from '../lib/questions';
 import { curve, threadBend } from './curve';
 import { flight, FLIGHT_MS, type SkyMotionData, type SkySpot } from './motion';
-import type { Clustering } from './sky';
+import type { Clustering } from '../lib/questions/clusters';
 
 interface Placed {
   glyph: SVGGElement;

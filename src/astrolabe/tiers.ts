@@ -4,11 +4,10 @@
  * out come from the question graph.
  */
 import type { Locale } from '../i18n/locale';
-import type { Area } from '../lib/questions';
-import type { Cluster } from '../lib/questions/clusters';
-import type { Star, StarChart, Thread } from './chart';
-import type { Box, Clustering } from './sky';
-import { starRadius } from './sky';
+import type { Area, Thread } from '../lib/questions';
+import type { Cluster, Clustering } from '../lib/questions/clusters';
+import type { Star, StarChart } from './chart';
+import { type Box, starRadius } from './sky';
 import { textWidth, wrapText } from './text';
 
 /** 0 settled ground, 1 frontier, 2 one step out, 3 two steps out, 4 three or more. */

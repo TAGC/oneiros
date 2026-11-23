@@ -5,7 +5,7 @@
  */
 import { AREAS } from '../lib/areas';
 import type { Area } from '../lib/questions';
-import { ENERGIES, type Energy, type Size } from '../lib/questions/constellations';
+import { ENERGIES, type Energy, type Size } from '../lib/questions/constellation-format';
 import { useTranslations } from '../i18n/ui';
 import { type ChartConstellation, openConstellations, type StarChart, starsOf } from './chart';
 import { type Box, mulberry32, overlapArea } from './sky';

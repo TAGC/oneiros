@@ -12,7 +12,8 @@ import {
   withoutDuplicates,
 } from '../lib/questions';
 import { type Cluster, type Clustering, clusterList } from '../lib/questions/clusters';
-import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
+import type { Energy, Size } from '../lib/questions/constellation-format';
+import type { Constellation, Constellations } from '../lib/questions/constellations';
 
 /** Open questions split into frontier and blocked; closed ones keep their status. */
 export type StarStatus = 'frontier' | 'blocked' | 'decided' | 'ruled-out' | 'undermined';
@@ -25,14 +26,12 @@ export const STAR_STATUSES: StarStatus[] = [
   'undermined',
 ];
 
-/** Independent questions are always peripheral too; a star shows only the stronger mark. */
-export type StarRole = Role;
-
 export interface Star {
   number: number;
   question: Question;
   status: StarStatus;
-  roles: StarRole[];
+  /** Independent questions are always peripheral too; a star shows only the stronger mark. */
+  roles: Role[];
   /** From the question graph: 0 on the frontier and for a settled question. */
   stepsOut: number;
   /** The title in the chart's locale, or English when it has none. */
@@ -68,9 +67,6 @@ export interface ChartConstellation {
   cluster?: Cluster;
 }
 
-/** A line between two stars, as the question graph gives it. */
-export type { Thread };
-
 export type StarCounts = Record<StarStatus | 'open', number>;
 
 export interface StarChart {
@@ -93,7 +89,7 @@ function starStatus(q: Question, place: Place): StarStatus {
   return q.status === 'duplicate' ? 'decided' : q.status;
 }
 
-function starRoles(roles: Role[]): StarRole[] {
+function starRoles(roles: Role[]): Role[] {
   return roles.includes('independent') ? roles.filter((r) => r !== 'peripheral') : roles;
 }
 

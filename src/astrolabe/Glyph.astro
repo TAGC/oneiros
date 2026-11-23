@@ -6,12 +6,13 @@
  * and turned 45 degrees; central stars are larger; a peripheral star has a small moon and an
  * independent one a dotted orbit.
  */
-import type { StarRole, StarStatus } from './chart';
+import type { Role } from '../lib/questions';
+import type { StarStatus } from './chart';
 
 interface Props {
   status: StarStatus;
   conflict?: boolean;
-  roles?: StarRole[];
+  roles?: Role[];
   /** Staggers the twinkle; omit for a still glyph (key, panel). */
   number?: number;
   /** An open question in no constellation: a small warning mark, shown with constellations. */

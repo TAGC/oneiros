@@ -15,7 +15,7 @@ import {
   startState,
   type View,
 } from './state';
-import type { Clustering } from './sky';
+import type { Clustering } from '../lib/questions/clusters';
 
 /** One change of state; `action` is absent for the first render on load. */
 export interface Change {

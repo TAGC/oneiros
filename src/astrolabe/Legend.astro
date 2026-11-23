@@ -3,7 +3,8 @@
 import { type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
 import { CENTRAL_MIN_DEPENDENTS, THREAD_KINDS } from '../lib/questions';
-import { STAR_STATUSES, type StarRole } from './chart';
+import type { Role } from '../lib/questions';
+import { STAR_STATUSES } from './chart';
 import Glyph from './Glyph.astro';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 
 const { locale } = Astro.props;
 const a = useTranslations(locale).astrolabe;
-const roles: StarRole[] = ['central', 'peripheral', 'independent'];
+const roles: Role[] = ['central', 'peripheral', 'independent'];
 ---
 
 <details class="al-key" open>

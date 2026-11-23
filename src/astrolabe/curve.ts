@@ -2,7 +2,7 @@
  * A night sky thread's path, shared by the build and the client: the client redraws threads
  * with it while stars fly between the two clusterings.
  */
-import type { Thread } from './chart';
+import type { Thread } from '../lib/questions';
 
 export interface Point {
   x: number;

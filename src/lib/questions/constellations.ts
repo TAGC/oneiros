@@ -29,14 +29,6 @@ import {
 } from './constellation-format';
 import type { Problem } from './problems';
 
-export {
-  CONSTELLATION_MARK,
-  ENERGIES,
-  type Energy,
-  SIZES,
-  type Size,
-} from './constellation-format';
-
 /** Where milestones sit inside the question cache. */
 export const MILESTONE_CACHE = 'milestones';
 

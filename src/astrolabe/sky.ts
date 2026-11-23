@@ -4,14 +4,12 @@
  * placement around each star. The same chart always gives the same sky.
  */
 import { useTranslations } from '../i18n/ui';
-import type { Area } from '../lib/questions';
+import type { Area, Thread } from '../lib/questions';
 import type { Clustering } from '../lib/questions/clusters';
-import { openConstellations, type Star, type StarChart, starsOf, type Thread } from './chart';
+import { openConstellations, type Star, type StarChart, starsOf } from './chart';
 import { curve, threadBend } from './curve';
 import { constellationFacts } from './facts';
 import { wrapText, textWidth } from './text';
-
-export type { Clustering };
 
 export interface Box {
   x1: number;

@@ -2,9 +2,9 @@
  * Interface strings for every locale. Chinese domain terms follow `src/i18n/zh-terms.md`.
  */
 
-import type { StarRole, StarStatus } from '../astrolabe/chart';
-import type { ThreadKind } from '../lib/questions';
-import type { Energy, Size } from '../lib/questions/constellations';
+import type { StarStatus } from '../astrolabe/chart';
+import type { Role, ThreadKind } from '../lib/questions';
+import type { Energy, Size } from '../lib/questions/constellation-format';
 import type { Status } from '../lib/status';
 import type { Locale } from './locale';
 
@@ -186,13 +186,13 @@ Five pillars hold it together:
       central: 'Central',
       peripheral: 'Peripheral',
       independent: 'Independent',
-    } satisfies Record<StarRole, string>,
+    } satisfies Record<Role, string>,
     roleHelp: {
       central: (n: number) => `Open, and blocks ${n} or more open questions. A larger star.`,
       peripheral: () => 'On the frontier, and no open question waits on it. A small moon.',
       independent: () =>
         'Open, with no links to any question, not even a related one. A dotted orbit.',
-    } satisfies Record<StarRole, (n: number) => string>,
+    } satisfies Record<Role, (n: number) => string>,
     threads: {
       unsettled: 'Blocked by a question that is not settled: open or undermined.',
       settled: 'Blocked by a settled question: decided or ruled out.',
