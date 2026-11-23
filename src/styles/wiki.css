@@ -1116,8 +1116,8 @@ footer.foot p {
 .frame {
   position: relative;
   display: block;
-  width: 100%;
-  max-width: 200px;
+  /* min() rather than max-width: Safari sized the height from the 200px cap in a narrow tile. */
+  width: min(100%, 200px);
   aspect-ratio: 1;
   padding: 14%;
   background: radial-gradient(circle at 50% 42%, #2b2d5c, #14152e 72%);
@@ -1167,6 +1167,9 @@ footer.foot p {
   display: block;
   width: 100%;
   height: 100%;
+}
+.frame img {
+  object-fit: contain;
 }
 /* Smaller frames keep the icon at a whole multiple of its 24 pixels: md 2×, sm 1×. */
 .frame.md {
