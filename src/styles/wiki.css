@@ -217,6 +217,37 @@ header.top::after {
 .search input::placeholder {
   color: #b8badc;
 }
+/* The shortcut hint shows only while the box is idle and empty, and never on touch screens. */
+.search kbd {
+  position: absolute;
+  inset-inline-end: 12px;
+  top: 50%;
+  translate: 0 -50%;
+  padding: 1px 6px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #ffffff33;
+  font:
+    12px 'Source Sans 3',
+    system-ui,
+    sans-serif;
+  color: #b8badc;
+  pointer-events: none;
+}
+.search kbd:empty,
+.search input:focus ~ kbd,
+.search input:not(:placeholder-shown) ~ kbd {
+  display: none;
+}
+@media (hover: hover) and (min-width: 601px) {
+  .search input:placeholder-shown:not(:focus) {
+    padding-inline-end: 64px;
+  }
+}
+@media (hover: none), (max-width: 600px) {
+  .search kbd {
+    display: none;
+  }
+}
 .results {
   position: absolute;
   z-index: 10;

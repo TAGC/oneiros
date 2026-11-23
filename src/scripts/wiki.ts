@@ -231,3 +231,33 @@ form?.addEventListener('submit', (e) => {
 document.addEventListener('click', (e) => {
   if (!form?.contains(e.target as Node)) setOpen(false);
 });
+
+/* Search shortcuts, as on most docs sites: Cmd+K (Ctrl+K off Mac) toggles focus on the
+   search box, and / focuses it unless the reader is already typing somewhere. */
+const mac = /Mac|iPhone|iPad/.test(navigator.platform);
+const hint = document.querySelector<HTMLElement>('.search kbd');
+if (hint) hint.textContent = mac ? '⌘K' : 'Ctrl K';
+
+function typing(el: Element | null): boolean {
+  return (
+    el instanceof HTMLElement &&
+    (el.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(el.tagName))
+  );
+}
+
+document.addEventListener('keydown', (e) => {
+  if (!input || e.isComposing) return;
+  const modK =
+    e.key.toLowerCase() === 'k' && (mac ? e.metaKey : e.ctrlKey) && !e.altKey && !e.shiftKey;
+  const slash =
+    e.key === '/' && !e.metaKey && !e.ctrlKey && !e.altKey && !typing(document.activeElement);
+  if (!modK && !slash) return;
+  e.preventDefault();
+  if (modK && document.activeElement === input) {
+    setOpen(false);
+    input.blur();
+  } else {
+    input.focus();
+    input.select();
+  }
+});
