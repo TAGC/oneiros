@@ -28,7 +28,7 @@ navbox: memory
 
 The light is the memory's [[material]] running down, in proportion to its composition, so the ratio never changes and [[vividness]] falls. Covering a [[bead]] hides its light but does not slow its fading, and nothing restores vividness. Leaked light becomes trace [[ambient emotion]].
 
-Brightness is the rate of that loss: a fresh, Loose memory blazes and dims fast, and a deeply rooted one glows softly for a long time. In the [[Temenos]], where memories appear as oil lamps, brightness shows how fast a memory is fading: a fading memory gutters and a lost one goes out. Held memories light only your Temenos; only beads light the [[Dreamlands]].
+Brightness is the rate of that loss: a fresh, Loose memory blazes and dims fast, and a deeply rooted one glows softly for a long time. In the [[Temenos]], where Loose memories appear as oil lamps, a lamp's brightness shows how fast its memory is fading: a fading memory gutters and a lost one goes out. Held memories light only your Temenos; only beads light the [[Dreamlands]].
 
 ## Fading
 

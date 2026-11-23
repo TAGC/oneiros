@@ -41,7 +41,7 @@ Unmaking whispers and tempts (see [[Inner voices]]).
 
 ## Forgery
 
-The vision says memories can't be forged, "since Unmaking only takes away". The designer has not confirmed this reasoning, and the canon audit notes it no longer holds now that Unmaking frees ambient emotion (see [[Economy]]).
+Memories can't be forged. The vision's reason is "since Unmaking only takes away"; the designer has not confirmed this reasoning, and the canon audit notes it no longer holds now that Unmaking frees ambient emotion (see [[Economy]]).
 
 ## Open questions
 

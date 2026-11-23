@@ -30,7 +30,6 @@ navbox: world
 
 ## Characters
 
-- Origins: Memory-born (the default) and Nightmare-born (the unstable, mutant origin). Origin is now the first step of [[character creation]] (see [[Origin]]).
 - Past selves stay in the world as ghosts or legends, and each return makes the Dreamer more aware of you (see [[Echo]]).
 - Traits as tagged phrases that stack, synergise, conflict and fuse.
 - Unreliable perception for some savants.

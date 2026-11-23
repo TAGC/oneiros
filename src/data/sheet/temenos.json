@@ -42,7 +42,7 @@
     ],
     [
      "Floor size",
-     "Qualities set each floor's plot (floor space). Rooms and Megara take up plot; loose items and fixtures sit inside them or on the floor's shelves. Every floor starts with at least one room. Unbuilt plot shows as foundations or courtyard; overflow crowds the stairs. Open: what happens when a plot shrinks below what is built"
+     "Qualities set each floor's plot (floor space). Rooms and Megara take up plot; loose items and fixtures sit inside them or on the floor's shelves. Every floor starts with at least one room, and always has space for at least that room. Unbuilt plot shows as foundations or courtyard; overflow crowds the stairs. Open: what happens when a plot shrinks below what is built"
     ],
     [
      "Qualities as styling",
@@ -50,7 +50,7 @@
     ],
     [
      "Forms",
-     "Memories: oil lamps whose flames burn in their emotion's colour (glowing beads in the outer world); brightness shows how fast it is fading, a fading memory gutters, a lost one goes out. Beliefs: a loose leaf on a shelf (Notion), pages on a desk while dwelt on (Musing), a codex in a built-in bookcase (Tenet), a room (Certainty), a great hall around a sealed shrine holding a codex bound in bronze boards (Dogma); covers dyed by emotion, marbled when mixed. Rooms have no voices"
+     "Memories: an oil lamp when Loose, its flame in its emotion's colour (a glowing bead in the outer world); rooted, its tier's form: a hearth (Recollection), a room (Refrain), a great hall (Touchstone); a lamp's brightness shows how fast it is fading, a fading memory gutters, a lost one goes out. Beliefs: a loose leaf on a shelf (Notion), pages on a desk while dwelt on (Musing), a codex in a built-in bookcase (Tenet), a room (Certainty), a great hall around a sealed shrine holding a codex bound in bronze boards (Dogma); covers dyed by emotion, marbled when mixed. Rooms have no voices"
     ],
     [
      "Scars",
