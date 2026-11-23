@@ -71,6 +71,8 @@ export interface Constellation {
   questions: Question[];
   /** The milestone's title and description as written; set when loaded from the cache. */
   milestone?: MilestoneText;
+  /** What breaks the milestone format (`formatProblems`), found once when read from the cache. */
+  formatProblems?: string[];
 }
 
 export interface Constellations {
@@ -154,6 +156,7 @@ function toConstellation(raw: string, questions: Questions): Constellation | und
       .flatMap((n) => questions.get(n) ?? [])
       .filter((q) => !isDuplicate(q)),
     milestone,
+    formatProblems: formatProblems(text),
   };
   const size = onScale(SIZES, text.size);
   if (size) constellation.size = size;
@@ -205,7 +208,7 @@ export function getConstellations(questions: Questions = getQuestions()): Conste
  */
 export function constellationProblems(constellations: Constellations): Problem[] {
   return constellations.open().flatMap((c) => {
-    const text = (c.milestone && readConstellation(c.milestone)) ?? c;
-    return formatProblems(text).map((message) => ({ where: c.url, message }));
+    const problems = c.formatProblems ?? formatProblems(c);
+    return problems.map((message) => ({ where: c.url, message }));
   });
 }
