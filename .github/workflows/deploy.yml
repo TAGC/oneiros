@@ -64,6 +64,9 @@ jobs:
       - name: Find unused code
         run: bun run knip
 
+      - name: Check module rules
+        run: bun run depcruise
+
       - name: Check formatting
         run: bun run format:check
 

@@ -1,6 +1,6 @@
 # Checks
 
-`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs lint, knip, format:check and check after the build, and a failure stops the deploy.
+`bun run check` reads the built site, so run `bun run build` first (or use `bun run verify`, which does both). The deploy workflow runs `lint`, `knip`, `depcruise`, `format:check` and `check` after the build, and a failure stops the deploy.
 
 Git hooks run the same checks earlier. Set them up once per clone with `pre-commit install` (needs [pre-commit](https://pre-commit.com)); `.pre-commit-config.yaml` defines them.
 
@@ -40,3 +40,11 @@ To accept a word cspell does not know, add it to `cspell-words.txt` under the ri
 ## Code
 
 - **Unused code** (`bun run knip`, configured in `knip.json`): files nothing imports, unused exports and unused or missing dependencies. Entry points are the Astro pages and config (found by knip's Astro plugin), `scripts/*.ts`, the test files, and the infobox figures in `src/components/figures/`, which `Infobox.astro` loads by name through `import.meta.glob`. An exported type or interface that its own module uses is allowed, since it names part of that module's interface. `@commitlint/cli` is listed as used, since only the commit-msg hook runs it. Delete dead code, or drop the `export` from a value only its own module uses; list a new entry point in `knip.json` only when something loads it without an import.
+- **Module rules** (`bun run depcruise`, configured in `.dependency-cruiser.cjs`): the import rules below. They see only run-time imports: an `import type` is erased before anything runs, so it breaks no rule.
+  - No circular imports.
+  - Every import resolves (Astro's virtual `astro:` modules aside).
+  - Only `scripts/github.ts` imports `node:child_process`, since it is the only way to GitHub. `src/lib/pages.ts` may too: it runs `git log` for the pages' edit dates.
+  - Domain modules (`src/lib/` and the Astrolabe's `.ts` modules) do not import the interface strings, `src/i18n/ui.ts`; pages and components pass them the strings they need. The modules that render localised text themselves are listed by name in the config, each with its reason. Keep that list from growing.
+  - Nothing the Astrolabe's browser code imports (`start.ts` and everything it reaches: the `*client*.ts` modules and `state*.ts`) reaches the questions module, the interface strings or a Node built-in, since none of them runs in a browser.
+
+  No rule can see a path written as a string, so the rule that only the questions module reads the question cache stays a review rule.
