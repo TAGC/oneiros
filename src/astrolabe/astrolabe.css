@@ -968,6 +968,11 @@
 .al-stage.al-full .al-hint {
   display: none;
 }
+/* Full screen gives the hidden filter's space to the map instead: on a phone it wraps to
+   three empty rows. The map refits when the filter shows. */
+.astrolabe:not([data-cluster='constellations']) .al-stage.al-full :is(.al-scale, .al-fit) {
+  display: none;
+}
 .astrolabe .al-stage.al-full .al-frame,
 .astrolabe[data-view='brass'] .al-stage.al-full .al-frame {
   flex: 1;
