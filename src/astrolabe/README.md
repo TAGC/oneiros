@@ -35,7 +35,7 @@ Three views, switched by buttons above the map; the choice is remembered in the 
 
 ## Constellations
 
-A constellation is a group of related open questions sized for one session. Under the map, a list gives every open constellation with its reasoning and questions, then the open questions that no constellation holds yet. A star's panel names its constellation.
+A constellation is a group of related open questions sized for one session. Under the map, a list gives every open constellation's name, with its size, energy and progress, each linking to the constellation's section on the Open questions page (`#constellation-<milestone number>`), then a link to the section of open questions that no constellation holds yet (`#ungrouped`). The reasoning and the questions' text live only on the Open questions page: the designer asked on 22 Nov 2026 for the two to stay separate. A star's panel names its constellation.
 
 ### Cluster by Areas or Constellations
 
@@ -125,8 +125,8 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `Panels.astro` | One panel per star. Without JavaScript, `:target` shows the panel a star links to. |
 | `BrassPanels.astro`, `BrassKey.astro` | One panel per constellation, and how to read the dial, for the constellations view. |
 | `ConstellationFilter.astro` | The Cluster by choice and the time and energy filter, in the bar above the map. |
-| `ConstellationList.astro` | The constellations and ungrouped questions under the map. |
-| `StarLink.astro`, `facts.ts` | A link that opens a star's panel; a constellation's facts on one line. |
+| `ConstellationList.astro` | The open constellations under the map, by name and facts, each linking to its section on the Open questions page, then a link to the questions in none. |
+| `facts.ts` | A constellation's facts on one line. |
 | `Legend.astro` | The key under the map. |
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
 | `state.ts`, `state-client.ts`, `start.ts` | The page state (see Page state): its pure core, the page layer, and the one start-up script. |

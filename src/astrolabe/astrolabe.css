@@ -796,6 +796,9 @@
   color: var(--mute);
 }
 .al-cards {
+  margin: 0;
+  padding: 0;
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 12px;
@@ -821,12 +824,6 @@
 .al-card-facts {
   color: var(--mute);
 }
-.al-card-stars {
-  margin: 6px 0 0;
-  padding: 0;
-  list-style: none;
-  font-size: 14px;
-}
 .al-star-link {
   display: flex;
   align-items: baseline;
@@ -837,13 +834,10 @@
   align-self: center;
 }
 .al-ungrouped {
-  margin-top: 14px;
-}
-.al-ungrouped summary {
   display: flex;
   align-items: center;
   gap: 6px;
-  cursor: pointer;
+  margin-top: 14px;
   font-weight: 600;
 }
 .al-panel-c {

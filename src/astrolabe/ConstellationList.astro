@@ -1,10 +1,14 @@
 ---
-/** Every open constellation with its reasoning and questions, then the ungrouped questions. */
+/**
+ * The open constellations under the map, each by name and facts, linking to its section on
+ * the Open questions page, then a link to the questions in none. Their reasoning and
+ * questions live only on that page.
+ */
 import { HTML_LANG, type Locale } from '../i18n/locale';
 import { useTranslations } from '../i18n/ui';
-import { openConstellations, type StarChart, starsOf, ungroupedStars } from './chart';
+import { url } from '../lib/site';
+import { openConstellations, type StarChart, ungroupedStars } from './chart';
 import { constellationFacts } from './facts';
-import StarLink from './StarLink.astro';
 
 interface Props {
   chart: StarChart;
@@ -14,9 +18,9 @@ interface Props {
 const { chart, locale } = Astro.props;
 const t = useTranslations(locale);
 const a = t.astrolabe;
-const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const open = openConstellations(chart);
 const ungrouped = ungroupedStars(chart);
+const page = url('/open-questions/', locale);
 const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
 ---
 
@@ -25,11 +29,11 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
     <section class="al-clist" aria-labelledby="al-clist-title">
       <h2 id="al-clist-title">{a.constellations}</h2>
       <p class="al-clist-sub">
-        {open.length ? a.constellationsSub : a.noConstellations}
+        {open.length ? `${a.constellationsSub} ${a.constellationsOnPage}` : a.noConstellations}
       </p>
-      <div class="al-cards">
+      <ul class="al-cards">
         {open.map((c) => (
-          <article
+          <li
             class="al-card"
             id={`constellation-${c.number}`}
             data-c={c.number}
@@ -37,34 +41,24 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
             data-energy={c.energy}
           >
             <h3 lang={lang(c.nameLang)}>
-              <a href={c.url}>{c.name}</a>
+              {c.cluster?.open ? (
+                <a href={`${page}#constellation-${c.number}`}>{c.name}</a>
+              ) : (
+                c.name
+              )}
             </h3>
             <p class="al-card-facts">{constellationFacts(c, t)}</p>
-            {c.reasoning && <p lang={lang(c.reasoning.lang)}>{c.reasoning.text}</p>}
-            <ul class="al-card-stars" aria-label={a.members}>
-              {starsOf(c).map((n) => (
-                <StarLink star={byNumber.get(n)!} />
-              ))}
-            </ul>
-          </article>
+          </li>
         ))}
-      </div>
+      </ul>
       {ungrouped.length > 0 && (
-        <details class="al-ungrouped">
-          <summary>
-            <svg class="al-mini" viewBox="-7 -7 14 14" aria-hidden="true">
-              <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
-              <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
-            </svg>
-            {a.ungrouped(ungrouped.length)}
-          </summary>
-          <p>{a.ungroupedHelp}</p>
-          <ul class="al-card-stars">
-            {ungrouped.map((n) => (
-              <StarLink star={byNumber.get(n)!} />
-            ))}
-          </ul>
-        </details>
+        <p class="al-ungrouped">
+          <svg class="al-mini" viewBox="-7 -7 14 14" aria-hidden="true">
+            <path class="al-warn-sign" d="M0,-5L5,4H-5Z" />
+            <path class="al-warn-bang" d="M0,-1.6V1.2M0,2.6V2.7" />
+          </svg>
+          <a href={`${page}#ungrouped`}>{a.ungrouped(ungrouped.length)}</a>
+        </p>
       )}
     </section>
   )

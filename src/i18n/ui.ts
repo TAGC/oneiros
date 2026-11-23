@@ -233,9 +233,8 @@ Five pillars hold it together:
     noConstellations: 'No constellations yet.',
     constellation: 'Constellation',
     members: 'Its questions',
-    ungrouped: (n: number) => `In no constellation (${n})`,
-    ungroupedHelp:
-      'Open questions that no constellation holds yet. A warning mark shows them on the map.',
+    constellationsOnPage: 'Each name leads to its questions on the Open questions page.',
+    ungrouped: (n: number) => `Not in a constellation (${n})`,
     constellationKey: 'Lines join the questions of one constellation.',
     ungroupedKey: 'An open question in no constellation yet.',
     /* The constellations view: a brass dial. */
@@ -542,8 +541,8 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
     noConstellations: '尚无星座。',
     constellation: '星座',
     members: '其中的问题',
-    ungrouped: (n) => `不在任何星座中（${n}）`,
-    ungroupedHelp: '尚无星座收纳的待定问题。星图上以警示标记标出。',
+    constellationsOnPage: '点击名称，可在待定问题页面查看其中的问题。',
+    ungrouped: (n) => `不在星座中（${n}）`,
     constellationKey: '连线把同一星座的问题串在一起。',
     ungroupedKey: '尚不属于任何星座的待定问题。',
     dialCount: (n) => `${n} 个星座`,
