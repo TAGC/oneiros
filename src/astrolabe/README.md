@@ -131,6 +131,7 @@ Everything is laid out at build time and written as static SVG, so positions are
 | `SharedDefs.astro` | Gradients and arrowheads both views use. |
 | `state.ts`, `state-client.ts`, `start.ts` | The page state (see Page state): its pure core, the page layer, and the one start-up script. |
 | `client.ts`, `viewbox.ts` | The night sky and the tiers for the state: the tiers' scroll, the flight between clusterings, the filter, the star panel, thread highlighting, and pan and zoom on the sky. `viewbox.ts` holds the pan and zoom arithmetic. |
+| `nebulae.ts` | Bakes the sky's nebulae into one bitmap once the page is idle, so pan and zoom never redraw hundreds of gradients. |
 | `sky-motion.ts` | Flies the sky's stars, labels, threads and constellation lines between clusterings, writing the map once per frame. |
 | `fullscreen.ts`, `fullscreen-client.ts` | The full screen button: which way the browser allows, and the button itself, which reports to the state. |
 | `brass-client.ts` | The constellations view for the state: its panel, the filter on its marks, and starting at its middle. |

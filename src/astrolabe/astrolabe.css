@@ -137,7 +137,10 @@
   width: 100%;
   height: 100%;
   user-select: none;
-  /* Pan and zoom move the drawn picture until the sky rests (see client.ts). */
+  /* Pan and zoom move the drawn picture until the sky rests (see client.ts). The sky
+     beyond the edges is drawn too, so a moved picture never shows an empty margin; the
+     frame clips it. */
+  overflow: visible;
   transform-origin: 0 0;
   will-change: transform;
 }

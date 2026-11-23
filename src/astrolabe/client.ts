@@ -5,6 +5,7 @@
  */
 import { fitsFilter, setUpPanel } from './client-common';
 import type { SkyMotionData } from './motion';
+import { bakeNebulae } from './nebulae';
 import { skyMotion } from './sky-motion';
 import type { Store } from './state-client';
 import { boxTransform, type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
@@ -116,10 +117,14 @@ export function setUpSky(root: HTMLElement, store: Store): void {
    * Pan and zoom on the night sky. Events only update `box`. While the sky moves, the drawn
    * picture is moved by a CSS transform once per frame; redrawing over a thousand SVG
    * elements every frame left the browser showing blank frames. The viewBox catches up
-   * (`settle`) when the sky rests, or when the picture drifts so far that it would blur or
-   * show its edges. Positions come from `box` rather than the SVG's screen matrix, so no
-   * event forces a layout.
+   * (`settle`) when the sky rests, or when the picture is scaled so far that it would blur
+   * or run out of drawn sky. Positions come from `box` rather than the SVG's screen matrix,
+   * so no event forces a layout. The nebulae are baked into a bitmap, which redraws cheaply.
    */
+  const back = root.querySelector<SVGSVGElement>('.al-sky-back');
+  // Safari has no requestIdleCallback.
+  const idle = window.requestIdleCallback ?? ((run: () => void) => setTimeout(run, 300));
+  if (back) idle(() => void bakeNebulae(back));
   const W = Number(sky.dataset.width);
   const H = Number(sky.dataset.height);
   const home: ViewBox = { x: 0, y: 0, w: W, h: H };
@@ -143,9 +148,7 @@ export function setUpSky(root: HTMLElement, store: Store): void {
     pending = 0;
     const frame = skyView.getBoundingClientRect();
     const { k, tx, ty } = boxTransform(drawn, box, frame, fit);
-    const far =
-      k > 1.6 || k < 0.75 || Math.abs(tx) > frame.width / 4 || Math.abs(ty) > frame.height / 4;
-    if (far) return settle();
+    if (k > 1.6 || k < 0.6) return settle();
     for (const layer of layers) {
       layer.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
     }
