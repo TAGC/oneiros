@@ -85,7 +85,7 @@ interface SourceFile {
 }
 
 /** The locale of a content file, from the folder it sits in. */
-export function fileLocale(file?: SourceFile): Locale {
+function fileLocale(file?: SourceFile): Locale {
   const path = String(file?.path ?? file?.history[0] ?? '').replaceAll('\\', '/');
   return path.includes(`/${WIKI_DIRS.zh}/`) ? 'zh' : DEFAULT_LOCALE;
 }

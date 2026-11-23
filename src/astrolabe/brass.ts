@@ -78,7 +78,7 @@ const BAND = 476;
 const LIMB = 498;
 const RING_RADIUS = { none: 116, low: 178, medium: 270, high: 362 };
 const MARK_RADIUS: Record<Size, number> = { small: 8, medium: 11, large: 14 };
-export const LABEL_SIZE = 16;
+const LABEL_SIZE = 16;
 export const LABEL_LINE = 19;
 const LABEL_WIDTH = 128;
 const LABEL_GAP = 5;
@@ -87,10 +87,10 @@ const RING_LABEL_REACH = 30;
 const RING_LABEL_HALF = 10;
 /** Area names on the band: capitals with wide letter spacing, as `brass.css` sets them. */
 export const BAND_NAME_SIZE = 13;
-export const BAND_NAME_SPACING = { latin: 0.14, cjk: 0.3 };
+const BAND_NAME_SPACING = { latin: 0.14, cjk: 0.3 };
 
 /** How long an area's name runs along the band, with a little room either side. */
-export function bandNameWidth(name: string): number {
+function bandNameWidth(name: string): number {
   const cjk = isCjk(name);
   const spacing = (cjk ? BAND_NAME_SPACING.cjk : BAND_NAME_SPACING.latin) * BAND_NAME_SIZE;
   return textWidth(name.toUpperCase(), BAND_NAME_SIZE) + [...name].length * spacing + 18;

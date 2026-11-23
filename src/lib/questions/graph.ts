@@ -17,7 +17,7 @@ export type Place = 'frontier' | 'blocked' | 'settled';
 /** Independent questions are always peripheral too. */
 export type Role = 'central' | 'peripheral' | 'independent';
 
-export const ROLES: Role[] = ['central', 'peripheral', 'independent'];
+const ROLES: Role[] = ['central', 'peripheral', 'independent'];
 
 /**
  * A blocked-by link runs from blocker to blocked: `settled` when the blocker is decided or

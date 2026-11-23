@@ -188,7 +188,7 @@ export function parseWikiLink(inner: string): WikiLink {
 }
 
 /** Every page slug a source links to through wiki links in its body or infobox. */
-export function outgoingSlugs(source: WikiSource, locale: Locale = 'en'): Set<string> {
+function outgoingSlugs(source: WikiSource, locale: Locale = 'en'): Set<string> {
   const out = new Set<string>();
   for (const text of [source.body, ...source.infoboxValues]) {
     for (const match of text.matchAll(WIKI_LINK)) {

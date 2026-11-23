@@ -5,7 +5,7 @@ import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 import { AREAS } from './areas';
 import { getQuestions } from './questions';
 import { readBodyMarkers } from './questions/markers';
-import { slugify, WIKI_DIRS } from './site';
+import { WIKI_DIRS } from './site';
 import { CALLOUTS, type MarkerBox, markerBox, sourceBySlug } from './wiki';
 
 export type Entry = CollectionEntry<'wiki'> | CollectionEntry<'wiki-zh'>;
@@ -94,10 +94,6 @@ export async function getCategories(locale: Locale = DEFAULT_LOCALE): Promise<Ma
     );
   }
   return map;
-}
-
-export function categoryBySlug(categories: Map<string, Page[]>, slug: string): string | undefined {
-  return [...categories.keys()].find((name) => slugify(name) === slug);
 }
 
 /** Each wiki file's last commit date (YYYY-MM-DD), from one `git log` over both folders. */

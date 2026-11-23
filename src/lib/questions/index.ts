@@ -426,11 +426,9 @@ export function getQuestions(): Questions {
 
 export {
   CENTRAL_MIN_DEPENDENTS,
-  type GraphQuestion,
   type Place,
   type QuestionGraph,
   questionGraph,
-  ROLES,
   type Role,
   THREAD_KINDS,
   type Thread,

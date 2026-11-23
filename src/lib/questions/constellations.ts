@@ -30,7 +30,7 @@ import {
 import type { Problem } from './problems';
 
 /** Where milestones sit inside the question cache. */
-export const MILESTONE_CACHE = 'milestones';
+const MILESTONE_CACHE = 'milestones';
 
 /** A milestone as GitHub's REST API returns it, as far as the pull needs it. */
 export interface GithubMilestone {

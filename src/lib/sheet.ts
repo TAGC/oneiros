@@ -33,7 +33,7 @@ export const TABS: SheetTab[] = index
   .filter((t) => files[`../data/sheet/${t.slug}.json`])
   .map((t) => ({ ...t, blocks: files[`../data/sheet/${t.slug}.json`].default.blocks }));
 
-export function getTab(slug: string): SheetTab {
+function getTab(slug: string): SheetTab {
   const tab = TABS.find((t) => t.slug === slug);
   if (!tab) throw new Error(`Sheet tab "${slug}" not found in src/data/sheet/`);
   return tab;

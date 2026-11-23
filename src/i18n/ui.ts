@@ -612,7 +612,7 @@ Oneiros 是一本可以变成游戏、并与他人分享的梦境日记。它是
   notFoundOpen: '待定问题',
 };
 
-export const UI_STRINGS: Record<Locale, UI> = { en, zh };
+const UI_STRINGS: Record<Locale, UI> = { en, zh };
 
 export function useTranslations(locale: Locale): UI {
   return UI_STRINGS[locale];

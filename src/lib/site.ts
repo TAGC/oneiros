@@ -3,7 +3,7 @@ import { DEFAULT_LOCALE, type Locale } from '../i18n/locale';
 export const SITE = 'https://tagc.github.io';
 export const BASE = '/oneiros';
 export const REPO = 'https://github.com/TAGC/oneiros';
-export const WIKI_DIR = 'src/content/wiki';
+const WIKI_DIR = 'src/content/wiki';
 
 /** Where each locale's pages live; a zh page pairs with the English page of the same slug. */
 export const WIKI_DIRS: Record<Locale, string> = { en: WIKI_DIR, zh: 'src/content/wiki-zh' };
