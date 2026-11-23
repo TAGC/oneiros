@@ -11,7 +11,7 @@ import type { GithubMilestone, MilestonedIssue } from '../src/lib/questions/cons
 import { REPO } from '../src/lib/site';
 
 /** This repo as `owner/name`. */
-export const SLUG = new URL(REPO).pathname.slice(1);
+const SLUG = new URL(REPO).pathname.slice(1);
 
 /** A question issue with everything the pull fetches for it. */
 export type PulledQuestion = PulledIssue & MilestonedIssue;
@@ -46,7 +46,7 @@ export class NotAQuestion extends Error {
   }
 }
 
-export const KIND_LABELS = ['kind:open', 'kind:conflict'];
+const KIND_LABELS = ['kind:open', 'kind:conflict'];
 
 /** Whether an issue's labels make it a question issue. */
 export function isQuestionIssue(issue: Pick<PulledQuestion, 'labels' | 'pull_request'>): boolean {

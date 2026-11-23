@@ -136,7 +136,7 @@ function same(a: AstrolabeState, b: AstrolabeState): boolean {
 const PREFIX: Record<PanelKind, string> = { star: 'star-', constellation: 'constellation-panel-' };
 
 /** What an address points to: a panel, the Dial, or nothing the Astrolabe knows. */
-export function readAddress(hash: string): OpenPanel | 'dial' | null {
+function readAddress(hash: string): OpenPanel | 'dial' | null {
   if (hash === '#dial') return 'dial';
   for (const kind of Object.keys(PREFIX) as PanelKind[]) {
     const match = new RegExp(`^#${PREFIX[kind]}(\\d+)$`).exec(hash);

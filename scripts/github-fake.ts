@@ -21,7 +21,7 @@ export interface FakeIssue {
   pull_request?: boolean;
 }
 
-export interface FakeMilestone {
+interface FakeMilestone {
   number: number;
   title: string;
   description?: string;
