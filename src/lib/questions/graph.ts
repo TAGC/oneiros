@@ -6,7 +6,7 @@
  * another. Duplicates are left out; the loader has already turned links to them into links
  * to their canonical question.
  */
-import { isDuplicate, type Question } from '.';
+import { type Question, withoutDuplicates } from '.';
 
 /** A question is central when it directly blocks at least this many open questions. */
 export const CENTRAL_MIN_DEPENDENTS = 3;
@@ -102,7 +102,7 @@ function blockedByCycles(questions: Question[], byNumber: Map<number, Question>)
 }
 
 export function questionGraph(all: Question[]): QuestionGraph {
-  const questions = all.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
+  const questions = withoutDuplicates(all);
   const byNumber = new Map(questions.map((q) => [q.number, q]));
   const settled = (n: number) => {
     const status = byNumber.get(n)?.status;

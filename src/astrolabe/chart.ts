@@ -4,12 +4,12 @@
  */
 import { DEFAULT_LOCALE, inLocale, type Locale } from '../i18n/locale';
 import {
-  isDuplicate,
   type Place,
   type Question,
   type QuestionGraph,
   type Role,
   type Thread,
+  withoutDuplicates,
 } from '../lib/questions';
 import { type Cluster, type Clustering, clusterList } from '../lib/questions/clusters';
 import type { Constellation, Constellations, Energy, Size } from '../lib/questions/constellations';
@@ -105,7 +105,7 @@ export function chartQuestions(
 ): StarChart {
   // The one place that decides which questions the map shows: duplicates stand in for
   // their canonical issue and stay off it.
-  const sorted = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
+  const sorted = withoutDuplicates(questions);
   const inChart = new Set(sorted.map((q) => q.number));
 
   const threads = graph.threads.filter((t) => inChart.has(t.from) && inChart.has(t.to));

@@ -7,7 +7,7 @@
 import { DEFAULT_LOCALE, inLocale, type Locale } from '../../i18n/locale';
 import { useTranslations } from '../../i18n/ui';
 import { AREAS } from '../areas';
-import { type Area, isDuplicate, type Question } from '.';
+import { type Area, type Question, withoutDuplicates } from '.';
 import { type Constellation, type Constellations, isFinished } from './constellations';
 
 /** What gathers the questions: their areas, or their constellations. */
@@ -64,7 +64,7 @@ export function clusterList(
   by: Clustering,
   locale: Locale,
 ): Cluster[] {
-  const listed = questions.filter((q) => !isDuplicate(q)).sort((a, b) => a.number - b.number);
+  const listed = withoutDuplicates(questions);
   if (by === 'areas') {
     return [
       ...AREAS.map((area) =>
