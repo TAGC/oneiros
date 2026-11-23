@@ -46,3 +46,10 @@ The authoring guide and the rest of the reference, by topic:
 - [Sheet tables and navboxes](docs/sheet-tables-and-navboxes.md): `<SheetTable>` in MDX pages and the navbox file.
 - [Area icons](docs/area-icons.md): the painted area and belief icons: files, moodboards, prompts, fixes and checks.
 - [Chinese pages](docs/chinese-pages.md): files, links, lists, navboxes, sheet tables, terms and typography.
+
+## Credits
+
+- Design inspirations: the games, books and thinkers Oneiros borrows from are on the [Inspirations](https://tagc.github.io/oneiros/wiki/inspirations/) page.
+- Art: the background scenes and the painted area icons were generated with [Midjourney](https://www.midjourney.com/).
+- Icons: some interface icons come from [Lucide](https://lucide.dev) (ISC licence; see `src/components/LICENSE-lucide.txt`).
+- The Astrolabe was inspired by [wayfinder-maps](https://github.com/rengwu/wayfinder-maps) by rengwu (MIT licence).
