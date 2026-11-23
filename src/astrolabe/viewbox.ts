@@ -73,3 +73,26 @@ export function zoomBox(
     h: (box.h * w) / box.w,
   };
 }
+
+/**
+ * The CSS transform (origin at the frame's top left) that makes an SVG drawn with `drawn`
+ * look as it would with `box`. Both boxes must share an aspect ratio, as panning and
+ * zooming keep it. Moving the drawn picture is cheap; redrawing a big SVG every frame is not.
+ */
+export function boxTransform(
+  drawn: ViewBox,
+  box: ViewBox,
+  frame: Frame,
+  fit: Fit,
+): { k: number; tx: number; ty: number } {
+  const k = drawn.w / box.w;
+  const s = pixelsPerUnit(box, frame, fit);
+  // The box's offset in the frame depends only on its aspect ratio, so both boxes share it.
+  const offX = (frame.width - box.w * s) / 2;
+  const offY = (frame.height - box.h * s) / 2;
+  return {
+    k,
+    tx: offX * (1 - k) + (drawn.x - box.x) * s,
+    ty: offY * (1 - k) + (drawn.y - box.y) * s,
+  };
+}

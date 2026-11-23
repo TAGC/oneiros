@@ -137,6 +137,9 @@
   width: 100%;
   height: 100%;
   user-select: none;
+  /* Pan and zoom move the drawn picture until the sky rests (see client.ts). */
+  transform-origin: 0 0;
+  will-change: transform;
 }
 .al-view-tiers {
   overflow: auto;

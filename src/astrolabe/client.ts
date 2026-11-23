@@ -7,7 +7,7 @@ import { fitsFilter, setUpPanel } from './client-common';
 import type { SkyMotionData } from './motion';
 import { skyMotion } from './sky-motion';
 import type { Store } from './state-client';
-import { type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
+import { boxTransform, type Fit, panBox, toSky, type ViewBox, zoomBox } from './viewbox';
 
 export function setUpSky(root: HTMLElement, store: Store): void {
   const zoom = root.querySelector<HTMLElement>('.al-zoom')!;
@@ -113,45 +113,65 @@ export function setUpSky(root: HTMLElement, store: Store): void {
   }
 
   /*
-   * Pan and zoom on the night sky, by moving its viewBox. Events only update `box`; the
-   * SVGs are written once per frame, and positions come from `box` rather than the SVG's
-   * screen matrix, so no event forces a layout.
+   * Pan and zoom on the night sky. Events only update `box`. While the sky moves, the drawn
+   * picture is moved by a CSS transform once per frame; redrawing over a thousand SVG
+   * elements every frame left the browser showing blank frames. The viewBox catches up
+   * (`settle`) when the sky rests, or when the picture drifts so far that it would blur or
+   * show its edges. Positions come from `box` rather than the SVG's screen matrix, so no
+   * event forces a layout.
    */
   const W = Number(sky.dataset.width);
   const H = Number(sky.dataset.height);
   const home: ViewBox = { x: 0, y: 0, w: W, h: H };
   let box: ViewBox = { ...home };
+  /** The box the SVGs are drawn with. */
+  let drawn: ViewBox = { ...home };
   let fit: Fit = 'meet';
   let pending = 0;
-  const write = () => {
+  let resting: ReturnType<typeof setTimeout> | undefined;
+  const settle = () => {
+    if (pending) cancelAnimationFrame(pending);
     pending = 0;
+    clearTimeout(resting);
+    drawn = { ...box };
     for (const layer of layers) {
       layer.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+      layer.style.transform = '';
     }
+  };
+  const write = () => {
+    pending = 0;
+    const frame = skyView.getBoundingClientRect();
+    const { k, tx, ty } = boxTransform(drawn, box, frame, fit);
+    const far =
+      k > 1.6 || k < 0.75 || Math.abs(tx) > frame.width / 4 || Math.abs(ty) > frame.height / 4;
+    if (far) return settle();
+    for (const layer of layers) {
+      layer.style.transform = `translate(${tx}px, ${ty}px) scale(${k})`;
+    }
+    clearTimeout(resting);
+    resting = setTimeout(settle, 150);
   };
   const apply = () => {
     if (!pending) pending = requestAnimationFrame(write);
   };
-  const flush = () => {
-    if (!pending) return;
-    cancelAnimationFrame(pending);
-    write();
-  };
   // A tall frame (a phone) fills its height and crops the sides, so the labels stay legible.
   const fill = () => {
+    settle();
     const r = skyView.getBoundingClientRect();
     fit = r.height > r.width ? 'slice' : 'meet';
     for (const layer of layers) layer.setAttribute('preserveAspectRatio', `xMidYMid ${fit}`);
   };
   fill();
   new ResizeObserver(fill).observe(skyView);
+  // The view's rectangle, not the SVG's: a transform moves the SVG's.
   const zoomAt = (clientX: number, clientY: number, factor: number) => {
-    const frame = sky.getBoundingClientRect();
+    const frame = skyView.getBoundingClientRect();
     box = zoomBox(box, frame, fit, clientX, clientY, factor, W / 10, W * 1.6);
     apply();
   };
   const zoomCentre = (factor: number) => {
-    const r = sky.getBoundingClientRect();
+    const r = skyView.getBoundingClientRect();
     zoomAt(r.left + r.width / 2, r.top + r.height / 2, factor);
   };
   zoom.addEventListener('click', (e) => {
@@ -211,7 +231,7 @@ export function setUpSky(root: HTMLElement, store: Store): void {
       return;
     }
     if (!dragged) return;
-    box = panBox(box, sky.getBoundingClientRect(), fit, now.x - last.x, now.y - last.y);
+    box = panBox(box, skyView.getBoundingClientRect(), fit, now.x - last.x, now.y - last.y);
     apply();
   });
   const end = (e: PointerEvent) => {
@@ -227,11 +247,11 @@ export function setUpSky(root: HTMLElement, store: Store): void {
 
   /** Pans the sky so a star outside the view (or under the panel) comes into sight. */
   function ensureVisible(n: number) {
-    flush();
+    settle();
     const glyph = sky.querySelector<SVGGraphicsElement>(`.al-star[data-n="${n}"] g`);
     if (!glyph) return;
     const r = glyph.getBoundingClientRect();
-    const view = sky.getBoundingClientRect();
+    const view = skyView.getBoundingClientRect();
     const panel = document.getElementById(`star-${n}`)?.getBoundingClientRect();
     const right = panel && panel.left > view.left + 200 ? panel.left - 20 : view.right - 20;
     const inside =

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'bun:test';
-import { panBox, pixelsPerUnit, toSky, zoomBox } from './viewbox';
+import { boxTransform, panBox, pixelsPerUnit, toSky, zoomBox } from './viewbox';
 
 const box = { x: 0, y: 0, w: 2000, h: 1000 };
 /** A frame half the box's width and as tall as wide: meet leaves bands above and below. */
@@ -65,4 +65,47 @@ describe('zoomBox', () => {
     expect(zoom('meet', 600, 550, 100).w).toBe(200);
     expect(zoom('meet', 600, 550, 0.01).w).toBe(3200);
   });
+});
+
+describe('boxTransform', () => {
+  /** Where a sky point lands on screen when drawn with `drawn`, then moved by the transform. */
+  const land = (
+    drawn: typeof box,
+    moved: typeof box,
+    fit: 'meet' | 'slice',
+    x: number,
+    y: number,
+  ) => {
+    const s = pixelsPerUnit(drawn, frame, fit);
+    const left = (frame.width - drawn.w * s) / 2;
+    const top = (frame.height - drawn.h * s) / 2;
+    const { k, tx, ty } = boxTransform(drawn, moved, frame, fit);
+    return {
+      x: frame.left + k * (left + (x - drawn.x) * s) + tx,
+      y: frame.top + k * (top + (y - drawn.y) * s) + ty,
+    };
+  };
+
+  test('is the identity for the drawn box', () => {
+    expect(boxTransform(box, box, frame, 'meet')).toEqual({ k: 1, tx: 0, ty: 0 });
+  });
+
+  for (const fit of ['meet', 'slice'] as const) {
+    test(`puts sky points where the new box would (${fit})`, () => {
+      const moved = panBox(zoomBox(box, frame, fit, 400, 380, 1.7, 100, 4000), frame, fit, 37, -21);
+      for (const [x, y] of [
+        [0, 0],
+        [700, 300],
+        [1500, 900],
+      ]) {
+        const want = { x: 0, y: 0 };
+        const s = pixelsPerUnit(moved, frame, fit);
+        want.x = frame.left + (frame.width - moved.w * s) / 2 + (x - moved.x) * s;
+        want.y = frame.top + (frame.height - moved.h * s) / 2 + (y - moved.y) * s;
+        const got = land(box, moved, fit, x, y);
+        expect(got.x).toBeCloseTo(want.x, 6);
+        expect(got.y).toBeCloseTo(want.y, 6);
+      }
+    });
+  }
 });
