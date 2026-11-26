@@ -41,7 +41,7 @@ An aura is a leaky store. [[Channelling]] feeds [[force]] in, and leakage bleeds
 
 ## Rhythm
 
-Each aura has its own rhythm of arrival. Courage's is a drumbeat (see [[#Courage]]).
+Courage's aura arrives in a drumbeat (see [[#Courage]]). Whether other auras have a rhythm is open.
 
 > [!ISSUE 138]
 
