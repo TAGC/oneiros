@@ -10,8 +10,6 @@ infobox:
       value: 沿一条线瞬间抵达
     - label: 时机
       value: 一闪，或[[Channelling|引导]]
-    - label: 躲避
-      value: 一旦发出就无法躲开；明显的蓄势让它保持公平
     - label: 效果来自
       value: 它的[[Composition|构成]]
     - label: 形状来自
@@ -19,7 +17,9 @@ infobox:
 navbox: magic
 ---
 
-**光束**(beam)是沿一条线瞬间命中的[[Delivery|投送]]。它可以一闪而过，也可以[[Channelling|引导]]。它没有飞行时间，所以一旦发出就无法躲开；明显的蓄势让它保持公平。
+**光束**(beam)是沿一条线瞬间命中的[[Delivery|投送]]。它可以一闪而过，也可以[[Channelling|引导]]。
+
+> [!ISSUE 167]
 
 ## 形状
 

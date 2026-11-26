@@ -39,7 +39,7 @@ A delivery's cost comes from its route. A [[bolt]] loses force to the air, an [[
 
 ## Choosing a delivery
 
-You pick the delivery by input, and the scheme depends on the platform: tap for a one-off spell, hold to [[Channelling|channel]] it. The readout shows the delivery apart from the emotions (see [[Casting#Reading a spell|reading a spell]]).
+You pick the delivery by input, and the scheme depends on the platform. The readout shows the delivery apart from the emotions (see [[Casting#Reading a spell|reading a spell]]).
 
 ## The deliveries
 
@@ -67,7 +67,7 @@ Traps, mines, [[potions]] and food are one family: an imbued thing holds a spell
 
 The trigger is a variable crafted from the [[Crafting#Effects grammar|effects grammar]] (a basic effect, a trigger and a triggered effect): contact, coming near, opening, a shadow falling, and so on. The [[Crafting#Power budget|power budget]] prices it by how often it fires and how strong it is. Each [[kind]] suggests natural triggers: a threshold when it is opened, light when a shadow crosses it, water when it is disturbed, ground when it is stepped on.
 
-The spell is held feeling, so it drifts back towards the object's [[grain]]: a trap decays unless it is placed with the grain. The loaded object reacts by its kind and can give itself away, and its [[ring]] shows its mood. Hiding a trap as an [[undertone]] could be the skilled version.
+> [!ISSUE 168]
 
 ## Inspirations
 

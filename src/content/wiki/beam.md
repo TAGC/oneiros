@@ -12,8 +12,6 @@ infobox:
       value: Instant along a line
     - label: Timing
       value: One flash, or [[Channelling|channelled]]
-    - label: Dodged
-      value: Never once fired; a visible wind-up keeps it fair
     - label: Effect from
       value: Its [[composition]]
     - label: Shape from
@@ -21,7 +19,9 @@ infobox:
 navbox: magic
 ---
 
-A **beam** is a [[delivery]] that strikes instantly along a line. It can be one flash or [[Channelling|channelled]]. It has no flight time, so it cannot be dodged once fired; a visible wind-up keeps it fair.
+A **beam** is a [[delivery]] that strikes instantly along a line. It can be one flash or [[Channelling|channelled]].
+
+> [!ISSUE 167]
 
 ## Shapes
 

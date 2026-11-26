@@ -41,22 +41,22 @@ An aura is a leaky store. [[Channelling]] feeds [[force]] in, and leakage bleeds
 
 ## Rhythm
 
-Each aura has its own rhythm of arrival. Courage's is a drumbeat (see [[#Courage]]).
+Courage's aura arrives in a drumbeat (see [[#Courage]]). Whether other auras have a rhythm is open.
 
 > [!ISSUE 138]
 
 ## The eight auras
 
-| Aura    | Grows mostly in            | Taper                         | Leak    |
-| ------- | -------------------------- | ----------------------------- | ------- |
-| Love    | Area                       | Flattest                      | High    |
-| Hate    | Intensity; hugs close      | Steepest                      | Low     |
-| Joy     | Area, most of all          | Bright core, thin fringe      | Highest |
-| Grief   | Area: the widest inward aura | Gentle                      | Low     |
-| Courage | Area and intensity evenly  | Steady                        | Medium  |
-| Fear    | Intensity; small           | Flickering edge               | High    |
-| Hope    | Area and reach; wide but faint | Gentle                    | Least   |
-| Despair | Intensity; tight           | Steep                         | Medium  |
+| Aura    | Grows mostly in                             | Taper                    | Leak    |
+| ------- | ------------------------------------------- | ------------------------ | ------- |
+| Love    | Area                                        | Flattest                 | High    |
+| Hate    | Intensity; hugs close                       | Steepest                 | Low     |
+| Joy     | Area, most of all                           | Bright core, thin fringe | Highest |
+| Grief   | Intensity, but wide: the widest inward aura | Gentle                   | Low     |
+| Courage | Area and intensity evenly                   | Steady                   | Medium  |
+| Fear    | Intensity; small                            | Flickering edge          | High    |
+| Hope    | Area and reach; wide but faint              | Gentle                   | Least   |
+| Despair | Intensity; tight                            | Steep                    | Medium  |
 
 ### Love
 
@@ -72,7 +72,9 @@ A Hate aura lowers Harmony within. It splits the inside of the aura off from the
 
 Its adverb is _widely_: single effects inside splash. Joy is contagious: whatever catches Joy passes some to its neighbours, weaker at each step, so it spreads past the aura's edge and dies out a few steps beyond. Joy fire leaps between fuel (see [[Kind]]).
 
-A Joy aura annihilates Grief [[ambient emotion]], which may start lucidity cascades. When an ally's Joy aura overlaps it, both expand.
+A Joy aura annihilates Grief [[ambient emotion]], which may start lucidity cascades. A Joy aura overlapping an ally's aura makes that aura expand.
+
+> [!ISSUE 165]
 
 ### Grief
 
@@ -80,7 +82,9 @@ Its adverb is _slowly_: incoming bolts crawl, and damage lands soft and lingers.
 
 ### Courage
 
-A Courage aura is an anchor: everything inside resists being pushed, both physically and in mood. It resists all mood change, friend or foe, but not the Courage flowing into you.
+A Courage aura is an anchor: everything inside resists being pushed, both physically and in mood.
+
+> [!ISSUE 166]
 
 Courage waves out in steady beats, like a drum at a fixed tempo. Higher intensity makes the beats stronger, not faster. Things inside react in pace with the beat. On the beat, it pushes attackers back, and the push does [[Coherence]] damage. Fear attacks annihilate on contact.
 

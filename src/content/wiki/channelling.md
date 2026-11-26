@@ -13,14 +13,12 @@ infobox:
       value: A timing, not a [[delivery]]
     - label: Opposite
       value: A one-off spell
-    - label: Input
-      value: Hold to channel, tap for one-off
     - label: Cannot be
       value: Combined with _suddenly_
 navbox: magic
 ---
 
-**Channelling** is keeping a spell flowing for as long as you keep it up. It is a timing, not a [[delivery]]: any delivery can be one-off or channelled. You hold to channel and tap for a one-off spell (see [[Delivery#Choosing a delivery|choosing a delivery]]).
+**Channelling** is keeping a spell flowing for as long as you keep it up. It is a timing, not a [[delivery]]: any delivery can be one-off or channelled.
 
 ## By delivery
 
