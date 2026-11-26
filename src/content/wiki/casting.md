@@ -35,7 +35,7 @@ Each adverb is one emotion shaping how the spell acts: Joy _widely_, Courage _st
 - Any emotion can be an adverb, including the verb's own, which leans into its natural manner.
 - A verb's opposite as adverb cancels into a lucidity dispel.
 - An adverb costs a little of its own emotion, always a minor part.
-- An adverb scales what the verb needs: _fleetingly_ and _suddenly_ cut the [[material]] required, while _steadily_, _wholly_, _far_ and _widely_ raise it.
+- An adverb scales what the verb needs: _fleetingly_ cuts the [[material]] required, while _steadily_, _wholly_, _far_ and _widely_ raise it. _Suddenly_ keeps the price and lifts the cap on intensity instead (see [[Adverb#Suddenly]]).
 
 ## Chained adverbs
 
