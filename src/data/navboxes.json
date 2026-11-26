@@ -330,6 +330,11 @@
         ]
       },
       {
+        "label": "Delivery",
+        "labelZh": "投送",
+        "links": ["Delivery", "Channelling", "Aura", "Bolt", "Beam", "Touch"]
+      },
+      {
         "label": "Targets",
         "labelZh": "目标",
         "links": [
