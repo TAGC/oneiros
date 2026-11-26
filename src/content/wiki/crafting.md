@@ -21,7 +21,7 @@ navbox: items
 
 ## Effects grammar
 
-The **effects grammar** is a basic effect, a trigger and a triggered effect, as in Qud's cooking. It is used for food, [[potions]], [[Memory|memories]], items and artefacts.
+The **effects grammar** is a basic effect, a trigger and a triggered effect, as in Qud's cooking. It is used for food, [[potions]], [[Memory|memories]], items and artefacts. The trigger of an imbued delivery, such as a trap or a mine, is one of its variables (see [[Delivery#Imbued deliveries|imbued deliveries]]).
 
 ## Power budget
 
