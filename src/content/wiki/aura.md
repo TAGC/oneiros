@@ -82,7 +82,9 @@ Its adverb is _slowly_: incoming bolts crawl, and damage lands soft and lingers.
 
 ### Courage
 
-A Courage aura is an anchor: everything inside resists being pushed, both physically and in mood. It resists all mood change, friend or foe, but not the Courage flowing into you.
+A Courage aura is an anchor: everything inside resists being pushed, both physically and in mood.
+
+> [!ISSUE 166]
 
 Courage waves out in steady beats, like a drum at a fixed tempo. Higher intensity makes the beats stronger, not faster. Things inside react in pace with the beat. On the beat, it pushes attackers back, and the push does [[Coherence]] damage. Fear attacks annihilate on contact.
 
