@@ -3,13 +3,13 @@ title: 施法
 kind: system
 area: Magic
 status: Notion
-summary: 法术如何由一个构成和一个副词组成、定价、解读和结算。
+summary: 法术如何由一个构成和任意数量的副词组成、定价、解读和结算。
 aliases:
   - 法术
 infobox:
   rows:
     - label: 公式
-      value: 一个[[Composition|构成]]，加上一种作为[[Adverb|副词]]的[[Emotion|情感]]
+      value: 一个[[Composition|构成]]，可再用[[Emotion|情感]]作[[Adverb|副词]]来塑形
     - label: 写法
       value: 动词，分隔符，然后是副词
     - label: 受限于
@@ -19,7 +19,7 @@ infobox:
 navbox: magic
 ---
 
-**施法**(Casting)就是制作一个**法术**(spell)的过程。一切魔法都是一个情感的[[Composition|构成]]，加上一种用作[[Adverb|副词]]的[[Emotion|情感]]。
+**施法**(Casting)就是制作一个**法术**(spell)的过程。一切魔法都是一个情感的[[Composition|构成]]。它还可以有一种或多种用作[[Adverb|副词]]的[[Emotion|情感]]，也可以没有。
 
 ## 构成
 
@@ -29,7 +29,7 @@ navbox: magic
 
 ## 副词
 
-副词是一种决定法术如何作用的情感：喜悦是广泛地，勇气是稳定地，希望是遥远地，爱是全然地，悲伤是缓慢地，恐惧是短暂地，绝望是突然地，恨是深深地。每个副词的方式列在[[Adverb|副词]]页面上。
+每个副词都是一种决定法术如何作用的情感：喜悦是广泛地，勇气是稳定地，希望是遥远地，爱是全然地，悲伤是缓慢地，恐惧是短暂地，绝望是突然地，恨是深深地。每个副词的方式列在[[Adverb|副词]]页面上。
 
 - 任何情感都可以作副词，包括动词本身的情感，这会让法术更偏向它天然的方式。
 - 以动词的相反情感作副词，会相抵成为一个**驱散法术**(lucidity dispel)。
