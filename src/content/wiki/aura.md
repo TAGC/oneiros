@@ -47,16 +47,16 @@ Each aura has its own rhythm of arrival. Courage's is a drumbeat (see [[#Courage
 
 ## The eight auras
 
-| Aura    | Grows mostly in            | Taper                         | Leak    |
-| ------- | -------------------------- | ----------------------------- | ------- |
-| Love    | Area                       | Flattest                      | High    |
-| Hate    | Intensity; hugs close      | Steepest                      | Low     |
-| Joy     | Area, most of all          | Bright core, thin fringe      | Highest |
-| Grief   | Area: the widest inward aura | Gentle                      | Low     |
-| Courage | Area and intensity evenly  | Steady                        | Medium  |
-| Fear    | Intensity; small           | Flickering edge               | High    |
-| Hope    | Area and reach; wide but faint | Gentle                    | Least   |
-| Despair | Intensity; tight           | Steep                         | Medium  |
+| Aura    | Grows mostly in                             | Taper                    | Leak    |
+| ------- | ------------------------------------------- | ------------------------ | ------- |
+| Love    | Area                                        | Flattest                 | High    |
+| Hate    | Intensity; hugs close                       | Steepest                 | Low     |
+| Joy     | Area, most of all                           | Bright core, thin fringe | Highest |
+| Grief   | Intensity, but wide: the widest inward aura | Gentle                   | Low     |
+| Courage | Area and intensity evenly                   | Steady                   | Medium  |
+| Fear    | Intensity; small                            | Flickering edge          | High    |
+| Hope    | Area and reach; wide but faint              | Gentle                   | Least   |
+| Despair | Intensity; tight                            | Steep                    | Medium  |
 
 ### Love
 
