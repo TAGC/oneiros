@@ -43,6 +43,8 @@ A spell is written verbs, then a separator, then adverbs:
 
 <p class="formula">Hate Hate · Far Steadily</p>
 
+A spell with no adverb shows no separator: `Hate Hate`.
+
 The chain cap is shared between the two, so you trade intensity for shaping. Repeating an adverb intensifies it, opposite adverbs cancel into lucidity, and clashing manners play out in order (_suddenly_, then _slowly_).
 
 ## Reading a spell
