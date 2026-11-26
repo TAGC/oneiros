@@ -39,7 +39,7 @@ A delivery's cost comes from its route. A [[bolt]] loses force to the air, an [[
 
 ## Choosing a delivery
 
-You pick the delivery by input, and the scheme depends on the platform: tap for a one-off spell, hold to [[Channelling|channel]] it. The readout shows the delivery apart from the emotions (see [[Casting#Reading a spell|reading a spell]]).
+You pick the delivery by input, and the scheme depends on the platform. The readout shows the delivery apart from the emotions (see [[Casting#Reading a spell|reading a spell]]).
 
 ## The deliveries
 

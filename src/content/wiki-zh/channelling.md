@@ -10,14 +10,12 @@ infobox:
       value: 一种时机，而不是一种[[Delivery|投送]]
     - label: 相对于
       value: 单次法术
-    - label: 输入
-      value: 按住为引导，轻点为单次
     - label: 不能
       value: 与突然地同用
 navbox: magic
 ---
 
-**引导**(channelling)是只要你维持着，法术就一直流动。它是一种时机，而不是一种[[Delivery|投送]]：任何投送都可以是单次的或引导的。按住为引导，轻点为单次施法（见[[Delivery#选择投送|选择投送]]）。
+**引导**(channelling)是只要你维持着，法术就一直流动。它是一种时机，而不是一种[[Delivery|投送]]：任何投送都可以是单次的或引导的。
 
 ## 按投送分
 
