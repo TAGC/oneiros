@@ -43,6 +43,8 @@ Force from a spell that lands is the target's to spend freely: what you send, th
 
 > [!ISSUE 53]
 
+> [!ISSUE 161]
+
 ## Across the world
 
 The world's force diminishes over aeons, too slowly for most inhabitants to notice. Along [[Seam|seams]], neighbouring [[Shard|shards]]' opposed ambient emotion annihilates; with [[Forgetting]], this is how the world's force wears down. See [[Cosmology]].
