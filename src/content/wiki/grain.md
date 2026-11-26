@@ -8,6 +8,8 @@ infobox:
   rows:
     - label: Is
       value: A thing's resting [[emotion]]
+    - label: Set by
+      value: Its [[Quality of the will|qualities]]
     - label: With the grain
       value: A spell lasts
     - label: Against it
@@ -17,7 +19,11 @@ infobox:
 navbox: magic
 ---
 
-**Grain** is a thing's resting emotion: where its [[mood]] comes to rest. Everything has one. In the picture of a mood as a pinched circle, grain is the resting shape the circle relaxes back to.
+**Grain** is a thing's resting emotion: where its [[mood]] comes to rest. Every will has one, the player included. In the picture of a mood as a pinched circle, grain is the resting shape the circle relaxes back to.
+
+## Where it comes from
+
+A will's grain is derived from its [[Quality of the will|qualities]]: it is where its qualities tilt it. It shifts as those qualities deepen. The term stays "grain"; "disposition" was rejected, since it clashes with [[Temperament]] and with the RPG sense of how much a character likes you.
 
 ## Casting with and against the grain
 

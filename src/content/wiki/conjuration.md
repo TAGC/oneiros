@@ -50,3 +50,7 @@ Conjuring needs a bead in the Dreamlands, so you prepare the memories you want t
 - An illusion [[guise]] is a conjuration from a bead holding a memory of the person.
 
 Whether healing and repair need a matching memory is open; see [[Resonance]].
+
+## Open questions
+
+> [!ISSUE 137]

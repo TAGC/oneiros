@@ -45,6 +45,7 @@
         "links": [
           "Body and form",
           "Stability",
+          "Harmony",
           "Flicker",
           "Eidolon"
         ]
@@ -327,6 +328,11 @@
           "Adverb",
           "Intensity"
         ]
+      },
+      {
+        "label": "Delivery",
+        "labelZh": "投送",
+        "links": ["Delivery", "Channelling", "Aura", "Bolt", "Beam", "Touch"]
       },
       {
         "label": "Targets",

@@ -26,3 +26,5 @@ An **outburst** is what happens to [[material]] above your [[mood capacity]] whe
 Burnt material still within mood capacity is not part of the outburst: it stays in your [[mood]].
 
 Outbursts are one of the things that help stop a harvest-and-burn loop; see [[Burning#Harvest and burn|harvest and burn]].
+
+See the open question on [[Adverb#issue-136|Adverb]].
