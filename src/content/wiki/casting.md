@@ -3,14 +3,14 @@ title: Casting
 kind: system
 area: Magic
 status: Notion
-summary: How a spell is built from a composition and an adverb, priced, read and resolved.
+summary: How a spell is built from a composition and any adverbs, priced, read and resolved.
 aliases:
   - Spell
   - Spells
 infobox:
   rows:
     - label: Formula
-      value: A [[composition]] plus one [[emotion]] as an [[adverb]]
+      value: A [[composition]], optionally shaped by [[Emotion|emotions]] as [[Adverb|adverbs]]
     - label: Written as
       value: Verbs, a separator, then adverbs
     - label: Limited by
@@ -20,7 +20,7 @@ infobox:
 navbox: magic
 ---
 
-**Casting** is how a spell is made. All magic is an emotional [[composition]] plus one [[emotion]] used as an [[adverb]].
+**Casting** is how a spell is made. All magic is an emotional [[composition]]. It may also have one or more [[Emotion|emotions]] used as [[Adverb|adverbs]], or none.
 
 ## Composition
 
@@ -30,7 +30,7 @@ Opposites cancel pair by pair, and each cancelled pair releases [[lucidity]]: Ha
 
 ## Adverbs
 
-The adverb is one emotion shaping how the spell acts: Joy _widely_, Courage _steadily_, Hope _far_, Love _wholly_, Grief _slowly_, Fear _fleetingly_, Despair _suddenly_, Hate _deeply_. Each adverb's manner is listed on [[Adverb]].
+Each adverb is one emotion shaping how the spell acts: Joy _widely_, Courage _steadily_, Hope _far_, Love _wholly_, Grief _slowly_, Fear _fleetingly_, Despair _suddenly_, Hate _deeply_. Each adverb's manner is listed on [[Adverb]].
 
 - Any emotion can be an adverb, including the verb's own, which leans into its natural manner.
 - A verb's opposite as adverb cancels into a lucidity dispel.

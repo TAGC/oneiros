@@ -19,7 +19,7 @@ A **composition** is the mix of [[emotion|emotions]] in a spell, [[memory]] or t
 
 ## In a spell
 
-All magic is an emotional composition plus one emotion used as an [[adverb]]. A spell's composition is any mix of the eight: on the wheel you [[chain]] emotions, and repeats are [[intensity]]. Opposites cancel pair by pair into [[lucidity]] (see [[Casting#Composition|Casting]]).
+All magic is an emotional composition. It may also have one or more emotions used as [[Adverb|adverbs]], or none. A spell's composition is any mix of the eight: on the wheel you [[chain]] emotions, and repeats are [[intensity]]. Opposites cancel pair by pair into [[lucidity]] (see [[Casting#Composition|Casting]]).
 
 Each source takes its composition from somewhere different (see [[Magic#Three sources|Magic]]):
 
