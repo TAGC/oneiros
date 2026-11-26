@@ -26,7 +26,10 @@ const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const markOf = new Map(layout.marks.map((m) => [m.number, m]));
 /** `slug#issue` for every marker on a page, so a link only points at a box that exists. */
-const boxed = new Set((await getPages(locale)).flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
+const pages = await getPages(locale);
+const boxed = new Set(pages.flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
+/** Slugs of built pages: an issue can name a page that has not landed yet, so link only these. */
+const built = new Set(pages.map((p) => p.slug));
 const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
 ---
 
@@ -85,7 +88,7 @@ const lang = (l: Locale) => (l === locale ? undefined : HTML_LANG[l]);
                     <span class="al-link-n">#{n}</span>
                     <span lang={lang(star.labelLang)}>{star.label}</span>
                   </a>
-                  {page && (
+                  {page && built.has(page) && (
                     <a class="al-cpanel-page" href={wikiUrl(page, boxed.has(`${page}#${n}`) ? issueId(n) : undefined, locale)}>
                       {a.onItsPage}
                     </a>

@@ -26,7 +26,10 @@ const a = t.astrolabe;
 const byNumber = new Map(chart.stars.map((s) => [s.number, s]));
 const groupOf = new Map(chart.constellations.map((c) => [c.number, c]));
 /** `slug#issue` for every marker on a page, so a link only points at a box that exists. */
-const boxed = new Set((await getPages(locale)).flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
+const pages = await getPages(locale);
+const boxed = new Set(pages.flatMap((p) => p.markers.map((m) => `${p.slug}#${m.issue}`)));
+/** Slugs of built pages: an issue can name a page that has not landed yet, so link only these. */
+const built = new Set(pages.map((p) => p.slug));
 
 /** The text for this page's language, or English marked as such. */
 function localised(texts: Partial<Record<Locale, string>> | undefined) {
@@ -181,7 +184,7 @@ function linkGroups(star: Star) {
               </dl>
             </>
           )}
-          {page && (
+          {page && built.has(page) && (
             <p class="al-page">
               {/* Only a page that still has the marker has a box to point at: a decided question's
                   marker goes before its issue closes. */}
