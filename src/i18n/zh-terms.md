@@ -43,6 +43,7 @@ Several guide terms are ordinary words: 平静 (Calm), 注意 (Attention), 静�
    | 静止 (Stillness) | 不动 |
    | 观察 (Inspect) | 看, 查看 |
    | 本性 (grain) | 天性 |
+| 引导 (Channelling) | 指引 |
    | 种类 (kind) | 类别 |
    | 念头 (Notion) | 想法 |
    | 确信 (Certainty) | 深信 |
@@ -127,6 +128,7 @@ Column key: **Source** is guide (new), guide (old), guide (new, old) or proposed
 | core self | 内核的自我 | 本我 | guide (old) | |
 | persona gear | 外相装备 | | proposed | |
 | Gear | 装备 | | guide (old) | |
+| Harmony | 和谐度 | 谐度 | proposed | How tangible a will is to the Dreamlands. Follows the -度 tracked-value pattern. For ordinary harmony, write 协调 or 和睦. |
 | Navbox group: Form / Equipment / See also | 形态 / 装备 / 另见 | | proposed | |
 
 ### Character
@@ -327,9 +329,19 @@ Notes on the intensity words:
 | Conjuration | 召唤物 | | guide (old) | The verb is 召唤. |
 | Illusion | 幻象 | | guide (old) | |
 | Outburst | 爆发 | 外泄 | proposed | 迸发 is taken by Joy's motion ("向外迸发"). |
+| Delivery | 投送 | 送达方式 | proposed | Where a spell's force goes. Avoids 施, which belongs to Casting (施法), since "cast" is not a delivery. The potion limits' older loose use is 生效方式. |
+| Channelling (alias channel) | 引导 | 持续施放 | proposed | The Chinese World of Warcraft term for channelled spells (引导法术). For the ordinary sense of guiding, write 指引. |
+| one-off (not channelled) | 单次 | | proposed | |
+| Aura | 气场 | 灵气 | proposed | 光环 is taken by Ring, so the self-centred area delivery takes 气场, the everyday word for a person's aura. |
+| Bolt | 法箭 | 飞弹 | proposed | Chinese World of Warcraft renders Frostbolt as 寒冰箭; 法 (from 法术) keeps it a spell. 飞弹 would echo "missile", which the English rejected. |
+| Beam | 光束 | 射束 | proposed | The everyday word for a beam. It shares 光 with the light kind, as Ring (光环) does. |
+| Touch | 触碰 | 接触 | proposed | For ordinary contact, write 接触 or 碰到. |
+| Imbuing / imbued delivery | 灌注 / 灌注投送 | 注入 | proposed | Distinct from Inception (植入). |
+| trap / mine | 陷阱 / 地雷 | | proposed | The Chinese Path of Exile terms. |
+| shaped feeling | 成形的情感 | | proposed | A plain phrase, not a coined term. |
 | Archived ideas | 已存档的构想 | 旧构想 | proposed | |
 | Sleep magic (archived) | 睡眠魔法 | | proposed † | Only as the archived idea's name. The Sleep source and tracked value stay superseded (see section 3). |
-| Navbox group: Overview / Sources / Building a spell / Targets / Mood / Feeling in the world / History | 概览 / 三种来源 / 组成法术 / 目标 / 心境 / 世间的情感 / 沿革 | | proposed | 三种来源 is the old guide's heading. |
+| Navbox group: Overview / Sources / Building a spell / Delivery / Targets / Mood / Feeling in the world / History | 概览 / 三种来源 / 组成法术 / 投送 / 目标 / 心境 / 世间的情感 / 沿革 | | proposed | 三种来源 is the old guide's heading. |
 
 **Adverbs.** The old guide gives the long form; the new guide's "远 稳" sets the token style.
 
