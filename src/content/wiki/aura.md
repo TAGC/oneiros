@@ -72,7 +72,9 @@ A Hate aura lowers Harmony within. It splits the inside of the aura off from the
 
 Its adverb is _widely_: single effects inside splash. Joy is contagious: whatever catches Joy passes some to its neighbours, weaker at each step, so it spreads past the aura's edge and dies out a few steps beyond. Joy fire leaps between fuel (see [[Kind]]).
 
-A Joy aura annihilates Grief [[ambient emotion]], which may start lucidity cascades. When an ally's Joy aura overlaps it, both expand.
+A Joy aura annihilates Grief [[ambient emotion]], which may start lucidity cascades. A Joy aura overlapping an ally's aura makes that aura expand.
+
+> [!ISSUE 165]
 
 ### Grief
 
