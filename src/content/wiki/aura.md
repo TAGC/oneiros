@@ -99,7 +99,3 @@ A Hope aura gives no sight, recovery or healing, and does not make doors lead so
 ### Despair
 
 Missiles lose lift and drop at its edge. Its adverb is _suddenly_: channelled spells snap, on both sides. Walls crumble, doors fall, fires die and light goes. Creatures inside slow, and only wills whose qualities lean to Despair (Despondency, Baseness, Obduracy) stop acting (see [[Quality of the will]]).
-
-## Where the idea came from
-
-The designer keeps warm on cold walks by clothing themselves in anger and hate. That gave the idea of emotional shield magic, which became the aura.
