@@ -30,6 +30,7 @@ navbox: world
 - 褪色：记忆漏出的[[Memory light|光]]化为微量余情；
 - [[Uprooting|连根拔起]]；
 - [[Conjuration|召唤物]]的终结；
+- [[Held and manifest#成形的情感|成形的情感]]的终结，或[[Aura|气场]]的泄漏；
 - [[清明]]，其连锁反应见下文。
 
 记忆也可能以余情的形式溢出。碎裂的记忆会在破碎之处溢出（见[[Memory light|记忆之光]]），中断的转移会使其材料作为余情倾泻而出（见[[Recounting|倾诉]]）。

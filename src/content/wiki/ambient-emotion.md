@@ -30,6 +30,7 @@ Any form that dissolves keeps its force, which hangs where it happened as ambien
 - fading: a memory's leaked [[Memory light|light]] becomes trace ambient emotion;
 - [[uprooting]];
 - a [[conjuration]] ending;
+- [[Held and manifest#Shaped feeling|shaped feeling]] ending, or an [[aura]] leaking;
 - [[lucidity]], whose cascades are described below.
 
 A memory can also spill out as ambient emotion. A cracked memory spills where it broke (see [[Memory light]]), and an interrupted transfer floods its material out as ambient emotion (see [[Recounting]]).

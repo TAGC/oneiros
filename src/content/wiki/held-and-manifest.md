@@ -35,9 +35,20 @@ Opposites annihilate into [[lucidity]] only where both are manifest, out in the 
 - two spells meeting (Love against Hate);
 - a Joy spell striking Grief armour, which loses integrity as part of it bursts into sparks of lucidity;
 - [[Conjuration|conjurations]], which are manifest too;
+- [[#Shaped feeling|shaped feeling]], such as an [[aura]];
 - [[ambient emotion]], the freed force of a dissolved form.
 
-Force becomes manifest the moment it leaves a mood. A [[chain]] is only a plan until you cast it, and its opposites cancel at the cast.
+Force becomes manifest the moment it leaves a mood. A [[chain]] is only a plan until you cast it, and its opposites cancel at the cast. A [[touch]] is manifest too, for an instant (see [[Touch#Opposites]]).
+
+## Shaped feeling
+
+Shields, [[Aura|auras]] and other shaped magic are manifest feeling that a will holds the shape of, in a confined volume. So opposites annihilate into lucidity when they meet it. When it ends, its force becomes [[ambient emotion]].
+
+Anything that strikes shaped feeling, or stands in it, takes a weak trace of its emotion into its [[mood]], as held feeling.
+
+Shields and armour are different things: armour is physical and worn, while shields (now auras) are projected.
+
+> [!ISSUE 139]
 
 ## Casting opposites at one target
 
