@@ -27,7 +27,7 @@ navbox: character
 
 **Coherence** is health: how well a will keeps its own particular motion instead of breaking apart into separate, simpler motions. In [[Dreamlands|the Dreamlands]] everything has it, by the same rule. You have it, and so does every person, place and thing, including collective wills such as cities.
 
-Damage lowers it. Rest restores it, as do food and potions. Some powerful magic, [[Unmaking]] above all, is paid for in your own Coherence, like blood magic.
+Damage lowers it: damage to any will lowers its Coherence, its hold on its form, by the same rule as for you, and it does not cancel the will's [[Held and manifest|held]] emotions. Rest restores it, as do food and potions. Some powerful magic, [[Unmaking]] above all, is paid for in your own Coherence, like blood magic.
 
 ## Maximum Coherence
 
