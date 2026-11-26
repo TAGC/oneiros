@@ -33,6 +33,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 ## Ubiquitous language
 
 - The wiki's term pages are the Glossary. Read the relevant term pages before design work. Use their terms exactly as defined and spelt; never swap in synonyms or invent names for existing concepts.
+- There is no `GLOSSARY.md` and no ADR folder. For domain modelling (including the `domain-modeling` skill), the term pages in `src/content/wiki/` (`kind: term`) are the glossary, and decisions live in the pages and their question issues.
 - In a term's definition, link every other Glossary term it uses. Never use an undefined word as if it were a term (for example "pulse" for an outburst): define it or say it plainly.
 - Capitalise tracked values and named states (Coherence, Conviction, Hold, Attention, Remembered, Lucid, the belief stages, the emotions, the sleep phases, Attention levels, Coherence status words) and proper nouns (the Dreamer, the Dreamlands, Temenos, Reverie, Oceanus). Lowercase general mechanics and things (lucidity, mood, grain, vividness, memory, bead, obol, apeiron, kyathos).
 - Bold domain terms in replies to the designer.
