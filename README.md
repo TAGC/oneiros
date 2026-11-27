@@ -44,6 +44,7 @@ The authoring guide and the rest of the reference, by topic:
 - [Duplicates](docs/duplicates.md): closing a duplicate question issue and replacing its marker.
 - [Constellations](docs/constellations.md): the milestone format, the Size and Energy scales, membership and when one is finished.
 - [Principles](docs/principles.md): the designer's rules of thumb for reasoning about the design, such as the Inception and Neo principles.
+- [Mainländer in English](docs/mainlander.md): Claude's translation of the passages of the Philosophy of Redemption that bear on the game, and where the game departs from them.
 - [Theories](docs/theories.md): the glossary of theorising, the defence and the viva: source lines, verdicts, moves, states.
 - [Sheet tables and navboxes](docs/sheet-tables-and-navboxes.md): `<SheetTable>` in MDX pages and the navbox file.
 - [Area icons](docs/area-icons.md): the painted area and belief icons: files, moodboards, prompts, fixes and checks.
