@@ -28,7 +28,9 @@ navbox: memory
 
 **Burning** destroys a [[memory]] held in a [[bead]], in the [[Dreamlands]]. The glass shatters, the memory's [[material]] pours into your [[mood]], and you are [[Ablaze]] with it. It conjures nothing. It draws [[Attention]] only when what it does is overt, such as an [[outburst]] (see [[Attention#What draws it]]).
 
-Burning is the only way to pay for the top [[intensity|intensities]], which cost more than a developed character's [[mood capacity]].
+The top [[intensity|intensities]] cost more than a developed character's [[mood capacity]], so they need a source outside what you hold. Burning is one: the memory comes from a bead.
+
+Being Ablaze above a mood capacity does not harm you by itself. The [[outburst]] when the burn ends costs you [[Coherence]], unless you have spent the burnt material first.
 
 > [!ISSUE 29]
 
