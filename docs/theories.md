@@ -126,7 +126,7 @@ The theory is defended like a thesis before the designer ever sees it.
 A theory is one issue labelled `kind:theory`, titled `✧ <Title>`. `bun run pull` ignores the label, so the wiki and the Astrolabe do not show it.
 
 - **Unreviewed:** open, no verdict from the designer yet.
-- **Promising:** the designer wants it taken to a viva (`theory:promising`).
+- **Promising:** the designer wants it taken to a viva, shown by the designer's 👍 on the issue. No label.
 - **Accepted:** accepted in a viva and landed, then closed as completed.
 - **Rejected:** refuted or turned down. Closed as not planned, with the reason.
 - **Overtaken:** a later decision contradicts its core. Closed with a link, on the designer's yes.
