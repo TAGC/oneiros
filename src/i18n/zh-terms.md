@@ -485,7 +485,7 @@ Notes on the intensity words:
 | Oceanus | 俄刻阿诺斯 | 大洋河 | guide (old) | The established mythological rendering; the old guide calls it "环绕世界的大河". |
 | Rumour | 谣言 | 传闻 | guide (new) † | The old guide had 传闻. |
 | Force | 力 | | proposed | See the Philosophy table. |
-| Conservation of force | 力守恒 | 力的守恒定律 | proposed | |
+| Weakening of force | 力的衰减 | 力的削弱 | proposed | Renamed from Conservation of force (力守恒) on 27 Nov 2026: the total never grows, so it is not conserved. |
 | Ambient emotion | 余情 | 弥散情感 | proposed | "Lingering feeling": force freed and hanging where it happened. |
 | Manifestation | 显现 | | proposed | Pairs with 外显 (manifest). |
 | Remembered | 被铭记 | | proposed | A state. The ordinary sense is 记得. |
