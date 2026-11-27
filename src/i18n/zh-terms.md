@@ -329,6 +329,7 @@ Notes on the intensity words:
 | Conjuration | 召唤物 | | guide (old) | The verb is 召唤. |
 | Illusion | 幻象 | | guide (old) | |
 | Outburst | 爆发 | 外泄 | proposed | 迸发 is taken by Joy's motion ("向外迸发"). |
+| Redirecting (alias redirect) | 转引 | 转向 | proposed | "Turn and lead on": sending a spell on to another target. 引导 is taken by Channelling. |
 | Delivery | 投送 | 送达方式 | proposed | Where a spell's force goes. Avoids 施, which belongs to Casting (施法), since "cast" is not a delivery. The potion limits' older loose use is 生效方式. |
 | Channelling (alias channel) | 引导 | 持续施放 | proposed | The Chinese World of Warcraft term for channelled spells (引导法术). For the ordinary sense of guiding, write 指引. |
 | one-off (not channelled) | 单次 | | proposed | |
