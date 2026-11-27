@@ -609,8 +609,11 @@
   align-self: center;
 }
 .al-link-n {
+  /* Never shrink: a three-digit number otherwise spills into the title beside it. */
+  flex: none;
   color: var(--mute);
   font-size: 13px;
+  white-space: nowrap;
 }
 .al-page {
   margin: 14px 0 0;
