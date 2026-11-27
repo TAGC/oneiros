@@ -45,7 +45,7 @@ The [[ring]] beneath every character and thing shows this shape: lobes in each e
 
 ## Limits
 
-Your mood is capped per emotion by its [[mood capacity]]. At an emotion's mood capacity, nothing makes you feel more of it.
+Your mood is capped per emotion by its [[mood capacity]]. At an emotion's mood capacity, nothing makes you feel more of it for longer than a moment. [[Burning]] a memory or a spell that lands can push you past it, and what you do not spend then bursts out as an [[outburst]] (see [[Mood capacity#Above the cap|above the cap]]).
 
 Qualities cap how intense a spell can be; mood capacity caps how much of an emotion you have to spend (see [[Intensity]]). [[Burning]] a memory pours its material straight into your mood.
 

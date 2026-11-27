@@ -11,7 +11,7 @@ infobox:
     - label: Equals
       value: That emotion's [[material]] across every [[memory]] and [[belief]] you hold
     - label: At the cap
-      value: Nothing makes you feel more of it
+      value: Nothing keeps you above it
     - label: Not to be confused with
       value: Spell intensity, which qualities cap
 navbox: character
@@ -23,7 +23,7 @@ navbox: character
 
 ## At the cap
 
-Your mood is capped per emotion by its mood capacity. You can only spend what you hold, and at an emotion's mood capacity nothing makes you feel more of it: once you are as afraid as you can be, a wolf's snarl makes you no more afraid (see [[Stimulus]]). In the pinched circle, each emotion pinches your mood only as far as its mood capacity (see [[Mood]]).
+Your mood is capped per emotion by its mood capacity. You can only spend what you hold, and at an emotion's mood capacity a [[stimulus]] makes you feel no more of it: once you are as afraid as you can be, a wolf's snarl makes you no more afraid. Only force from outside can push you past it, and only for a moment (see [[#Above the cap|above the cap]]). In the pinched circle, each emotion pinches your mood only as far as its mood capacity (see [[Mood]]).
 
 Qualities cap how intense a spell can be; mood capacity caps how much of an emotion you have to spend.
 
@@ -36,4 +36,11 @@ Qualities cap how intense a spell can be; mood capacity caps how much of an emot
 
 ## Above the cap
 
-Burning lets you hold more of an emotion than your mood capacity allows, and is the only way to pay for the top [[Intensity|intensities]], which cost more than a developed character's mood capacity. When the burn ends, anything above your mood capacity escapes through your body as an [[outburst]]. The designer has not confirmed describing burning this way (see [[Burning]]).
+Under stable conditions you cannot hold more of an emotion than your mood capacity. Force from outside can push you past it for a while: [[Burning|burning]] a memory, or a spell that lands with more than you have room for. Only the part above your mood capacity is excess; the part that fits stays in your [[mood]].
+
+Excess you have not spent bursts out through your body as an [[outburst]], which costs you [[Coherence]]:
+
+- **After a burn.** You can spend the burnt material while you are [[Ablaze]]. Being above your mood capacity does not harm you by itself; only the outburst when the burn ends does.
+- **After a spell.** The excess lasts a moment. Spending it on a spell of your own before it bursts takes great skill, and costs Coherence even if you spend it all. You can also [[Redirecting|redirect]] the spell instead of taking it in, which costs nothing.
+
+The top [[Intensity|intensities]] cost more than a developed character's mood capacity, so they need a source outside what you hold: burning a memory, or a spell from someone else, taken in and spent. The designer has not confirmed describing burning this way (see [[Burning]]).

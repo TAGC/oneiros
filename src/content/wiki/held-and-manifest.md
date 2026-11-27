@@ -26,7 +26,7 @@ The difference decides whether opposites annihilate. Held feeling never annihila
 
 ## Held
 
-In any mood, memory or belief, opposites coexist: you can love and hate at once, and so can a door. A spell that lands on a will joins its mood, even alongside its opposite. Once it lands, its [[force]] is the target's to spend freely.
+In any mood, memory or belief, opposites coexist: you can love and hate at once, and so can a door. A spell that lands on a will joins its mood, even alongside its opposite. Once it lands, its [[force]] is the target's to spend freely. Force past the target's [[mood capacity]] is excess, and does not stay (see [[Force#Force from a spell|force from a spell]]).
 
 ## Manifest
 

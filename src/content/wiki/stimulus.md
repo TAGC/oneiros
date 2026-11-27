@@ -27,7 +27,7 @@ A stimulus can pinch no further than capacity allows. Once you are as afraid as 
 
 A [[Raw magic|Raw]] spell is different. It carries your force, and when it lands it grows the target's circle and pinches it its way. Casting spends area from the lobe of the emotion you spend, so the pinch and your total both shrink.
 
-Force from a spell that lands is the target's to spend freely: what you send, they carry (see [[Force]]).
+Force from a spell that lands is the target's to spend freely, as far as its [[mood capacity]] allows: what you send, they carry (see [[Force#Force from a spell|force from a spell]]).
 
 ## Motives
 
