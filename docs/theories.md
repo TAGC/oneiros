@@ -31,11 +31,16 @@ Every new rule and every answer says what it rests on. One line each:
 
 ## Writing and judging
 
+A theory comes in by one of two ways:
+
+- **Invent run:** theorycrafters write theories and blind judges pick one.
+- **Hunch run:** the designer states an idea of their own, a **hunch**. Claude fact-checks it, writes it up and sends it straight to the defence. No theorycrafters, no judges. The designer's words are quoted exactly and no agent changes or reinterprets them.
+
 - **Brief:** the one file every theorycrafter and judge reads. It carries no lean.
 - **Theorycrafter:** an agent that writes one theory from the brief.
 - **Judge:** an agent that scores the anonymised theories blind, in rotated order.
-- **Submitted theory:** the winning theory after the judges' fact-check: the text the defence examines.
-- **Author:** the theorycrafter who wrote the submitted theory. It answers for it in the defence.
+- **Submitted theory:** the text the defence examines: the winning theory after the judges' fact-check, or the written-up hunch.
+- **Author:** the agent that answers for the submitted theory in the defence: the theorycrafter who wrote it, or in a hunch run an agent started for the purpose.
 
 ## The defence
 
