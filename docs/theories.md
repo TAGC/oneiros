@@ -38,22 +38,25 @@ A theory comes in by one of two ways:
 
 ```mermaid
 flowchart TB
+  subgraph hunch ["Hunch run: /theorise #lt;designer's own idea#gt;"]
+    direction TB
+    h12["1–2. Read state, brief"] --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
+    h5a --> h5b["5. Write up<br/>designer's words quoted"]
+  end
   subgraph invent ["Invent run: /theorise #lt;area or question#gt;"]
     direction TB
     i12["1–2. Read state, brief"] --> i3["3. Theorycrafters<br/>three write theories"]
     i3 --> i4["4. Blind judges<br/>score, rotated order"]
     i4 --> i5["5. Pick and correct<br/>fact-check the winner"]
   end
-  subgraph hunch ["Hunch run: /theorise #lt;designer's own idea#gt;"]
-    direction TB
-    h12["1–2. Read state, brief"] --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
-    h5a --> h5b["5. Write up<br/>designer's words quoted"]
-  end
-  h5b --> defence["6. Defence<br/>attack, check every step, answer"]
-  i5 --> defence
+  i5 --> defence["6. Defence<br/>attack, check every step, answer"]
+  h5b --> defence
   defence -. "hunch run only" .-> rules["Designer rules<br/>on readings of the hunch"]
   rules -.-> defence
   defence --> publish["7–8. Publish and report<br/>issue, gaps, rulings"]
+  key["Designer takes part"]
+  classDef designer fill:#fde2d8,stroke:#d85a30,color:#4a1b0c
+  class h5a,rules,publish,key designer
 ```
 
 - **Brief:** the one file every theorycrafter and judge reads. It carries no lean.
