@@ -23,7 +23,7 @@ In a hunch run the designer's words are the core of the theory. Quote them exact
 ## 1. Read the state
 
 - Run `bun run pull`, then `bun run constellations`. Read the cache files in `.questions/` for the open questions and conflicts.
-- List the earlier theories: `gh issue list --state all --label kind:theory`. Sort them by state (see "Other theories" below): **rejected** (closed as not planned), **accepted** (closed as completed), **promising** (open, labelled `theory:promising`) and **unreviewed** (open, no verdict yet). Read the rejected ones with the designer's notes, the accepted ones only for what they landed, and the promising ones in full.
+- List the earlier theories: `gh issue list --state all --label kind:theory`. Sort them by state (see "Other theories" below): **rejected** (closed as not planned), **accepted** (closed as completed), **promising** (open, with the designer's 👍) and **unreviewed** (open, no verdict yet). Read the designer's reactions with `gh api repos/{owner}/{repo}/issues/<number>/reactions`; only the designer's count. Read the rejected ones with the designer's notes, the accepted ones only for what they landed, and the promising ones in full.
 - Check each open theory against the questions settled since it was written. If a decision contradicts one of its rules or answers, tell the designer it is overtaken and propose closing it with a link to the decision. An answer the decision merely confirms is ticked off, not a reason to close.
 - Read the `/status/` page rules and note each page's `status:` frontmatter.
 - Do not use `.chats/` or the Dream seeds. They are private, and a theory is published.
@@ -233,7 +233,7 @@ The marks are for theory issues only. A question issue (`kind:open` or `kind:con
 
 Give the designer the issue link, the title, the theory in two sentences, the questions it covers, how many new rules and terms it adds, and the defence verdict with the count of rounds and open objections. For a question map, give the question, the candidate answers in a line each, and what held firm; offer to take it into the next `resolve-open-questions` session for that question's constellation. Then the side findings, each with its proposed question issue, and the gaps, each as a question to the designer. **What the designer can do with it.** The full set of moves is in `.claude/skills/viva`: ask, challenge, correct the evidence, amend, lean, refute, accept, park. A viva is the place to accept or refute a theory. Between vivas, the issue takes quick signals:
 
-- 👍 **promising:** label it `theory:promising`. It waits for a viva. On a question map, a ticked reading is the designer's lean, not a decision.
+- 👍 **promising:** the reaction itself is the mark; add no label. It waits for a viva. On a question map, a ticked reading is the designer's lean, not a decision.
 - 👎 **rejected:** close as not planned, with the reason in a comment. Tell the designer which open theories build on it: they fall with it.
 - a ticked answer or reading: a lean. Note it for the viva.
 - a comment: a challenge or an amendment. Answer it on the issue as the author would in the defence, with proof, once. The next viva takes it up.
