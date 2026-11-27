@@ -124,19 +124,21 @@ The theory is defended like a thesis: examiners attack it, the author answers, a
 **Proof.** Every attack carries one of:
 
 - a **quote**: the exact line from a page, sheet or closed issue that the theory contradicts, with the file;
-- a **worked scenario**: a concrete case walked step by step, using only the theory's rules and settled rules, each step naming the rule it applies, ending in a broken result.
+- a **worked scenario**: a concrete case walked step by step, using only the theory's rules, settled rules and the designer's rulings, ending in a broken result. Each step quotes the page line or ruling it applies, with its file or where the ruling was given.
+
+No page, no proof. A step that no page line or ruling gives is an **unsourced step**: the examiner marks it "not said" rather than filling the hole with a plausible rule. A scenario with an unsourced step proves nothing. It is a **gap**: a question for the designer, "no page says whether X", reported apart from the attacks, never as a standing attack.
 
 An objection with no proof is not reported. Taste, style and risks that need some future rule to matter are left out. A declared *stretches*, *overturns* or *needs* line, or a declared Open, is an allowed cost and not an attack by itself. No attacks is a valid result. Each examiner reports at most six attacks in the first round and four in later ones, strongest first, each with its target, its proof, what breaks and a severity: core, answer or minor.
 
 **Rounds.**
 
 1. **Attack.** The three examiners attack the submitted theory, in parallel.
-2. **Check.** Re-check every proof yourself: find the quote in the file, re-walk the scenario. Drop any attack whose proof fails, and merge attacks with one root cause. What is left are the **standing attacks**.
+2. **Check.** Re-check every proof yourself: find the quote in the file. Walk every step of every scenario: find the line or ruling the step quotes, and ask whether it gives that step, not merely one like it. A step with no line behind it, or with a line that does not give it, is unsourced: move the scenario to the gaps, whoever found it. Several examiners reaching the same scenario is not proof; check it as one. Drop any attack whose proof fails, and merge attacks with one root cause. What is left are the **standing attacks**.
 3. **Answer.** Resume the theorycrafter who wrote the winning theory and give it the standing attacks. It answers each one:
    - **patched:** the theory is changed. Say what changed;
    - **conceded:** the attack is right and the claim is withdrawn: an answer dropped, a rule cut;
    - **rebutted:** the attack is wrong, shown by a quote or a worked scenario of its own. A rebuttal with no proof is a concession.
-   The author tries to rebut first. For each attack it looks for the settled line or the scenario that defeats it, and gives way only when it finds none. Every concession and every patch says where it looked. An author who never rebuts is not defending: if a round has no rebuttal, check two of its concessions yourself for a defence it missed, and send those back.
+   The author tries to rebut first. For each scenario it first tests every step for an unsourced step: a step that only sounds like a rule. Then it looks for the settled line or the scenario that defeats the attack, and gives way only when it finds none. Every concession and every patch says where it looked. An author who never rebuts is not defending: if a round has no rebuttal, check two of its concessions yourself for a defence it missed, and send those back.
    It returns the revised theory and its answers.
 4. **Go again.** Resume the same examiners with the revised theory and the answers. Each says whether its attacks are met, and attacks only what changed and any rebuttal it can disprove. Then check and answer as before.
 
@@ -172,6 +174,8 @@ Beside the verdict, give the tally: rules, terms, overturns and earned answers a
 
 **Side findings.** The defence often turns up trouble in the settled pages themselves: two settled lines that clash with no theory involved, or a rule with no result in an ordinary case. Keep each with its quotes. They are not part of the theory. List them in the report and propose a question issue for each (`kind:conflict` or `kind:open`, in the format of `docs/open-questions.md`); open them when the designer agrees.
 
+**Gaps.** Keep each gap with its scenario and the unsourced step named. A gap is not an attack and does not count against the theory, but it is not cleared either: it goes under Opens, and to the designer in the report.
+
 After the last round, run the checks of step 5 once more on the final text.
 
 ## 7. Publish
@@ -189,6 +193,7 @@ The body is the defended theory in the step 3 shape, with these changes so the d
 - each Answer is a task-list checkbox, `- [ ] **#<number>** <title>`, with its answer and source lines beneath it;
 - an **Open objections** section in place of Weaknesses when any attack still stands: each with its proof and the author's last answer. The author's own weaknesses that no examiner raised follow it, shorter;
 - a folded `<details>` "Defence" section: a table of attacks reported, standing, patched, conceded and rebutted per round; each round's standing attacks with proof in one line and the answer; any counter-theory adopted and who proposed it; and what the theory lost or gained across the rounds;
+- each gap under Opens, as `❓ No page says whether X`, with the scenario that found it in one line;
 - the designer's rulings from the run, as `.claude/skills/viva` records them under "Rulings";
 - a folded `<details>` "Judging" section: this theory's score table, whether the judges agreed, the totals, the losers in one line each and what was changed after judging;
 - a last line: react 👍 promising or 👎 reject, tick the answers you like, or comment to change it.
@@ -211,7 +216,7 @@ The marks are for theory issues only. A question issue (`kind:open` or `kind:con
 
 ## 8. Report
 
-Give the designer the issue link, the title, the theory in two sentences, the questions it covers, how many new rules and terms it adds, and the defence verdict with the count of rounds and open objections. For a question map, give the question, the candidate answers in a line each, and what held firm; offer to take it into the next `resolve-open-questions` session for that question's constellation. Then the side findings, each with its proposed question issue. **What the designer can do with it.** The full set of moves is in `.claude/skills/viva`: ask, challenge, correct the evidence, amend, lean, refute, accept, park. A viva is the place to accept or refute a theory. Between vivas, the issue takes quick signals:
+Give the designer the issue link, the title, the theory in two sentences, the questions it covers, how many new rules and terms it adds, and the defence verdict with the count of rounds and open objections. For a question map, give the question, the candidate answers in a line each, and what held firm; offer to take it into the next `resolve-open-questions` session for that question's constellation. Then the side findings, each with its proposed question issue, and the gaps, each as a question to the designer. **What the designer can do with it.** The full set of moves is in `.claude/skills/viva`: ask, challenge, correct the evidence, amend, lean, refute, accept, park. A viva is the place to accept or refute a theory. Between vivas, the issue takes quick signals:
 
 - 👍 **promising:** label it `theory:promising`. It waits for a viva. On a question map, a ticked reading is the designer's lean, not a decision.
 - 👎 **rejected:** close as not planned, with the reason in a comment. Tell the designer which open theories build on it: they fall with it.
