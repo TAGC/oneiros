@@ -2,7 +2,7 @@
 title: Weakening of force
 kind: term
 area: World
-status: Tenet
+status: Dogma
 summary: The named law that the world's total force never grows, and is lost only when opposed manifest feeling annihilates.
 navbox: world
 ---

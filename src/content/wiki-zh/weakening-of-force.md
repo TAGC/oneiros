@@ -2,7 +2,7 @@
 title: 力的衰减
 kind: term
 area: World
-status: Tenet
+status: Dogma
 summary: 一条明确命名的定律：世界的力的总量从不增长，只在相反的外显情感相互湮灭时才会损失。
 navbox: world
 ---
