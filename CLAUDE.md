@@ -44,7 +44,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 
 - The Dreamer is a titanic, god-like being whose dream is the Dreamlands, not a mundane sleeper.
 - A player's offered dream journal entry becomes a Reverie: a smaller setting inside the one shared world, not a separate world.
-- Lovecraft is limited to the shared-dream concept, the world name and occasional Easter eggs. For all inspirations: borrow ideas, not names.
+- Lovecraft is limited to the shared-dream concept, the world name and occasional Easter eggs. For all inspirations: borrow ideas, not names. This binds the game's ontology only: wiki pages and Glossary terms. Files in `docs/`, such as `docs/principles.md`, may use borrowed names.
 - Art direction: isometric 2.5D like Hades, not top-down tiles.
 - Art: new art is never drawn as code. The designer generates it (Midjourney); Claude cuts it out, cleans it up and checks it in place. Kept as code by the designer's choice: the Coherence rings figure, the logo and favicon, the Lucide icons on Quality styles, the 24×24 pixel icons as the fallback for painted area icons, the Astrolabe star map, and interface glyphs and decoration (menu and theme buttons, starfield, frame). Area icons follow the recipe in `docs/area-icons.md` (moodboards, angle, prompts, fixes, checks).
 
