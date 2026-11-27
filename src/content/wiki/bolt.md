@@ -29,7 +29,7 @@ A bolt crosses the air, so opposed [[ambient emotion]] eats some of it on the wa
 
 ## On hit
 
-On hit, a bolt joins the target's [[mood]] and does [[Coherence]] damage, scaled by the target's qualities (see [[Quality of the will#Resistance|resistance]]).
+On hit, a bolt joins the target's [[mood]] and does [[Coherence]] damage, scaled by the target's qualities (see [[Quality of the will#Resistance|resistance]]). It does that damage whether or not the target has room for its emotion. A bolt that is [[Redirecting|redirected]] never lands, so it does neither.
 
 ## The name
 

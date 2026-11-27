@@ -41,11 +41,13 @@ A [[stimulus]] changes the shape of a mood without moving any force. A [[Raw mag
 
 ## Force from a spell
 
-Force from a spell that lands is the target's to spend freely: what you send, they carry. If the target has no capacity for that emotion, all of it is excess, so beings made of one feeling are fragile to any other.
+Force from a spell that lands is the target's to spend freely: what you send, they carry, as far as the target's [[mood capacity]] for that emotion. Only the part past it is excess; the part that fits stays in the target's [[mood]].
 
-> [!ISSUE 53]
+Excess enters the target for a moment. What the target does not spend in that moment bursts out of it as an [[outburst]], which costs it [[Coherence]]. Spending the excess on a spell of its own before it bursts takes great skill, and costs Coherence too. A will can also [[Redirecting|redirect]] a spell instead of taking it in, which costs it nothing.
 
-> [!ISSUE 161]
+If the target has no capacity for that emotion, all of it is excess, so beings made of one feeling are fragile to any other.
+
+> [!ISSUE 180]
 
 ## Across the world
 

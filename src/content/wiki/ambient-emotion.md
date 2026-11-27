@@ -33,6 +33,8 @@ Any form that dissolves keeps its force, which hangs where it happened as ambien
 - [[Held and manifest#Shaped feeling|shaped feeling]] ending, or an [[aura]] leaking;
 - [[lucidity]], whose cascades are described below.
 
+An [[outburst]] also becomes ambient emotion: once it has left the body it hangs around the will it left, and lands in no will.
+
 A memory can also spill out as ambient emotion. A cracked memory spills where it broke (see [[Memory light]]), and an interrupted transfer floods its material out as ambient emotion (see [[Recounting]]).
 
 ## Manifest feeling
