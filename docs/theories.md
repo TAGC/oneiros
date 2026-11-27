@@ -45,7 +45,9 @@ The theory is defended like a thesis before the designer ever sees it.
 - **Examiner:** an agent that attacks the theory through one lens and fixes nothing. **Canon** checks it against the settled design. **Exploiter** tries to break or abuse it as a player would. **Occam** asks what can be cut.
 - **Chair:** Claude, running the defence. The chair checks proofs and calls the verdict, and neither attacks nor defends.
 - **Attack:** an examiner's objection, with proof.
-- **Proof:** a **quote** (the exact line from a page, sheet or closed issue, with its file) or a **worked scenario** (a concrete case walked step by step, each step naming its rule, ending in a broken result). No proof, no attack.
+- **Proof:** a **quote** (the exact line from a page, sheet or closed issue, with its file) or a **worked scenario** (a concrete case walked step by step, each step quoting the page line or ruling it applies, ending in a broken result). No proof, no attack.
+- **Unsourced step:** a step of a worked scenario that no page line or ruling gives. No page, no proof: a scenario with one proves nothing.
+- **Gap:** what a scenario with an unsourced step becomes: a question for the designer, "no page says whether X". Reported apart from the attacks and listed under Opens, never a standing attack.
 - **Standing attack:** an attack whose proof the chair has re-checked and found sound.
 - **Round:** the examiners attack, the chair checks, the author answers. Three at most, four if a counter-theory is adopted late.
 - **Rebutted:** the author shows the attack is wrong, with its own proof. The author must try this first.
