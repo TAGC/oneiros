@@ -22,10 +22,12 @@ A theory is a suggestion in every state. It becomes design only when the designe
 
 Every new rule and every answer says what it rests on. One line each:
 
-- **_from_:** a settled rule gives this. Costs nothing.
-- **_stretches_:** a settled rule used beyond what its page says.
-- **_needs_:** this holds only if that new rule is accepted.
-- **_overturns_:** a settled rule this changes or breaks.
+- ✔ **_from_:** a settled rule gives this. Costs nothing.
+- ⚠ **_stretches_:** a settled rule used beyond what its page says.
+- 🔗 **_needs_:** this holds only if that new rule is accepted.
+- ✘ **_overturns_:** a settled rule this changes or breaks.
+
+**Marks.** The sign before each word is its mark. A theory's issue and a viva use the marks so a bill can be read at a glance, always with the word beside them. Two more: ❓ for an Open or something not said yet, and ⚔ for a standing attack or an open objection. In a viva the same marks go on fact-checks: ✔ the pages agree, ✘ the pages clash, ⚠ a stretch or a cost, ❓ no page says, and ➡️ for the pick. Question issues do not use marks: their text renders on the wiki.
 
 ## Writing and judging
 

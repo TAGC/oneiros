@@ -34,6 +34,8 @@ For each piece, one message:
 - the strongest open objection against it, if any, with the author's answer;
 - your pick, marked ➡️, worded so "yes" accepts it. A pick is a suggestion.
 
+Start each line with its mark from `docs/theories.md`, so the designer can read the piece at a glance: ✔ *from*, ⚠ *stretches*, 🔗 *needs*, ✘ *overturns*, ❓ an Open or something not said, ⚔ a standing attack. Keep one meaning per mark.
+
 Then wait. Never batch pieces: a move on one reshapes the next.
 
 ## 4. The designer's moves
@@ -42,7 +44,7 @@ Take whatever the designer says as one of these. If it is unclear which, ask.
 
 Reason with the designer's principles in `docs/principles.md`: they are reasons, never proof.
 
-Fact-check everything the designer says, whatever the move. Before you act on a statement about the design, find what the pages, the data and the closed questions say on it. If they agree, say so with the quote. If they disagree, say so with the quote before doing anything else, and ask whether the designer means to change the design. The designer's word still rules; the check makes sure it is given knowingly.
+Fact-check everything the designer says, whatever the move. Before you act on a statement about the design, find what the pages, the data and the closed questions say on it. If they agree, say so with the quote. If they disagree, say so with the quote before doing anything else, and ask whether the designer means to change the design. The designer's word still rules; the check makes sure it is given knowingly. Mark each line of a fact-check: ✔ the pages agree, ✘ the pages clash, ⚠ a stretch or a cost, ❓ no page says.
 
 - **Ask.** A question, or "walk me through a case". Answer from the pages, with quotes, or walk the case step by step naming each rule. The theory does not change. Stay on the piece.
 - **Challenge.** "This is wrong because...". The designer is now an examiner, and needs no proof. Answer once as the author would in the defence (`.claude/skills/theorise`, step 6): rebut with an exact quote or a worked scenario, patch, or concede. Check the pages before you answer. Try to rebut first, and never defend what you cannot prove. A rebuttal is not an attempt to win: it tells the designer what the pages say, so the designer can tell whether the theory is wrong or the page is. Reply once, then the designer rules: amend the piece, refute it, correct the evidence, or let it stand. Do not argue a second time. When you concede or patch, show the new wording and say the wiki is untouched.
