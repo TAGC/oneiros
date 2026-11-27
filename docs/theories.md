@@ -127,7 +127,7 @@ A theory is one issue labelled `kind:theory`, titled `✧ <Title>`. `bun run pul
 
 - **Unreviewed:** open, no verdict from the designer yet.
 - **Promising:** the designer wants it taken to a viva (`theory:promising`).
-- **Accepted:** accepted in a viva and landed (`theory:accepted`), then closed.
+- **Accepted:** accepted in a viva and landed, then closed as completed.
 - **Rejected:** refuted or turned down. Closed as not planned, with the reason.
 - **Overtaken:** a later decision contradicts its core. Closed with a link, on the designer's yes.
 

@@ -23,7 +23,7 @@ In a hunch run the designer's words are the core of the theory. Quote them exact
 ## 1. Read the state
 
 - Run `bun run pull`, then `bun run constellations`. Read the cache files in `.questions/` for the open questions and conflicts.
-- List the earlier theories: `gh issue list --state all --label kind:theory`. Sort them by state (see "Other theories" below): **rejected** (closed), **promising** (open, labelled `theory:promising`) and **unreviewed** (open, no verdict yet). Read the rejected ones with the designer's notes, and the promising ones in full.
+- List the earlier theories: `gh issue list --state all --label kind:theory`. Sort them by state (see "Other theories" below): **rejected** (closed as not planned), **accepted** (closed as completed), **promising** (open, labelled `theory:promising`) and **unreviewed** (open, no verdict yet). Read the rejected ones with the designer's notes, the accepted ones only for what they landed, and the promising ones in full.
 - Check each open theory against the questions settled since it was written. If a decision contradicts one of its rules or answers, tell the designer it is overtaken and propose closing it with a link to the decision. An answer the decision merely confirms is ticked off, not a reason to close.
 - Read the `/status/` page rules and note each page's `status:` frontmatter.
 - Do not use `.chats/` or the Dream seeds. They are private, and a theory is published.
