@@ -49,8 +49,8 @@ flowchart TB
     h12["1–2. Read state, brief"] --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
     h5a --> h5b["5. Write up<br/>designer's words quoted"]
   end
-  i5 --> defence["6. Defence<br/>attack, check every step, answer"]
-  h5b --> defence
+  h5b --> defence["6. Defence<br/>attack, check every step, answer"]
+  i5 --> defence
   defence -. "hunch run only" .-> rules["Designer rules<br/>on readings of the hunch"]
   rules -.-> defence
   defence --> publish["7–8. Publish and report<br/>issue, gaps, rulings"]
