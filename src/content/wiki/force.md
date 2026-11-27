@@ -35,6 +35,8 @@ When a form that holds force dissolves, the force is not lost. It hangs where it
 
 A will's total force is capped by its maximum [[Coherence]]. A will regains force mainly by eating: every living thing exists at the expense of others.
 
+> [!ISSUE 170]
+
 A [[stimulus]] changes the shape of a mood without moving any force. A [[Raw magic|Raw]] spell carries your force, and casting spends area from the lobe of the emotion you spend, so the pinch and your total both shrink. See [[Stimulus]] for the difference.
 
 ## Force from a spell
