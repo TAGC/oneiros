@@ -53,6 +53,7 @@ This repo is the design's wiki and the **single source of truth** for settled de
 - Keep answers short.
 - To go over conflicts and open questions, follow `.claude/skills/resolve-open-questions`: one cohesive group per session, one question at a time, an answer comment on each issue, and one pull request per group that closes its issues.
 - For foundational design choices, offer a blind design bake-off (`.claude/skills/blind-design-bakeoff`).
+- `docs/principles.md` holds the designer's rules of thumb for reasoning about the design. Use them in design work as reasons, never as settled rules, and never name them on a wiki page. Only the designer adds or changes one.
 - `.claude/skills/canon-audit` traces claims to past claude.ai chats, which Claude Code cannot search: ask the designer to check the chat links or paste excerpts. The first audit (21 Nov 2026) covered memory and memory light; its open findings are open questions on their pages. Everything else is unaudited.
 - Ideas the designer parks for later go on the Parked topics page, one section and one question issue each.
 - In quality-of-the-will reviews, commit each quality's agreed changes before moving to the next.
