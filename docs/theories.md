@@ -82,6 +82,8 @@ The theory is defended like a thesis before the designer ever sees it.
   - **Refute:** "it does not work like that". The piece is struck, with the designer's reason.
   - **Accept:** the piece is accepted, at a confidence on the page-status scale.
   - **Park:** no move yet. Leave the piece open and go on. The same sense as on the Parked topics page.
+- **Ruling:** the designer's words on the theory: an amendment, a refutation's reason, a clarification, an answer to a question. Recorded bare, quoted exactly.
+- **Claude's reading:** at most two lines under a ruling, labelled as Claude's. It carries none of the designer's weight and no ✔ *from* mark without a quoted page line. Anything more, or any case the designer did not name, is a question to the designer.
 - **Two layers:** the designer's word is law on the theory, with no proof needed. On the settled design it changes nothing until the designer asks for it to be recorded.
 - **Reach:** how far a move changes other pieces. **Wording only:** no other claim changes. **Framing:** it changes a premise other pieces rest on.
 - **Stale:** a piece whose premise a move has changed. The examiners attacked the old text. A stale piece cannot be accepted until one more defence round.

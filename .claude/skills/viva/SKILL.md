@@ -55,6 +55,15 @@ Fact-check everything the designer says, whatever the move. Before you act on a 
 - **Accept.** The piece is accepted. Ask how sure the designer is, on the page-status scale: Notion, Tenet, Certainty or Dogma. Accepting an answer accepts every rule it *needs* and every *overturns* line under it; say so before taking the yes.
 - **Park.** Leave the piece open and move on.
 
+**Rulings.** Whatever the designer says that rules on the theory (an amendment, a refutation's reason, a clarification, an answer to a question) is a ruling. Record every ruling the same way, in chat, on the issue and in any brief:
+
+- The designer's words, quoted exactly and bare. Nothing added inside the quote, and no paraphrase standing in for it.
+- Under it, at most two lines headed "Claude's reading:". They carry no ✔ *from* mark unless they quote a page line with its file.
+- Anything longer, and anything that carries the ruling to a case the designer did not name, is a question to the designer. Ask it before it goes into any note or brief. Until it is answered it is ❓ not said.
+- Claude's reading carries none of the designer's weight. Examiners may attack it like any of Claude's text.
+
+**What was agreed.** When the designer asks what was agreed, give two lists, never merged: first the designer's words, quoted; then Claude's readings, labelled as Claude's.
+
 After a move, note back in a line what it changed, then go to the next piece. When a move makes later pieces moot (a rule refuted, so its answers fall), say which and skip them.
 
 **When a move reaches other pieces.** After any challenge conceded, amendment or corrected evidence, say how far it reaches:
@@ -68,7 +77,7 @@ Do not restart the viva and do not carry on as if nothing changed. Present each 
 
 When the pieces are done, give the tally: accepted, amended, refuted, parked, and the objections now standing in the designer's name.
 
-**Record the viva on the issue.** One comment, "Viva, <date>": each piece with the move made on it; the designer's exact words wherever they added content or reasoning; "Accepted Claude's proposal" where they only said yes. Then update the body: tick accepted answers, strike refuted ones through without deleting them, and mark amended text "Amended by the designer".
+**Record the viva on the issue.** One comment, "Viva, <date>": each piece with the move made on it; each ruling as "Rulings" in step 4 records it, Claude's readings kept apart; "Accepted Claude's proposal" where they only said yes. Then update the body: tick accepted answers, strike refuted ones through without deleting them, and mark amended text "Amended by the designer".
 
 **Then, by outcome:**
 
