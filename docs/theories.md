@@ -38,15 +38,17 @@ A theory comes in by one of two ways:
 
 ```mermaid
 flowchart TB
-  invent["<b>Invent run</b><br/>/theorise &lt;area or question&gt;"]
-  hunch["<b>Hunch run</b><br/>/theorise &lt;designer's own idea&gt;"]
-  invent --> i12["1–2. Read state, brief"]
-  i12 --> i3["3. Theorycrafters<br/>three write theories"]
-  i3 --> i4["4. Blind judges<br/>score, rotated order"]
-  i4 --> i5["5. Pick and correct<br/>fact-check the winner"]
-  hunch --> h12["1–2. Read state, brief"]
-  h12 --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
-  h5a --> h5b["5. Write up<br/>designer's words quoted"]
+  subgraph invent ["Invent run: /theorise #lt;area or question#gt;"]
+    direction TB
+    i12["1–2. Read state, brief"] --> i3["3. Theorycrafters<br/>three write theories"]
+    i3 --> i4["4. Blind judges<br/>score, rotated order"]
+    i4 --> i5["5. Pick and correct<br/>fact-check the winner"]
+  end
+  subgraph hunch ["Hunch run: /theorise #lt;designer's own idea#gt;"]
+    direction TB
+    h12["1–2. Read state, brief"] --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
+    h5a --> h5b["5. Write up<br/>designer's words quoted"]
+  end
   i5 --> defence["6. Defence<br/>attack, check every step, answer"]
   h5b --> defence
   defence -. "hunch run only" .-> rules["Designer rules<br/>on readings of the hunch"]
