@@ -78,6 +78,8 @@ Source lines sit under the rule or answer they belong to. There is no separate e
 
 An answer with only *from* lines costs the designer nothing to accept. Every *needs*, *stretches* and *overturns* is a cost, and none may be left out.
 
+Theorycrafters, judges and examiners write these words plain. The marks of `docs/theories.md` (✔ ⚠ 🔗 ✘ ❓ ⚔) go in only when the issue is written (step 7).
+
 After the theory, under a `---` line, a short rationale: the alternatives considered and why they were rejected.
 
 ## 4. Blind judges
@@ -181,6 +183,8 @@ Open one issue for the theory:
 The body is the defended theory in the step 3 shape, with these changes so the designer can review it on the issue itself:
 
 - a first line saying it is Claude's suggestion, not a decision, with the defence verdict;
+- a legend line beneath it: `✔ from · ⚠ stretches · 🔗 needs · ✘ overturns · ❓ open or not said · ⚔ standing attack`;
+- every source line starts with its mark and keeps its word, as `✔ *from*`, `⚠ *stretches*`, `🔗 *needs*`, `✘ *overturns*`. Each Open and each "not said yet" line starts with ❓, and each open objection or standing attack with ⚔. Never use a mark without its word: the words are what a search finds;
 - a **Relations** line: each open theory it is a rival of, builds on or would supersede, as `✧#<issue>` links, or "Independent". Add a comment on each of those issues linking back;
 - each Answer is a task-list checkbox, `- [ ] **#<number>** <title>`, with its answer and source lines beneath it;
 - an **Open objections** section in place of Weaknesses when any attack still stands: each with its proof and the author's last answer. The author's own weaknesses that no examiner raised follow it, shorter;
@@ -191,6 +195,7 @@ The body is the defended theory in the step 3 shape, with these changes so the d
 A **question map** uses the same issue and label, with a different body:
 
 - the first line says it is a question map, names the question it maps, and says the settled pages do not decide it;
+- the same legend line and the same marks as a theory;
 - **What is settled:** the claims that held against every examiner, each with its source line;
 - **Candidate answers:** one task-list checkbox per reading, each with what it says in a line or two, how it plays, and its full bill on the same terms as the others: overturns, stretches, new rules or terms it needs, and what it costs or gains in play. Say who proposed each reading: a theorycrafter, or an examiner and in which round;
 - the author's closing judgement;
@@ -198,6 +203,8 @@ A **question map** uses the same issue and label, with a different body:
 - a last line: tick the reading you favour, comment, or ask for a viva.
 
 A question map makes no recommendation. If the bills clearly favour one reading it was not reduced to a question: it is a theory with a rival.
+
+The marks are for theory issues only. A question issue (`kind:open` or `kind:conflict`) never uses them: its text renders on the wiki.
 
 `bun run pull` ignores this label, so the wiki and the Astrolabe are unaffected. Do not comment on the question issues and do not touch any page.
 
