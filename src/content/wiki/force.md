@@ -3,7 +3,7 @@ title: Force
 kind: term
 area: World
 status: Tenet
-summary: The amount of a will's motion, the area of its mood's circle, conserved across the world.
+summary: The amount of a will's motion, the area of its mood's circle. The world's total never grows.
 aliases:
   - Kraft
 infobox:
@@ -25,9 +25,9 @@ navbox: world
 
 [[Emotion|Emotions]] are force's motions, and [[Calm]] is force circling at rest. [[Material]] is force in a particular motion, and [[Memory|memories]] and [[Belief|beliefs]] store it in a shape.
 
-## Conserved
+## Weakening
 
-Force is conserved: never created, and lost only when opposed [[Held and manifest|manifest]] motions annihilate, which is how the world runs down. The law is named [[Conservation of force|conservation of force]].
+The world's total force never grows: force is never created, and is lost only when opposed [[Held and manifest|manifest]] motions annihilate, which is how the world runs down. The law is named [[Weakening of force|weakening of force]].
 
 When a form that holds force dissolves, the force is not lost. It hangs where it happened as [[ambient emotion]].
 

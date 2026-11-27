@@ -17,7 +17,7 @@ Only the fabric of the world fractures one way. The history built on it follows 
 
 ## The world's force
 
-Each will has its own [[force]] (Kraft, Mainländer's term), and the world's force is the sum of theirs. Force is never created and is lost only when opposed manifest motions annihilate (see [[Conservation of force]]).
+Each will has its own [[force]] (Kraft, Mainländer's term), and the world's force is the sum of theirs. Force is never created and is lost only when opposed manifest motions annihilate (see [[Weakening of force]]).
 
 The world's force diminishes over aeons, too slowly for most inhabitants to notice. Neighbouring shards' opposed [[ambient emotion]] meets along a seam and annihilates, so seams shimmer with [[lucidity]]; with Forgetting, this is how the world's force wears down.
 
@@ -30,7 +30,7 @@ The world's force diminishes over aeons, too slowly for most inhabitants to noti
 | [[Shard]] | Any fragment of the Dreamer's will; alone, a stable region |
 | [[Seam]] | Less Remembered land between shards, shimmering with lucidity |
 | [[Force]] | The amount of a will's motion; the world's is the sum of all wills' |
-| [[Conservation of force]] | Why force only ever runs down |
+| [[Weakening of force]] | Why force only ever runs down |
 | [[Ambient emotion]] | Freed force, whose opposites annihilate along seams |
 | [[Forgetting]] | The dark, with the upper hand in the seams |
 
