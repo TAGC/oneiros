@@ -59,7 +59,7 @@ flowchart TB
   class h5a,rules,publish,key designer
 ```
 
-- **Brief:** the one file every theorycrafter and judge reads. It carries no lean.
+- **Brief:** the one file every theorycrafter, judge, examiner and author reads. It carries no lean.
 - **Theorycrafter:** an agent that writes one theory from the brief.
 - **Judge:** an agent that scores the anonymised theories blind, in rotated order.
 - **Submitted theory:** the text the defence examines: the winning theory after the judges' fact-check, or the written-up hunch.
