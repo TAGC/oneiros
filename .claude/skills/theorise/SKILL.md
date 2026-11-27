@@ -1,6 +1,6 @@
 ---
 name: "theorise"
-description: "Write a theory: a short proposal that explains several open questions and conflicts at once from the settled design, written by several independent agents and picked by blind judges. Use when asked to theorise or to propose a theory. One run writes one theory."
+description: "Write a theory: a short proposal that explains several open questions and conflicts at once from the settled design, written by several independent agents and picked by blind judges, or written up from the designer's own hunch, then defended by examiners. Use when asked to theorise, to propose a theory, or to test or defend an idea of the designer's. One run writes one theory."
 ---
 
 # Theorise
@@ -13,6 +13,13 @@ The words of this process (source lines, examiner, standing attack, earned answe
 
 A theory never edits a wiki page, never adds a marker, never answers or closes a question issue and never has a Chinese version. CLAUDE.md's "Never invent design" holds throughout.
 
+## Two ways in
+
+- **Invent run:** `/theorise <area or question>`, or `/theorise` alone. Steps 1 to 8 in order: theorycrafters invent, blind judges pick, examiners attack.
+- **Hunch run:** the designer states an idea of their own in words, a **hunch**. Steps 1 and 2, then step 5 as written there for a hunch, then steps 6 to 8. No theorycrafters and no judges.
+
+In a hunch run the designer's words are the core of the theory. Quote them exactly. No agent changes or reinterprets them, the chair included. The rule on new mechanics above binds the text Claude writes around them, not the hunch itself. The result is still not a decision: it becomes design only as any theory does, through a viva.
+
 ## 1. Read the state
 
 - Run `bun run pull`, then `bun run constellations`. Read the cache files in `.questions/` for the open questions and conflicts.
@@ -24,7 +31,7 @@ A theory never edits a wiki page, never adds a marker, never answers or closes a
 
 ## 2. Write the shared brief
 
-Write one brief file in the scratchpad, with the output of `bun run constellations` and a list of pages by status beside it. Every theorycrafter and judge reads these and nothing else from you.
+Write one brief file in the scratchpad, with the output of `bun run constellations` and a list of pages by status beside it. Every theorycrafter, judge, examiner and author reads these and nothing else from you. A hunch run writes the same brief; the hunch itself goes in the submitted theory (step 5), not here.
 
 - The project in a paragraph, from CLAUDE.md's opening and "Settled background".
 - What a theory is, from the top of this skill, including the rule on new mechanics.
@@ -52,7 +59,7 @@ Write one brief file in the scratchpad, with the output of `bun run constellatio
 - The designer's principles from `docs/principles.md`, word for word. They are rules of thumb the designer set: a reason a theory or an examiner may give, never a *from* line and never proof.
 - No lean of your own, and no hint of which questions you think matter most.
 
-## 3. Theorycrafters
+## 3. Theorycrafters (invent run)
 
 Launch three sub-agents in parallel, in the background, on different models where possible. Each reads the brief and the repo, roams freely and writes one theory to its own file. The work is read-only.
 
@@ -82,7 +89,7 @@ Theorycrafters, judges and examiners write these words plain. The marks of `docs
 
 After the theory, under a `---` line, a short rationale: the alternatives considered and why they were rejected.
 
-## 4. Blind judges
+## 4. Blind judges (invent run)
 
 Follow steps 3 and 4 of `.claude/skills/blind-design-bakeoff`: strip the titles and rationales, label the three P, Q and R, and give them to three judges in rotated order. Judges read the brief and the anonymised theories, then check each theory against the repo: the pages it cites and the `.questions/N.md` file of every question it claims to answer.
 
@@ -109,13 +116,19 @@ Each judge also gives a recommendation with confidence, each theory's biggest un
 - A strong loser that covers different questions is not a graft: name it in the report as a theory for a later run.
 - If every theory scores under 3 on Evidence, publish nothing and say why.
 
+**In a hunch run**, there is nothing to pick. Instead:
+
+- Fact-check the hunch against the pages, the data and the closed questions, and tell the designer what they say before writing anything. Mark each line: ✔ the pages agree, ✘ the pages clash, ⚠ a stretch or a cost, ❓ no page says. On a ✘, quote the page and ask whether the designer means to change it.
+- Write the theory in the step 3 shape. Under **The theory**, quote the designer's words exactly, headed "The designer's words". Claude's account follows, headed "Claude's write-up": the source lines, How it plays, Answers, Opens and Weaknesses. Only the write-up may be attacked as Claude's text; the designer's words are attacked only through what they give in a worked case.
+- Run the checks above on the write-up: issue numbers, quotes, page claims, vocabulary.
+
 The result is the **submitted theory**: the text the defence examines.
 
 ## 6. Defence
 
 The theory is defended like a thesis: examiners attack it, the author answers, and they go again. An attack counts only when it is proven. You are the chair: you check proofs and call the verdict, and you neither attack nor defend.
 
-**Examiners.** Three sub-agents, one lens each, on different models where possible. Each reads the brief and the submitted theory, and may read the repo. They report attacks only and fix nothing.
+**Examiners.** Three sub-agents, one lens each, on different models where possible, and on cheaper models than the chair's. Each reads the brief and the submitted theory, and may read the repo. They report attacks only and fix nothing.
 
 - **Canon:** the theory against the settled design. A source line that is false, a settled rule it breaks without an *overturns* line, a Glossary term misused, an answer that does not answer its question.
 - **Exploiter:** a player trying to break or abuse the rules. A loop with no end, a free gain, a mechanic made pointless, a moment that is unreadable or no fun.
@@ -134,12 +147,14 @@ An objection with no proof is not reported. Taste, style and risks that need som
 
 1. **Attack.** The three examiners attack the submitted theory, in parallel.
 2. **Check.** Re-check every proof yourself: find the quote in the file. Walk every step of every scenario: find the line or ruling the step quotes, and ask whether it gives that step, not merely one like it. A step with no line behind it, or with a line that does not give it, is unsourced: move the scenario to the gaps, whoever found it. Several examiners reaching the same scenario is not proof; check it as one. Drop any attack whose proof fails, and merge attacks with one root cause. What is left are the **standing attacks**.
-3. **Answer.** Resume the theorycrafter who wrote the winning theory and give it the standing attacks. It answers each one:
+3. **Answer.** Resume the theorycrafter who wrote the winning theory and give it the standing attacks. In a hunch run, start one author sub-agent instead, on a cheaper model than the chair's, and resume it in later rounds. It answers each one:
    - **patched:** the theory is changed. Say what changed;
    - **conceded:** the attack is right and the claim is withdrawn: an answer dropped, a rule cut;
    - **rebutted:** the attack is wrong, shown by a quote or a worked scenario of its own. A rebuttal with no proof is a concession.
    The author tries to rebut first. For each scenario it first tests every step for an unsourced step: a step that only sounds like a rule. Then it looks for the settled line or the scenario that defeats the attack, and gives way only when it finds none. Every concession and every patch says where it looked. An author who never rebuts is not defending: if a round has no rebuttal, check two of its concessions yourself for a defence it missed, and send those back.
    It returns the revised theory and its answers.
+
+   In a hunch run the author may change the write-up but never the designer's words. Where an attack can be met only by choosing a reading of those words, it does not choose: it states each reading and its bill, as a question for the designer. Put each such question to the designer before the next round, one at a time. The answer is a ruling, recorded as `.claude/skills/viva` says under "Rulings"; give the examiners the rulings in the next round's brief. A question the designer parks keeps its readings in the theory as rival candidate answers.
 4. **Go again.** Resume the same examiners with the revised theory and the answers. Each says whether its attacks are met, and attacks only what changed and any rebuttal it can disprove. Then check and answer as before.
 
 Stop when a round leaves no new standing attack, or after three rounds.
@@ -186,7 +201,7 @@ Open one issue for the theory:
 
 The body is the defended theory in the step 3 shape, with these changes so the designer can review it on the issue itself:
 
-- a first line saying it is Claude's suggestion, not a decision, with the defence verdict;
+- a first line saying it is Claude's suggestion, not a decision, with the defence verdict. For a hunch run: that it is the designer's hunch, written up and defended by Claude, and not a decision;
 - a legend line beneath it: `✔ from · ⚠ stretches · 🔗 needs · ✘ overturns · ❓ open or not said · ⚔ standing attack`;
 - every source line starts with its mark and keeps its word, as `✔ *from*`, `⚠ *stretches*`, `🔗 *needs*`, `✘ *overturns*`. Each Open and each "not said yet" line starts with ❓, and each open objection or standing attack with ⚔. Never use a mark without its word: the words are what a search finds;
 - a **Relations** line: each open theory it is a rival of, builds on or would supersede, as `✧#<issue>` links, or "Independent". Add a comment on each of those issues linking back;
@@ -195,7 +210,7 @@ The body is the defended theory in the step 3 shape, with these changes so the d
 - a folded `<details>` "Defence" section: a table of attacks reported, standing, patched, conceded and rebutted per round; each round's standing attacks with proof in one line and the answer; any counter-theory adopted and who proposed it; and what the theory lost or gained across the rounds;
 - each gap under Opens, as `❓ No page says whether X`, with the scenario that found it in one line;
 - the designer's rulings from the run, as `.claude/skills/viva` records them under "Rulings";
-- a folded `<details>` "Judging" section: this theory's score table, whether the judges agreed, the totals, the losers in one line each and what was changed after judging;
+- in an invent run, a folded `<details>` "Judging" section: this theory's score table, whether the judges agreed, the totals, the losers in one line each and what was changed after judging;
 - a last line: react 👍 promising or 👎 reject, tick the answers you like, or comment to change it.
 
 A **question map** uses the same issue and label, with a different body:
