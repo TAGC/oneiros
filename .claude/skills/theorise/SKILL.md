@@ -189,6 +189,7 @@ The body is the defended theory in the step 3 shape, with these changes so the d
 - each Answer is a task-list checkbox, `- [ ] **#<number>** <title>`, with its answer and source lines beneath it;
 - an **Open objections** section in place of Weaknesses when any attack still stands: each with its proof and the author's last answer. The author's own weaknesses that no examiner raised follow it, shorter;
 - a folded `<details>` "Defence" section: a table of attacks reported, standing, patched, conceded and rebutted per round; each round's standing attacks with proof in one line and the answer; any counter-theory adopted and who proposed it; and what the theory lost or gained across the rounds;
+- the designer's rulings from the run, as `.claude/skills/viva` records them under "Rulings";
 - a folded `<details>` "Judging" section: this theory's score table, whether the judges agreed, the totals, the losers in one line each and what was changed after judging;
 - a last line: react 👍 promising or 👎 reject, tick the answers you like, or comment to change it.
 
