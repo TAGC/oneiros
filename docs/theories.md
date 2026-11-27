@@ -36,6 +36,24 @@ A theory comes in by one of two ways:
 - **Invent run:** theorycrafters write theories and blind judges pick one.
 - **Hunch run:** the designer states an idea of their own, a **hunch**. Claude fact-checks it, writes it up and sends it straight to the defence. No theorycrafters, no judges. The designer's words are quoted exactly and no agent changes or reinterprets them.
 
+```mermaid
+flowchart TB
+  invent["<b>Invent run</b><br/>/theorise &lt;area or question&gt;"]
+  hunch["<b>Hunch run</b><br/>/theorise &lt;designer's own idea&gt;"]
+  invent --> i12["1–2. Read state, brief"]
+  i12 --> i3["3. Theorycrafters<br/>three write theories"]
+  i3 --> i4["4. Blind judges<br/>score, rotated order"]
+  i4 --> i5["5. Pick and correct<br/>fact-check the winner"]
+  hunch --> h12["1–2. Read state, brief"]
+  h12 --> h5a["5. Fact-check hunch<br/>tell designer what pages say"]
+  h5a --> h5b["5. Write up<br/>designer's words quoted"]
+  i5 --> defence["6. Defence<br/>attack, check every step, answer"]
+  h5b --> defence
+  defence -. "hunch run only" .-> rules["Designer rules<br/>on readings of the hunch"]
+  rules -.-> defence
+  defence --> publish["7–8. Publish and report<br/>issue, gaps, rulings"]
+```
+
 - **Brief:** the one file every theorycrafter and judge reads. It carries no lean.
 - **Theorycrafter:** an agent that writes one theory from the brief.
 - **Judge:** an agent that scores the anonymised theories blind, in rotated order.
