@@ -43,6 +43,7 @@ The authoring guide and the rest of the reference, by topic:
 - [Open questions](docs/open-questions.md): question issues and their labels, issue format, links, answers and status, markers, the pull and resolving questions.
 - [Duplicates](docs/duplicates.md): closing a duplicate question issue and replacing its marker.
 - [Constellations](docs/constellations.md): the milestone format, the Size and Energy scales, membership and when one is finished.
+- [Theories](docs/theories.md): the glossary of theorising, the defence and the viva: source lines, verdicts, moves, states.
 - [Sheet tables and navboxes](docs/sheet-tables-and-navboxes.md): `<SheetTable>` in MDX pages and the navbox file.
 - [Area icons](docs/area-icons.md): the painted area and belief icons: files, moodboards, prompts, fixes and checks.
 - [Chinese pages](docs/chinese-pages.md): files, links, lists, navboxes, sheet tables, terms and typography.
