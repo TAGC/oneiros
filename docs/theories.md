@@ -11,7 +11,7 @@ A theory is a suggestion in every state. It becomes design only when the designe
 ## The thing itself
 
 - **Theory:** a short proposal that explains several open questions and conflicts at once from the settled design. It may add a new mechanic only when that makes the design simpler.
-- **New rule:** a rule the theory adds, numbered R1, R2 and so on. Each is a cost.
+- **New rule:** a rule the theory adds, numbered R1, R2 and so on. Each is a cost. Each part the designer could accept or strike on its own has its own number.
 - **New term:** a word the theory coins because no Glossary term fits. Written in italics until accepted.
 - **Answer:** what the theory says to one open question or conflict, by issue number.
 - **Earned answer:** an answer that would fall if the theory's rules were deleted. An answer the settled pages already give is free to list, but is not counted.

@@ -71,7 +71,7 @@ Every theory has the same shape, 900 words at most:
 - **The theory:** the account in a few plain sentences.
 - **How it plays:** one or two concrete moments from the player's side.
 - **New terms:** each word the theory coins: the term, a one-sentence definition that links every Glossary term it uses, and why no existing term fits. "None" if none.
-- **New rules:** each rule the theory adds, numbered R1, R2 and so on, with its source lines and a *why* line: why the design is simpler with it than without. "None" if none.
+- **New rules:** each rule the theory adds, numbered R1, R2 and so on, with its source lines and a *why* line: why the design is simpler with it than without. "None" if none. Give each part the designer could accept or strike on its own a number of its own; never bundle separable clauses under one rule. Everywhere else, including a question map, cite a rule by its number.
 - **Answers:** each question or conflict it would settle, by issue number, with the answer in a line or two and its source lines. Only questions the theory truly settles; no answers stapled on. An answer to part of a question says which part.
 - **Opens:** new questions the theory would raise.
 - **Weaknesses:** at least three, honest, each with a mitigation.
