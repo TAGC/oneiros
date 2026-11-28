@@ -217,8 +217,9 @@ A **question map** uses the same issue and label, with a different body:
 
 - the first line says it is a question map, names the question it maps, and says the settled pages do not decide it;
 - the same legend line and the same marks as a theory;
-- **What is settled:** the claims that held against every examiner, each with its source line;
-- **Candidate answers:** one task-list checkbox per reading, each with what it says in a line or two, how it plays, and its full bill on the same terms as the others: overturns, stretches, new rules or terms it needs, and what it costs or gains in play. Say who proposed each reading: a theorycrafter, or an examiner and in which round;
+- **What held:** the claims that held against every examiner, one per bullet, numbered "**H1.** …", "**H2.** …", each with its source lines. Give each claim the designer could accept or challenge on its own a number of its own, as with rules. Rules and readings that rest on one cite it by its number;
+- **Rules:** each new rule any reading needs or carries, stated once as "**R1.** …" with its source lines, as under New rules in step 3. "None" if none. Readings and objections cite a rule by its number only;
+- **Candidate answers:** one task-list checkbox per reading, each with what it says in a line or two, how it plays, and its full bill on the same terms as the others: overturns, stretches, new rules (by number) or terms it needs, and what it costs or gains in play. Say who proposed each reading: a theorycrafter, or an examiner and in which round;
 - the author's closing judgement;
 - Opens, then the folded Defence and Judging sections as usual;
 - a last line: tick the reading you favour, comment, or ask for a viva.
@@ -231,7 +232,7 @@ The marks are for theory issues only. A question issue (`kind:open` or `kind:con
 
 ## 8. Report
 
-Give the designer the issue link, the title, the theory in two sentences, the questions it covers, how many new rules and terms it adds, and the defence verdict with the count of rounds and open objections. For a question map, give the question, the candidate answers in a line each, and what held firm; offer to take it into the next `resolve-open-questions` session for that question's constellation. Then the side findings, each with its proposed question issue, and the gaps, each as a question to the designer. **What the designer can do with it.** The full set of moves is in `.claude/skills/viva`: ask, challenge, correct the evidence, amend, lean, refute, accept, park. A viva is the place to accept or refute a theory. Between vivas, the issue takes quick signals:
+Give the designer the issue link, the title, the theory in two sentences, the questions it covers, how many new rules and terms it adds, and the defence verdict with the count of rounds and open objections. For a question map, give the question, the candidate answers in a line each, and what held; offer to take it into the next `resolve-open-questions` session for that question's constellation. Then the side findings, each with its proposed question issue, and the gaps, each as a question to the designer. **What the designer can do with it.** The full set of moves is in `.claude/skills/viva`: ask, challenge, correct the evidence, amend, lean, refute, accept, park. A viva is the place to accept or refute a theory. Between vivas, the issue takes quick signals:
 
 - 👍 **promising:** the reaction itself is the mark; add no label. It waits for a viva. On a question map, a ticked reading is the designer's lean, not a decision.
 - 👎 **rejected:** close as not planned, with the reason in a comment. Tell the designer which open theories build on it: they fall with it.
