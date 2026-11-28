@@ -103,7 +103,7 @@ The theory is defended like a thesis before the designer ever sees it.
 ## The viva
 
 - **Viva:** a sitting where the designer is the final examiner. Claude presents the theory and answers for it. The name is Latin for "with the living voice".
-- **Piece:** one thing put to the designer at a time: a new term, a new rule, an answer, a candidate answer or an open objection.
+- **Piece:** one thing put to the designer at a time: a claim of what held, a new term, a new rule, an answer, a candidate answer or an open objection.
 - **Pick:** Claude's suggestion for a piece, marked ➡️. Never a decision.
 - **Move:** what the designer does with a piece:
   - **Ask:** a question or "walk me through a case". Nothing changes.
