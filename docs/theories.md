@@ -98,7 +98,7 @@ The theory is defended like a thesis before the designer ever sees it.
 - **Passed with open objections:** attacks still stand, and the core and at least one earned answer survive them.
 - **Reduced to a question:** the settled pages do not decide between two or more readings, and every earned answer depends on the choice. Published as a question map.
 - **Failed:** the core is broken, or no earned answer is left. Nothing is published.
-- **Question map:** what a theory reduced to a question becomes: **what held** (the claims that held against every examiner, numbered H1, H2 and so on), then the **candidate answers** (the readings, numbered A1, A2 and so on), each with its bill. It recommends none.
+- **Question map:** what a theory reduced to a question becomes: **what held** (the claims that held against every examiner, numbered H1, H2 and so on), then the **rules** a reading needs (R1, R2 and so on; a rule no reading needs is cut, or becomes an Open), then the **candidate answers** (the readings, numbered A1, A2 and so on), each with its bill. It recommends none.
 
 ## The viva
 
@@ -119,6 +119,7 @@ The theory is defended like a thesis before the designer ever sees it.
 - **Two layers:** the designer's word is law on the theory, with no proof needed. On the settled design it changes nothing until the designer asks for it to be recorded.
 - **Reach:** how far a move changes other pieces. **Wording only:** no other claim changes. **Framing:** it changes a premise other pieces rest on.
 - **Stale:** a piece whose premise a move has changed. The examiners attacked the old text. A stale piece cannot be accepted until one more defence round.
+- **Moot:** a piece left with nothing to stand on, because a piece it needs was refuted. It is skipped in the viva.
 - **Land:** to write an accepted part into the wiki the usual way: answer comments, question issues, pages in both languages, one pull request.
 - **Stage:** how far a piece has got, in order: written, defence, viva, defence round, accepted in a viva, recorded on the issue, landed. Each piece has its own stage. A struck or moot piece goes no further; a parked one waits where it is. A stale piece waits at the defence round, then comes back to the viva.
 
