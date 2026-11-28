@@ -70,7 +70,7 @@ Every theory has the same shape, 900 words at most:
 - **Title:** a short noun phrase.
 - **The theory:** the account in a few plain sentences.
 - **How it plays:** one or two concrete moments from the player's side.
-- **New terms:** each word the theory coins: the term, a one-sentence definition that links every Glossary term it uses, and why no existing term fits. "None" if none.
+- **New terms:** each word the theory coins, one per bullet as "**_<term>_.** <definition>": the term in italics, then a one-sentence definition that links every Glossary term it uses. Beneath it, "*Why no existing term fits:* …". "None" if none.
 - **New rules:** each rule the theory adds, numbered R1, R2 and so on, with its source lines and a *why* line: why the design is simpler with it than without. "None" if none. Give each part the designer could accept or strike on its own a number of its own; never bundle separable clauses under one rule. Everywhere else, including a question map, cite a rule by its number.
 - **Answers:** each question or conflict it would settle, by issue number, with the answer in a line or two and its source lines. Only questions the theory truly settles; no answers stapled on. An answer to part of a question says which part.
 - **Opens:** new questions the theory would raise.
@@ -205,7 +205,7 @@ The body is the defended theory in the step 3 shape, with these changes so the d
 - a legend line beneath it: `✔ from · ⚠ stretches · 🔗 needs · ✘ overturns · ❓ open or not said · ⚔ standing attack`;
 - every source line starts with its mark and keeps its word, as `✔ *from*`, `⚠ *stretches*`, `🔗 *needs*`, `✘ *overturns*`. Each Open and each "not said yet" line starts with ❓, and each open objection or standing attack with ⚔. Never use a mark without its word: the words are what a search finds;
 - a **Relations** line: each open theory it is a rival of, builds on or would supersede, as `✧#<issue>` links, or "Independent". Add a comment on each of those issues linking back;
-- each Answer is a task-list checkbox, `- [ ] **#<number>** <title>`, with its answer and source lines beneath it;
+- each Answer is a task-list checkbox, `- [ ] **#<number>** <title>`, with its answer beneath as "*Answer:* …", then its source lines;
 - an **Open objections** section in place of Weaknesses when any attack still stands: each with its proof and the author's last answer. The author's own weaknesses that no examiner raised follow it, shorter;
 - a folded `<details>` "Defence" section: a table of attacks reported, standing, patched, conceded and rebutted per round; each round's standing attacks with proof in one line and the answer; any counter-theory adopted and who proposed it; and what the theory lost or gained across the rounds;
 - each gap under Opens, as `❓ No page says whether X`, with the scenario that found it in one line;
