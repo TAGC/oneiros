@@ -53,12 +53,21 @@ flowchart TB
   h5b --> defence
   defence -. "hunch run only" .-> rules["Designer rules<br/>on readings of the hunch"]
   rules -.-> defence
-  defence --> publish["7–8. Publish and report<br/>GitHub issue ✧, link to designer"]
-  publish --> react["Designer reacts on the issue<br/>👍 or 👎, ticks, comments"]
+  defence --> verdict{"Verdict"}
+  verdict -- "passed" --> theory["7. Theory issue ✧<br/>terms, rules, answers"]
+  verdict -- "reduced to a question" --> map["7. Question map ✧<br/>what held, rules, readings"]
+  verdict -- "failed" --> none["8. Report only<br/>nothing published"]
+  theory --> react["Designer reacts on the issue<br/>👍 or 👎, ticks, comments"]
+  map --> react
   react --> viva["/viva #lt;issue#gt;<br/>ask, challenge, amend, refute, accept, park"]
+  viva --> accepted["Accepted in the viva"]
+  accepted --> recorded["Recorded on the issue<br/>when the designer says post"]
+  recorded --> landed["Landed<br/>one pull request"]
+  viva -. "stale pieces" .-> round["Defence round<br/>on the changed parts"]
+  round -.-> viva
   key["Designer takes part"]
   classDef designer fill:#fde2d8,stroke:#d85a30,color:#4a1b0c
-  class h5a,rules,react,viva,key designer
+  class h5a,rules,react,viva,accepted,key designer
 ```
 
 - **Brief:** the one file every theorycrafter, judge, examiner and author reads. It carries no lean.
