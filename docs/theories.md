@@ -98,7 +98,7 @@ The theory is defended like a thesis before the designer ever sees it.
 - **Passed with open objections:** attacks still stand, and the core and at least one earned answer survive them.
 - **Reduced to a question:** the settled pages do not decide between two or more readings, and every earned answer depends on the choice. Published as a question map.
 - **Failed:** the core is broken, or no earned answer is left. Nothing is published.
-- **Question map:** what a theory reduced to a question becomes: **what held** (the claims that held against every examiner, numbered H1, H2 and so on), then the **candidate answers** (the readings), each with its bill. It recommends none.
+- **Question map:** what a theory reduced to a question becomes: **what held** (the claims that held against every examiner, numbered H1, H2 and so on), then the **candidate answers** (the readings, numbered A1, A2 and so on), each with its bill. It recommends none.
 
 ## The viva
 

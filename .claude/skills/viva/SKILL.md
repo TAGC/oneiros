@@ -25,7 +25,7 @@ In one short message, in the caveman style: the title, the theory in two sentenc
 
 ## 3. One piece at a time
 
-A piece is one claim of what held (a question map's H1, H2 and so on), one new term, one new rule, one answer, one candidate reading of a question map, or one open objection. Present them in that order: what held first, since rules and readings rest on it.
+A piece is one claim of what held (a question map's H1, H2 and so on), one new term, one new rule, one answer, one candidate reading of a question map (A1, A2 and so on), or one open objection. Present them in that order: what held first, since rules and readings rest on it.
 
 For each piece, one message:
 

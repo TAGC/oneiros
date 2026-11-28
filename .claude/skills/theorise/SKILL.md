@@ -219,7 +219,7 @@ A **question map** uses the same issue and label, with a different body:
 - the same legend line and the same marks as a theory;
 - **What held:** the claims that held against every examiner, one per bullet, numbered "**H1.** …", "**H2.** …", each with its source lines. Give each claim the designer could accept or challenge on its own a number of its own, as with rules. Rules and readings that rest on one cite it by its number;
 - **Rules:** each new rule any reading needs or carries, stated once as "**R1.** …" with its source lines, as under New rules in step 3. "None" if none. Readings and objections cite a rule by its number only;
-- **Candidate answers:** one task-list checkbox per reading, each with what it says in a line or two, how it plays, and its full bill on the same terms as the others: overturns, stretches, new rules (by number) or terms it needs, and what it costs or gains in play. Say who proposed each reading: a theorycrafter, or an examiner and in which round;
+- **Candidate answers:** one task-list checkbox per reading, numbered A1, A2 and so on ("- [ ] **A1. <its name>.**"), each with what it says in a line or two, how it plays, and its full bill on the same terms as the others: overturns, stretches, new rules (by number) or terms it needs, and what it costs or gains in play. Say who proposed each reading: a theorycrafter, or an examiner and in which round;
 - the author's closing judgement;
 - Opens, then the folded Defence and Judging sections as usual;
 - a last line: tick the reading you favour, comment, or ask for a viva.
